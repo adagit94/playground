@@ -1,4 +1,3 @@
-// abc
 export {};
 
 import express from 'express';
