@@ -15,7 +15,7 @@ app
   .then(() => {
     const server = express();
 
-    server.use('/user', UserRouter);
+    server.use('/user', userRouter);
 
     server.get('/', (req, res) => {
       res.send('My express server');
