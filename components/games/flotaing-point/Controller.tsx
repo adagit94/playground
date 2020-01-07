@@ -1,8 +1,7 @@
-import React from 'react';
-
+import React, { useReducer } from 'react';
 import Monitor from './Monitor';
 import ControlPanel from './ControlPanel';
-import * as Interfaces from '../interfaces/games/floating-point';
+import * as Interfaces from '../../../interfaces/games/floating-point';
 
 import './Controller.css';
 import './Shared.css';
@@ -159,21 +158,31 @@ function reducer(state, action) {
         visibility: 'hidden',
         dimensions: undefined,
         speed: undefined,
-        players.shapesOthers: Array(4).fill(''),
-        players.colorsOthers: [
-          defaults.P1.color,
-          defaults.P2.color,
-          defaults.P3.color,
-          defaults.P4.color
-        ],
-        players.P1.shape: '',
-        players.P2.shape: '',
-        players.P3.shape: '',
-        players.P4.shape: '',
-        players.P1.color: defaults.P1.color,
-        players.P2.color: defaults.P2.color,
-        players.P3.color: defaults.P3.color,
-        players.P4.color: defaults.P4.color
+        players: {
+          P1: {
+            shape: '',
+            color: defaults.P1.color
+          },
+          P2: {
+            shape: '',
+            color: defaults.P2.color
+          },
+          P3: {
+            shape: '',
+            color: defaults.P3.color
+          },
+          P4: {
+            shape: '',
+            color: defaults.P4.color
+          },
+          shapesOthers: Array(4).fill(''),
+          colorsOthers: [
+            defaults.P1.color,
+            defaults.P2.color,
+            defaults.P3.color,
+            defaults.P4.color
+          ]
+        },
       };
     case 'changeDimensions':
       return {};
@@ -193,20 +202,38 @@ function reducer(state, action) {
       return {};
     case 'moveFP':
       return {
-        FP.top: action.positions.top,
-        FP.left: action.positions.left
+        FP: {
+          top: action.positions.top,
+          left: action.positions.left
+        }
       };
     case 'movePlayer+':
       return {
-        players[action.player].positions[action.direction]: state.players[action.player].positions[action.direction] + 1
+        players: {
+          [action.player]: {
+            positions: {
+              [action.direction]: state.players[action.player].positions[action.direction] + 1
+            }
+          }
+        }
       };
     case 'movePlayer-':
       return {
-        players[action.player].positions[action.direction]: state.players[action.player].positions[action.direction] - 1
+        players: {
+          [action.player]: {
+            positions: {
+              [action.direction]: state.players[action.player].positions[action.direction] - 1
+            }
+          }
+        }
       };
     case 'addScore':
       return {
-        players[action.player].score: players[action.player].score + 1
+        players: {
+          [action.player]: {
+            score: players[action.player].score + 1
+          }
+        }
       };
     default:
       throw new Error('Unspecified action');
@@ -218,10 +245,10 @@ function reducer(state, action) {
 
 function FloatingPoint() {
   const [state, dispatch] = useReducer(reducer, initStates, init);
-  const pointContainerWidth: number = document.querySelector('.controller__monitor')
-  .clientWidth;
-const pointContainerHeight: number = document.querySelector('.controller__monitor')
-  .clientHeight;
+
+  const pointContainerWidth: number = document.querySelector('.controller__monitor').clientWidth;
+  const pointContainerHeight: number = document.querySelector('.controller__monitor').clientHeight;
+  const {dimensions, FP} = state;
 
   function handlePoint(directions: object): void {
     let pressedKeys: Array<string> = [];
@@ -231,16 +258,10 @@ const pointContainerHeight: number = document.querySelector('.controller__monito
     }
   
     if (pressedKeys.length > 0) {
-      const pointContainerWidth: number = document.querySelector('.controller__monitor')
-        .clientWidth;
-      const pointContainerHeight: number = document.querySelector(
-        '.controller__monitor'
-      ).clientHeight;
-      const dimensions: number = this.state.dimensions;
       const rightLimit: number = pointContainerWidth - dimensions;
       const bottomLimit: number = pointContainerHeight - dimensions;
   
-      for (let i = 0; i < pressedKeys.length; i++) {
+      for (let i: number = 0; i < pressedKeys.length; i++) {
         if (pressedKeys[i] === 'ArrowUp' && state.players.P1.position.top > 0) {
           dispatch({
             type: 'movePlayer-',
@@ -350,16 +371,14 @@ const pointContainerHeight: number = document.querySelector('.controller__monito
   
 
 function matchFloatingPoint(): void {
-    const {dimensions, fpPositions} = this.state;
-
-    for (let i = 1; i <= players; i++) {
+    for (let i: number = 1; i <= players; i++) {
       if (
-        (state.players['P' + i].positions.top >= fpPositions.top ||
-        state.players['P' + i].positions.top + dimensions >= fpPositions.top) &&
-        state.players['P' + i].positions.top <= fpPositions.top + 50 &&
-        (state.players['P' + i].positions.left >= fpPositions.left ||
-        state.players['P' + i].positions.left + dimensions >= fpPositions.left) &&
-        state.players['P' + i].positions.left <= fpPositions.left + 50
+        (state.players['P' + i].positions.top >= FP.top ||
+        state.players['P' + i].positions.top + dimensions >= FP.top) &&
+        state.players['P' + i].positions.top <= FP.top + 50 &&
+        (state.players['P' + i].positions.left >= FP.left ||
+        state.players['P' + i].positions.left + dimensions >= FP.left) &&
+        state.players['P' + i].positions.left <= FP.left + 50
       ) {
         dispatch({
           type: 'addScore',
@@ -395,7 +414,7 @@ function handlePlay(reset: boolean = false) {
     if (!state.isRunning && !reset) {
       let playable: boolean = true;
 
-      for (let i = 1; i <= players; i++) {
+      for (let i: number = 1; i <= players; i++) {
         if (state.players['P' + i].shape === undefined) {
           return;
       }
@@ -405,7 +424,6 @@ function handlePlay(reset: boolean = false) {
       const pointContainerHeight: number = document.querySelector(
         '.controller__monitor'
       ).clientHeight;
-      const dimensions = this.state.dimensions;
       const topP1P2 = pointContainerHeight / 2 - dimensions / 2;
       const leftP3P4 = pointContainerWidth / 2 - dimensions / 2;
       const leftP2 = pointContainerWidth - dimensions;
