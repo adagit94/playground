@@ -1,0 +1,16 @@
+.controller__panel__options-common__buttons {
+  flex: 2.5 2.5 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding: 10px;
+}
+
+.controller__panel__options-common__buttons--disabled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #00000080;
+}

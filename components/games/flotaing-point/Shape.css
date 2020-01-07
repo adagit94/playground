@@ -1,0 +1,56 @@
+.controller__panel__options-player__shape-container {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controller__panel__options-player__shape-label {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.controller__panel__options-player__shape-items {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controller__panel__options-player__shape {
+  width: 35px;
+  height: 35px;
+}
+
+.controller__panel__options-player__shape--square {
+  
+}
+
+.controller__panel__options-player__shape--circle {
+  border-radius: 100%;
+}
+
+.controller__panel__options-player__shape--rhombus {
+  transform: rotate(45deg);
+}
+
+.controller__panel__options-player__shape--ellipse {
+  border-radius: 100%;
+  transform: rotateX(45deg);
+}
+
+.controller__panel__options-player__shape--selected {
+  border: 2px solid #f00;
+}
+
+.controller__panel__options-player__shape--disabled {
+  opacity: 0.2;
+}
+
+.controller__panel__options-player__shape--undefined {
+  color: #f00;
+}

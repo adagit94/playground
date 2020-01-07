@@ -1,0 +1,21 @@
+.divider-horizontal {
+  height: 2px;
+  margin: 10 0px;
+  background-color: #000000;
+}
+
+.divider-horizontal-invisible {
+  height: 2px;
+}
+
+.divider-vertical {
+  width: 2px;
+  margin: 0 10px;
+  display: inline-block;
+  background-color: #000000;
+}
+
+.divider-vertical-invisible {
+  width: 2px;
+  display: inline-block;
+}
