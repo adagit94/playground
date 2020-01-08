@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Nav from './nav';
-import Content from './content';
+import Nav from './Nav';
+import Content from './Content';
 
 const Container = styled.main`
   grid-area: pag;

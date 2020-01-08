@@ -1,9 +1,8 @@
 import React from 'react';
 
-import OptionsCommon from './OptionsCommon';
-import OptionsPlayer from './OptionsPlayer';
+import OptionsCommon from './options-common';
+import OptionsPlayer from './options-player';
 
-import './ControlPanel.css';
 
 function ControlPanel(props) {
   const dataPlayer = props.data.player;

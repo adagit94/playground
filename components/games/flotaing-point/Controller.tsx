@@ -1,32 +1,11 @@
 import React, { useReducer } from 'react';
+import styled from 'styled-components';
+
 import Monitor from './Monitor';
-import ControlPanel from './ControlPanel';
+import ControlPanel from './control-panel';
 import * as Interfaces from '../../../interfaces/games/floating-point';
 
-import './Controller.css';
-import './Shared.css';
-
-const players: number = 4;
-
-let handlePointInterval; // dodefinovat - pravdepodobne pripravit interface pro native fci http://www.typescriptlang.org/docs/handbook/interfaces.html#function-types
-
-const defaults: Interfaces.Defaults = {
-  P1: {
-    color: '#000000'
-  },
-  P2: {
-    color: '#808080'
-  },
-  P3: {
-    color: '#708090'
-  },
-  P4: {
-    color: '#2f4f4f'
-  },
-  dimensions: 10,
-  speed: 1,
-  fpPadding: 10
-};
+const players = 4;
 
 const directions: Interfaces.Directions = {
   ArrowUp: {
@@ -77,6 +56,24 @@ const directions: Interfaces.Directions = {
   '4': {
     pressed: false
   }
+};
+
+const defaults: Interfaces.Defaults = {
+  P1: {
+    color: '#000000'
+  },
+  P2: {
+    color: '#808080'
+  },
+  P3: {
+    color: '#708090'
+  },
+  P4: {
+    color: '#2f4f4f'
+  },
+  dimensions: 10,
+  speed: 1,
+  fpPadding: 10
 };
 
 const initStates: Interfaces.InitStates = {
@@ -142,22 +139,84 @@ function init(initStates: Interfaces.InitStates): object {
   return initStates;
 }
 
-function reducer(state, action) {
-  switch(action.type) {
+function reducer(state, action): object {
+  switch (action.type) {
     case 'switchOn':
       return {
         isTurnedOn: !state.isTurnedOn,
         dimensions: defaults.dimensions,
         speed: defaults.speed
       };
+
     case 'switchOff':
+      return init(initStates);
+
+    case 'changeDimensions':
       return {
-        isTurnedOn: !state.isTurnedOn,
+        dimensions: action.dimensions
+      };
+
+    case 'changeSpeed':
+      return {
+        speed: action.speed
+      };
+
+    case 'changeShape':
+      return {
+        players: {
+          [action.player]: {
+            shape: action.shape
+          }
+        }
+      };
+
+    case 'changeColor':
+      return {
+        players: {
+          [action.player]: {
+            color: action.color
+          }
+        }
+      };
+
+    case 'initGame':
+      return {
+        isRunning: !state.isRunning,
+        visibility: 'visible',
+        players: {
+          P1: {
+            positions: {
+              top: action.topP1P2,
+              left: defaults.fpPadding
+            }
+          },
+          P2: {
+            positions: {
+              top: action.topP1P2,
+              left: action.leftP2 - defaults.fpPadding
+            }
+          },
+          P3: {
+            positions: {
+              top: defaults.fpPadding,
+              left: action.leftP3P4
+            }
+          },
+          P4: {
+            positions: {
+              top: action.topP4 - defaults.fpPadding,
+              left: action.leftP3P4
+            }
+          }
+        }
+      };
+    case 'resetGame':
+      return {
         isRunning: false,
         isPaused: false,
         visibility: 'hidden',
-        dimensions: undefined,
-        speed: undefined,
+        dimensions: 10,
+        speed: 1,
         players: {
           P1: {
             shape: '',
@@ -182,24 +241,19 @@ function reducer(state, action) {
             defaults.P3.color,
             defaults.P4.color
           ]
-        },
+        }
       };
-    case 'changeDimensions':
-      return {};
-    case 'changeSpeed':
-      return {};
-    case 'changeShape':
-      return {}; // mozne actions (content) '', shape, undefined; implementovat nahrazeni pro shapesOthers
-    case 'changeColor':
-      return {}; // implementovat nahrazeni pro colosOthers
-    case 'initGame':
-      return {};
-    case 'resetGame':
-      return {};
+
     case 'pauseGame':
-      return {};
+      return {
+        isPaused: !state.isPaused
+      };
+
     case 'unpauseGame':
-      return {};
+      return {
+        isPaused: !state.isPaused
+      };
+
     case 'moveFP':
       return {
         FP: {
@@ -207,26 +261,31 @@ function reducer(state, action) {
           left: action.positions.left
         }
       };
+
     case 'movePlayer+':
       return {
         players: {
           [action.player]: {
             positions: {
-              [action.direction]: state.players[action.player].positions[action.direction] + 1
+              [action.direction]:
+                state.players[action.player].positions[action.direction] + 1
             }
           }
         }
       };
+
     case 'movePlayer-':
       return {
         players: {
           [action.player]: {
             positions: {
-              [action.direction]: state.players[action.player].positions[action.direction] - 1
+              [action.direction]:
+                state.players[action.player].positions[action.direction] - 1
             }
           }
         }
       };
+
     case 'addScore':
       return {
         players: {
@@ -235,161 +294,231 @@ function reducer(state, action) {
           }
         }
       };
+
+    case 'addShape':
+      return {
+        players: {
+          shapesOthers: [...state.players.shapesOthers, action.shape]
+        }
+      };
+
+    case 'addColor':
+      return {
+        players: {
+          colorsOthers: [...state.players.colorsOthers, action.color]
+        }
+      };
+
+    case 'removeShape':
+      return {
+        players: {
+          shapesOthers: state.players.shapesOthers.filter(el => {
+            return el !== action.shape;
+          })
+        }
+      };
+
+    case 'removeColor':
+      return {
+        players: {
+          colorsOthers: state.players.colorsOthers.filter(el => {
+            return el !== action.color;
+          })
+        }
+      };
+
     default:
       throw new Error('Unspecified action');
   }
 }
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
 
-
+const DividerHorizontal = styled.div`
+  height: 2px;
+  margin: 10 0px;
+  background-color: #000000;
+`;
 
 function FloatingPoint() {
-  const [state, dispatch] = useReducer(reducer, initStates, init);
+  let handlePointInterval;
+  const [state, dispatch]: any = useReducer(reducer, initStates, init);
+  const { mode, dimensions, speed, FP } = state;
 
-  const pointContainerWidth: number = document.querySelector('.controller__monitor').clientWidth;
-  const pointContainerHeight: number = document.querySelector('.controller__monitor').clientHeight;
-  const {dimensions, FP} = state;
+  const pointContainerWidth: number = document.querySelector(
+    '.controller__monitor'
+  ).clientWidth;
+
+  const pointContainerHeight: number = document.querySelector(
+    '.controller__monitor'
+  ).clientHeight;
 
   function handlePoint(directions: object): void {
-    let pressedKeys: Array<string> = [];
-  
+    const pressedKeys: Array<string> = [];
+
     for (const direction in directions) {
       if (directions[direction].pressed === true) pressedKeys.push(direction);
     }
-  
+
     if (pressedKeys.length > 0) {
       const rightLimit: number = pointContainerWidth - dimensions;
       const bottomLimit: number = pointContainerHeight - dimensions;
-  
-      for (let i: number = 0; i < pressedKeys.length; i++) {
-        if (pressedKeys[i] === 'ArrowUp' && state.players.P1.position.top > 0) {
+
+      for (let i = 0; i < pressedKeys.length; i++) {
+        if (
+          pressedKeys[i] === 'ArrowUp' &&
+          state.players.P1.positions.top > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P1',
             direction: 'top'
-          })
+          });
         } else if (
           pressedKeys[i] === 'ArrowRight' &&
-          state.players.P1.position.left < rightLimit
+          state.players.P1.positions.left < rightLimit
         ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P1',
             direction: 'left'
-          })
+          });
         } else if (
           pressedKeys[i] === 'ArrowDown' &&
-          state.players.P1.position.top < bottomLimit
+          state.players.P1.positions.top < bottomLimit
         ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P1',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === 'ArrowLeft' && state.players.P1.position.left > 0) {
+          });
+        } else if (
+          pressedKeys[i] === 'ArrowLeft' &&
+          state.players.P1.positions.left > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P1',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === 'w' && state.players.P2.position.top > 0) {
+          });
+        } else if (
+          pressedKeys[i] === 'w' &&
+          state.players.P2.positions.top > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P2',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === 'd' && state.players.P2.position.left < rightLimit) {
+          });
+        } else if (
+          pressedKeys[i] === 'd' &&
+          state.players.P2.positions.left < rightLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P2',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === 's' && state.players.P2.position.top < bottomLimit) {
+          });
+        } else if (
+          pressedKeys[i] === 's' &&
+          state.players.P2.positions.top < bottomLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P2',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === 'a' && state.players.P2.position.left > 0) {
+          });
+        } else if (
+          pressedKeys[i] === 'a' &&
+          state.players.P2.positions.left > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P2',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === 'i' && state.players.P3.position.top > 0) {
+          });
+        } else if (
+          pressedKeys[i] === 'i' &&
+          state.players.P3.positions.top > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P3',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === 'l' && state.players.P3.position.left < rightLimit) {
+          });
+        } else if (
+          pressedKeys[i] === 'l' &&
+          state.players.P3.positions.left < rightLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P3',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === 'k' && state.players.P3.position.top < bottomLimit) {
+          });
+        } else if (
+          pressedKeys[i] === 'k' &&
+          state.players.P3.positions.top < bottomLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P3',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === 'j' && state.players.P3.position.left > 0) {
+          });
+        } else if (
+          pressedKeys[i] === 'j' &&
+          state.players.P3.positions.left > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P3',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === '8' && state.players.P4.position.top > 0) {
+          });
+        } else if (
+          pressedKeys[i] === '8' &&
+          state.players.P4.positions.top > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P4',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === '6' && state.players.P4.position.left < rightLimit) {
+          });
+        } else if (
+          pressedKeys[i] === '6' &&
+          state.players.P4.positions.left < rightLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P4',
             direction: 'left'
-          })
-        } else if (pressedKeys[i] === '5' && state.players.P4.position.top < bottomLimit) {
+          });
+        } else if (
+          pressedKeys[i] === '5' &&
+          state.players.P4.positions.top < bottomLimit
+        ) {
           dispatch({
             type: 'movePlayer+',
             player: 'P4',
             direction: 'top'
-          })
-        } else if (pressedKeys[i] === '4' && state.players.P4.position.left > 0) {
+          });
+        } else if (
+          pressedKeys[i] === '4' &&
+          state.players.P4.positions.left > 0
+        ) {
           dispatch({
             type: 'movePlayer-',
             player: 'P4',
             direction: 'left'
-          })
+          });
         }
       }
     }
   }
-  
 
-function matchFloatingPoint(): void {
-    for (let i: number = 1; i <= players; i++) {
-      if (
-        (state.players['P' + i].positions.top >= FP.top ||
-        state.players['P' + i].positions.top + dimensions >= FP.top) &&
-        state.players['P' + i].positions.top <= FP.top + 50 &&
-        (state.players['P' + i].positions.left >= FP.left ||
-        state.players['P' + i].positions.left + dimensions >= FP.left) &&
-        state.players['P' + i].positions.left <= FP.left + 50
-      ) {
-        dispatch({
-          type: 'addScore',
-          player: 'P' + i
-        })
-        moveFloatingPoint();
-      }
-    }
-  }
-
-function moveFloatingPoint(): void {
+  function moveFloatingPoint(): void {
     const top: number = Math.random() * pointContainerHeight;
     const left: number = Math.random() * pointContainerWidth;
 
@@ -399,118 +528,97 @@ function moveFloatingPoint(): void {
         top,
         left
       }
-    })
+    });
   }
 
-function handleSwitch(): void {
-    if (!state.isTurnedOn) {
-      dispatch({type: 'switchOn'})
-    } else {
-      dispatch({type: 'switchOff'})
+  function matchFloatingPoint(): void {
+    for (let i = 1; i <= players; i++) {
+      if (
+        (state.players['P' + i].positions.top >= FP.top ||
+          state.players['P' + i].positions.top + dimensions >= FP.top) &&
+        state.players['P' + i].positions.top <= FP.top + 50 &&
+        (state.players['P' + i].positions.left >= FP.left ||
+          state.players['P' + i].positions.left + dimensions >= FP.left) &&
+        state.players['P' + i].positions.left <= FP.left + 50
+      ) {
+        dispatch({
+          type: 'addScore',
+          player: 'P' + i
+        });
+        moveFloatingPoint();
+      }
     }
   }
 
-function handlePlay(reset: boolean = false) {
+  function handleSwitch(): void {
+    if (!state.isTurnedOn) {
+      dispatch({ type: 'switchOn' });
+    } else {
+      dispatch({ type: 'switchOff' });
+    }
+  }
+
+  function handlePlay(reset = false): void {
     if (!state.isRunning && !reset) {
-      let playable: boolean = true;
-
-      for (let i: number = 1; i <= players; i++) {
-        if (state.players['P' + i].shape === undefined) {
-          return;
+      for (let i = 1; i <= players; i++) {
+        if (state.players['P' + i].shape === undefined) return;
       }
-
-      const pointContainerWidth: number = document.querySelector('.controller__monitor')
-        .clientWidth;
-      const pointContainerHeight: number = document.querySelector(
-        '.controller__monitor'
-      ).clientHeight;
-      const topP1P2 = pointContainerHeight / 2 - dimensions / 2;
-      const leftP3P4 = pointContainerWidth / 2 - dimensions / 2;
-      const leftP2 = pointContainerWidth - dimensions;
-      const topP4 = pointContainerHeight - dimensions;
+      const topP1P2: number = pointContainerHeight / 2 - dimensions / 2;
+      const leftP3P4: number = pointContainerWidth / 2 - dimensions / 2;
+      const leftP2: number = pointContainerWidth - dimensions;
+      const topP4: number = pointContainerHeight - dimensions;
 
       handlePointInterval = window.setInterval(
-        this.handlePoint,
-        30 - this.state.speed * 5,
+        handlePoint,
+        30 - state.speed * 5,
         directions
       );
-      document.addEventListener('keydown', this.registerKey);
-      document.addEventListener('keyup', this.cancelKey);
+      document.addEventListener('keydown', registerKey);
+      document.addEventListener('keyup', cancelKey);
 
-      this.setState(state => ({
-        isRunning: !state.isRunning,
-        visibility: 'visible',
-        topP1: topP1P2,
-        leftP1: defaults.fpPadding,
-        topP2: topP1P2,
-        leftP2: leftP2 - defaults.fpPadding,
-        topP3: defaults.fpPadding,
-        leftP3: leftP3P4,
-        topP4: topP4 - defaults.fpPadding,
-        leftP4: leftP3P4
-      }));
-      this.initializeMode();
-    } else if (!this.state.isPaused || reset) {
+      dispatch({
+        type: 'initGame',
+        topP1P2,
+        leftP3P4,
+        leftP2,
+        topP4
+      });
+
+      initializeMode();
+    } else if (!state.isPaused || reset) {
       window.clearInterval(handlePointInterval);
-      document.removeEventListener('keydown', this.registerKey);
-      document.removeEventListener('keyup', this.cancelKey);
+      document.removeEventListener('keydown', registerKey);
+      document.removeEventListener('keyup', cancelKey);
 
       if (reset) {
-        this.setState({
-          isRunning: false,
-          isPaused: false,
-          visibility: 'hidden',
-          dimensions: 10,
-          speed: 1,
-          shapesOthers: Array(4).fill(''),
-          colorOthers: [
-            defaults.P1.color,
-            defaults.P2.color,
-            defaults.P3.color,
-            defaults.P4.color
-          ],
-          shapeP1: '',
-          shapeP2: '',
-          shapeP3: '',
-          shapeP4: '',
-          colorP1: defaults.P1.color,
-          colorP2: defaults.P2.color,
-          colorP3: defaults.P3.color,
-          colorP4: defaults.P4.color
-        });
+        dispatch({ type: 'resetGame' });
       } else {
-        this.setState(state => ({
-          isPaused: !state.isPaused
-        }));
+        dispatch({ type: 'pauseGame' });
       }
     } else {
       handlePointInterval = window.setInterval(
-        this.handlePoint,
-        30 - this.state.speed * 5,
+        handlePoint,
+        30 - state.speed * 5,
         directions
       );
-      document.addEventListener('keydown', this.registerKey);
-      document.addEventListener('keyup', this.cancelKey);
+      document.addEventListener('keydown', registerKey);
+      document.addEventListener('keyup', cancelKey);
 
-      this.setState(state => ({
-        isPaused: !state.isPaused
-      }));
+      dispatch({ type: 'unpauseGame' });
     }
   }
 
-function initializeMode() {
-    const mode = this.state.mode;
-
+  function initializeMode(): void {
     switch (mode) {
       case 'fp':
-        this.moveFloatingPoint();
+        moveFloatingPoint();
         break;
       default:
         console.log('Choose mode!');
     }
   }
 
-function registerKey(e) {
+  function registerKey(e): void {
     e.preventDefault();
 
     const key = e.key;
@@ -518,222 +626,137 @@ function registerKey(e) {
     if (directions.hasOwnProperty(key)) directions[key].pressed = true;
   }
 
-function cancelKey(e) {
+  function cancelKey(e): void {
     const key = e.key;
 
     if (directions.hasOwnProperty(key)) directions[key].pressed = false;
   }
 
-function handleShape(shape, player) {
+  function addShape(shape): void {
+    dispatch({
+      type: 'addShape',
+      shape
+    });
+  }
+
+  function removeShape(shape): void {
+    dispatch({
+      type: 'addShape',
+      shape
+    });
+  }
+
+  function handleShape(shape: string, player: string): void {
     if (
-      this.state.shapeOthers.indexOf(shape) === -1 &&
-      this.state['shape' + player] === ''
+      state.players.shapesOthers.indexOf(shape) === -1 &&
+      state.players[player].shape === ''
     ) {
-      this.addShape(shape);
-      this.setState({
-        ['shape' + player]: shape
+      addShape(shape);
+      dispatch({
+        type: 'changeShape',
+        player,
+        shape
       });
     } else if (
-      this.state.shapeOthers.indexOf(shape) === -1 &&
-      this.state['shape' + player] !== ''
+      state.players.shapesOthers.indexOf(shape) === -1 &&
+      state.players[player].shape !== ''
     ) {
-      this.removeShape(this.state['shape' + player]);
-      this.addShape(shape);
-      this.setState({
-        ['shape' + player]: shape
+      removeShape(state.players[player].shape);
+      addShape(shape);
+      dispatch({
+        type: 'changeShape',
+        player,
+        shape
       });
     } else {
-      this.removeShape(shape);
-      this.setState({
-        ['shape' + player]: ''
+      removeShape(shape);
+      dispatch({
+        type: 'changeShape',
+        player,
+        shape: ''
       });
     }
   }
 
-function addShape(shape) {
-    this.setState(state => ({
-      shapeOthers: [...state.shapeOthers, shape]
-    }));
+  function addColor(color): void {
+    dispatch({
+      type: 'addColor',
+      color
+    });
   }
 
-function removeShape(shape) {
-    this.setState(state => ({
-      shapeOthers: state.shapeOthers.filter(el => {
-        return el !== shape;
-      })
-    }));
+  function removeColor(color): void {
+    dispatch({
+      type: 'removeColor',
+      color
+    });
   }
 
-function handleColor(color, player) {
-    if (this.state.colorOthers.indexOf(color) === -1) {
-      this.removeColor(this.state['color' + player]);
-      this.addColor(color);
-      this.setState({
-        ['color' + player]: color
+  function handleColor(color: string, player: string): void {
+    if (state.players.colorsOthers.indexOf(color) === -1) {
+      removeColor(color);
+      addColor(color);
+      dispatch({
+        type: 'changeColor',
+        player,
+        color
       });
     }
   }
 
-function addColor(color) {
-    this.setState(state => ({
-      colorOthers: [...state.colorOthers, color]
-    }));
-  }
-
-function removeColor(color) {
-    this.setState(state => ({
-      colorOthers: state.colorOthers.filter(el => {
-        return el !== color;
-      })
-    }));
-  }
-
-function handleDimensions(dimensions) {
-    this.setState({
+  function handleDimensions(dimensions: number): void {
+    dispatch({
+      type: 'changeDimensions',
       dimensions
     });
   }
 
-function handleSpeed(speed) {
-    this.setState({
+  function handleSpeed(speed: number): void {
+    dispatch({
+      type: 'changeSpeed',
       speed
     });
   }
+  const data = {
+    monitor: {
+      players: state.players,
+      FP: state.FP,
+      isRunning: state.isRunning,
+      isPaused: state.isPaused,
+      dimensions: state.dimensions,
+      visibility: state.visibility,
+      matchFloatingPoint: matchFloatingPoint
+    },
+    controlPanel: {
+      players: state.players,
+      isTurnedOn: state.isTurnedOn,
+      isRunning: state.isRunning,
+      isPaused: state.isPaused,
+      dimensions: state.dimensions,
+      speed: state.speed,
+      handleSwitch: handleSwitch,
+      handleDimensions: handleDimensions,
+      handleSpeed: handleSpeed,
+      handlePlay: handlePlay,
+      handleShape: handleShape,
+      handleColor: handleColor
+    }
+  };
+  const MonitorContext = React.createContext(data.monitor);
 
-    const data = {
-      monitor: {
-        players: {
-          P1: {
-            top: this.state.topP1,
-            left: this.state.leftP1,
-            shape: this.state.shapeP1,
-            color: this.state.colorP1
-          },
-          P2: {
-            top: this.state.topP2,
-            left: this.state.leftP2,
-            shape: this.state.shapeP2,
-            color: this.state.colorP2
-          },
-          P3: {
-            top: this.state.topP3,
-            left: this.state.leftP3,
-            shape: this.state.shapeP3,
-            color: this.state.colorP3
-          },
-          P4: {
-            top: this.state.topP4,
-            left: this.state.leftP4,
-            shape: this.state.shapeP4,
-            color: this.state.colorP4
-          },
-          isPaused: this.state.isPaused,
-          isRunning: this.state.isRunning,
-          dimensions: this.state.dimensions,
-          visibility: this.state.visibility,
-          matchFloatingPoint: this.matchFloatingPoint
-        },
-        floatingPoint: {
-          top: this.state.FP.top,
-          left: this.state.FP.left,
-          dimensions: this.state.dimensions,
-          visibility: this.state.visibility
-        },
-        isRunning: this.state.isRunning
-      },
-      controlPanel: {
-        common: {
-          switch: {
-            handleSwitch: this.handleSwitch,
-            isTurnedOn: this.state.isTurnedOn
-          },
-          parameters: {
-            dimensions: {
-              handleDimensions: this.handleDimensions,
-              dimensions: this.state.dimensions
-            },
-            speed: {
-              handleSpeed: this.handleSpeed,
-              speed: this.state.speed
-            },
-            isTurnedOn: this.state.isTurnedOn,
-            isRunning: this.state.isRunning
-          },
-          buttons: {
-            play: {
-              handlePlay: this.handlePlay,
-              isPaused: this.state.isPaused,
-              isRunning: this.state.isRunning
-            },
-            reset: {
-              handlePlay: this.handlePlay
-            },
-            isTurnedOn: this.state.isTurnedOn
-          }
-        },
-        player: {
-          P1: {
-            shape: {
-              handleShape: this.handleShape,
-              shape: this.state.shapeP1,
-              shapeOthers: this.state.shapeOthers,
-              color: this.state.colorP1
-            },
-            color: {
-              handleColor: this.handleColor,
-              color: this.state.colorP1
-            }
-          },
-          P2: {
-            shape: {
-              handleShape: this.handleShape,
-              shape: this.state.shapeP2,
-              shapeOthers: this.state.shapeOthers,
-              color: this.state.colorP2
-            },
-            color: {
-              handleColor: this.handleColor,
-              color: this.state.colorP2
-            }
-          },
-          P3: {
-            shape: {
-              handleShape: this.handleShape,
-              shape: this.state.shapeP3,
-              shapeOthers: this.state.shapeOthers,
-              color: this.state.colorP3
-            },
-            color: {
-              handleColor: this.handleColor,
-              color: this.state.colorP3
-            }
-          },
-          P4: {
-            shape: {
-              handleShape: this.handleShape,
-              shape: this.state.shapeP4,
-              shapeOthers: this.state.shapeOthers,
-              color: this.state.colorP4
-            },
-            color: {
-              handleColor: this.handleColor,
-              color: this.state.colorP4
-            }
-          },
-          shapeOthers: this.state.shapeOthers,
-          isTurnedOn: this.state.isTurnedOn,
-          isRunning: this.state.isRunning
-        }
-      }
-    };
+  const ControlPanelContext = React.createContext(data.controlPanel);
 
-    return (
-      <div className='controller'>
-        <Monitor data={data.monitor} />
-        <div className='divider-horizontal' />
-        <ControlPanel data={data.controlPanel} />
-      </div>
-    );
-  }
+  return (
+    <Container>
+      <MonitorContext.Provider value={data.monitor}>
+        <Monitor />
+      </MonitorContext.Provider>
+      <ControlPanelContext.Provider value={data.controlPanel}>
+        <DividerHorizontal />>
+      </ControlPanelContext.Provider>
+      <ControlPanel />
+    </Container>
+  );
+}
 
 export default Controller;

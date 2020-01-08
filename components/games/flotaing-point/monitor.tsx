@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Players from './Players';
-import FloatingPoint from './FloatingPoint';
+import FloatingPoint from './floating-point';
 
 import './Monitor.css';
 

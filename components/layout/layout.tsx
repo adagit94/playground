@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './header/header';
-import Page from './page/page';
-import Footer from './footer/footer';
+import Header from './header/Header';
+import Page from './page/Page';
+import Footer from './footer/Footer';
 
 const Container = styled.div`
   border: 1px solid black;

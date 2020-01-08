@@ -2,7 +2,7 @@ export {};
 
 import express from 'express';
 import mongoose from 'mongoose';
-import * as UserController from '../controllers/UserController';
+import * as UserController from '../controllers/user-controller';
 
 const router = express.Router();
 const mongoDB = 'mongodb://127.0.0.1:27017/db-users';

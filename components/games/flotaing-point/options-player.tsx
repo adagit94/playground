@@ -4,7 +4,22 @@ import Color from './Color';
 import Shape from './Shape';
 
 import './OptionsPlayer.css';
-import './Shared.css';
+
+const DividerHorizontalInvisible = styled.div`
+    height: 2px;
+`;
+
+const DividerVertical = styled.div`
+  width: 2px;
+  margin: 0 10px;
+  display: inline-block;
+  background-color: #000000;
+`;
+
+const DividerVerticalInvisible = styled.div`
+  width: 2px;
+  display: inline-block;
+`;
 
 function OptionsPlayer(props) {
   const player = props.id;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Switch from './Switch';
-import OptionsParameters from './OptionsParameters';
+import OptionsParameters from './options-parameters';
 import Buttons from './Buttons';
 
 import './OptionsCommon.css';
