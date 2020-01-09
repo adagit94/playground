@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-function FloatingPoint(props) {
-  const data = props.data;
+function FloatingPoint() {
+  const data = useContext(FPContext);
+
   const point = {
     position: 'absolute',
     top: data.top,

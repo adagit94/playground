@@ -1,78 +1,96 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import styled from 'styled-components';
 
-class Players extends React.Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.data.isPaused !== nextProps.data.isPaused && this.props.data.isRunning === nextProps.data.isRunning) return false;
-    
-    return true;
-  }
+function Players(): JSX.Element {
+  const data: any = useContext(PlayersContext);
+  const PointP1 = styled.div`
+    position: absolute;
+    top: ${data.players.P1.positions.top};
+    left: ${data.players.P1.positions.left};
+    width: ${data.dimensions}px;
+    height: ${data.dimensions}px;
+    background-color: ${data.players.P1.color};
+    visibility: ${data.visibility};
+    border-radius: ${data.players.P1.shape === 'circle' ||
+    data.players.P1.shape === 'ellipse'
+      ? '100%'
+      : ''};
+    transform: ${data.players.P1.shape === 'rhombus'
+      ? 'rotate(45deg)'
+      : data.players.P1.shape === 'ellipse'
+      ? 'rotateX(45deg)'
+      : ''};
+  `;
 
-  componentDidUpdate() {
-    const data = this.props.data;
-    
+  const PointP2 = styled.div`
+    position: absolute;
+    top: ${data.players.P2.positions.top};
+    left: ${data.players.P2.positions.left};
+    width: ${data.dimensions}px;
+    height: ${data.dimensions}px;
+    background-color: ${data.players.P2.color};
+    visibility: ${data.visibility};
+    border-radius: ${data.players.P2.shape === 'circle' ||
+    data.players.P2.shape === 'ellipse'
+      ? '100%'
+      : ''};
+    transform: ${data.players.P2.shape === 'rhombus'
+      ? 'rotate(45deg)'
+      : data.players.P2.shape === 'ellipse'
+      ? 'rotateX(45deg)'
+      : ''};
+  `;
+
+  const PointP3 = styled.div`
+    position: absolute;
+    top: ${data.players.P3.positions.top};
+    left: ${data.players.P3.positions.left};
+    width: ${data.dimensions}px;
+    height: ${data.dimensions}px;
+    background-color: ${data.players.P3.color};
+    visibility: ${data.visibility};
+    border-radius: ${data.players.P3.shape === 'circle' ||
+    data.players.P3.shape === 'ellipse'
+      ? '100%'
+      : ''};
+    transform: ${data.players.P3.shape === 'rhombus'
+      ? 'rotate(45deg)'
+      : data.players.P3.shape === 'ellipse'
+      ? 'rotateX(45deg)'
+      : ''};
+  `;
+
+  const PointP4 = styled.div`
+    position: absolute;
+    top: ${data.players.P4.positions.top};
+    left: ${data.players.P4.positions.left};
+    width: ${data.dimensions}px;
+    height: ${data.dimensions}px;
+    background-color: ${data.players.P4.color};
+    visibility: ${data.visibility};
+    border-radius: ${data.players.P4.shape === 'circle' ||
+    data.players.P4.shape === 'ellipse'
+      ? '100%'
+      : ''};
+    transform: ${data.players.P4.shape === 'rhombus'
+      ? 'rotate(45deg)'
+      : data.players.P4.shape === 'ellipse'
+      ? 'rotateX(45deg)'
+      : ''};
+  `;
+
+  useEffect(() => {
     data.matchFloatingPoint();
-  }
+  });
 
-  render() {
-    const data = this.props.data;
-
-    const pointP1 = {
-      position: 'absolute',
-      top: data.P1.top,
-      left: data.P1.left,
-      width: data.dimensions + 'px',
-      height: data.dimensions + 'px',
-      backgroundColor: data.P1.color,
-      visibility: data.visibility,
-      borderRadius: data.P1.shape === 'circle' || data.P1.shape === 'ellipse' ? '100%' : '',
-      transform: data.P1.shape === 'rhombus' ? 'rotate(45deg)' : data.P1.shape === 'ellipse' ? 'rotateX(45deg)' : ''
-    };
-
-    const pointP2 = {
-      position: 'absolute',
-      top: data.P2.top,
-      left: data.P2.left,
-      width: data.dimensions + 'px',
-      height: data.dimensions + 'px',
-      backgroundColor: data.P2.color,
-      visibility: data.visibility,
-      borderRadius: data.P2.shape === 'circle' || data.P2.shape === 'ellipse' ? '100%' : '',
-      transform: data.P2.shape === 'rhombus' ? 'rotate(45deg)' : data.P2.shape === 'ellipse' ? 'rotateX(45deg)' : ''
-    };
-
-    const pointP3 = {
-      position: 'absolute',
-      top: data.P3.top,
-      left: data.P3.left,
-      width: data.dimensions + 'px',
-      height: data.dimensions + 'px',
-      backgroundColor: data.P3.color,
-      visibility: data.visibility,
-      borderRadius: data.P3.shape === 'circle' || data.P3.shape === 'ellipse' ? '100%' : '',
-      transform: data.P3.shape === 'rhombus' ? 'rotate(45deg)' : data.P3.shape === 'ellipse' ? 'rotateX(45deg)' : ''
-    };
-
-    const pointP4 = {
-      position: 'absolute',
-      top: data.P4.top,
-      left: data.P4.left,
-      width: data.dimensions + 'px',
-      height: data.dimensions + 'px',
-      backgroundColor: data.P4.color,
-      visibility: data.visibility,
-      borderRadius: data.P4.shape === 'circle' || data.P4.shape === 'ellipse' ? '100%' : '',
-      transform: data.P4.shape === 'rhombus' ? 'rotate(45deg)' : data.P4.shape === 'ellipse' ? 'rotateX(45deg)' : ''
-    };
-    
-    return (
-      <>
-        <div style={pointP1} />
-        <div style={pointP2} />
-        <div style={pointP3} />
-        <div style={pointP4} />
-      </>
-    );
-  }
+  return (
+    <>
+      <PointP1 />
+      <PointP2 />
+      <PointP3 />
+      <PointP4 />
+    </>
+  );
 }
 
 export default Players;

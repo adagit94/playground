@@ -1,8 +1,8 @@
 import React from 'react';
 
-import './Dimensions.css';
+import './dimensions.css';
 
-function Dimensions(props) {
+function dimensions(props) {
   const dimensions = props.data.dimensions;
   let text = '';
 
@@ -22,8 +22,8 @@ function Dimensions(props) {
 
   return (
     <div className='controller__panel__options-common__parameters__dimensions'>
-      <label htmlFor='width'>Dimensions: </label>
-      <input onChange={e => props.data.handleDimensions(e.target.value)} value={dimensions} type='range' min='10' max='30' step='10' id='dimensions' />
+      <label htmlFor='width'>dimensions: </label>
+      <input onChange={e => props.data.handledimensions(e.target.value)} value={dimensions} type='range' min='10' max='30' step='10' id='dimensions' />
       {text}
     </div>
   );
@@ -33,4 +33,4 @@ function areEqual(prevProps, nextProps) {
   if (prevProps.data.dimensions === nextProps.data.dimensions) return true;
 }
 
-export default React.memo(Dimensions, areEqual);
+export default React.memo(dimensions, areEqual);

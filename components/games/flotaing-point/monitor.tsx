@@ -1,21 +1,21 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import Players from './Players';
+import Players from './players';
 import FloatingPoint from './floating-point';
 
-import './Monitor.css';
+const Container = styled.div`
+  height: 80%;
+  position: relative;
+`;
 
-function Monitor(props) {
+function Monitor(): JSX.Element {
   return (
-    <div className='controller__monitor'>
-      <Players data={props.data.players} />
-      <FloatingPoint data={props.data.floatingPoint} />
-    </div>
+    <Container>
+      <Players />
+      <FloatingPoint />
+    </Container>
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (nextProps.data.isRunning === false && prevProps.data.isRunning === nextProps.data.isRunning) return true;
-}
-
-export default React.memo(Monitor, areEqual);
+export default React.memo(Monitor);

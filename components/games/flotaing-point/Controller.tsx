@@ -5,8 +5,8 @@ import Monitor from './Monitor';
 import ControlPanel from './control-panel';
 import * as Interfaces from '../../../interfaces/games/floating-point';
 
+let handlePointInterval;
 const players = 4;
-
 const directions: Interfaces.Directions = {
   ArrowUp: {
     pressed: false
@@ -80,7 +80,7 @@ const initStates: Interfaces.InitStates = {
   isTurnedOn: false,
   isRunning: false,
   isPaused: false,
-  mode: 'fp',
+  mode: 'fP',
   dimensions: undefined,
   speed: undefined,
   visibility: 'hidden',
@@ -129,11 +129,29 @@ const initStates: Interfaces.InitStates = {
       defaults.P4.color
     ]
   },
-  FP: {
+  fP: {
     top: 0,
     left: 0
   }
 };
+
+function registerKey(e): void {
+  e.preventDefault();
+
+  const key = e.key;
+
+  if ({}.hasOwnProperty.call(directions, key)) {
+    directions[key].pressed = true;
+  }
+}
+
+function cancelKey(e): void {
+  const key = e.key;
+
+  if ({}.hasOwnProperty.call(directions, key)) {
+    directions[key].pressed = false;
+  }
+}
 
 function init(initStates: Interfaces.InitStates): object {
   return initStates;
@@ -151,7 +169,7 @@ function reducer(state, action): object {
     case 'switchOff':
       return init(initStates);
 
-    case 'changeDimensions':
+    case 'changedimensions':
       return {
         dimensions: action.dimensions
       };
@@ -166,7 +184,19 @@ function reducer(state, action): object {
         players: {
           [action.player]: {
             shape: action.shape
-          }
+          },
+          shapesOthers:
+            action.others === 'change'
+              ? state.players.shapesOthers
+                  .filter(el => {
+                    return el !== state.players[action.player].shape;
+                  })
+                  .push(action.shape)
+              : action.others === 'add'
+              ? [...state.players.shapesOthers, action.shape]
+              : state.players.shapesOthers.filter(el => {
+                  return el !== action.shape;
+                })
         }
       };
 
@@ -175,7 +205,12 @@ function reducer(state, action): object {
         players: {
           [action.player]: {
             color: action.color
-          }
+          },
+          colorsOthers: state.players.colorsOthers
+            .filter(el => {
+              return el !== state.players[action.player].color;
+            })
+            .push(action.color)
         }
       };
 
@@ -256,7 +291,7 @@ function reducer(state, action): object {
 
     case 'moveFP':
       return {
-        FP: {
+        fP: {
           top: action.positions.top,
           left: action.positions.left
         }
@@ -290,40 +325,8 @@ function reducer(state, action): object {
       return {
         players: {
           [action.player]: {
-            score: players[action.player].score + 1
+            score: state.players[action.player].score + 1
           }
-        }
-      };
-
-    case 'addShape':
-      return {
-        players: {
-          shapesOthers: [...state.players.shapesOthers, action.shape]
-        }
-      };
-
-    case 'addColor':
-      return {
-        players: {
-          colorsOthers: [...state.players.colorsOthers, action.color]
-        }
-      };
-
-    case 'removeShape':
-      return {
-        players: {
-          shapesOthers: state.players.shapesOthers.filter(el => {
-            return el !== action.shape;
-          })
-        }
-      };
-
-    case 'removeColor':
-      return {
-        players: {
-          colorsOthers: state.players.colorsOthers.filter(el => {
-            return el !== action.color;
-          })
         }
       };
 
@@ -344,11 +347,8 @@ const DividerHorizontal = styled.div`
   background-color: #000000;
 `;
 
-function FloatingPoint() {
-  let handlePointInterval;
+function FloatingPoint(): JSX.Element {
   const [state, dispatch]: any = useReducer(reducer, initStates, init);
-  const { mode, dimensions, speed, FP } = state;
-
   const pointContainerWidth: number = document.querySelector(
     '.controller__monitor'
   ).clientWidth;
@@ -365,8 +365,8 @@ function FloatingPoint() {
     }
 
     if (pressedKeys.length > 0) {
-      const rightLimit: number = pointContainerWidth - dimensions;
-      const bottomLimit: number = pointContainerHeight - dimensions;
+      const rightLimit: number = pointContainerWidth - state.dimensions;
+      const bottomLimit: number = pointContainerHeight - state.dimensions;
 
       for (let i = 0; i < pressedKeys.length; i++) {
         if (
@@ -534,13 +534,16 @@ function FloatingPoint() {
   function matchFloatingPoint(): void {
     for (let i = 1; i <= players; i++) {
       if (
-        (state.players['P' + i].positions.top >= FP.top ||
-          state.players['P' + i].positions.top + dimensions >= FP.top) &&
-        state.players['P' + i].positions.top <= FP.top + 50 &&
-        (state.players['P' + i].positions.left >= FP.left ||
-          state.players['P' + i].positions.left + dimensions >= FP.left) &&
-        state.players['P' + i].positions.left <= FP.left + 50
+        (state.players['P' + i].positions.top >= state.fP.top ||
+          state.players['P' + i].positions.top + state.dimensions >=
+            state.fP.top) &&
+        state.players['P' + i].positions.top <= state.fP.top + 50 &&
+        (state.players['P' + i].positions.left >= state.fP.left ||
+          state.players['P' + i].positions.left + state.dimensions >=
+            state.fP.left) &&
+        state.players['P' + i].positions.left <= state.fP.left + 50
       ) {
+        // otestovat zdali dochazi k davkovemu prerenderovani po zmene vice stavu
         dispatch({
           type: 'addScore',
           player: 'P' + i
@@ -558,15 +561,25 @@ function FloatingPoint() {
     }
   }
 
+  function initializeMode(): void {
+    switch (state.mode) {
+      case 'fP':
+        moveFloatingPoint();
+        break;
+      default:
+        console.log('Choose mode!');
+    }
+  }
+
   function handlePlay(reset = false): void {
     if (!state.isRunning && !reset) {
       for (let i = 1; i <= players; i++) {
         if (state.players['P' + i].shape === undefined) return;
       }
-      const topP1P2: number = pointContainerHeight / 2 - dimensions / 2;
-      const leftP3P4: number = pointContainerWidth / 2 - dimensions / 2;
-      const leftP2: number = pointContainerWidth - dimensions;
-      const topP4: number = pointContainerHeight - dimensions;
+      const topP1P2: number = pointContainerHeight / 2 - state.dimensions / 2;
+      const leftP3P4: number = pointContainerWidth / 2 - state.dimensions / 2;
+      const leftP2: number = pointContainerWidth - state.dimensions;
+      const topP4: number = pointContainerHeight - state.dimensions;
 
       handlePointInterval = window.setInterval(
         handlePoint,
@@ -608,52 +621,14 @@ function FloatingPoint() {
     }
   }
 
-  function initializeMode(): void {
-    switch (mode) {
-      case 'fp':
-        moveFloatingPoint();
-        break;
-      default:
-        console.log('Choose mode!');
-    }
-  }
-
-  function registerKey(e): void {
-    e.preventDefault();
-
-    const key = e.key;
-
-    if (directions.hasOwnProperty(key)) directions[key].pressed = true;
-  }
-
-  function cancelKey(e): void {
-    const key = e.key;
-
-    if (directions.hasOwnProperty(key)) directions[key].pressed = false;
-  }
-
-  function addShape(shape): void {
-    dispatch({
-      type: 'addShape',
-      shape
-    });
-  }
-
-  function removeShape(shape): void {
-    dispatch({
-      type: 'addShape',
-      shape
-    });
-  }
-
-  function handleShape(shape: string, player: string): void {
+  function changeShape(shape: string, player: string): void {
     if (
       state.players.shapesOthers.indexOf(shape) === -1 &&
       state.players[player].shape === ''
     ) {
-      addShape(shape);
       dispatch({
         type: 'changeShape',
+        others: 'add',
         player,
         shape
       });
@@ -661,41 +636,24 @@ function FloatingPoint() {
       state.players.shapesOthers.indexOf(shape) === -1 &&
       state.players[player].shape !== ''
     ) {
-      removeShape(state.players[player].shape);
-      addShape(shape);
       dispatch({
         type: 'changeShape',
+        others: 'change',
         player,
         shape
       });
     } else {
-      removeShape(shape);
       dispatch({
         type: 'changeShape',
+        others: 'remove',
         player,
         shape: ''
       });
     }
   }
 
-  function addColor(color): void {
-    dispatch({
-      type: 'addColor',
-      color
-    });
-  }
-
-  function removeColor(color): void {
-    dispatch({
-      type: 'removeColor',
-      color
-    });
-  }
-
-  function handleColor(color: string, player: string): void {
+  function changeColor(color: string, player: string): void {
     if (state.players.colorsOthers.indexOf(color) === -1) {
-      removeColor(color);
-      addColor(color);
       dispatch({
         type: 'changeColor',
         player,
@@ -704,28 +662,30 @@ function FloatingPoint() {
     }
   }
 
-  function handleDimensions(dimensions: number): void {
+  function changedimensions(dimensions: number): void {
     dispatch({
-      type: 'changeDimensions',
+      type: 'changedimensions',
       dimensions
     });
   }
 
-  function handleSpeed(speed: number): void {
+  function changeSpeed(speed: number): void {
     dispatch({
       type: 'changeSpeed',
       speed
     });
   }
+
   const data = {
-    monitor: {
+    players: {
       players: state.players,
-      FP: state.FP,
-      isRunning: state.isRunning,
-      isPaused: state.isPaused,
       dimensions: state.dimensions,
       visibility: state.visibility,
       matchFloatingPoint: matchFloatingPoint
+    },
+    fP: {
+      fP: state.fP,
+      visibility: state.visibility
     },
     controlPanel: {
       players: state.players,
@@ -735,28 +695,30 @@ function FloatingPoint() {
       dimensions: state.dimensions,
       speed: state.speed,
       handleSwitch: handleSwitch,
-      handleDimensions: handleDimensions,
-      handleSpeed: handleSpeed,
+      changedimensions: changedimensions,
+      changeSpeed: changeSpeed,
       handlePlay: handlePlay,
-      handleShape: handleShape,
-      handleColor: handleColor
+      changeShape: changeShape,
+      changeColor: changeColor
     }
   };
-  const MonitorContext = React.createContext(data.monitor);
-
-  const ControlPanelContext = React.createContext(data.controlPanel);
+  const PlayersContext = React.createContext(null);
+  const FPContext = React.createContext(null);
+  const ControlPanelContext = React.createContext(null);
 
   return (
     <Container>
-      <MonitorContext.Provider value={data.monitor}>
-        <Monitor />
-      </MonitorContext.Provider>
+      <PlayersContext.Provider value={data.players}>
+        <FPContext.Provider value={data.fP}>
+          <Monitor />
+        </FPContext.Provider>
+      </PlayersContext.Provider>
       <ControlPanelContext.Provider value={data.controlPanel}>
-        <DividerHorizontal />>
+        <DividerHorizontal />
       </ControlPanelContext.Provider>
       <ControlPanel />
     </Container>
   );
 }
 
-export default Controller;
+export default FloatingPoint;
