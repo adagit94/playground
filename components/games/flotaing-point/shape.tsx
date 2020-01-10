@@ -1,71 +1,147 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import './Shape.css';
-import './Shared.css';
+const Container = styled.div`
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-function Shape(props) {
-  const shape = props.data.shape;
-  const shapeOthers = props.data.shapeOthers;
-  const bgColor = {
-    backgroundColor: props.data.color
-  };
+const Items = styled.div`
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 
-  let classes = {
-    square: {
-      class: 'controller__panel__options-player__shape controller__panel__options-player__shape--square',
-      selected: false,
-      disabled: false,
-      clickable: true
-    },
-    circle: {
-      class: 'controller__panel__options-player__shape controller__panel__options-player__shape--circle',
-      selected: false,
-      disabled: false,
-      clickable: true
-    },
-    rhombus: {
-      class: 'controller__panel__options-player__shape controller__panel__options-player__shape--rhombus',
-      selected: false,
-      disabled: false,
-      clickable: true
-    },
-    ellipse: {
-      class: 'controller__panel__options-player__shape controller__panel__options-player__shape--ellipse',
-      selected: false,
-      disabled: false,
-      clickable: true
-    }
-  };
-
-  if (shape !== '' && shape !== undefined) {
-    classes[shape].class += ' controller__panel__options-player__shape--selected';
-    classes[shape].selected = true;
+  div {
+    width: 35px;
+    height: 35px;
   }
+`;
 
-  shapeOthers.forEach(el => {
-    if (el in classes) {
-      classes[el].class += ' controller__panel__options-player__shape--disabled';
-      classes[el].disabled = true;
+function Shape({ id }): JSX.Element {
+  const data: any = useContext(FPContext);
 
-      if (classes[el].selected === false) classes[el].clickable = false;
-    }
-  });
-  
+  const shapePlayer = data.player[id].shape;
+  const colorPlayer = data.players[id].color;
+
+  const othersSquare = data.players.shapesOthers.includes('square');
+  const othersCircle = data.players.shapesOthers.includes('circle');
+  const othersRhombus = data.players.shapesOthers.includes('rhombus');
+  const othersEllipse = data.players.shapesOthers.includes('ellipse');
+
+  const Label = styled.label`
+    flex: 5 5 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    color: ${shapePlayer === undefined ? '#f00' : '#000000'};
+  `;
+
+  const Square = styled.div`
+    opacity: ${othersSquare ? 0.2 : '1'};
+    background-color: ${colorPlayer};
+    border: ${shapePlayer === 'square' ? '2px solid #f00' : 'none'};
+  `;
+
+  const Circle = styled.div`
+    opacity: ${othersCircle ? 0.2 : '1'};
+    background-color: ${colorPlayer};
+    border: ${shapePlayer === 'circle' ? '2px solid #f00' : 'none'};
+    border-radius: 100%;
+  `;
+
+  const Rhombus = styled.div`
+    opacity: ${othersRhombus ? 0.2 : '1'};
+    background-color: ${colorPlayer};
+    border: ${shapePlayer === 'rhombus' ? '2px solid #f00' : 'none'};
+    transform: rotate(45deg);
+  `;
+
+  const Ellipse = styled.div`
+    opacity: ${othersEllipse ? 0.2 : '1'};
+    background-color: ${colorPlayer};
+    border: ${shapePlayer === 'ellipse' ? '2px solid #f00' : 'none'};
+    border-radius: 100%;
+    transform: rotateX(45deg);
+  `;
+
   return (
-    <div className='controller__panel__options-player__shape-container'>
-      <label className={shape === undefined ? 'controller__panel__options-player__shape-label controller__panel__options-player__shape--undefined' : 'controller__panel__options-player__shape-label'} htmlFor='color'>Shape:</label>
-      <div className='controller__panel__options-player__shape-items'>
-        <div style={bgColor} className={classes.square.class} onClick={classes.square.clickable ? e => props.data.handleShape(e.target.id, props.id) : null} id='square' />
-        <div style={bgColor} className={classes.circle.class} onClick={classes.circle.clickable ? e => props.data.handleShape(e.target.id, props.id) : null} id='circle' />
-        <div style={bgColor} className={classes.rhombus.class} onClick={classes.rhombus.clickable ? e => props.data.handleShape(e.target.id, props.id) : null} id='rhombus' />
-        <div style={bgColor} className={classes.ellipse.class} onClick={classes.ellipse.clickable ? e => props.data.handleShape(e.target.id, props.id) : null} id='ellipse' />
-      </div>
-    </div>
+    <Container>
+      <Label htmlFor='color'>Shape:</Label>
+      <Items>
+        <Square
+          onClick={
+            othersSquare
+              ? null
+              : (): void => {
+                  data.dispatch({
+                    type: 'changeShape',
+                    others: 'add',
+                    player: id,
+                    shape: 'square'
+                  });
+                }
+          }
+        />
+        <Circle
+          onClick={
+            othersCircle
+              ? null
+              : (): void => {
+                  data.dispatch({
+                    type: 'changeShape',
+                    others: 'add',
+                    player: id,
+                    shape: 'circle'
+                  });
+                }
+          }
+        />
+        <Rhombus
+          onClick={
+            othersRhombus
+              ? null
+              : (): void => {
+                  data.dispatch({
+                    type: 'changeShape',
+                    others: 'add',
+                    player: id,
+                    shape: 'rhombus'
+                  });
+                }
+          }
+        />
+        <Ellipse
+          onClick={
+            othersEllipse
+              ? null
+              : (): void => {
+                  data.dispatch({
+                    type: 'changeShape',
+                    others: 'add',
+                    player: id,
+                    shape: 'ellipse'
+                  });
+                }
+          }
+        />
+      </Items>
+    </Container>
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.shape === nextProps.data.shape && prevProps.data.shapeOthers.toString() === nextProps.data.shapeOthers.toString()) return true;
-}
+export default React.memo(Shape);
 
-export default React.memo(Shape, areEqual);
+/*
+dle techto kriterii definovat patricny dispatch
+
+state.players.shapesOthers.indexOf(shape) === -1 &&
+state.players[player].shape === ''
+
+state.players.shapesOthers.indexOf(shape) === -1 &&
+state.players[player].shape !== ''
+*/

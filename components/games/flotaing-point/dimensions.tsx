@@ -21,11 +21,11 @@ function dimensions(props) {
   }
 
   return (
-    <div className='controller__panel__options-common__parameters__dimensions'>
+    <Square className='controller__panel__options-common__parameters__dimensions'>
       <label htmlFor='width'>dimensions: </label>
       <input onChange={e => props.data.handledimensions(e.target.value)} value={dimensions} type='range' min='10' max='30' step='10' id='dimensions' />
       {text}
-    </div>
+    </Square>
   );
 }
 

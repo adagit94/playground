@@ -8,12 +8,12 @@ import './Shared.css';
 
 function Buttons(props) {
   return (
-    <div className='controller__panel__options-common__buttons'>
+    <Square className='controller__panel__options-common__buttons'>
       <Play data={props.data.play} />
-      <div className='divider-vertical' />
+      <Square className='divider-vertical' />
       <Reset data={props.data.reset} />
-      {!props.data.isTurnedOn && <div className='controller__panel__options-common__buttons--disabled' />}
-    </div>
+      {!props.data.isTurnedOn && <Square className='controller__panel__options-common__buttons--disabled' />}
+    </Square>
   );
 }
 

@@ -8,12 +8,12 @@ import './Shared.css';
 
 function OptionsParameters(props) {
   return (
-    <div className='controller__panel__options-common__parameters'>
+    <Square className='controller__panel__options-common__parameters'>
       <dimensions data={props.data.dimensions} />
-      <div className='divider-horizontal' />
+      <Square className='divider-horizontal' />
       <Speed data={props.data.speed} />
-      {(!props.data.isTurnedOn || props.data.isRunning) && <div className='controller__panel__options-common__parameters--disabled' />}
-    </div>
+      {(!props.data.isTurnedOn || props.data.isRunning) && <Square className='controller__panel__options-common__parameters--disabled' />}
+    </Square>
   );
 }
 

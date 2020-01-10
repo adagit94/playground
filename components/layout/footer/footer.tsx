@@ -14,7 +14,7 @@ const Container = styled.footer`
 const Footer = () => {
   return (
     <Container>
-      <div>abc</div>
+      <Square>abc</Square>
     </Container>
   );
 };

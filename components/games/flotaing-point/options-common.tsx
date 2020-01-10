@@ -1,33 +1,31 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import Switch from './Switch';
+import Switch from './switch';
 import OptionsParameters from './options-parameters';
-import Buttons from './Buttons';
+import Buttons from './buttons';
 
-import './OptionsCommon.css';
-import './Shared.css';
+const Container = styled.div`
+  width: 300px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+`;
 
+const DividerHorizontalInvisible = styled.div`
+  height: 2px;
+`;
 
-function OptionsCommon(props) {
+function OptionsCommon(): JSX.Element {
   return (
-    <div className='controller__panel__options-common'>
-      <Switch data={props.data.switch} />
-      <div className='divider-horizontal-invisible' />
-      <OptionsParameters data={props.data.parameters} />
-      <div className='divider-horizontal-invisible' />
-      <Buttons data={props.data.buttons} />
-    </div>
+    <Container>
+      <Switch />
+      <DividerHorizontalInvisible />
+      <OptionsParameters />
+      <DividerHorizontalInvisible />
+      <Buttons />
+    </Container>
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (
-    prevProps.data.switch.isTurnedOn === nextProps.data.switch.isTurnedOn &&
-    prevProps.data.buttons.play.isPaused === nextProps.data.buttons.play.isPaused &&
-    prevProps.data.parameters.isRunning === nextProps.data.parameters.isRunning &&
-    prevProps.data.parameters.dimensions.dimensions === nextProps.data.parameters.dimensions.dimensions &&
-    prevProps.data.parameters.speed.speed === nextProps.data.parameters.speed.speed
-  ) return true;
-}
-
-export default React.memo(OptionsCommon, areEqual);
+export default React.memo(OptionsCommon);

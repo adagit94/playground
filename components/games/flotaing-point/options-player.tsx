@@ -1,19 +1,39 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import Color from './Color';
-import Shape from './Shape';
+import Shape from './shape';
+import Color from './color';
 
-import './OptionsPlayer.css';
-
-const DividerHorizontalInvisible = styled.div`
-    height: 2px;
+const Container = styled.div`
+  width: 200px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
 `;
 
-const DividerVertical = styled.div`
-  width: 2px;
-  margin: 0 10px;
-  display: inline-block;
-  background-color: #000000;
+const Heading = styled.div`
+  flex: 4 4 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Options = styled.div`
+  padding: 10px;
+  position: relative;
+  flex: 6 6 0;
+  display: flex;
+  flex-direction: row;
+`;
+
+const OptionsDisabled = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #00000080;
 `;
 
 const DividerVerticalInvisible = styled.div`
@@ -21,33 +41,22 @@ const DividerVerticalInvisible = styled.div`
   display: inline-block;
 `;
 
-function OptionsPlayer(props) {
-  const player = props.id;
-  const dataPlayer = props.data[player];
+function OptionsPlayer({ id }): JSX.Element {
+  const data: any = useContext(FPContext);
 
   return (
-    <div className='controller__panel__options-player-container'>
-      <div className='controller__panel__options-player__heading'>
-        <h3>{player}</h3>
-      </div>
-      <div className='controller__panel__options-player'>
-        <Shape data={dataPlayer.shape} id={player} />
-        <div className='divider-vertical' />
-        <Color data={dataPlayer.color} id={player} />
-        {(!props.data.isTurnedOn || props.data.isRunning) && <div className='controller__panel__options-player--disabled' />}
-      </div>
-    </div>
+    <Container>
+      <Heading>
+        <h3>{id}</h3>
+      </Heading>
+      <Options>
+        <Shape id={id} />
+        <DividerVerticalInvisible />
+        <Color id={id} />
+        {(!data.isTurnedOn || data.isRunning) && <OptionsDisabled />}
+      </Options>
+    </Container>
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (
-    prevProps.data.isTurnedOn === nextProps.data.isTurnedOn &&
-    prevProps.data.isRunning === nextProps.data.isRunning &&
-    prevProps.data[prevProps.id].color.color === nextProps.data[nextProps.id].color.color &&
-    prevProps.data[prevProps.id].shape.shape === nextProps.data[nextProps.id].shape.shape &&
-    prevProps.data.shapeOthers.toString() === nextProps.data.shapeOthers.toString()
-  ) return true;
-}
-
-export default React.memo(OptionsPlayer, areEqual);
+export default React.memo(OptionsPlayer);

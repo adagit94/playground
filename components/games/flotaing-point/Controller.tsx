@@ -284,11 +284,6 @@ function reducer(state, action): object {
         isPaused: !state.isPaused
       };
 
-    case 'unpauseGame':
-      return {
-        isPaused: !state.isPaused
-      };
-
     case 'moveFP':
       return {
         fP: {
@@ -297,25 +292,15 @@ function reducer(state, action): object {
         }
       };
 
-    case 'movePlayer+':
+    case 'movePlayer':
       return {
         players: {
           [action.player]: {
             positions: {
               [action.direction]:
-                state.players[action.player].positions[action.direction] + 1
-            }
-          }
-        }
-      };
-
-    case 'movePlayer-':
-      return {
-        players: {
-          [action.player]: {
-            positions: {
-              [action.direction]:
-                state.players[action.player].positions[action.direction] - 1
+                action.operation === 'add'
+                  ? state.players[action.player].positions[action.direction] + 1
+                  : state.players[action.player].positions[action.direction] - 1
             }
           }
         }
@@ -347,8 +332,11 @@ const DividerHorizontal = styled.div`
   background-color: #000000;
 `;
 
+const FPContext = React.createContext({});
+
 function FloatingPoint(): JSX.Element {
   const [state, dispatch]: any = useReducer(reducer, initStates, init);
+
   const pointContainerWidth: number = document.querySelector(
     '.controller__monitor'
   ).clientWidth;
@@ -374,7 +362,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P1.positions.top > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P1',
             direction: 'top'
           });
@@ -383,7 +372,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P1.positions.left < rightLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P1',
             direction: 'left'
           });
@@ -392,7 +382,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P1.positions.top < bottomLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P1',
             direction: 'top'
           });
@@ -401,7 +392,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P1.positions.left > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P1',
             direction: 'left'
           });
@@ -410,7 +402,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P2.positions.top > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P2',
             direction: 'top'
           });
@@ -419,7 +412,7 @@ function FloatingPoint(): JSX.Element {
           state.players.P2.positions.left < rightLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
             player: 'P2',
             direction: 'left'
           });
@@ -437,7 +430,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P2.positions.left > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P2',
             direction: 'left'
           });
@@ -446,7 +440,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P3.positions.top > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P3',
             direction: 'top'
           });
@@ -455,7 +450,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P3.positions.left < rightLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P3',
             direction: 'left'
           });
@@ -464,7 +460,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P3.positions.top < bottomLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P3',
             direction: 'top'
           });
@@ -473,7 +470,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P3.positions.left > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P3',
             direction: 'left'
           });
@@ -482,7 +480,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P4.positions.top > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P4',
             direction: 'top'
           });
@@ -491,7 +490,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P4.positions.left < rightLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P4',
             direction: 'left'
           });
@@ -500,7 +500,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P4.positions.top < bottomLimit
         ) {
           dispatch({
-            type: 'movePlayer+',
+            type: 'movePlayer',
+            operation: 'add',
             player: 'P4',
             direction: 'top'
           });
@@ -509,7 +510,8 @@ function FloatingPoint(): JSX.Element {
           state.players.P4.positions.left > 0
         ) {
           dispatch({
-            type: 'movePlayer-',
+            type: 'movePlayer',
+            operation: 'subtract',
             player: 'P4',
             direction: 'left'
           });
@@ -567,7 +569,7 @@ function FloatingPoint(): JSX.Element {
         moveFloatingPoint();
         break;
       default:
-        console.log('Choose mode!');
+        throw new Error('Unspecified mode');
     }
   }
 
@@ -617,108 +619,19 @@ function FloatingPoint(): JSX.Element {
       document.addEventListener('keydown', registerKey);
       document.addEventListener('keyup', cancelKey);
 
-      dispatch({ type: 'unpauseGame' });
+      dispatch({ type: 'pauseGame' });
     }
   }
-
-  function changeShape(shape: string, player: string): void {
-    if (
-      state.players.shapesOthers.indexOf(shape) === -1 &&
-      state.players[player].shape === ''
-    ) {
-      dispatch({
-        type: 'changeShape',
-        others: 'add',
-        player,
-        shape
-      });
-    } else if (
-      state.players.shapesOthers.indexOf(shape) === -1 &&
-      state.players[player].shape !== ''
-    ) {
-      dispatch({
-        type: 'changeShape',
-        others: 'change',
-        player,
-        shape
-      });
-    } else {
-      dispatch({
-        type: 'changeShape',
-        others: 'remove',
-        player,
-        shape: ''
-      });
-    }
-  }
-
-  function changeColor(color: string, player: string): void {
-    if (state.players.colorsOthers.indexOf(color) === -1) {
-      dispatch({
-        type: 'changeColor',
-        player,
-        color
-      });
-    }
-  }
-
-  function changedimensions(dimensions: number): void {
-    dispatch({
-      type: 'changedimensions',
-      dimensions
-    });
-  }
-
-  function changeSpeed(speed: number): void {
-    dispatch({
-      type: 'changeSpeed',
-      speed
-    });
-  }
-
-  const data = {
-    players: {
-      players: state.players,
-      dimensions: state.dimensions,
-      visibility: state.visibility,
-      matchFloatingPoint: matchFloatingPoint
-    },
-    fP: {
-      fP: state.fP,
-      visibility: state.visibility
-    },
-    controlPanel: {
-      players: state.players,
-      isTurnedOn: state.isTurnedOn,
-      isRunning: state.isRunning,
-      isPaused: state.isPaused,
-      dimensions: state.dimensions,
-      speed: state.speed,
-      handleSwitch: handleSwitch,
-      changedimensions: changedimensions,
-      changeSpeed: changeSpeed,
-      handlePlay: handlePlay,
-      changeShape: changeShape,
-      changeColor: changeColor
-    }
-  };
-  const PlayersContext = React.createContext(null);
-  const FPContext = React.createContext(null);
-  const ControlPanelContext = React.createContext(null);
 
   return (
     <Container>
-      <PlayersContext.Provider value={data.players}>
-        <FPContext.Provider value={data.fP}>
-          <Monitor />
-        </FPContext.Provider>
-      </PlayersContext.Provider>
-      <ControlPanelContext.Provider value={data.controlPanel}>
+      <FPContext.Provider value={{ state, dispatch, matchFloatingPoint }}>
+        <Monitor />
         <DividerHorizontal />
-      </ControlPanelContext.Provider>
-      <ControlPanel />
+        <ControlPanel />
+      </FPContext.Provider>
     </Container>
   );
 }
 
-export default FloatingPoint;
+export default React.memo(FloatingPoint);

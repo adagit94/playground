@@ -2,79 +2,83 @@ import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 function Players(): JSX.Element {
-  const data: any = useContext(PlayersContext);
+  const data: any = useContext(FPContext);
+
+  const dimensions = data.dimensions;
+  const visibility = data.visibility;
+  const P1 = data.players.P1;
+  const P2 = data.players.P2;
+  const P3 = data.players.P3;
+  const P4 = data.players.P4;
+
   const PointP1 = styled.div`
     position: absolute;
-    top: ${data.players.P1.positions.top};
-    left: ${data.players.P1.positions.left};
-    width: ${data.dimensions}px;
-    height: ${data.dimensions}px;
-    background-color: ${data.players.P1.color};
-    visibility: ${data.visibility};
-    border-radius: ${data.players.P1.shape === 'circle' ||
-    data.players.P1.shape === 'ellipse'
+    top: ${P1.positions.top};
+    left: ${P1.positions.left};
+    width: ${dimensions}px;
+    height: ${dimensions}px;
+    background-color: ${P1.color};
+    visibility: ${visibility};
+    border-radius: ${P1.shape === 'circle' || P1.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${data.players.P1.shape === 'rhombus'
+    transform: ${P1.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : data.players.P1.shape === 'ellipse'
+      : P1.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
 
   const PointP2 = styled.div`
     position: absolute;
-    top: ${data.players.P2.positions.top};
-    left: ${data.players.P2.positions.left};
-    width: ${data.dimensions}px;
-    height: ${data.dimensions}px;
-    background-color: ${data.players.P2.color};
-    visibility: ${data.visibility};
-    border-radius: ${data.players.P2.shape === 'circle' ||
-    data.players.P2.shape === 'ellipse'
+    top: ${P2.positions.top};
+    left: ${P2.positions.left};
+    width: ${dimensions}px;
+    height: ${dimensions}px;
+    background-color: ${P2.color};
+    visibility: ${visibility};
+    border-radius: ${P2.shape === 'circle' || P2.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${data.players.P2.shape === 'rhombus'
+    transform: ${P2.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : data.players.P2.shape === 'ellipse'
+      : P2.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
 
   const PointP3 = styled.div`
     position: absolute;
-    top: ${data.players.P3.positions.top};
-    left: ${data.players.P3.positions.left};
-    width: ${data.dimensions}px;
-    height: ${data.dimensions}px;
-    background-color: ${data.players.P3.color};
-    visibility: ${data.visibility};
-    border-radius: ${data.players.P3.shape === 'circle' ||
-    data.players.P3.shape === 'ellipse'
+    top: ${P3.positions.top};
+    left: ${P3.positions.left};
+    width: ${dimensions}px;
+    height: ${dimensions}px;
+    background-color: ${P3.color};
+    visibility: ${visibility};
+    border-radius: ${P3.shape === 'circle' || P3.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${data.players.P3.shape === 'rhombus'
+    transform: ${P3.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : data.players.P3.shape === 'ellipse'
+      : P3.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
 
   const PointP4 = styled.div`
     position: absolute;
-    top: ${data.players.P4.positions.top};
-    left: ${data.players.P4.positions.left};
-    width: ${data.dimensions}px;
-    height: ${data.dimensions}px;
-    background-color: ${data.players.P4.color};
-    visibility: ${data.visibility};
-    border-radius: ${data.players.P4.shape === 'circle' ||
-    data.players.P4.shape === 'ellipse'
+    top: ${P4.positions.top};
+    left: ${P4.positions.left};
+    width: ${dimensions}px;
+    height: ${dimensions}px;
+    background-color: ${P4.color};
+    visibility: ${visibility};
+    border-radius: ${P4.shape === 'circle' || P4.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${data.players.P4.shape === 'rhombus'
+    transform: ${P4.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : data.players.P4.shape === 'ellipse'
+      : P4.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -93,4 +97,4 @@ function Players(): JSX.Element {
   );
 }
 
-export default Players;
+export default React.memo(Players);

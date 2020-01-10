@@ -1,29 +1,28 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-function FloatingPoint() {
-  const data = useContext(FPContext);
+function FloatingPoint(): JSX.Element {
+  const data: any = useContext(FPContext);
 
-  const point = {
-    position: 'absolute',
-    top: data.top,
-    left: data.left,
-    width: '50px',
-    height: '50px',
-    backgroundColor: '#8b0000',
-    borderRadius: '100%',
-    visibility: data.visibility
-  };
+  const positions = data.fP;
+  const visibility = data.visibility;
+
+  const Point = styled.div`
+    position: absolute;
+    top: ${positions.top};
+    left: ${positions.left};
+    width: 50px;
+    height: 50px;
+    background-color: #8b0000;
+    border-radius: 100%;
+    visibility: ${visibility};
+  `;
 
   return (
     <>
-      <div style={point} />
+      <Point />
     </>
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.top === nextProps.data.top && prevProps.data.left === nextProps.data.left && prevProps.data.visibility === nextProps.data.visibility) return true;
-}
-
-
-export default React.memo(FloatingPoint, areEqual);
+export default React.memo(FloatingPoint);

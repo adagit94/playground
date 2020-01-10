@@ -61,19 +61,19 @@ const CreateAccount = props => {
   return (
     <Container>
       <Form>
-        <div>
+        <Square>
           <label htmlFor='username'>Username: </label>
           <input type='text' name='username' id='username' required />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <label htmlFor='email'>Email: </label>
           <input type='email' name='email' id='email' required />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <label htmlFor='password'>Password: </label>
           <input type='password' name='password' id='password' required />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <label htmlFor='confirmPassword'>Password: </label>
           <input
             type='password'
@@ -81,10 +81,10 @@ const CreateAccount = props => {
             id='confirmPassword'
             required
           />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <SubmitBtn>Create account</SubmitBtn>
-        </div>
+        </Square>
       </Form>
     </Container>
   );

@@ -97,23 +97,23 @@ const LogIn = props => {
     <Container>
       <FormBtn onClick={showForm}>Log in</FormBtn>
       <Form style={{ display: 'none' }} id='logInForm'>
-        <div>
+        <Square>
           <label htmlFor='username'>Username: </label>
           <input type='text' name='username' id='username' required />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <label htmlFor='password'>Password: </label>
           <input type='password' name='password' id='password' required />
-        </div>
-        <div>
+        </Square>
+        <Square>
           <LogInBtn>Log in</LogInBtn>
-        </div>
-        <div>
+        </Square>
+        <Square>
           <LinkTxt href=''>Reset password</LinkTxt>
           <Link href='/create-account'>
             <LinkTxt>Create account</LinkTxt>
           </Link>
-        </div>
+        </Square>
       </Form>
     </Container>
   );

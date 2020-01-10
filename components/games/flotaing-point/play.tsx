@@ -4,9 +4,9 @@ import './Play.css';
 
 function Play(props) {
   return (
-    <div className='controller__panel__options-common__buttons__play-container'>
+    <Square className='controller__panel__options-common__buttons__play-container'>
       <input className='controller__panel__options-common__buttons__play' onClick={() => props.data.handlePlay()} value={props.data.isPaused || !props.data.isRunning ? 'Play' : 'Pause'} type='button' />
-    </div>
+    </Square>
   );
 }
 

@@ -7,11 +7,11 @@ function Speed(props) {
   const speed = props.data.speed;
 
   return (
-    <div className='controller__panel__options-common__parameters__speed' >
+    <Square className='controller__panel__options-common__parameters__speed' >
       <label htmlFor='speed'>Speed:</label>
       <input onChange={e => props.data.handleSpeed(Number(e.target.value))} value={speed} type='range' min='1' max='5' step="2" id='speed' />
       {speed > 0 && speed + 'x'}
-    </div>
+    </Square>
   );
 }
 
