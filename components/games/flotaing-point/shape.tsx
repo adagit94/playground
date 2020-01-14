@@ -23,48 +23,49 @@ const Items = styled.div`
 `;
 
 function Shape({ id }): JSX.Element {
-  const data: any = useContext(FPContext);
+  const states = useContext(ContextPlayers);
+  const dispatch = useContext(ContextDispatchPlayers);
 
-  const shapePlayer = data.player[id].shape;
-  const colorPlayer = data.players[id].color;
+  const shape = states[id].shape;
+  const color = states[id].color;
 
-  const othersSquare = data.players.shapesOthers.includes('square');
-  const othersCircle = data.players.shapesOthers.includes('circle');
-  const othersRhombus = data.players.shapesOthers.includes('rhombus');
-  const othersEllipse = data.players.shapesOthers.includes('ellipse');
+  const othersSquare = states.shapesOthers.includes('square');
+  const othersCircle = states.shapesOthers.includes('circle');
+  const othersRhombus = states.shapesOthers.includes('rhombus');
+  const othersEllipse = states.shapesOthers.includes('ellipse');
 
   const Label = styled.label`
     flex: 5 5 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${shapePlayer === undefined ? '#f00' : '#000000'};
+    color: ${shape === undefined ? '#f00' : '#000000'};
   `;
 
   const Square = styled.div`
     opacity: ${othersSquare ? 0.2 : '1'};
-    background-color: ${colorPlayer};
-    border: ${shapePlayer === 'square' ? '2px solid #f00' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'square' ? '2px solid #f00' : 'none'};
   `;
 
   const Circle = styled.div`
     opacity: ${othersCircle ? 0.2 : '1'};
-    background-color: ${colorPlayer};
-    border: ${shapePlayer === 'circle' ? '2px solid #f00' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'circle' ? '2px solid #f00' : 'none'};
     border-radius: 100%;
   `;
 
   const Rhombus = styled.div`
     opacity: ${othersRhombus ? 0.2 : '1'};
-    background-color: ${colorPlayer};
-    border: ${shapePlayer === 'rhombus' ? '2px solid #f00' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'rhombus' ? '2px solid #f00' : 'none'};
     transform: rotate(45deg);
   `;
 
   const Ellipse = styled.div`
     opacity: ${othersEllipse ? 0.2 : '1'};
-    background-color: ${colorPlayer};
-    border: ${shapePlayer === 'ellipse' ? '2px solid #f00' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'ellipse' ? '2px solid #f00' : 'none'};
     border-radius: 100%;
     transform: rotateX(45deg);
   `;
@@ -78,9 +79,14 @@ function Shape({ id }): JSX.Element {
             othersSquare
               ? null
               : (): void => {
-                  data.dispatch({
+                  dispatch({
                     type: 'changeShape',
-                    others: 'add',
+                    operation:
+                      shape === ''
+                        ? 'add'
+                        : shape === 'square'
+                        ? 'remove'
+                        : 'change',
                     player: id,
                     shape: 'square'
                   });
@@ -92,9 +98,14 @@ function Shape({ id }): JSX.Element {
             othersCircle
               ? null
               : (): void => {
-                  data.dispatch({
+                  dispatch({
                     type: 'changeShape',
-                    others: 'add',
+                    operation:
+                      shape === ''
+                        ? 'add'
+                        : shape === 'circle'
+                        ? 'remove'
+                        : 'change',
                     player: id,
                     shape: 'circle'
                   });
@@ -106,9 +117,14 @@ function Shape({ id }): JSX.Element {
             othersRhombus
               ? null
               : (): void => {
-                  data.dispatch({
+                  dispatch({
                     type: 'changeShape',
-                    others: 'add',
+                    operation:
+                      shape === ''
+                        ? 'add'
+                        : shape === 'rhombus'
+                        ? 'remove'
+                        : 'change',
                     player: id,
                     shape: 'rhombus'
                   });
@@ -120,9 +136,14 @@ function Shape({ id }): JSX.Element {
             othersEllipse
               ? null
               : (): void => {
-                  data.dispatch({
+                  dispatch({
                     type: 'changeShape',
-                    others: 'add',
+                    operation:
+                      shape === ''
+                        ? 'add'
+                        : shape === 'ellipse'
+                        ? 'remove'
+                        : 'change',
                     player: id,
                     shape: 'ellipse'
                   });
@@ -135,13 +156,3 @@ function Shape({ id }): JSX.Element {
 }
 
 export default React.memo(Shape);
-
-/*
-dle techto kriterii definovat patricny dispatch
-
-state.players.shapesOthers.indexOf(shape) === -1 &&
-state.players[player].shape === ''
-
-state.players.shapesOthers.indexOf(shape) === -1 &&
-state.players[player].shape !== ''
-*/

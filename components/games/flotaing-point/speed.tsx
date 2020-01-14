@@ -1,22 +1,37 @@
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import React from 'react';
+const Container = styled.div`
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`;
 
-import './Speed.css';
+const Speed = (): JSX.Element => {
+  const states = useContext(ContextGame);
+  const dispatch = useContext(ContextDispatchGame);
 
-function Speed(props) {
-  const speed = props.data.speed;
+  const speed = states.speed;
 
   return (
-    <Square className='controller__panel__options-common__parameters__speed' >
+    <Container>
       <label htmlFor='speed'>Speed:</label>
-      <input onChange={e => props.data.handleSpeed(Number(e.target.value))} value={speed} type='range' min='1' max='5' step="2" id='speed' />
+      <input
+        onChange={(e): void =>
+          dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
+        }
+        value={speed}
+        type='range'
+        min='1'
+        max='5'
+        step='2'
+        id='speed'
+      />
       {speed > 0 && speed + 'x'}
-    </Square>
+    </Container>
   );
-}
+};
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.speed === nextProps.data.speed) return true;
-}
-
-export default React.memo(Speed, areEqual);
+export default React.memo(Speed);

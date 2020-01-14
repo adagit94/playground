@@ -1,62 +1,11 @@
 import React, { useReducer } from 'react';
 import styled from 'styled-components';
 
-import Monitor from './Monitor';
+import Monitor from './monitor';
 import ControlPanel from './control-panel';
 import * as Interfaces from '../../../interfaces/games/floating-point';
 
 let handlePointInterval;
-const players = 4;
-const directions: Interfaces.Directions = {
-  ArrowUp: {
-    pressed: false
-  },
-  ArrowRight: {
-    pressed: false
-  },
-  ArrowDown: {
-    pressed: false
-  },
-  ArrowLeft: {
-    pressed: false
-  },
-  w: {
-    pressed: false
-  },
-  d: {
-    pressed: false
-  },
-  s: {
-    pressed: false
-  },
-  a: {
-    pressed: false
-  },
-  i: {
-    pressed: false
-  },
-  l: {
-    pressed: false
-  },
-  k: {
-    pressed: false
-  },
-  j: {
-    pressed: false
-  },
-  '8': {
-    pressed: false
-  },
-  '6': {
-    pressed: false
-  },
-  '5': {
-    pressed: false
-  },
-  '4': {
-    pressed: false
-  }
-};
 
 const defaults: Interfaces.Defaults = {
   P1: {
@@ -76,88 +25,62 @@ const defaults: Interfaces.Defaults = {
   fpPadding: 10
 };
 
-const initStates: Interfaces.InitStates = {
+const initGame: Interfaces.InitGame = {
   isTurnedOn: false,
   isRunning: false,
   isPaused: false,
   mode: 'fP',
   dimensions: undefined,
   speed: undefined,
-  visibility: 'hidden',
-  players: {
-    P1: {
-      positions: {
-        top: 0,
-        left: 0
-      },
-      shape: 'circle',
-      color: defaults.P1.color,
-      score: 0
-    },
-    P2: {
-      positions: {
-        top: 0,
-        left: 0
-      },
-      shape: 'square',
-      color: defaults.P2.color,
-      score: 0
-    },
-    P3: {
-      positions: {
-        top: 0,
-        left: 0
-      },
-      shape: 'rhombus',
-      color: defaults.P3.color,
-      score: 0
-    },
-    P4: {
-      positions: {
-        top: 0,
-        left: 0
-      },
-      shape: 'ellipse',
-      color: defaults.P4.color,
-      score: 0
-    },
-    shapesOthers: Array(4).fill(''),
-    colorsOthers: [
-      defaults.P1.color,
-      defaults.P2.color,
-      defaults.P3.color,
-      defaults.P4.color
-    ]
-  },
-  fP: {
-    top: 0,
-    left: 0
-  }
+  visibility: 'hidden'
 };
 
-function registerKey(e): void {
-  e.preventDefault();
+const initPlayers: Interfaces.InitPlayers = {
+  P1: {
+    top: 0,
+    left: 0,
+    shape: 'circle',
+    color: defaults.P1.color,
+    score: 0
+  },
+  P2: {
+    top: 0,
+    left: 0,
+    shape: 'square',
+    color: defaults.P2.color,
+    score: 0
+  },
+  P3: {
+    top: 0,
+    left: 0,
+    shape: 'rhombus',
+    color: defaults.P3.color,
+    score: 0
+  },
+  P4: {
+    top: 0,
+    left: 0,
+    shape: 'ellipse',
+    color: defaults.P4.color,
+    score: 0
+  },
+  shapesOthers: Array(4).fill(''),
+  colorsOthers: [
+    defaults.P1.color,
+    defaults.P2.color,
+    defaults.P3.color,
+    defaults.P4.color
+  ]
+};
 
-  const key = e.key;
+const initFp: Interfaces.InitFp = {
+  top: 0,
+  left: 0
+};
 
-  if ({}.hasOwnProperty.call(directions, key)) {
-    directions[key].pressed = true;
-  }
-}
+const init: Interfaces.Initializer = initState => initState;
 
-function cancelKey(e): void {
-  const key = e.key;
-
-  if ({}.hasOwnProperty.call(directions, key)) {
-    directions[key].pressed = false;
-  }
-}
-
-function init(initStates: Interfaces.InitStates): object {
-  return initStates;
-}
-
-function reducer(state, action): object {
+const reducerGame: Interfaces.Reducer = (state, action) => {
   switch (action.type) {
     case 'switchOn':
       return {
@@ -167,9 +90,28 @@ function reducer(state, action): object {
       };
 
     case 'switchOff':
-      return init(initStates);
+      return init(initGame);
 
-    case 'changedimensions':
+    case 'init':
+      return {
+        isRunning: !state.isRunning,
+        visibility: 'visible'
+      };
+    case 'reset':
+      return {
+        isRunning: false,
+        isPaused: false,
+        visibility: 'hidden',
+        dimensions: 10,
+        speed: 1
+      };
+
+    case 'pause':
+      return {
+        isPaused: !state.isPaused
+      };
+
+    case 'changeDimensions':
       return {
         dimensions: action.dimensions
       };
@@ -179,173 +121,203 @@ function reducer(state, action): object {
         speed: action.speed
       };
 
-    case 'changeShape':
+    default:
+      throw new Error('Unspecified action');
+  }
+};
+
+const reducerPlayers: Interfaces.Reducer = (state, action) => {
+  switch (action.type) {
+    case 'init':
       return {
-        players: {
-          [action.player]: {
-            shape: action.shape
-          },
-          shapesOthers:
-            action.others === 'change'
-              ? state.players.shapesOthers
-                  .filter(el => {
-                    return el !== state.players[action.player].shape;
-                  })
-                  .push(action.shape)
-              : action.others === 'add'
-              ? [...state.players.shapesOthers, action.shape]
-              : state.players.shapesOthers.filter(el => {
-                  return el !== action.shape;
-                })
+        P1: {
+          top: action.topP1P2,
+          left: defaults.fpPadding
+        },
+        P2: {
+          top: action.topP1P2,
+          left: action.leftP2 - defaults.fpPadding
+        },
+        P3: {
+          top: defaults.fpPadding,
+          left: action.leftP3P4
+        },
+        P4: {
+          top: action.topP4 - defaults.fpPadding,
+          left: action.leftP3P4
         }
       };
 
-    case 'changeColor':
+    case 'reset':
       return {
-        players: {
-          [action.player]: {
-            color: action.color
-          },
-          colorsOthers: state.players.colorsOthers
-            .filter(el => {
-              return el !== state.players[action.player].color;
-            })
-            .push(action.color)
-        }
+        P1: {
+          shape: '',
+          color: defaults.P1.color
+        },
+        P2: {
+          shape: '',
+          color: defaults.P2.color
+        },
+        P3: {
+          shape: '',
+          color: defaults.P3.color
+        },
+        P4: {
+          shape: '',
+          color: defaults.P4.color
+        },
+        shapesOthers: Array(4).fill(''),
+        colorsOthers: [
+          defaults.P1.color,
+          defaults.P2.color,
+          defaults.P3.color,
+          defaults.P4.color
+        ]
       };
 
-    case 'initGame':
+    case 'move':
       return {
-        isRunning: !state.isRunning,
-        visibility: 'visible',
-        players: {
-          P1: {
-            positions: {
-              top: action.topP1P2,
-              left: defaults.fpPadding
-            }
-          },
-          P2: {
-            positions: {
-              top: action.topP1P2,
-              left: action.leftP2 - defaults.fpPadding
-            }
-          },
-          P3: {
-            positions: {
-              top: defaults.fpPadding,
-              left: action.leftP3P4
-            }
-          },
-          P4: {
-            positions: {
-              top: action.topP4 - defaults.fpPadding,
-              left: action.leftP3P4
-            }
-          }
-        }
-      };
-    case 'resetGame':
-      return {
-        isRunning: false,
-        isPaused: false,
-        visibility: 'hidden',
-        dimensions: 10,
-        speed: 1,
-        players: {
-          P1: {
-            shape: '',
-            color: defaults.P1.color
-          },
-          P2: {
-            shape: '',
-            color: defaults.P2.color
-          },
-          P3: {
-            shape: '',
-            color: defaults.P3.color
-          },
-          P4: {
-            shape: '',
-            color: defaults.P4.color
-          },
-          shapesOthers: Array(4).fill(''),
-          colorsOthers: [
-            defaults.P1.color,
-            defaults.P2.color,
-            defaults.P3.color,
-            defaults.P4.color
-          ]
-        }
-      };
-
-    case 'pauseGame':
-      return {
-        isPaused: !state.isPaused
-      };
-
-    case 'moveFP':
-      return {
-        fP: {
-          top: action.positions.top,
-          left: action.positions.left
-        }
-      };
-
-    case 'movePlayer':
-      return {
-        players: {
-          [action.player]: {
-            positions: {
-              [action.direction]:
-                action.operation === 'add'
-                  ? state.players[action.player].positions[action.direction] + 1
-                  : state.players[action.player].positions[action.direction] - 1
-            }
+        [action.player]: {
+          positions: {
+            [action.direction]:
+              action.operation === 'add'
+                ? state[action.player].positions[action.direction] + 1
+                : state[action.player].positions[action.direction] - 1
           }
         }
       };
 
     case 'addScore':
       return {
-        players: {
-          [action.player]: {
-            score: state.players[action.player].score + 1
-          }
+        [action.player]: {
+          score: state[action.player].score + 1
         }
+      };
+    case 'changeShape':
+      return {
+        [action.player]: {
+          shape: action.operation === 'remove' ? '' : action.shape
+        },
+        shapesOthers:
+          action.operation === 'add'
+            ? [...state.shapesOthers, action.shape]
+            : action.operation === 'remove'
+            ? state.shapesOthers.filter(el => {
+                return el !== state[action.player].shape;
+              })
+            : state.shapesOthers
+                .filter(el => {
+                  return el !== action.shape;
+                })
+                .push(action.shape)
+      };
+
+    case 'changeColor':
+      return {
+        [action.player]: {
+          color: action.color
+        },
+        colorsOthers: state.colorsOthers
+          .filter(el => {
+            return el !== state[action.player].color;
+          })
+          .push(action.color)
       };
 
     default:
       throw new Error('Unspecified action');
   }
-}
+};
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
+const reducerFp: Interfaces.Reducer = (state, action) => {
+  switch (action.type) {
+    case 'move':
+      return {
+        top: action.positions.top,
+        left: action.positions.left
+      };
 
-const DividerHorizontal = styled.div`
-  height: 2px;
-  margin: 10 0px;
-  background-color: #000000;
-`;
+    default:
+      throw new Error('Unspecified action');
+  }
+};
 
-const FPContext = React.createContext({});
+const handlePlay = (): void {
+  if (!state.isRunning && !reset) {
+    for (let i = 1; i <= players; i++) {
+      if (state['P' + i].shape === undefined) return;
+    }
+    const topP1P2: number = pointContainerHeight / 2 - state.dimensions / 2;
+    const leftP3P4: number = pointContainerWidth / 2 - state.dimensions / 2;
+    const leftP2: number = pointContainerWidth - state.dimensions;
+    const topP4: number = pointContainerHeight - state.dimensions;
 
-function FloatingPoint(): JSX.Element {
-  const [state, dispatch]: any = useReducer(reducer, initStates, init);
+    handlePointInterval = window.setInterval(
+      handlePoint,
+      30 - state.speed * 5,
+      directions
+    );
+    document.addEventListener('keydown', registerKey);
+    document.addEventListener('keyup', cancelKey);
 
-  const pointContainerWidth: number = document.querySelector(
-    '.controller__monitor'
-  ).clientWidth;
+    dispatch({
+      type: 'initGame',
+      topP1P2,
+      leftP3P4,
+      leftP2,
+      topP4
+    });
 
-  const pointContainerHeight: number = document.querySelector(
-    '.controller__monitor'
-  ).clientHeight;
+    switch (state.mode) {
+      case 'fP':
+        moveFloatingPoint();
+        break;
+      default:
+        throw new Error('Unspecified mode');
+    }
+    handlePointInterval = window.setInterval(
+      handlePoint,
+      30 - state.speed * 5,
+      directions
+    );
+    document.addEventListener('keydown', registerKey);
+    document.addEventListener('keyup', cancelKey);
 
-  function handlePoint(directions: object): void {
+    dispatch({ type: 'pauseGame' });
+  }
+};
+
+  // nize uvedene funkce pouzit pri zapnuti, vypnuti, resetu, (od)pauzovani
+  const registerKey = (e): void => {
+    e.preventDefault();
+
+    const key = e.key;
+
+    if ({}.hasOwnProperty.call(directions, key)) {
+      directions[key].pressed = true;
+    }
+  };
+
+  const cancelKey = (e): void => {
+    const key = e.key;
+
+    if ({}.hasOwnProperty.call(directions, key)) {
+      directions[key].pressed = false;
+    }
+  };
+
+  const handleReset = () => {
+    window.clearInterval(handlePointInterval);
+    document.removeEventListener('keydown', registerKey);
+    document.removeEventListener('keyup', cancelKey);
+  };
+
+  const handlePoint = (directions: object): void => {
+    const pointContainerWidth: number = document.querySelector('#monitor')
+    .clientWidth;
+
+  const pointContainerHeight: number = document.querySelector('#monitor')
+    .clientHeight;
     const pressedKeys: Array<string> = [];
 
     for (const direction in directions) {
@@ -518,120 +490,88 @@ function FloatingPoint(): JSX.Element {
         }
       }
     }
-  }
+  };
 
-  function moveFloatingPoint(): void {
-    const top: number = Math.random() * pointContainerHeight;
-    const left: number = Math.random() * pointContainerWidth;
-
-    dispatch({
-      type: 'moveFP',
-      positions: {
-        top,
-        left
-      }
-    });
-  }
-
-  function matchFloatingPoint(): void {
-    for (let i = 1; i <= players; i++) {
+  const matchFloatingPoint = (): void => {
+    for (let i = 1; i <= 4; i++) {
       if (
-        (state.players['P' + i].positions.top >= state.fP.top ||
-          state.players['P' + i].positions.top + state.dimensions >=
-            state.fP.top) &&
-        state.players['P' + i].positions.top <= state.fP.top + 50 &&
-        (state.players['P' + i].positions.left >= state.fP.left ||
-          state.players['P' + i].positions.left + state.dimensions >=
-            state.fP.left) &&
-        state.players['P' + i].positions.left <= state.fP.left + 50
+        (statePlayers['P' + i].top >= statefP.top ||
+          statePlayers['P' + i].top + stateGame.dimensions >= statefP.top) &&
+        statePlayers['P' + i].top <= statefP.top + 50 &&
+        (statePlayers['P' + i].left >= statefP.left ||
+          statePlayers['P' + i].left + stateGame.dimensions >= statefP.left) &&
+        statePlayers['P' + i].left <= statefP.left + 50
       ) {
-        // otestovat zdali dochazi k davkovemu prerenderovani po zmene vice stavu
+        const top: number = Math.random() * pointContainerHeight;
+        const left: number = Math.random() * pointContainerWidth;
         dispatch({
           type: 'addScore',
           player: 'P' + i
         });
-        moveFloatingPoint();
+        dispatch({
+          type: 'moveFP',
+          positions: {
+            top,
+            left
+          }
+        });
       }
     }
-  }
+  };
 
-  function handleSwitch(): void {
-    if (!state.isTurnedOn) {
-      dispatch({ type: 'switchOn' });
-    } else {
-      dispatch({ type: 'switchOff' });
-    }
-  }
+const ContextGame = React.createContext(null);
+const ContextPlayers = React.createContext(null);
+const ContextDispatchGame = React.createContext(null);
+const ContextDispatchPlayers = React.createContext(null);
+const ContextCallbacks = React.createContext({
 
-  function initializeMode(): void {
-    switch (state.mode) {
-      case 'fP':
-        moveFloatingPoint();
-        break;
-      default:
-        throw new Error('Unspecified mode');
-    }
-  }
+});
+/*const ContextGame = React.createContext(null);
+const ContextDispatchGame = React.createContext(null);*/
 
-  function handlePlay(reset = false): void {
-    if (!state.isRunning && !reset) {
-      for (let i = 1; i <= players; i++) {
-        if (state.players['P' + i].shape === undefined) return;
-      }
-      const topP1P2: number = pointContainerHeight / 2 - state.dimensions / 2;
-      const leftP3P4: number = pointContainerWidth / 2 - state.dimensions / 2;
-      const leftP2: number = pointContainerWidth - state.dimensions;
-      const topP4: number = pointContainerHeight - state.dimensions;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
 
-      handlePointInterval = window.setInterval(
-        handlePoint,
-        30 - state.speed * 5,
-        directions
-      );
-      document.addEventListener('keydown', registerKey);
-      document.addEventListener('keyup', cancelKey);
+const DividerHorizontal = styled.div`
+  height: 2px;
+  margin: 10 0px;
+  background-color: #000000;
+`;
 
-      dispatch({
-        type: 'initGame',
-        topP1P2,
-        leftP3P4,
-        leftP2,
-        topP4
-      });
+const FloatingPoint = (): JSX.Element => {
+  const [stateGame, dispatchGame] = useReducer(reducerGame, initGame, init);
+  const [statePlayers, dispatchPlayers] = useReducer(
+    reducerPlayers,
+    initPlayers,
+    init
+  );
 
-      initializeMode();
-    } else if (!state.isPaused || reset) {
-      window.clearInterval(handlePointInterval);
-      document.removeEventListener('keydown', registerKey);
-      document.removeEventListener('keyup', cancelKey);
+  const pointContainerWidth: number = document.querySelector(
+    '.controller__monitor'
+  ).clientWidth;
 
-      if (reset) {
-        dispatch({ type: 'resetGame' });
-      } else {
-        dispatch({ type: 'pauseGame' });
-      }
-    } else {
-      handlePointInterval = window.setInterval(
-        handlePoint,
-        30 - state.speed * 5,
-        directions
-      );
-      document.addEventListener('keydown', registerKey);
-      document.addEventListener('keyup', cancelKey);
-
-      dispatch({ type: 'pauseGame' });
-    }
-  }
+  const pointContainerHeight: number = document.querySelector(
+    '.controller__monitor'
+  ).clientHeight;
 
   return (
     <Container>
-      <FPContext.Provider value={{ state, dispatch, matchFloatingPoint }}>
-        <Monitor />
-        <DividerHorizontal />
-        <ControlPanel />
-      </FPContext.Provider>
+      <ContextGame.Provider value={stateGame}>
+        <ContextPlayers.Provider value={statePlayers}>
+          <ContextDispatchGame.Provider value={dispatchGame}>
+            <ContextDispatchPlayers.Provider value={dispatchPlayers}>
+              <Monitor />
+              <DividerHorizontal />
+              <ControlPanel />
+            </ContextDispatchPlayers.Provider>
+          </ContextDispatchGame.Provider>
+        </ContextPlayers.Provider>
+      </ContextGame.Provider>
     </Container>
   );
-}
+};
 
 export default React.memo(FloatingPoint);

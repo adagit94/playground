@@ -1,19 +1,6 @@
-interface Positions {
+interface PlayersPlayer {
   top: number;
   left: number;
-}
-
-interface Players {
-  P1: PlayersPlayer;
-  P2: PlayersPlayer;
-  P3: PlayersPlayer;
-  P4: PlayersPlayer;
-  shapesOthers: Array<string>;
-  colorsOthers: Array<string>;
-}
-
-interface PlayersPlayer {
-  positions: Positions;
   shape: string;
   color: string;
   score: number;
@@ -56,7 +43,7 @@ export interface Directions {
   '4': Key;
 }
 
-export interface InitStates {
+export interface InitGame {
   readonly isTurnedOn: boolean;
   readonly isRunning: boolean;
   readonly isPaused: boolean;
@@ -64,6 +51,26 @@ export interface InitStates {
   readonly dimensions: number;
   readonly speed: number;
   readonly visibility: string;
-  readonly players: Players;
-  readonly fP: Positions;
+}
+
+export interface InitPlayers {
+  readonly P1: PlayersPlayer;
+  readonly P2: PlayersPlayer;
+  readonly P3: PlayersPlayer;
+  readonly P4: PlayersPlayer;
+  readonly shapesOthers: Array<string>;
+  readonly colorsOthers: Array<string>;
+}
+
+export interface InitFp {
+  readonly top: number;
+  readonly left: number;
+}
+
+export interface Reducer {
+  (state: object, action: object): object;
+}
+
+export interface Initializer {
+  (initStates: InitGame | InitPlayers | InitFp): object;
 }

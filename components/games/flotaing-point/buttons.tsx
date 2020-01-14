@@ -1,28 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import Play from './Play.js';
-import Reset from './Reset.js';
+import Play from './play.js';
+import Button from './reset.js';
 
-import './Buttons.css';
-import './Shared.css';
+const Container = styled.div`
+  flex: 2.5 2.5 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding: 10px;
+`;
 
-function Buttons(props) {
+const Disabled = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #00000080;
+`;
+
+const DividerVertical = styled.div`
+  width: 2px;
+  margin: 0 10px;
+  display: inline-block;
+  background-color: #000000;
+`;
+
+const Buttons = (): JSX.Element => {
+  const states = useContext(ContextGame);
+
   return (
-    <Square className='controller__panel__options-common__buttons'>
-      <Play data={props.data.play} />
-      <Square className='divider-vertical' />
-      <Reset data={props.data.reset} />
-      {!props.data.isTurnedOn && <Square className='controller__panel__options-common__buttons--disabled' />}
-    </Square>
+    <Container>
+      <Play />
+      <DividerVertical />
+      <Button />
+      {!states.isTurnedOn && <Disabled />}
+    </Container>
   );
-}
+};
 
-function areEqual(prevProps, nextProps) {
-  if (
-    prevProps.data.isTurnedOn === nextProps.data.isTurnedOn &&
-    prevProps.data.play.isPaused === nextProps.data.play.isPaused &&
-    prevProps.data.play.isRunning === nextProps.data.play.isRunning
-  ) return true;
-}
-
-export default React.memo(Buttons, areEqual);
+export default React.memo(Buttons);

@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import './Play.css';
+const Container = styled.div`
 
-function Play(props) {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const Button = styled.input`
+
+  border: none;
+  width: 80px;
+  height: 50px;
+`;
+
+const Disabled = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #00000080;
+`;
+
+const Play = (): JSX.Element => {
+  const statesGame = useContext(ContextGame);
+
   return (
-    <Square className='controller__panel__options-common__buttons__play-container'>
-      <input className='controller__panel__options-common__buttons__play' onClick={() => props.data.handlePlay()} value={props.data.isPaused || !props.data.isRunning ? 'Play' : 'Pause'} type='button' />
-    </Square>
+    <Container>
+      <Button onClick={() => props.data.handlePlay()} value={statesGame.isPaused || !statesGame.isRunning ? 'Play' : 'Pause'} type='button' />
+    </Container>
   );
-}
+};
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.isPaused === nextProps.data.isPaused && prevProps.data.isRunning === nextProps.data.isRunning) return true;
-}
 
-export default React.memo(Play, areEqual);
+export default React.memo(Play);

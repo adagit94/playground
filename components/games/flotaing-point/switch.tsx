@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import './Switch.css';
+const Container = styled.div`
+  flex: 2.5 2.5 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-function Switch(props) {
-  const switchState = props.data.isTurnedOn ? 'controller__panel__options-common__switch controller__panel__options-common__switch--on' : 'controller__panel__options-common__switch controller__panel__options-common__switch--off';
+const Switch = (): JSX.Element => {
+  const states = useContext(ContextGame);
+  const dispatch = useContext(ContextDispatchGame);
+
+  const isTurnedOn = states.isTurnedOn;
+
+  const Button = styled.div`
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: ${isTurnedOn ? '#7dfa00' : '#f00'};
+  `;
 
   return (
-    <Square className='controller__panel__options-common__switch-container'>
-      <Square className={switchState} onClick={props.data.handleSwitch} />
-    </Square>
+    <Container>
+      <Button
+        onClick={(): void =>
+          dispatch({ type: isTurnedOn ? 'switchOff' : 'switchOn' })
+        }
+      />
+    </Container>
   );
-}
+};
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.isTurnedOn === nextProps.data.isTurnedOn) return true;
-}
-
-export default React.memo(Switch, areEqual);
+export default React.memo(Switch);

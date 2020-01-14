@@ -1,6 +1,33 @@
 import React from 'react';
 
-import './Color.css';
+.controller__panel__options-player__color-container {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controller__panel__options-player__color-label {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.controller__panel__options-player__color-item {
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.controller__panel__options-player__color {
+  width: 50px;
+}
+
+.controller__panel__options-player__color--undefined {
+  color: #f00;
+}
 
 function Color(props) {
   return (
@@ -13,8 +40,4 @@ function Color(props) {
   );
 }
 
-function areEqual(prevProps, nextProps) {
-  if (prevProps.data.color === nextProps.data.color) return true;
-}
-
-export default React.memo(Color, areEqual);
+export default React.memo(Color);

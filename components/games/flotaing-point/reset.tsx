@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import './Reset.css';
+const Container = styled.div`
+  flex: 5 5 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`;
 
-function Reset(props) {
+const Button = styled.input`
+  border: none;
+  width: 80px;
+  height: 50px;
+`;
+
+const Reset = (): JSX.Element => {
+  const dispatchGame = useContext(ContextDispatchGame);
+  const dispatchPlayers = useContext(ContextDispatchPlayers);
+
   return (
-    <Square className='controller__panel__options-common__buttons__reset-container'>
-      <input className='controller__panel__options-common__buttons__reset' onClick={() => props.data.handlePlay(true)} value='Reset' type='button' />
-    </Square>
+    <Container>
+      <Button
+        onClick={(): void => {
+          dispatchGame({ type: 'reset' });
+          dispatchPlayers({ type: 'reset' });
+        }}
+        value='Reset'
+        type='button'
+      />
+    </Container>
   );
-}
+};
 
-function areEqual() {
-  return true;
-}
-
-export default React.memo(Reset, areEqual);
+export default React.memo(Button);

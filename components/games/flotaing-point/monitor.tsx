@@ -11,7 +11,7 @@ const Container = styled.div`
 
 function Monitor(): JSX.Element {
   return (
-    <Container>
+    <Container id='monitor'>
       <Players />
       <FloatingPoint />
     </Container>
