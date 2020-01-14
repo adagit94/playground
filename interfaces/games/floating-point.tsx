@@ -14,16 +14,6 @@ interface Key {
   pressed: boolean;
 }
 
-export interface Defaults {
-  readonly P1: DefaultsPlayer;
-  readonly P2: DefaultsPlayer;
-  readonly P3: DefaultsPlayer;
-  readonly P4: DefaultsPlayer;
-  readonly dimensions: number;
-  readonly speed: number;
-  readonly fpPadding: number;
-}
-
 export interface Directions {
   ArrowUp: Key;
   ArrowRight: Key;
