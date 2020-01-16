@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.section`
-  
-`;
+import { ContextContent } from '../../../contexts/layout/content';
 
-const Content = props => {
-  return (
-    <Container>
-      {props.content}
-    </Container>
-  );
+const Container = styled.section``;
+
+const Content = (): JSX.Element => {
+  const content = useContext(ContextContent);
+
+  return <Container>{content}</Container>;
 };
 
 export default Content;

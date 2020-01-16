@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Logo from './Logo';
-import Nav from './Nav';
-import LogIn from './LogIn';
+import Logo from './logo';
+import Nav from './nav';
+import LogIn from './log-in';
 
 const Container = styled.header`
   grid-area: hea;
@@ -11,7 +11,7 @@ const Container = styled.header`
   border-bottom: 1px solid #000000;
 `;
 
-const Header = () => {
+const Header = (): JSX.Element => {
   return (
     <Container>
       <Logo />

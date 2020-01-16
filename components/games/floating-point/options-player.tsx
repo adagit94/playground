@@ -41,8 +41,8 @@ const DividerVerticalInvisible = styled.div`
   display: inline-block;
 `;
 
-function OptionsPlayer({ id }): JSX.Element {
-  const data: any = useContext(FPContext);
+const OptionsPlayer = ({ id }): JSX.Element => {
+  const states = useContext(ContextGame);
 
   return (
     <Container>
@@ -53,10 +53,10 @@ function OptionsPlayer({ id }): JSX.Element {
         <Shape id={id} />
         <DividerVerticalInvisible />
         <Color id={id} />
-        {(!data.isTurnedOn || data.isRunning) && <OptionsDisabled />}
+        {(!states.isTurnedOn || states.isRunning) && <OptionsDisabled />}
       </Options>
     </Container>
   );
-}
+};
 
 export default React.memo(OptionsPlayer);

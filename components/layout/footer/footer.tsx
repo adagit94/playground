@@ -8,13 +8,12 @@ const Container = styled.footer`
   justify-content: space-around;
   align-items: center;
   border-top: 1px solid #000000;
-
 `;
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
     <Container>
-      <Square>abc</Square>
+      <div>abc</div>
     </Container>
   );
 };

@@ -1,12 +1,11 @@
-import React from 'react';
 import styled from 'styled-components';
-import Layout from '../components/layout';
+import Layout from '../components/layout/layout';
 
 const Container = styled.div`
   text-align: center;
 `;
 
-const Stats = () => {
+const Stats = (): JSX.Element => {
   const content = (
     <Container>
       <h1>Stats</h1>

@@ -12,20 +12,18 @@ const Switch = (): JSX.Element => {
   const states = useContext(ContextGame);
   const dispatch = useContext(ContextDispatchGame);
 
-  const isTurnedOn = states.isTurnedOn;
-
   const Button = styled.div`
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    background-color: ${isTurnedOn ? '#7dfa00' : '#f00'};
+    background-color: ${states.isTurnedOn ? '#7dfa00' : '#f00'};
   `;
 
   return (
     <Container>
       <Button
         onClick={(): void =>
-          dispatch({ type: isTurnedOn ? 'switchOff' : 'switchOn' })
+          dispatch({ type: states.isTurnedOn ? 'switchOff' : 'switchOn' })
         }
       />
     </Container>

@@ -57,10 +57,10 @@ export interface InitFp {
   readonly left: number;
 }
 
-export interface Reducer {
-  (state: object, action: object): object;
-}
-
 export interface Initializer {
   (initStates: InitGame | InitPlayers | InitFp): object;
+}
+
+export interface Reducer {
+  (state: object, action: object): object;
 }

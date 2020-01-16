@@ -37,7 +37,7 @@ const Container = styled.nav`
   }
 `;
 
-const NavHorizontal = props => {
+const Nav = (): JSX.Element => {
   return (
     <Container>
       <ul>
@@ -50,4 +50,4 @@ const NavHorizontal = props => {
   );
 };
 
-export default NavHorizontal;
+export default Nav;

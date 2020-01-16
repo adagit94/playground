@@ -45,7 +45,7 @@ const Container = styled.nav`
   }
 `;
 
-const NavVertical = props => {
+const Nav = (): JSX.Element => {
   return (
     <Container>
       <ul>
@@ -74,4 +74,4 @@ const NavVertical = props => {
   );
 };
 
-export default NavVertical;
+export default Nav;

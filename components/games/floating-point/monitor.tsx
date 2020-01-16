@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Players from './players';
-import FloatingPoint from './floating-point';
+import Point from './Point';
 
 const Container = styled.div`
   height: 80%;
@@ -13,7 +13,7 @@ function Monitor(): JSX.Element {
   return (
     <Container id='monitor'>
       <Players />
-      <FloatingPoint />
+      <Point />
     </Container>
   );
 }

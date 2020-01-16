@@ -1,4 +1,11 @@
-const initGame: Interfaces.InitGame = {
+import {
+  InitGame,
+  InitPlayers,
+  InitFp,
+  Initializer
+} from '../../interfaces/games/floating-point';
+
+export const initGame: InitGame = {
   isTurnedOn: false,
   isRunning: false,
   isPaused: false,
@@ -8,7 +15,7 @@ const initGame: Interfaces.InitGame = {
   visibility: 'hidden'
 };
 
-const initPlayers: Interfaces.InitPlayers = {
+export const initPlayers: InitPlayers = {
   P1: {
     top: 0,
     left: 0,
@@ -38,17 +45,12 @@ const initPlayers: Interfaces.InitPlayers = {
     score: 0
   },
   shapesOthers: Array(4).fill(''),
-  colorsOthers: [
-    defaults.P1.color,
-    defaults.P2.color,
-    defaults.P3.color,
-    defaults.P4.color
-  ]
+  colorsOthers: ['#f00', '#008000', '#00f', '#ff0']
 };
 
-const initFp: Interfaces.InitFp = {
+export const initFp: InitFp = {
   top: 0,
   left: 0
 };
 
-const init: Interfaces.Initializer = initState => initState;
+export const init: Initializer = initState => initState;

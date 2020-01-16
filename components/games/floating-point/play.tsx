@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-
   flex: 5 5 0;
   display: flex;
   flex-direction: column;
@@ -11,30 +10,24 @@ const Container = styled.div`
 `;
 
 const Button = styled.input`
-
   border: none;
   width: 80px;
   height: 50px;
 `;
 
-const Disabled = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #00000080;
-`;
-
 const Play = (): JSX.Element => {
-  const statesGame = useContext(ContextGame);
+  const states = useContext(ContextGame);
+  const callbacks = useContext(ContextCallbacks);
 
   return (
     <Container>
-      <Button onClick={() => props.data.handlePlay()} value={statesGame.isPaused || !statesGame.isRunning ? 'Play' : 'Pause'} type='button' />
+      <Button
+        onClick={callbacks.handlePlay}
+        value={states.isPaused || !states.isRunning ? 'Play' : 'Pause'}
+        type='button'
+      />
     </Container>
   );
 };
-
 
 export default React.memo(Play);

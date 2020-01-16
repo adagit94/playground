@@ -13,8 +13,6 @@ const Speed = (): JSX.Element => {
   const states = useContext(ContextGame);
   const dispatch = useContext(ContextDispatchGame);
 
-  const speed = states.speed;
-
   return (
     <Container>
       <label htmlFor='speed'>Speed:</label>
@@ -22,14 +20,14 @@ const Speed = (): JSX.Element => {
         onChange={(e): void =>
           dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
         }
-        value={speed}
+        value={states.speed}
         type='range'
         min='1'
         max='5'
         step='2'
         id='speed'
       />
-      {speed > 0 && speed + 'x'}
+      {states.speed > 0 && states.speed + 'x'}
     </Container>
   );
 };

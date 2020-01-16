@@ -1,4 +1,7 @@
-const reducerGame: Interfaces.Reducer = (state, action) => {
+import { Reducer } from '../../interfaces/games/floating-point';
+import { initGame, init } from '../../inits/games/floating-point';
+
+export const reducerGame: Reducer = (state, action) => {
   switch (action.type) {
     case 'switchOn':
       return {
@@ -44,7 +47,7 @@ const reducerGame: Interfaces.Reducer = (state, action) => {
   }
 };
 
-const reducerPlayers: Interfaces.Reducer = (state, action) => {
+export const reducerPlayers: Reducer = (state, action) => {
   switch (action.type) {
     case 'init':
       return {
@@ -70,27 +73,22 @@ const reducerPlayers: Interfaces.Reducer = (state, action) => {
       return {
         P1: {
           shape: '',
-          color: defaults.P1.color
+          color: '#f00'
         },
         P2: {
           shape: '',
-          color: defaults.P2.color
+          color: '#008000'
         },
         P3: {
           shape: '',
-          color: defaults.P3.color
+          color: '#00f'
         },
         P4: {
           shape: '',
-          color: defaults.P4.color
+          color: '#ff0'
         },
         shapesOthers: Array(4).fill(''),
-        colorsOthers: [
-          defaults.P1.color,
-          defaults.P2.color,
-          defaults.P3.color,
-          defaults.P4.color
-        ]
+        colorsOthers: ['#f00', '#008000', '#00f', '#ff0']
       };
 
     case 'move':
@@ -147,7 +145,7 @@ const reducerPlayers: Interfaces.Reducer = (state, action) => {
   }
 };
 
-const reducerFp: Interfaces.Reducer = (state, action) => {
+export const reducerFp: Reducer = (state, action) => {
   switch (action.type) {
     case 'move':
       return {

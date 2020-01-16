@@ -26,9 +26,6 @@ function Shape({ id }): JSX.Element {
   const states = useContext(ContextPlayers);
   const dispatch = useContext(ContextDispatchPlayers);
 
-  const shape = states[id].shape;
-  const color = states[id].color;
-
   const othersSquare = states.shapesOthers.includes('square');
   const othersCircle = states.shapesOthers.includes('circle');
   const othersRhombus = states.shapesOthers.includes('rhombus');
@@ -39,33 +36,33 @@ function Shape({ id }): JSX.Element {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${shape === undefined ? '#f00' : '#000000'};
+    color: ${states[id].shape === undefined ? '#f00' : '#000000'};
   `;
 
   const Square = styled.div`
     opacity: ${othersSquare ? 0.2 : '1'};
-    background-color: ${color};
-    border: ${shape === 'square' ? '2px solid #f00' : 'none'};
+    background-color: ${states[id].color};
+    border: ${states[id].shape === 'square' ? '2px solid #f00' : 'none'};
   `;
 
   const Circle = styled.div`
     opacity: ${othersCircle ? 0.2 : '1'};
-    background-color: ${color};
-    border: ${shape === 'circle' ? '2px solid #f00' : 'none'};
+    background-color: ${states[id].color};
+    border: ${states[id].shape === 'circle' ? '2px solid #f00' : 'none'};
     border-radius: 100%;
   `;
 
   const Rhombus = styled.div`
     opacity: ${othersRhombus ? 0.2 : '1'};
-    background-color: ${color};
-    border: ${shape === 'rhombus' ? '2px solid #f00' : 'none'};
+    background-color: ${states[id].color};
+    border: ${states[id].shape === 'rhombus' ? '2px solid #f00' : 'none'};
     transform: rotate(45deg);
   `;
 
   const Ellipse = styled.div`
     opacity: ${othersEllipse ? 0.2 : '1'};
-    background-color: ${color};
-    border: ${shape === 'ellipse' ? '2px solid #f00' : 'none'};
+    background-color: ${states[id].color};
+    border: ${states[id].shape === 'ellipse' ? '2px solid #f00' : 'none'};
     border-radius: 100%;
     transform: rotateX(45deg);
   `;
@@ -82,9 +79,9 @@ function Shape({ id }): JSX.Element {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      shape === ''
+                      states[id].shape === ''
                         ? 'add'
-                        : shape === 'square'
+                        : states[id].shape === 'square'
                         ? 'remove'
                         : 'change',
                     player: id,
@@ -101,9 +98,9 @@ function Shape({ id }): JSX.Element {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      shape === ''
+                      states[id].shape === ''
                         ? 'add'
-                        : shape === 'circle'
+                        : states[id].shape === 'circle'
                         ? 'remove'
                         : 'change',
                     player: id,
@@ -120,9 +117,9 @@ function Shape({ id }): JSX.Element {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      shape === ''
+                      states[id].shape === ''
                         ? 'add'
-                        : shape === 'rhombus'
+                        : states[id].shape === 'rhombus'
                         ? 'remove'
                         : 'change',
                     player: id,
@@ -139,9 +136,9 @@ function Shape({ id }): JSX.Element {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      shape === ''
+                      states[id].shape === ''
                         ? 'add'
-                        : shape === 'ellipse'
+                        : states[id].shape === 'ellipse'
                         ? 'remove'
                         : 'change',
                     player: id,

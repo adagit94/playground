@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -13,24 +12,24 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+`;
 
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+const Row = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 
-    input {
-      border: 2px solid #000000;
-      border-radius: 5px;
-      transition-property: box-shadow;
-      transition-duration: 0.1s;
-      transition-timing-function: linear;
+  input {
+    border: 2px solid #000000;
+    border-radius: 5px;
+    transition-property: box-shadow;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
 
-      :focus {
-        box-shadow: 0 0 0 2px #000000;
-        outline: none;
-      }
+    :focus {
+      box-shadow: 0 0 0 2px #000000;
+      outline: none;
     }
   }
 `;
@@ -57,23 +56,23 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const CreateAccount = props => {
+const CreateAccount = (): JSX.Element => {
   return (
     <Container>
       <Form>
-        <Square>
+        <Row>
           <label htmlFor='username'>Username: </label>
           <input type='text' name='username' id='username' required />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <label htmlFor='email'>Email: </label>
           <input type='email' name='email' id='email' required />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <label htmlFor='password'>Password: </label>
           <input type='password' name='password' id='password' required />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <label htmlFor='confirmPassword'>Password: </label>
           <input
             type='password'
@@ -81,10 +80,10 @@ const CreateAccount = props => {
             id='confirmPassword'
             required
           />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <SubmitBtn>Create account</SubmitBtn>
-        </Square>
+        </Row>
       </Form>
     </Container>
   );

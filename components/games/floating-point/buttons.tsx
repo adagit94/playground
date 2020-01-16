@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import Play from './play.js';
-import Button from './reset.js';
+import Play from './play';
+import Button from './reset';
 
 const Container = styled.div`
   flex: 2.5 2.5 0;

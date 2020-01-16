@@ -17,18 +17,11 @@ const Button = styled.input`
 
 const Reset = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
+  const callbacks = useContext(ContextCallbacks);
 
   return (
     <Container>
-      <Button
-        onClick={(): void => {
-          dispatchGame({ type: 'reset' });
-          dispatchPlayers({ type: 'reset' });
-        }}
-        value='Reset'
-        type='button'
-      />
+      <Button onClick={callbacks.handleReset} value='Reset' type='button' />
     </Container>
   );
 };

@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from './header/Header';
-import Page from './page/Page';
-import Footer from './footer/Footer';
+
+import Header from './header/header';
+import Main from './main/main';
+import Footer from './footer/footer';
+
+import { ContextContent } from '../../contexts/layout/content';
 
 const Container = styled.div`
   border: 1px solid black;
@@ -20,14 +23,16 @@ const Container = styled.div`
     'foo';
 `;
 
-const Playground = props => {
+const Layout = ({ content }): JSX.Element => {
   return (
     <Container>
       <Header />
-      <Page content={props.content} />
+      <ContextContent.Provider value={content}>
+        <Main />
+      </ContextContent.Provider>
       <Footer />
     </Container>
   );
 };
 
-export default Playground;
+export default Layout;

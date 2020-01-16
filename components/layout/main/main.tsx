@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Nav from './Nav';
-import Content from './Content';
+import Nav from './nav';
+import Content from './content';
 
 const Container = styled.main`
   grid-area: pag;
@@ -9,13 +9,13 @@ const Container = styled.main`
   flex-direction: row;
 `;
 
-const Page = props => {
+const Main = (): JSX.Element => {
   return (
     <Container>
       <Nav />
-      <Content content={props.content} />
+      <Content />
     </Container>
   );
 };
 
-export default Page;
+export default Main;

@@ -19,23 +19,23 @@ const Form = styled.form`
   height: 150px;
   background-color: #000000;
   color: #ffffff;
+`;
 
-  div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 
-    input {
-      border: none;
-      border-radius: 5px;
-      transition-property: box-shadow;
-      transition-duration: 0.1s;
-      transition-timing-function: linear;
+  input {
+    border: none;
+    border-radius: 5px;
+    transition-property: box-shadow;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
 
-      :focus {
-        box-shadow: 0 0 0 2px #ffffff;
-        outline: none;
-      }
+    :focus {
+      box-shadow: 0 0 0 2px #ffffff;
+      outline: none;
     }
   }
 `;
@@ -88,32 +88,32 @@ const LinkTxt = styled.a`
   }
 `;
 
-const showForm = () => {
+const showForm = (): void => {
   $('#logInForm').slideToggle(100, 'linear');
 };
 
-const LogIn = props => {
+const LogIn = (): JSX.Element => {
   return (
     <Container>
       <FormBtn onClick={showForm}>Log in</FormBtn>
       <Form style={{ display: 'none' }} id='logInForm'>
-        <Square>
+        <Row>
           <label htmlFor='username'>Username: </label>
           <input type='text' name='username' id='username' required />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <label htmlFor='password'>Password: </label>
           <input type='password' name='password' id='password' required />
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <LogInBtn>Log in</LogInBtn>
-        </Square>
-        <Square>
+        </Row>
+        <Row>
           <LinkTxt href=''>Reset password</LinkTxt>
           <Link href='/create-account'>
             <LinkTxt>Create account</LinkTxt>
           </Link>
-        </Square>
+        </Row>
       </Form>
     </Container>
   );

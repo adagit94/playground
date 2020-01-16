@@ -1,16 +1,29 @@
-import React from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
-import Layout from '../components/layout';
+
+import Layout from '../components/layout/layout';
 
 const Container = styled.div`
-  text-align: center;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
-const Playground = () => {
+const Item = styled.div`
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+`;
+
+const Playground = (): JSX.Element => {
   const content = (
     <Container>
-      <h1>Playground</h1>
-      <p>abc</p>
+      <Item>
+        <Link href='/playground/floating-point'>
+          <a>Floating Point</a>
+        </Link>
+      </Item>
     </Container>
   );
 

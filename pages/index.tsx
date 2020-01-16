@@ -1,7 +1,5 @@
-import React from 'react';
-import Head from 'next/head';
 import styled from 'styled-components';
-import Layout from '../components/layout';
+import Layout from '../components/layout/layout';
 
 const Container = styled.div`
   * {
@@ -9,7 +7,7 @@ const Container = styled.div`
   }
 `;
 
-const App = () => {
+const Index = (): JSX.Element => {
   return (
     <Container>
       <Layout />
@@ -17,4 +15,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Index;
