@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -7,8 +7,11 @@ import ControlPanel from './control-panel';
 import { Directions } from '../../../interfaces/games/floating-point';
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
+import * as Contexts from '../../../contexts/games/floating-point';
 
 let handlePointInterval;
+let containerWidth: number;
+let containerHeight: number;
 const directions: Directions = {
   ArrowUp: {
     pressed: false
@@ -78,14 +81,6 @@ const cancelKey = (e): void => {
   }
 };
 
-const ContextGame = React.createContext(null);
-const ContextPlayers = React.createContext(null);
-const ContextFp = React.createContext(null);
-const ContextDispatchGame = React.createContext(null);
-const ContextDispatchPlayers = React.createContext(null);
-const ContextDispatchFp = React.createContext(null);
-const ContextCallbacks = React.createContext(null);
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,35 +94,31 @@ const DividerHorizontal = styled.div`
 `;
 
 const Controller = (): JSX.Element => {
-  const [statesGame, dispatchGame] = useReducer(
+  const [statesGame, dispatchGame]: any = useReducer(
     Reducers.reducerGame,
     Inits.initGame,
     Inits.init
   );
-  const [statesPlayers, dispatchPlayers] = useReducer(
+  const [statesPlayers, dispatchPlayers]: any = useReducer(
     Reducers.reducerPlayers,
     Inits.initPlayers,
     Inits.init
   );
 
-  const [statesFp, dispatchFp] = useReducer(
+  const [statesFp, dispatchFp]: any = useReducer(
     Reducers.reducerFp,
     Inits.initFp,
     Inits.init
   );
 
-  const containerWidth: number = document.querySelector('#monitor').clientWidth;
-  const containerHeight: number = document.querySelector('#monitor')
-    .clientHeight;
-
   const matchFloatingPoint = (): void => {
     for (let i = 1; i <= 4; i++) {
       if (
         (statesPlayers['P' + i].top >= statesFp.top ||
-          statesPlayers['P' + i].top + stateGame.dimensions >= statesFp.top) &&
+          statesPlayers['P' + i].top + statesGame.dimensions >= statesFp.top) &&
         statesPlayers['P' + i].top <= statesFp.top + 50 &&
         (statesPlayers['P' + i].left >= statesFp.left ||
-          statesPlayers['P' + i].left + stateGame.dimensions >=
+          statesPlayers['P' + i].left + statesGame.dimensions >=
             statesFp.left) &&
         statesPlayers['P' + i].left <= statesFp.left + 50
       ) {
@@ -367,15 +358,20 @@ const Controller = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    containerWidth = document.querySelector('#monitor').clientWidth;
+    containerHeight = document.querySelector('#monitor').clientHeight;
+  }, []);
+
   return (
     <Container>
-      <ContextGame.Provider value={statesGame}>
-        <ContextPlayers.Provider value={statesPlayers}>
-          <ContextFp.Provider value={statesFp}>
-            <ContextDispatchGame.Provider value={dispatchGame}>
-              <ContextDispatchPlayers.Provider value={dispatchPlayers}>
-                <ContextDispatchFp.Provider value={dispatchFp}>
-                  <ContextCallbacks.Provider
+      <Contexts.ContextGame.Provider value={statesGame}>
+        <Contexts.ContextPlayers.Provider value={statesPlayers}>
+          <Contexts.ContextFp.Provider value={statesFp}>
+            <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
+              <Contexts.ContextDispatchPlayers.Provider value={dispatchPlayers}>
+                <Contexts.ContextDispatchFp.Provider value={dispatchFp}>
+                  <Contexts.ContextCallbacks.Provider
                     value={{
                       matchFloatingPoint,
                       handlePlay,
@@ -386,15 +382,15 @@ const Controller = (): JSX.Element => {
                     <Monitor />
                     <DividerHorizontal />
                     <ControlPanel />
-                  </ContextCallbacks.Provider>
-                </ContextDispatchFp.Provider>
-              </ContextDispatchPlayers.Provider>
-            </ContextDispatchGame.Provider>
-          </ContextFp.Provider>
-        </ContextPlayers.Provider>
-      </ContextGame.Provider>
+                  </Contexts.ContextCallbacks.Provider>
+                </Contexts.ContextDispatchFp.Provider>
+              </Contexts.ContextDispatchPlayers.Provider>
+            </Contexts.ContextDispatchGame.Provider>
+          </Contexts.ContextFp.Provider>
+        </Contexts.ContextPlayers.Provider>
+      </Contexts.ContextGame.Provider>
     </Container>
   );
 };
 
-export default React.memo(Controller);
+export default Controller;

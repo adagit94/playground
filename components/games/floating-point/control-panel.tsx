@@ -12,7 +12,7 @@ const Container = styled.div`
   padding: 10px;
 `;
 
-function ControlPanel(): JSX.Element {
+const ControlPanel = (): JSX.Element => {
   return (
     <Container>
       <OptionsPlayer id='P1' />
@@ -22,6 +22,6 @@ function ControlPanel(): JSX.Element {
       <OptionsPlayer id='P2' />
     </Container>
   );
-}
+};
 
 export default React.memo(ControlPanel);

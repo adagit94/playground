@@ -11,11 +11,7 @@ const Container = styled.footer`
 `;
 
 const Footer = (): JSX.Element => {
-  return (
-    <Container>
-      <div>abc</div>
-    </Container>
-  );
+  return <Container>abc</Container>;
 };
 
 export default Footer;

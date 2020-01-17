@@ -10,7 +10,7 @@ const Container = styled.div`
 const Index = (): JSX.Element => {
   return (
     <Container>
-      <Layout />
+      <Layout content='' />
     </Container>
   );
 };

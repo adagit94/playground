@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { ContextCallbacks } from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 5 5 0;
   display: flex;
@@ -16,7 +18,6 @@ const Button = styled.input`
 `;
 
 const Reset = (): JSX.Element => {
-  const dispatchGame = useContext(ContextDispatchGame);
   const callbacks = useContext(ContextCallbacks);
 
   return (
@@ -26,4 +27,4 @@ const Reset = (): JSX.Element => {
   );
 };
 
-export default React.memo(Button);
+export default React.memo(Reset);

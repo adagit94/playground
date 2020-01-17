@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Header from './header/header';
-import Main from './main/main';
+import View from './view/view';
 import Footer from './footer/footer';
 
 import { ContextContent } from '../../contexts/layout/content';
@@ -28,7 +28,7 @@ const Layout = ({ content }): JSX.Element => {
     <Container>
       <Header />
       <ContextContent.Provider value={content}>
-        <Main />
+        <View />
       </ContextContent.Provider>
       <Footer />
     </Container>

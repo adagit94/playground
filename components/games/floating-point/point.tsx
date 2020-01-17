@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-function Point(): JSX.Element {
+import { ContextGame, ContextFp } from '../../../contexts/games/floating-point';
+
+const Point = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesFp = useContext(ContextFp);
 
@@ -21,6 +23,6 @@ function Point(): JSX.Element {
       <Point />
     </>
   );
-}
+};
 
 export default React.memo(Point);

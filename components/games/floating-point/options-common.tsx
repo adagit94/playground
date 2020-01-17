@@ -16,7 +16,7 @@ const DividerHorizontalInvisible = styled.div`
   height: 2px;
 `;
 
-function OptionsCommon(): JSX.Element {
+const OptionsCommon = (): JSX.Element => {
   return (
     <Container>
       <Switch />
@@ -26,6 +26,6 @@ function OptionsCommon(): JSX.Element {
       <Buttons />
     </Container>
   );
-}
+};
 
 export default React.memo(OptionsCommon);

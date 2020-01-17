@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Dimensions from './dimensions';
 import Speed from './speed';
 
+import { ContextGame } from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 5 5 0;
   display: flex;

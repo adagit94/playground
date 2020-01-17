@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import {
+  ContextPlayers,
+  ContextDispatchPlayers
+} from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 5 5 0;
   display: flex;
@@ -22,7 +27,7 @@ const Items = styled.div`
   }
 `;
 
-function Shape({ id }): JSX.Element {
+const Shape = ({ id }): JSX.Element => {
   const states = useContext(ContextPlayers);
   const dispatch = useContext(ContextDispatchPlayers);
 
@@ -150,6 +155,6 @@ function Shape({ id }): JSX.Element {
       </Items>
     </Container>
   );
-}
+};
 
 export default React.memo(Shape);

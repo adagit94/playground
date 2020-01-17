@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import {
+  ContextGame,
+  ContextDispatchGame
+} from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 5 5 0;
   display: flex;

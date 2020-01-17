@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Shape from './shape';
 import Color from './color';
 
+import { ContextGame } from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   width: 200px;
   height: 400px;

@@ -9,7 +9,7 @@ const Container = styled.div`
   width: 150px;
 `;
 
-const Logo = () => {
+const Logo = (): JSX.Element => {
   return (
     <Container>
       <img src='' alt='' />

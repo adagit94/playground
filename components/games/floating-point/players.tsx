@@ -1,6 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
+import {
+  ContextGame,
+  ContextPlayers,
+  ContextCallbacks
+} from '../../../contexts/games/floating-point';
+
 const Players = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
@@ -84,7 +90,7 @@ const Players = (): JSX.Element => {
 
   useEffect(() => {
     callbacks.matchFloatingPoint();
-  });
+  }, [callbacks, statesGame.isRunning]);
 
   return (
     <>

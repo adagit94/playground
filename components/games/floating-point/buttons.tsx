@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Play from './play';
 import Button from './reset';
 
+import { ContextGame } from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 2.5 2.5 0;
   display: flex;

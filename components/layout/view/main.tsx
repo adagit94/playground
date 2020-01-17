@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 import { ContextContent } from '../../../contexts/layout/content';
 
-const Container = styled.section``;
+const Container = styled.main``;
 
-const Content = (): JSX.Element => {
+const Main = (): JSX.Element => {
   const content = useContext(ContextContent);
 
   return <Container>{content}</Container>;
 };
 
-export default Content;
+export default Main;

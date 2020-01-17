@@ -62,5 +62,5 @@ export interface Initializer {
 }
 
 export interface Reducer {
-  (state: object, action: object): object;
+  (state: any, action: any): any;
 }

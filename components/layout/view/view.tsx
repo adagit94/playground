@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import Nav from './nav';
-import Content from './content';
+import Main from './main';
 
-const Container = styled.main`
+const Container = styled.section`
   grid-area: pag;
   display: flex;
   flex-direction: row;
 `;
 
-const Main = (): JSX.Element => {
+const View = (): JSX.Element => {
   return (
     <Container>
       <Nav />
-      <Content />
+      <Main />
     </Container>
   );
 };
 
-export default Main;
+export default View;

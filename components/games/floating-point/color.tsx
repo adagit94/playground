@@ -1,6 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import {
+  ContextPlayers,
+  ContextDispatchPlayers
+} from '../../../contexts/games/floating-point';
+
 const Container = styled.div`
   flex: 5 5 0;
   display: flex;
@@ -8,7 +13,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const InputContainer = styled.input`
+const InputContainer = styled.div`
   flex: 5 5 0;
   display: flex;
   flex-direction: column;
