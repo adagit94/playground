@@ -7,7 +7,7 @@ import Button from './reset';
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 2.5 2.5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: row;
   position: relative;

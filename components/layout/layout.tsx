@@ -18,9 +18,9 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: 75px 1fr 75px;
   grid-template-areas:
-    'hea'
-    'pag'
-    'foo';
+    'header'
+    'view'
+    'footer';
 `;
 
 const Layout = ({ content }): JSX.Element => {

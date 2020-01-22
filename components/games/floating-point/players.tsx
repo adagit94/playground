@@ -14,8 +14,8 @@ const Players = (): JSX.Element => {
 
   const PointP1 = styled.div`
     position: absolute;
-    top: ${statesPlayers.P1.top};
-    left: ${statesPlayers.P1.left};
+    top: ${statesPlayers.P1.top}px;
+    left: ${statesPlayers.P1.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
     background-color: ${statesPlayers.P1.color};
@@ -33,8 +33,8 @@ const Players = (): JSX.Element => {
 
   const PointP2 = styled.div`
     position: absolute;
-    top: ${statesPlayers.P2.top};
-    left: ${statesPlayers.P2.left};
+    top: ${statesPlayers.P2.top}px;
+    left: ${statesPlayers.P2.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
     background-color: ${statesPlayers.P2.color};
@@ -52,8 +52,8 @@ const Players = (): JSX.Element => {
 
   const PointP3 = styled.div`
     position: absolute;
-    top: ${statesPlayers.P3.top};
-    left: ${statesPlayers.P3.left};
+    top: ${statesPlayers.P3.top}px;
+    left: ${statesPlayers.P3.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
     background-color: ${statesPlayers.P3.color};
@@ -71,8 +71,8 @@ const Players = (): JSX.Element => {
 
   const PointP4 = styled.div`
     position: absolute;
-    top: ${statesPlayers.P4.top};
-    left: ${statesPlayers.P4.left};
+    top: ${statesPlayers.P4.top}px;
+    left: ${statesPlayers.P4.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
     background-color: ${statesPlayers.P4.color};
@@ -90,7 +90,7 @@ const Players = (): JSX.Element => {
 
   useEffect(() => {
     callbacks.matchFloatingPoint();
-  }, [callbacks, statesGame.isRunning]);
+  });
 
   return (
     <>

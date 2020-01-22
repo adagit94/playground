@@ -12,6 +12,7 @@ import * as Contexts from '../../../contexts/games/floating-point';
 let handlePointInterval;
 let containerWidth: number;
 let containerHeight: number;
+const players = 4;
 const directions: Directions = {
   ArrowUp: {
     pressed: false
@@ -63,28 +64,10 @@ const directions: Directions = {
   }
 };
 
-const registerKey = (e): void => {
-  e.preventDefault();
-
-  const key = e.key;
-
-  if ({}.hasOwnProperty.call(directions, key)) {
-    directions[key].pressed = true;
-  }
-};
-
-const cancelKey = (e): void => {
-  const key = e.key;
-
-  if ({}.hasOwnProperty.call(directions, key)) {
-    directions[key].pressed = false;
-  }
-};
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 `;
 
 const DividerHorizontal = styled.div`
@@ -139,51 +122,8 @@ const Controller = (): JSX.Element => {
     }
   };
 
-  const handlePlay = (): void => {
-    if (!statesGame.isRunning) {
-      for (let i = 1; i <= 4; i++) {
-        if (statesPlayers['P' + i].shape === undefined) return;
-      }
-
-      const topP1P2: number = containerHeight / 2 - statesGame.dimensions / 2;
-      const leftP3P4: number = containerWidth / 2 - statesGame.dimensions / 2;
-      const leftP2: number = containerWidth - statesGame.dimensions;
-      const topP4: number = containerHeight - statesGame.dimensions;
-
-      handlePointInterval = window.setInterval(
-        matchFloatingPoint,
-        30 - statesGame.speed * 5,
-        directions
-      );
-
-      document.addEventListener('keydown', registerKey);
-      document.addEventListener('keyup', cancelKey);
-
-      dispatchGame({
-        type: 'init'
-      });
-
-      dispatchPlayers({
-        type: 'init',
-        topP1P2,
-        leftP3P4,
-        leftP2,
-        topP4
-      });
-    }
-  };
-
-  const handleReset = (): void => {
-    window.clearInterval(handlePointInterval);
-
-    document.removeEventListener('keydown', registerKey);
-    document.removeEventListener('keyup', cancelKey);
-
-    dispatchGame({ type: 'reset' });
-    dispatchPlayers({ type: 'reset' });
-  };
-
   const handleMove = (): void => {
+    console.log(1);
     const pressedKeys: Array<string> = [];
 
     for (const direction in directions) {
@@ -195,10 +135,7 @@ const Controller = (): JSX.Element => {
       const bottomLimit: number = containerHeight - statesGame.dimensions;
 
       for (let i = 0; i < pressedKeys.length; i++) {
-        if (
-          pressedKeys[i] === 'ArrowUp' &&
-          statesPlayers.P1.positions.top > 0
-        ) {
+        if (pressedKeys[i] === 'ArrowUp' && statesPlayers.P1.top > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'add',
@@ -207,7 +144,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'ArrowRight' &&
-          statesPlayers.P1.positions.left < rightLimit
+          statesPlayers.P1.left < rightLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -217,7 +154,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'ArrowDown' &&
-          statesPlayers.P1.positions.top < bottomLimit
+          statesPlayers.P1.top < bottomLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -227,7 +164,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'ArrowLeft' &&
-          statesPlayers.P1.positions.left > 0
+          statesPlayers.P1.left > 0
         ) {
           dispatchPlayers({
             type: 'move',
@@ -235,10 +172,7 @@ const Controller = (): JSX.Element => {
             player: 'P1',
             direction: 'left'
           });
-        } else if (
-          pressedKeys[i] === 'w' &&
-          statesPlayers.P2.positions.top > 0
-        ) {
+        } else if (pressedKeys[i] === 'w' && statesPlayers.P2.top > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
@@ -247,7 +181,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'd' &&
-          statesPlayers.P2.positions.left < rightLimit
+          statesPlayers.P2.left < rightLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -256,27 +190,21 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 's' &&
-          statesPlayers.P2.positions.top < bottomLimit
+          statesPlayers.P2.top < bottomLimit
         ) {
           dispatchPlayers({
-            type: 'move+',
+            type: 'move',
             player: 'P2',
             direction: 'top'
           });
-        } else if (
-          pressedKeys[i] === 'a' &&
-          statesPlayers.P2.positions.left > 0
-        ) {
+        } else if (pressedKeys[i] === 'a' && statesPlayers.P2.left > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
             player: 'P2',
             direction: 'left'
           });
-        } else if (
-          pressedKeys[i] === 'i' &&
-          statesPlayers.P3.positions.top > 0
-        ) {
+        } else if (pressedKeys[i] === 'i' && statesPlayers.P3.top > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
@@ -285,7 +213,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'l' &&
-          statesPlayers.P3.positions.left < rightLimit
+          statesPlayers.P3.left < rightLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -295,7 +223,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === 'k' &&
-          statesPlayers.P3.positions.top < bottomLimit
+          statesPlayers.P3.top < bottomLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -303,20 +231,14 @@ const Controller = (): JSX.Element => {
             player: 'P3',
             direction: 'top'
           });
-        } else if (
-          pressedKeys[i] === 'j' &&
-          statesPlayers.P3.positions.left > 0
-        ) {
+        } else if (pressedKeys[i] === 'j' && statesPlayers.P3.left > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
             player: 'P3',
             direction: 'left'
           });
-        } else if (
-          pressedKeys[i] === '8' &&
-          statesPlayers.P4.positions.top > 0
-        ) {
+        } else if (pressedKeys[i] === '8' && statesPlayers.P4.top > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
@@ -325,7 +247,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === '6' &&
-          statesPlayers.P4.positions.left < rightLimit
+          statesPlayers.P4.left < rightLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -335,7 +257,7 @@ const Controller = (): JSX.Element => {
           });
         } else if (
           pressedKeys[i] === '5' &&
-          statesPlayers.P4.positions.top < bottomLimit
+          statesPlayers.P4.top < bottomLimit
         ) {
           dispatchPlayers({
             type: 'move',
@@ -343,10 +265,7 @@ const Controller = (): JSX.Element => {
             player: 'P4',
             direction: 'top'
           });
-        } else if (
-          pressedKeys[i] === '4' &&
-          statesPlayers.P4.positions.left > 0
-        ) {
+        } else if (pressedKeys[i] === '4' && statesPlayers.P4.left > 0) {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
@@ -358,10 +277,90 @@ const Controller = (): JSX.Element => {
     }
   };
 
+  const handlePlay = (): void => {
+    let playable = true;
+
+    for (let i = 1; i <= players; i++) {
+      if (statesPlayers['P' + i].shape === '') {
+        dispatchPlayers({
+          type: 'changeShape',
+          operation: '',
+          player: ['P' + i],
+          shape: undefined
+        });
+      }
+      if (
+        statesPlayers['P' + i].shape === '' ||
+        statesPlayers['P' + i].shape === undefined
+      ) {
+        playable = false;
+      }
+    }
+
+    if (playable === false) return;
+
+    const topP1P2: number = containerHeight / 2 - statesGame.dimensions / 2;
+    const leftP3P4: number = containerWidth / 2 - statesGame.dimensions / 2;
+    const leftP2: number = containerWidth - statesGame.dimensions;
+    const topP4: number = containerHeight - statesGame.dimensions;
+
+    dispatchGame({
+      type: 'init'
+    });
+
+    dispatchPlayers({
+      type: 'init',
+      topP1P2,
+      leftP3P4,
+      leftP2,
+      topP4
+    });
+  };
+
+  const handleReset = (): void => {
+    dispatchGame({ type: 'reset' });
+    dispatchPlayers({ type: 'reset' });
+  };
+
   useEffect(() => {
     containerWidth = document.querySelector('#monitor').clientWidth;
     containerHeight = document.querySelector('#monitor').clientHeight;
   }, []);
+
+  useEffect(() => {
+    console.log('from effect');
+
+    const registerKey = (e): void => {
+      e.preventDefault();
+
+      const key = e.key;
+
+      if (directions.hasOwnProperty(key)) {
+        directions[key].pressed = true;
+      }
+    };
+
+    const cancelKey = (e): void => {
+      const key = e.key;
+
+      if (directions.hasOwnProperty(key)) {
+        directions[key].pressed = false;
+      }
+    };
+
+    if (statesGame.isRunning === true) {
+      document.addEventListener('keydown', registerKey);
+      document.addEventListener('keyup', cancelKey);
+    } else {
+      document.removeEventListener('keydown', registerKey);
+      document.removeEventListener('keyup', cancelKey);
+    }
+  }, [statesGame.isRunning]);
+
+  useEffect(() => {
+    if (statesGame.isRunning === true) handleMove();
+    //setTimeout(handleMove, 30 - 5 * statesGame.speed);
+  });
 
   return (
     <Container>

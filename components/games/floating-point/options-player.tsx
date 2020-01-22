@@ -7,14 +7,14 @@ import Color from './color';
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  width: 200px;
-  height: 400px;
+  width: 225px;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const Heading = styled.div`
-  flex: 4 4 0;
+  height: 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -22,9 +22,9 @@ const Heading = styled.div`
 `;
 
 const Options = styled.div`
+  flex: auto;
   padding: 10px;
   position: relative;
-  flex: 6 6 0;
   display: flex;
   flex-direction: row;
 `;
@@ -38,9 +38,11 @@ const OptionsDisabled = styled.div`
   background-color: #00000080;
 `;
 
-const DividerVerticalInvisible = styled.div`
+const DividerVertical = styled.div`
   width: 2px;
+  margin: 0 10px;
   display: inline-block;
+  background-color: #000000;
 `;
 
 const OptionsPlayer = ({ id }): JSX.Element => {
@@ -53,7 +55,7 @@ const OptionsPlayer = ({ id }): JSX.Element => {
       </Heading>
       <Options>
         <Shape id={id} />
-        <DividerVerticalInvisible />
+        <DividerVertical />
         <Color id={id} />
         {(!states.isTurnedOn || states.isRunning) && <OptionsDisabled />}
       </Options>

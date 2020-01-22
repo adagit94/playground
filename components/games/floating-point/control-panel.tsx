@@ -7,8 +7,8 @@ import OptionsPlayer from './options-player';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
+  height: 30%;
   padding: 10px;
 `;
 

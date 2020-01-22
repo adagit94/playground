@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.footer`
-  grid-area: foo;
+  grid-area: footer;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

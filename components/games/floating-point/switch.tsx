@@ -7,7 +7,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 2.5 2.5 0;
+  height: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,8 +18,8 @@ const Switch = (): JSX.Element => {
   const dispatch = useContext(ContextDispatchGame);
 
   const Button = styled.div`
-    width: 100px;
-    height: 100px;
+    width: 20px;
+    height: 20px;
     border-radius: 100%;
     background-color: ${states.isTurnedOn ? '#7dfa00' : '#f00'};
   `;

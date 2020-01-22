@@ -7,7 +7,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

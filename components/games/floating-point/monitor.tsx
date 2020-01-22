@@ -5,7 +5,7 @@ import Players from './players';
 import Point from './point';
 
 const Container = styled.div`
-  height: 80%;
+  height: 70%;
   position: relative;
 `;
 

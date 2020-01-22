@@ -6,8 +6,8 @@ import OptionsParameters from './options-parameters';
 import Buttons from './buttons';
 
 const Container = styled.div`
-  width: 300px;
-  height: 400px;
+  width: 225px;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;

@@ -4,6 +4,7 @@ import {
   InitFp,
   Initializer
 } from '../../interfaces/games/floating-point';
+import Defaults from '../../defaults/games/floating-point';
 
 export const initGame: InitGame = {
   isTurnedOn: false,
@@ -17,40 +18,40 @@ export const initGame: InitGame = {
 
 export const initPlayers: InitPlayers = {
   P1: {
-    top: 0,
-    left: 0,
-    shape: 'circle',
-    color: '#000000',
+    top: undefined,
+    left: undefined,
+    shape: 'square',
+    color: Defaults.P1.color,
     score: 0
   },
   P2: {
-    top: 0,
-    left: 0,
-    shape: 'square',
-    color: '#808080',
+    top: undefined,
+    left: undefined,
+    shape: 'circle',
+    color: Defaults.P2.color,
     score: 0
   },
   P3: {
-    top: 0,
-    left: 0,
+    top: undefined,
+    left: undefined,
     shape: 'rhombus',
-    color: '#708090',
+    color: Defaults.P3.color,
     score: 0
   },
   P4: {
-    top: 0,
-    left: 0,
+    top: undefined,
+    left: undefined,
     shape: 'ellipse',
-    color: '#2f4f4f',
+    color: Defaults.P4.color,
     score: 0
   },
-  shapesOthers: Array(4).fill(''),
-  colorsOthers: ['#f00', '#008000', '#00f', '#ff0']
+  shapesOthers: [],
+  colorsOthers: Defaults.colorsOthers
 };
 
 export const initFp: InitFp = {
-  top: 0,
-  left: 0
+  top: undefined,
+  left: undefined
 };
 
 export const init: Initializer = initState => initState;

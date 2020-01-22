@@ -31,10 +31,14 @@ const Shape = ({ id }): JSX.Element => {
   const states = useContext(ContextPlayers);
   const dispatch = useContext(ContextDispatchPlayers);
 
-  const othersSquare = states.shapesOthers.includes('square');
-  const othersCircle = states.shapesOthers.includes('circle');
-  const othersRhombus = states.shapesOthers.includes('rhombus');
-  const othersEllipse = states.shapesOthers.includes('ellipse');
+  const unclickableSquare =
+    states.shapesOthers.includes('square') && states[id].shape !== 'square';
+  const unclickableCircle =
+    states.shapesOthers.includes('circle') && states[id].shape !== 'circle';
+  const unclickableRhombus =
+    states.shapesOthers.includes('rhombus') && states[id].shape !== 'rhombus';
+  const unclickableEllipse =
+    states.shapesOthers.includes('ellipse') && states[id].shape !== 'ellipse';
 
   const Label = styled.label`
     flex: 5 5 0;
@@ -45,29 +49,29 @@ const Shape = ({ id }): JSX.Element => {
   `;
 
   const Square = styled.div`
-    opacity: ${othersSquare ? 0.2 : '1'};
+    opacity: ${unclickableSquare ? 0.2 : '1'};
     background-color: ${states[id].color};
-    border: ${states[id].shape === 'square' ? '2px solid #f00' : 'none'};
+    border: ${states[id].shape === 'square' ? '2px solid #000000' : 'none'};
   `;
 
   const Circle = styled.div`
-    opacity: ${othersCircle ? 0.2 : '1'};
+    opacity: ${unclickableCircle ? 0.2 : '1'};
     background-color: ${states[id].color};
-    border: ${states[id].shape === 'circle' ? '2px solid #f00' : 'none'};
+    border: ${states[id].shape === 'circle' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
   `;
 
   const Rhombus = styled.div`
-    opacity: ${othersRhombus ? 0.2 : '1'};
+    opacity: ${unclickableRhombus ? 0.2 : '1'};
     background-color: ${states[id].color};
-    border: ${states[id].shape === 'rhombus' ? '2px solid #f00' : 'none'};
+    border: ${states[id].shape === 'rhombus' ? '2px solid #000000' : 'none'};
     transform: rotate(45deg);
   `;
 
   const Ellipse = styled.div`
-    opacity: ${othersEllipse ? 0.2 : '1'};
+    opacity: ${unclickableEllipse ? 0.2 : '1'};
     background-color: ${states[id].color};
-    border: ${states[id].shape === 'ellipse' ? '2px solid #f00' : 'none'};
+    border: ${states[id].shape === 'ellipse' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
     transform: rotateX(45deg);
   `;
@@ -78,13 +82,13 @@ const Shape = ({ id }): JSX.Element => {
       <Items>
         <Square
           onClick={
-            othersSquare
+            unclickableSquare
               ? null
               : (): void => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[id].shape === ''
+                      states[id].shape === '' || states[id].shape === undefined
                         ? 'add'
                         : states[id].shape === 'square'
                         ? 'remove'
@@ -97,13 +101,13 @@ const Shape = ({ id }): JSX.Element => {
         />
         <Circle
           onClick={
-            othersCircle
+            unclickableCircle
               ? null
               : (): void => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[id].shape === ''
+                      states[id].shape === '' || states[id].shape === undefined
                         ? 'add'
                         : states[id].shape === 'circle'
                         ? 'remove'
@@ -116,13 +120,13 @@ const Shape = ({ id }): JSX.Element => {
         />
         <Rhombus
           onClick={
-            othersRhombus
+            unclickableRhombus
               ? null
               : (): void => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[id].shape === ''
+                      states[id].shape === '' || states[id].shape === undefined
                         ? 'add'
                         : states[id].shape === 'rhombus'
                         ? 'remove'
@@ -135,13 +139,13 @@ const Shape = ({ id }): JSX.Element => {
         />
         <Ellipse
           onClick={
-            othersEllipse
+            unclickableEllipse
               ? null
               : (): void => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[id].shape === ''
+                      states[id].shape === '' || states[id].shape === undefined
                         ? 'add'
                         : states[id].shape === 'ellipse'
                         ? 'remove'
