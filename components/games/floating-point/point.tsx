@@ -5,12 +5,12 @@ import { ContextGame, ContextFp } from '../../../contexts/games/floating-point';
 
 const Point = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
-  const statesFp = useContext(ContextFp);
+  const statesFP = useContext(ContextFp);
 
   const Point = styled.div`
     position: absolute;
-    top: ${statesFp.top};
-    left: ${statesFp.left};
+    top: ${statesFP.top}px;
+    left: ${statesFP.left}px;
     width: 50px;
     height: 50px;
     background-color: #8b0000;

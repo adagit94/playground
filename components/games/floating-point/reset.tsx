@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ContextCallbacks } from '../../../contexts/games/floating-point';
+import {
+  ContextDispatchGame,
+  ContextDispatchPlayers
+} from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
   flex: 5 5 0;
@@ -18,11 +21,19 @@ const Button = styled.input`
 `;
 
 const Reset = (): JSX.Element => {
-  const callbacks = useContext(ContextCallbacks);
+  const dispatchGame = useContext(ContextDispatchGame);
+  const dispatchPlayers = useContext(ContextDispatchPlayers);
 
   return (
     <Container>
-      <Button onClick={callbacks.handleReset} value='Reset' type='button' />
+      <Button
+        onClick={(): void => {
+          dispatchGame({ type: 'reset' });
+          dispatchPlayers({ type: 'reset' });
+        }}
+        value='Reset'
+        type='button'
+      />
     </Container>
   );
 };

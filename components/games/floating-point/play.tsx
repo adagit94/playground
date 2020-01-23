@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import {
   ContextGame,
+  ContextDispatchGame,
   ContextCallbacks
 } from '../../../contexts/games/floating-point';
 
@@ -22,13 +23,18 @@ const Button = styled.input`
 
 const Play = (): JSX.Element => {
   const states = useContext(ContextGame);
+  const dispatch = useContext(ContextDispatchGame);
   const callbacks = useContext(ContextCallbacks);
 
   return (
     <Container>
       <Button
-        onClick={callbacks.handlePlay}
-        value={states.isPaused || !states.isRunning ? 'Play' : 'Pause'}
+        onClick={
+          !states.isRunning
+            ? callbacks.handlePlay
+            : (): void => dispatch({ type: 'pause' })
+        }
+        value={!states.isRunning ? 'Play' : 'Pause'}
         type='button'
       />
     </Container>

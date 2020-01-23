@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import { Directions } from '../../../interfaces/games/floating-point';
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
@@ -12,57 +11,9 @@ import * as Contexts from '../../../contexts/games/floating-point';
 let handlePointInterval;
 let containerWidth: number;
 let containerHeight: number;
+
 const players = 4;
-const directions: Directions = {
-  ArrowUp: {
-    pressed: false
-  },
-  ArrowRight: {
-    pressed: false
-  },
-  ArrowDown: {
-    pressed: false
-  },
-  ArrowLeft: {
-    pressed: false
-  },
-  w: {
-    pressed: false
-  },
-  d: {
-    pressed: false
-  },
-  s: {
-    pressed: false
-  },
-  a: {
-    pressed: false
-  },
-  i: {
-    pressed: false
-  },
-  l: {
-    pressed: false
-  },
-  k: {
-    pressed: false
-  },
-  j: {
-    pressed: false
-  },
-  '8': {
-    pressed: false
-  },
-  '6': {
-    pressed: false
-  },
-  '5': {
-    pressed: false
-  },
-  '4': {
-    pressed: false
-  }
-};
+
 
 const Container = styled.div`
   display: flex;
@@ -88,57 +39,98 @@ const Controller = (): JSX.Element => {
     Inits.init
   );
 
-  const [statesFp, dispatchFp]: any = useReducer(
-    Reducers.reducerFp,
-    Inits.initFp,
+  const [statesFP, dispatchFP]: any = useReducer(
+    Reducers.reducerFP,
+    Inits.initFP,
     Inits.init
   );
+
+  const [statesCK, dispatchCK]: any = useReducer(
+    Reducers.reducerCK,
+    Inits.initCK,
+    Inits.init
+  );
+
+  const registerKey = (e): void => {
+    e.preventDefault();
+  
+    const key = e.key;
+  
+    if (statesCK.hasOwnProperty(key)) {
+      statesCK[key].pressed = true;
+    }
+  };
+  
+  const cancelKey = (e): void => {
+    const key = e.key;
+  
+    if (statesCK.hasOwnProperty(key)) {
+      statesCK[key].pressed = false;
+    }
+  };
+
+  const moveFP = (): void => {
+    const top: number = Math.random() * containerHeight;
+    const left: number = Math.random() * containerWidth;
+
+    dispatchFP({
+      type: 'move',
+      top,
+      left
+    });
+  };
 
   const matchFloatingPoint = (): void => {
     for (let i = 1; i <= 4; i++) {
       if (
-        (statesPlayers['P' + i].top >= statesFp.top ||
-          statesPlayers['P' + i].top + statesGame.dimensions >= statesFp.top) &&
-        statesPlayers['P' + i].top <= statesFp.top + 50 &&
-        (statesPlayers['P' + i].left >= statesFp.left ||
+        (statesPlayers['P' + i].top >= statesFP.top ||
+          statesPlayers['P' + i].top + statesGame.dimensions >= statesFP.top) &&
+        statesPlayers['P' + i].top <= statesFP.top + 50 &&
+        (statesPlayers['P' + i].left >= statesFP.left ||
           statesPlayers['P' + i].left + statesGame.dimensions >=
-            statesFp.left) &&
-        statesPlayers['P' + i].left <= statesFp.left + 50
+            statesFP.left) &&
+        statesPlayers['P' + i].left <= statesFP.left + 50
       ) {
-        const top: number = Math.random() * containerHeight;
-        const left: number = Math.random() * containerWidth;
-
         dispatchPlayers({
           type: 'addScore',
           player: 'P' + i
         });
 
-        dispatchFp({
-          type: 'move',
-          top,
-          left
-        });
+        moveFP();
       }
     }
   };
 
   const handleMove = (): void => {
-    console.log(1);
     const pressedKeys: Array<string> = [];
 
-    for (const direction in directions) {
-      if (directions[direction].pressed === true) pressedKeys.push(direction);
+    for (const key in statesCK) {
+      if (statesCK[key].pressed === true) {
+        switch ()
+      };
+      pressedKeys.push(direction);
     }
 
     if (pressedKeys.length > 0) {
       const rightLimit: number = containerWidth - statesGame.dimensions;
       const bottomLimit: number = containerHeight - statesGame.dimensions;
 
+      pressedKeys.forEach(dir => {
+        const dispatch = (): void => {
+          dispatchPlayers({
+            type: 'move',
+            operation: statesCK[dir].operation,
+            direction: statesCK[dir].direction,
+            player: statesCK[dir].player
+          });
+        };
+      });
+
       for (let i = 0; i < pressedKeys.length; i++) {
         if (pressedKeys[i] === 'ArrowUp' && statesPlayers.P1.top > 0) {
           dispatchPlayers({
             type: 'move',
-            operation: 'add',
+            operation: 'subtract',
             player: 'P1',
             direction: 'top'
           });
@@ -185,6 +177,7 @@ const Controller = (): JSX.Element => {
         ) {
           dispatchPlayers({
             type: 'move',
+            operation: 'add',
             player: 'P2',
             direction: 'left'
           });
@@ -194,6 +187,7 @@ const Controller = (): JSX.Element => {
         ) {
           dispatchPlayers({
             type: 'move',
+            operation: 'add',
             player: 'P2',
             direction: 'top'
           });
@@ -315,11 +309,8 @@ const Controller = (): JSX.Element => {
       leftP2,
       topP4
     });
-  };
 
-  const handleReset = (): void => {
-    dispatchGame({ type: 'reset' });
-    dispatchPlayers({ type: 'reset' });
+    moveFP();
   };
 
   useEffect(() => {
@@ -328,53 +319,38 @@ const Controller = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log('from effect');
+    if (statesGame.isRunning === true && handlePointInterval === undefined) {
+      handlePointInterval = window.setInterval(
+        handleMove,
+        30 - 5 * statesGame.speed
+      );
 
-    const registerKey = (e): void => {
-      e.preventDefault();
+      window.addEventListener('keydown', registerKey);
+      window.addEventListener('keyup', cancelKey);
+    } else if (
+      statesGame.isRunning === false &&
+      handlePointInterval !== undefined
+    ) {
+      window.clearInterval(handlePointInterval);
+      handlePointInterval = undefined;
 
-      const key = e.key;
-
-      if (directions.hasOwnProperty(key)) {
-        directions[key].pressed = true;
-      }
-    };
-
-    const cancelKey = (e): void => {
-      const key = e.key;
-
-      if (directions.hasOwnProperty(key)) {
-        directions[key].pressed = false;
-      }
-    };
-
-    if (statesGame.isRunning === true) {
-      document.addEventListener('keydown', registerKey);
-      document.addEventListener('keyup', cancelKey);
-    } else {
-      document.removeEventListener('keydown', registerKey);
-      document.removeEventListener('keyup', cancelKey);
+      window.removeEventListener('keydown', registerKey);
+      window.removeEventListener('keyup', cancelKey);
     }
-  }, [statesGame.isRunning]);
-
-  useEffect(() => {
-    if (statesGame.isRunning === true) handleMove();
-    //setTimeout(handleMove, 30 - 5 * statesGame.speed);
   });
-
+  //console.log(handlePointInterval);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
         <Contexts.ContextPlayers.Provider value={statesPlayers}>
-          <Contexts.ContextFp.Provider value={statesFp}>
+          <Contexts.ContextFp.Provider value={statesFP}>
             <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
               <Contexts.ContextDispatchPlayers.Provider value={dispatchPlayers}>
-                <Contexts.ContextDispatchFp.Provider value={dispatchFp}>
+                <Contexts.ContextdispatchFP.Provider value={dispatchFP}>
                   <Contexts.ContextCallbacks.Provider
                     value={{
                       matchFloatingPoint,
                       handlePlay,
-                      handleReset,
                       handleMove
                     }}
                   >
@@ -382,7 +358,7 @@ const Controller = (): JSX.Element => {
                     <DividerHorizontal />
                     <ControlPanel />
                   </Contexts.ContextCallbacks.Provider>
-                </Contexts.ContextDispatchFp.Provider>
+                </Contexts.ContextdispatchFP.Provider>
               </Contexts.ContextDispatchPlayers.Provider>
             </Contexts.ContextDispatchGame.Provider>
           </Contexts.ContextFp.Provider>

@@ -12,9 +12,39 @@ interface DefaultsPlayer {
 
 interface Key {
   pressed: boolean;
+  operation: string;
+  direction: string;
+  player: string;
 }
 
-export interface Directions {
+export interface Initializer {
+  (initStates: InitGame | InitPlayers | InitFP | InitCK): object;
+}
+
+export interface InitGame {
+  readonly isTurnedOn: boolean;
+  readonly isRunning: boolean;
+  readonly mode: string;
+  readonly dimensions: number;
+  readonly speed: number;
+  readonly visibility: string;
+}
+
+export interface InitPlayers {
+  readonly P1: PlayersPlayer;
+  readonly P2: PlayersPlayer;
+  readonly P3: PlayersPlayer;
+  readonly P4: PlayersPlayer;
+  readonly shapesOthers: Array<string>;
+  readonly colorsOthers: Array<string>;
+}
+
+export interface InitFP {
+  readonly top: number;
+  readonly left: number;
+}
+
+export interface InitCK {
   ArrowUp: Key;
   ArrowRight: Key;
   ArrowDown: Key;
@@ -31,34 +61,6 @@ export interface Directions {
   '6': Key;
   '5': Key;
   '4': Key;
-}
-
-export interface InitGame {
-  readonly isTurnedOn: boolean;
-  readonly isRunning: boolean;
-  readonly isPaused: boolean;
-  readonly mode: string;
-  readonly dimensions: number;
-  readonly speed: number;
-  readonly visibility: string;
-}
-
-export interface InitPlayers {
-  readonly P1: PlayersPlayer;
-  readonly P2: PlayersPlayer;
-  readonly P3: PlayersPlayer;
-  readonly P4: PlayersPlayer;
-  readonly shapesOthers: Array<string>;
-  readonly colorsOthers: Array<string>;
-}
-
-export interface InitFp {
-  readonly top: number;
-  readonly left: number;
-}
-
-export interface Initializer {
-  (initStates: InitGame | InitPlayers | InitFp): object;
 }
 
 export interface Reducer {

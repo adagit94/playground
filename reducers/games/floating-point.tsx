@@ -25,7 +25,6 @@ export const reducerGame: Reducer = (state, action) => {
       return {
         ...state,
         isRunning: false,
-        isPaused: false,
         visibility: 'hidden',
         dimensions: Defaults.dimensions,
         speed: Defaults.speed
@@ -34,13 +33,13 @@ export const reducerGame: Reducer = (state, action) => {
     case 'pause':
       return {
         ...state,
-        isPaused: !state.isPaused
+        isRunning: !state.isRunning
       };
 
     case 'changeDimensions':
       return {
         ...state,
-        dimensions: Number(action.dimensions)
+        dimensions: action.dimensions
       };
 
     case 'changeSpeed':
@@ -174,11 +173,23 @@ export const reducerPlayers: Reducer = (state, action) => {
   }
 };
 
-export const reducerFp: Reducer = (state, action) => {
+export const reducerFP: Reducer = (state, action) => {
   switch (action.type) {
     case 'move':
       return {
-        ...state,
+        top: action.top,
+        left: action.left
+      };
+
+    default:
+      throw new Error('Unspecified action');
+  }
+};
+
+export const reducerCK: Reducer = (state, action) => {
+  switch (action.type) {
+    case 'move':
+      return {
         top: action.top,
         left: action.left
       };

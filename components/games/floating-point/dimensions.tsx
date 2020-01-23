@@ -38,7 +38,10 @@ const Dimensions = (): JSX.Element => {
       <label htmlFor='dimensions'>Dimensions: </label>
       <input
         onChange={(e): void =>
-          dispatch({ type: 'changeDimensions', dimensions: e.target.value })
+          dispatch({
+            type: 'changeDimensions',
+            dimensions: Number(e.target.value)
+          })
         }
         value={states.dimensions}
         type='range'
