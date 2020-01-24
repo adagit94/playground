@@ -12,7 +12,6 @@ interface DefaultsPlayer {
 
 interface Key {
   pressed: boolean;
-  condition: string;
   operation: string;
   direction: string;
   player: string;
