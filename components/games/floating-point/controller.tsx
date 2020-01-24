@@ -7,13 +7,130 @@ import ControlPanel from './control-panel';
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
+import { ControlKeys } from '../../../interfaces/games/floating-point';
 
 let handlePointInterval;
 let containerWidth: number;
 let containerHeight: number;
+const topLeftSubtract = ['ArrowUp', 'ArrowLeft', 'w', 'a', 'i', 'j', '8', '4'];
+const topAdd = ['ArrowDown', 's', 'k', '5'];
+const leftAdd = ['ArrowRight', 'd', 'l', '6'];
+const controlKeys: ControlKeys = {
+  ArrowUp: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'top',
+    player: 'P1'
+  },
+  ArrowRight: {
+    pressed: false,
+    operation: 'add',
+    direction: 'left',
+    player: 'P1'
+  },
+  ArrowDown: {
+    pressed: false,
+    operation: 'add',
+    direction: 'top',
+    player: 'P1'
+  },
+  ArrowLeft: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'left',
+    player: 'P1'
+  },
+  w: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'top',
+    player: 'P2'
+  },
+  d: {
+    pressed: false,
+    operation: 'add',
+    direction: 'left',
+    player: 'P2'
+  },
+  s: {
+    pressed: false,
+    operation: 'add',
+    direction: 'top',
+    player: 'P2'
+  },
+  a: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'left',
+    player: 'P2'
+  },
+  i: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'top',
+    player: 'P3'
+  },
+  l: {
+    pressed: false,
+    operation: 'add',
+    direction: 'left',
+    player: 'P3'
+  },
+  k: {
+    pressed: false,
+    operation: 'add',
+    direction: 'top',
+    player: 'P3'
+  },
+  j: {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'left',
+    player: 'P3'
+  },
+  '8': {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'top',
+    player: 'P4'
+  },
+  '6': {
+    pressed: false,
+    operation: 'add',
+    direction: 'left',
+    player: 'P4'
+  },
+  '5': {
+    pressed: false,
+    operation: 'add',
+    direction: 'top',
+    player: 'P4'
+  },
+  '4': {
+    pressed: false,
+    operation: 'subtract',
+    direction: 'left',
+    player: 'P4'
+  }
+};
 
-const players = 4;
+const registerKey = (e): void => {
+  e.preventDefault();
 
+  const key = e.key;
+
+  if (controlKeys.hasOwnProperty(key) && controlKeys[key].pressed !== true) {
+    controlKeys[key].pressed = true;
+  }
+};
+
+const cancelKey = (e): void => {
+  const key = e.key;
+
+  if (controlKeys.hasOwnProperty(key)) {
+    controlKeys[key].pressed = false;
+  }
+};
 
 const Container = styled.div`
   display: flex;
@@ -45,30 +162,6 @@ const Controller = (): JSX.Element => {
     Inits.init
   );
 
-  const [statesCK, dispatchCK]: any = useReducer(
-    Reducers.reducerCK,
-    Inits.initCK,
-    Inits.init
-  );
-
-  const registerKey = (e): void => {
-    e.preventDefault();
-  
-    const key = e.key;
-  
-    if (statesCK.hasOwnProperty(key)) {
-      statesCK[key].pressed = true;
-    }
-  };
-  
-  const cancelKey = (e): void => {
-    const key = e.key;
-  
-    if (statesCK.hasOwnProperty(key)) {
-      statesCK[key].pressed = false;
-    }
-  };
-
   const moveFP = (): void => {
     const top: number = Math.random() * containerHeight;
     const left: number = Math.random() * containerWidth;
@@ -79,7 +172,7 @@ const Controller = (): JSX.Element => {
       left
     });
   };
-
+  console.log(controlKeys['ArrowUp'].pressed);
   const matchFloatingPoint = (): void => {
     for (let i = 1; i <= 4; i++) {
       if (
@@ -102,171 +195,26 @@ const Controller = (): JSX.Element => {
   };
 
   const handleMove = (): void => {
-    const pressedKeys: Array<string> = [];
+    for (const key in controlKeys) {
+      if (controlKeys[key].pressed === true) {
+        const operation = controlKeys[key].operation;
+        const direction = controlKeys[key].direction;
+        const player = controlKeys[key].player;
 
-    for (const key in statesCK) {
-      if (statesCK[key].pressed === true) {
-        switch ()
-      };
-      pressedKeys.push(direction);
-    }
-
-    if (pressedKeys.length > 0) {
-      const rightLimit: number = containerWidth - statesGame.dimensions;
-      const bottomLimit: number = containerHeight - statesGame.dimensions;
-
-      pressedKeys.forEach(dir => {
-        const dispatch = (): void => {
-          dispatchPlayers({
-            type: 'move',
-            operation: statesCK[dir].operation,
-            direction: statesCK[dir].direction,
-            player: statesCK[dir].player
-          });
-        };
-      });
-
-      for (let i = 0; i < pressedKeys.length; i++) {
-        if (pressedKeys[i] === 'ArrowUp' && statesPlayers.P1.top > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P1',
-            direction: 'top'
-          });
-        } else if (
-          pressedKeys[i] === 'ArrowRight' &&
-          statesPlayers.P1.left < rightLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P1',
-            direction: 'left'
-          });
-        } else if (
-          pressedKeys[i] === 'ArrowDown' &&
-          statesPlayers.P1.top < bottomLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P1',
-            direction: 'top'
-          });
-        } else if (
-          pressedKeys[i] === 'ArrowLeft' &&
-          statesPlayers.P1.left > 0
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P1',
-            direction: 'left'
-          });
-        } else if (pressedKeys[i] === 'w' && statesPlayers.P2.top > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P2',
-            direction: 'top'
-          });
-        } else if (
-          pressedKeys[i] === 'd' &&
-          statesPlayers.P2.left < rightLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P2',
-            direction: 'left'
-          });
-        } else if (
-          pressedKeys[i] === 's' &&
-          statesPlayers.P2.top < bottomLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P2',
-            direction: 'top'
-          });
-        } else if (pressedKeys[i] === 'a' && statesPlayers.P2.left > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P2',
-            direction: 'left'
-          });
-        } else if (pressedKeys[i] === 'i' && statesPlayers.P3.top > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P3',
-            direction: 'top'
-          });
-        } else if (
-          pressedKeys[i] === 'l' &&
-          statesPlayers.P3.left < rightLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P3',
-            direction: 'left'
-          });
-        } else if (
-          pressedKeys[i] === 'k' &&
-          statesPlayers.P3.top < bottomLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P3',
-            direction: 'top'
-          });
-        } else if (pressedKeys[i] === 'j' && statesPlayers.P3.left > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P3',
-            direction: 'left'
-          });
-        } else if (pressedKeys[i] === '8' && statesPlayers.P4.top > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P4',
-            direction: 'top'
-          });
-        } else if (
-          pressedKeys[i] === '6' &&
-          statesPlayers.P4.left < rightLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P4',
-            direction: 'left'
-          });
-        } else if (
-          pressedKeys[i] === '5' &&
-          statesPlayers.P4.top < bottomLimit
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            player: 'P4',
-            direction: 'top'
-          });
-        } else if (pressedKeys[i] === '4' && statesPlayers.P4.left > 0) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            player: 'P4',
-            direction: 'left'
-          });
+        if (topLeftSubtract.includes(key)) {
+          statesPlayers[player][direction] > 0;
+        } else if (topAdd.includes(key)) {
+          statesPlayers[player][direction] < containerHeight - statesGame.dimensions
+        }else if (leftAdd.includes(key)) {
+            statesPlayers[player][direction] < containerWidth - statesGame.dimensions
+          }
         }
+        dispatchPlayers({
+          type: 'move',
+          operation,
+          direction,
+          player
+        });
       }
     }
   };
@@ -274,7 +222,7 @@ const Controller = (): JSX.Element => {
   const handlePlay = (): void => {
     let playable = true;
 
-    for (let i = 1; i <= players; i++) {
+    for (let i = 1; i <= statesGame.players; i++) {
       if (statesPlayers['P' + i].shape === '') {
         dispatchPlayers({
           type: 'changeShape',
@@ -343,25 +291,24 @@ const Controller = (): JSX.Element => {
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
         <Contexts.ContextPlayers.Provider value={statesPlayers}>
-          <Contexts.ContextFp.Provider value={statesFP}>
+          <Contexts.ContextFP.Provider value={statesFP}>
             <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
               <Contexts.ContextDispatchPlayers.Provider value={dispatchPlayers}>
-                <Contexts.ContextdispatchFP.Provider value={dispatchFP}>
+                <Contexts.ContextDispatchFP.Provider value={dispatchFP}>
                   <Contexts.ContextCallbacks.Provider
                     value={{
                       matchFloatingPoint,
-                      handlePlay,
-                      handleMove
+                      handlePlay
                     }}
                   >
                     <Monitor />
                     <DividerHorizontal />
                     <ControlPanel />
                   </Contexts.ContextCallbacks.Provider>
-                </Contexts.ContextdispatchFP.Provider>
+                </Contexts.ContextDispatchFP.Provider>
               </Contexts.ContextDispatchPlayers.Provider>
             </Contexts.ContextDispatchGame.Provider>
-          </Contexts.ContextFp.Provider>
+          </Contexts.ContextFP.Provider>
         </Contexts.ContextPlayers.Provider>
       </Contexts.ContextGame.Provider>
     </Container>

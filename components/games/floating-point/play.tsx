@@ -32,7 +32,7 @@ const Play = (): JSX.Element => {
         onClick={
           !states.isRunning
             ? callbacks.handlePlay
-            : (): void => dispatch({ type: 'pause' })
+            : (): void => dispatch({ type: 'changePause' })
         }
         value={!states.isRunning ? 'Play' : 'Pause'}
         type='button'

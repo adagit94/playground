@@ -12,16 +12,37 @@ interface DefaultsPlayer {
 
 interface Key {
   pressed: boolean;
+  condition: string;
   operation: string;
   direction: string;
   player: string;
 }
 
+export interface ControlKeys {
+  ArrowUp: Key;
+  ArrowRight: Key;
+  ArrowDown: Key;
+  ArrowLeft: Key;
+  w: Key;
+  d: Key;
+  s: Key;
+  a: Key;
+  i: Key;
+  l: Key;
+  k: Key;
+  j: Key;
+  '8': Key;
+  '6': Key;
+  '5': Key;
+  '4': Key;
+}
+
 export interface Initializer {
-  (initStates: InitGame | InitPlayers | InitFP | InitCK): object;
+  (initStates: InitGame | InitPlayers | InitFP | ControlKeys): object;
 }
 
 export interface InitGame {
+  readonly players: number;
   readonly isTurnedOn: boolean;
   readonly isRunning: boolean;
   readonly mode: string;
@@ -42,25 +63,6 @@ export interface InitPlayers {
 export interface InitFP {
   readonly top: number;
   readonly left: number;
-}
-
-export interface InitCK {
-  ArrowUp: Key;
-  ArrowRight: Key;
-  ArrowDown: Key;
-  ArrowLeft: Key;
-  w: Key;
-  d: Key;
-  s: Key;
-  a: Key;
-  i: Key;
-  l: Key;
-  k: Key;
-  j: Key;
-  '8': Key;
-  '6': Key;
-  '5': Key;
-  '4': Key;
 }
 
 export interface Reducer {

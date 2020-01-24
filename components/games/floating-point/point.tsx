@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ContextGame, ContextFp } from '../../../contexts/games/floating-point';
+import { ContextGame, ContextFP } from '../../../contexts/games/floating-point';
 
 const Point = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
-  const statesFP = useContext(ContextFp);
+  const statesFP = useContext(ContextFP);
 
   const Point = styled.div`
     position: absolute;

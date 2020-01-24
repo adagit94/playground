@@ -30,7 +30,7 @@ export const reducerGame: Reducer = (state, action) => {
         speed: Defaults.speed
       };
 
-    case 'pause':
+    case 'changePause':
       return {
         ...state,
         isRunning: !state.isRunning
@@ -174,19 +174,6 @@ export const reducerPlayers: Reducer = (state, action) => {
 };
 
 export const reducerFP: Reducer = (state, action) => {
-  switch (action.type) {
-    case 'move':
-      return {
-        top: action.top,
-        left: action.left
-      };
-
-    default:
-      throw new Error('Unspecified action');
-  }
-};
-
-export const reducerCK: Reducer = (state, action) => {
   switch (action.type) {
     case 'move':
       return {
