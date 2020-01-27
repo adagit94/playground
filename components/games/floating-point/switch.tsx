@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import {
   ContextGame,
-  ContextDispatchGame
+  ContextDispatchGame,
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -15,7 +16,8 @@ const Container = styled.div`
 
 const Switch = (): JSX.Element => {
   const states = useContext(ContextGame);
-  const dispatch = useContext(ContextDispatchGame);
+  const dispatchGame = useContext(ContextDispatchGame);
+  const dispatchParams = useContext(ContextDispatchParams);
 
   const Button = styled.div`
     width: 20px;
@@ -27,9 +29,14 @@ const Switch = (): JSX.Element => {
   return (
     <Container>
       <Button
-        onClick={(): void =>
-          dispatch({ type: states.isTurnedOn ? 'switchOff' : 'switchOn' })
-        }
+        onClick={(): void => {
+          if (states.isTurnedOn) {
+            dispatchGame({ type: 'switchOff' });
+            dispatchParams({ type: 'reset' });
+          } else {
+            dispatchGame({ type: 'switchOn' });
+          }
+        }}
       />
     </Container>
   );

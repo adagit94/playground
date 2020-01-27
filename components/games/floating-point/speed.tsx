@@ -29,7 +29,6 @@ const Speed = (): JSX.Element => {
         type='range'
         min='1'
         max='5'
-        step='2'
         id='speed'
       />
       {states.speed > 0 && states.speed + 'x'}

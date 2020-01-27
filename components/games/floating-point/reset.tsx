@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import {
   ContextDispatchGame,
-  ContextDispatchPlayers
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -22,14 +22,14 @@ const Button = styled.input`
 
 const Reset = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
+  const dispatchParams = useContext(ContextDispatchParams);
 
   return (
     <Container>
       <Button
         onClick={(): void => {
           dispatchGame({ type: 'reset' });
-          dispatchPlayers({ type: 'reset' });
+          dispatchParams({ type: 'reset' });
         }}
         value='Reset'
         type='button'

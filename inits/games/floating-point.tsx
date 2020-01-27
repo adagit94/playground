@@ -2,6 +2,7 @@ import {
   Initializer,
   InitGame,
   InitPlayers,
+  InitParams,
   InitFP
 } from '../../interfaces/games/floating-point';
 
@@ -13,6 +14,7 @@ export const initGame: InitGame = {
   players: 4,
   isTurnedOn: false,
   isRunning: false,
+  isPaused: false,
   mode: 'fP',
   dimensions: undefined,
   speed: undefined,
@@ -23,30 +25,41 @@ export const initPlayers: InitPlayers = {
   P1: {
     top: undefined,
     left: undefined,
-    shape: 'square',
-    color: Defaults.P1.color,
-    score: 0
+    score: undefined
   },
   P2: {
     top: undefined,
     left: undefined,
-    shape: 'circle',
-    color: Defaults.P2.color,
-    score: 0
+    score: undefined
   },
   P3: {
     top: undefined,
     left: undefined,
-    shape: 'rhombus',
-    color: Defaults.P3.color,
-    score: 0
+    score: undefined
   },
   P4: {
     top: undefined,
     left: undefined,
+    score: undefined
+  }
+};
+
+export const initParams: InitParams = {
+  P1: {
+    shape: 'square',
+    color: Defaults.P1.color
+  },
+  P2: {
+    shape: 'circle',
+    color: Defaults.P2.color
+  },
+  P3: {
+    shape: 'rhombus',
+    color: Defaults.P3.color
+  },
+  P4: {
     shape: 'ellipse',
-    color: Defaults.P4.color,
-    score: 0
+    color: Defaults.P4.color
   },
   shapesOthers: [],
   colorsOthers: Defaults.colorsOthers

@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import {
-  ContextPlayers,
-  ContextDispatchPlayers
+  ContextParams,
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -28,8 +28,8 @@ const Items = styled.div`
 `;
 
 const Shape = ({ id }): JSX.Element => {
-  const states = useContext(ContextPlayers);
-  const dispatch = useContext(ContextDispatchPlayers);
+  const states = useContext(ContextParams);
+  const dispatch = useContext(ContextDispatchParams);
 
   const unclickableSquare =
     states.shapesOthers.includes('square') && states[id].shape !== 'square';

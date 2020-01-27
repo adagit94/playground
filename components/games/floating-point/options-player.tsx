@@ -57,7 +57,9 @@ const OptionsPlayer = ({ id }): JSX.Element => {
         <Shape id={id} />
         <DividerVertical />
         <Color id={id} />
-        {(!states.isTurnedOn || states.isRunning) && <OptionsDisabled />}
+        {(!states.isTurnedOn || states.isRunning || states.isPaused) && (
+          <OptionsDisabled />
+        )}
       </Options>
     </Container>
   );

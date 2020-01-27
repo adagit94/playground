@@ -10,11 +10,12 @@ import * as Contexts from '../../../contexts/games/floating-point';
 import { ControlKeys } from '../../../interfaces/games/floating-point';
 
 let handlePointInterval;
-let containerWidth: number;
-let containerHeight: number;
-const topLeftSubtract = ['ArrowUp', 'ArrowLeft', 'w', 'a', 'i', 'j', '8', '4'];
-const topAdd = ['ArrowDown', 's', 'k', '5'];
-const leftAdd = ['ArrowRight', 'd', 'l', '6'];
+
+const monitor = {
+  width: undefined,
+  height: undefined
+};
+
 const controlKeys: ControlKeys = {
   ArrowUp: {
     pressed: false,
@@ -111,7 +112,10 @@ const controlKeys: ControlKeys = {
     operation: 'subtract',
     direction: 'left',
     player: 'P4'
-  }
+  },
+  topLeft: ['ArrowUp', 'ArrowLeft', 'w', 'a', 'i', 'j', '8', '4'],
+  bottom: ['ArrowDown', 's', 'k', '5'],
+  right: ['ArrowRight', 'd', 'l', '6']
 };
 
 const registerKey = (e): void => {
@@ -150,9 +154,16 @@ const Controller = (): JSX.Element => {
     Inits.initGame,
     Inits.init
   );
+
   const [statesPlayers, dispatchPlayers]: any = useReducer(
     Reducers.reducerPlayers,
     Inits.initPlayers,
+    Inits.init
+  );
+
+  const [statesParams, dispatchParams]: any = useReducer(
+    Reducers.reducerParams,
+    Inits.initParams,
     Inits.init
   );
 
@@ -162,112 +173,46 @@ const Controller = (): JSX.Element => {
     Inits.init
   );
 
-  const moveFP = (): void => {
-    const top: number = Math.random() * containerHeight;
-    const left: number = Math.random() * containerWidth;
-
-    dispatchFP({
-      type: 'move',
-      top,
-      left
-    });
-  };
-  console.log(controlKeys['ArrowUp'].pressed);
-  const matchFloatingPoint = (): void => {
-    for (let i = 1; i <= 4; i++) {
-      if (
-        (statesPlayers['P' + i].top >= statesFP.top ||
-          statesPlayers['P' + i].top + statesGame.dimensions >= statesFP.top) &&
-        statesPlayers['P' + i].top <= statesFP.top + 50 &&
-        (statesPlayers['P' + i].left >= statesFP.left ||
-          statesPlayers['P' + i].left + statesGame.dimensions >=
-            statesFP.left) &&
-        statesPlayers['P' + i].left <= statesFP.left + 50
-      ) {
-        dispatchPlayers({
-          type: 'addScore',
-          player: 'P' + i
-        });
-
-        moveFP();
-      }
-    }
-  };
-
   const handleMove = (): void => {
     for (const key in controlKeys) {
       if (controlKeys[key].pressed === true) {
-        const operation = controlKeys[key].operation;
         const direction = controlKeys[key].direction;
         const player = controlKeys[key].player;
 
-        if (topLeftSubtract.includes(key)) {
-          statesPlayers[player][direction] > 0;
-        } else if (topAdd.includes(key)) {
-          statesPlayers[player][direction] < containerHeight - statesGame.dimensions
-        }else if (leftAdd.includes(key)) {
-            statesPlayers[player][direction] < containerWidth - statesGame.dimensions
-          }
+        if (
+          (controlKeys.topLeft.includes(key) &&
+            statesPlayers[player][direction] > 0) ||
+          (controlKeys.bottom.includes(key) &&
+            statesPlayers[player][direction] <
+              monitorHeight - statesGame.dimensions) ||
+          (controlKeys.right.includes(key) &&
+            statesPlayers[player][direction] <
+              monitorWidth - statesGame.dimensions)
+        ) {
+          const operation = controlKeys[key].operation;
+
+          dispatchPlayers({
+            type: 'move',
+            operation,
+            direction,
+            player
+          });
         }
-        dispatchPlayers({
-          type: 'move',
-          operation,
-          direction,
-          player
-        });
       }
     }
-  };
-
-  const handlePlay = (): void => {
-    let playable = true;
-
-    for (let i = 1; i <= statesGame.players; i++) {
-      if (statesPlayers['P' + i].shape === '') {
-        dispatchPlayers({
-          type: 'changeShape',
-          operation: '',
-          player: ['P' + i],
-          shape: undefined
-        });
-      }
-      if (
-        statesPlayers['P' + i].shape === '' ||
-        statesPlayers['P' + i].shape === undefined
-      ) {
-        playable = false;
-      }
-    }
-
-    if (playable === false) return;
-
-    const topP1P2: number = containerHeight / 2 - statesGame.dimensions / 2;
-    const leftP3P4: number = containerWidth / 2 - statesGame.dimensions / 2;
-    const leftP2: number = containerWidth - statesGame.dimensions;
-    const topP4: number = containerHeight - statesGame.dimensions;
-
-    dispatchGame({
-      type: 'init'
-    });
-
-    dispatchPlayers({
-      type: 'init',
-      topP1P2,
-      leftP3P4,
-      leftP2,
-      topP4
-    });
-
-    moveFP();
   };
 
   useEffect(() => {
-    containerWidth = document.querySelector('#monitor').clientWidth;
-    containerHeight = document.querySelector('#monitor').clientHeight;
+    monitor.width = document.querySelector('#monitor').clientWidth;
+    monitor.height = document.querySelector('#monitor').clientHeight;
   }, []);
 
   useEffect(() => {
-    if (statesGame.isRunning === true && handlePointInterval === undefined) {
+    if (
+      statesGame.isRunning === true &&
+      statesGame.isPaused === false &&
+      handlePointInterval === undefined
+    ) {
       handlePointInterval = window.setInterval(
         handleMove,
         30 - 5 * statesGame.speed
@@ -276,7 +221,7 @@ const Controller = (): JSX.Element => {
       window.addEventListener('keydown', registerKey);
       window.addEventListener('keyup', cancelKey);
     } else if (
-      statesGame.isRunning === false &&
+      (statesGame.isRunning === false || statesGame.isPaused === true) &&
       handlePointInterval !== undefined
     ) {
       window.clearInterval(handlePointInterval);
@@ -286,29 +231,32 @@ const Controller = (): JSX.Element => {
       window.removeEventListener('keyup', cancelKey);
     }
   });
-  //console.log(handlePointInterval);
+
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
         <Contexts.ContextPlayers.Provider value={statesPlayers}>
-          <Contexts.ContextFP.Provider value={statesFP}>
-            <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
-              <Contexts.ContextDispatchPlayers.Provider value={dispatchPlayers}>
-                <Contexts.ContextDispatchFP.Provider value={dispatchFP}>
-                  <Contexts.ContextCallbacks.Provider
-                    value={{
-                      matchFloatingPoint,
-                      handlePlay
-                    }}
+          <Contexts.ContextParams.Provider value={statesParams}>
+            <Contexts.ContextFP.Provider value={statesFP}>
+              <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
+                <Contexts.ContextDispatchPlayers.Provider
+                  value={dispatchPlayers}
+                >
+                  <Contexts.ContextDispatchParams.Provider
+                    value={dispatchParams}
                   >
-                    <Monitor />
-                    <DividerHorizontal />
-                    <ControlPanel />
-                  </Contexts.ContextCallbacks.Provider>
-                </Contexts.ContextDispatchFP.Provider>
-              </Contexts.ContextDispatchPlayers.Provider>
-            </Contexts.ContextDispatchGame.Provider>
-          </Contexts.ContextFP.Provider>
+                    <Contexts.ContextDispatchFP.Provider value={dispatchFP}>
+                      <Contexts.ContextGlobals.Provider value={globals}>
+                        <Monitor />
+                        <DividerHorizontal />
+                        <ControlPanel />
+                      </Contexts.ContextGlobals.Provider>
+                    </Contexts.ContextDispatchFP.Provider>
+                  </Contexts.ContextDispatchParams.Provider>
+                </Contexts.ContextDispatchPlayers.Provider>
+              </Contexts.ContextDispatchGame.Provider>
+            </Contexts.ContextFP.Provider>
+          </Contexts.ContextParams.Provider>
         </Contexts.ContextPlayers.Provider>
       </Contexts.ContextGame.Provider>
     </Container>

@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import {
-  ContextPlayers,
-  ContextDispatchPlayers
+  ContextParams,
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -25,8 +25,8 @@ const Input = styled.input`
 `;
 
 const Color = ({ id }): JSX.Element => {
-  const states = useContext(ContextPlayers);
-  const dispatch = useContext(ContextDispatchPlayers);
+  const states = useContext(ContextParams);
+  const dispatch = useContext(ContextDispatchParams);
 
   const Label = styled.label`
     flex: 5 5 0;

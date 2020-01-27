@@ -4,13 +4,45 @@ import styled from 'styled-components';
 import {
   ContextGame,
   ContextPlayers,
-  ContextCallbacks
+  ContextParams,
+  ContextFP,
+  ContextDispatchPlayers,
+  ContextGlobals,
+  ContextDispatchFP
 } from '../../../contexts/games/floating-point';
 
 const Players = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
-  const callbacks = useContext(ContextCallbacks);
+  const statesParams = useContext(ContextParams);
+  const statesFP = useContext(ContextFP);
+  const dispatchPlayers = useContext(ContextDispatchPlayers);
+  const dispatchFP = useContext(ContextDispatchFP);
+  const globals = useContext(ContextGlobals);
+
+  const matchFloatingPoint = (): void => {
+    for (let i = 1; i <= 4; i++) {
+      if (
+        (statesPlayers['P' + i].top >= statesFP.top ||
+          statesPlayers['P' + i].top + statesGame.dimensions >= statesFP.top) &&
+        statesPlayers['P' + i].top <= statesFP.top + 50 &&
+        (statesPlayers['P' + i].left >= statesFP.left ||
+          statesPlayers['P' + i].left + statesGame.dimensions >=
+            statesFP.left) &&
+        statesPlayers['P' + i].left <= statesFP.left + 50
+      ) {
+        dispatchPlayers({
+          type: 'addScore',
+          player: 'P' + i
+        });
+
+        dispatchFP({
+          top: globals.fp.top(),
+          left: globals.fp.left()
+        });
+      }
+    }
+  };
 
   const PointP1 = styled.div`
     position: absolute;
@@ -18,15 +50,15 @@ const Players = (): JSX.Element => {
     left: ${statesPlayers.P1.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
-    background-color: ${statesPlayers.P1.color};
+    background-color: ${statesParams.P1.color};
     visibility: ${statesGame.visibility};
-    border-radius: ${statesPlayers.P1.shape === 'circle' ||
-    statesPlayers.P1.shape === 'ellipse'
+    border-radius: ${statesParams.P1.shape === 'circle' ||
+    statesParams.P1.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesPlayers.P1.shape === 'rhombus'
+    transform: ${statesParams.P1.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesPlayers.P1.shape === 'ellipse'
+      : statesParams.P1.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -37,15 +69,15 @@ const Players = (): JSX.Element => {
     left: ${statesPlayers.P2.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
-    background-color: ${statesPlayers.P2.color};
+    background-color: ${statesParams.P2.color};
     visibility: ${statesGame.visibility};
-    border-radius: ${statesPlayers.P2.shape === 'circle' ||
-    statesPlayers.P2.shape === 'ellipse'
+    border-radius: ${statesParams.P2.shape === 'circle' ||
+    statesParams.P2.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesPlayers.P2.shape === 'rhombus'
+    transform: ${statesParams.P2.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesPlayers.P2.shape === 'ellipse'
+      : statesParams.P2.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -56,15 +88,15 @@ const Players = (): JSX.Element => {
     left: ${statesPlayers.P3.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
-    background-color: ${statesPlayers.P3.color};
+    background-color: ${statesParams.P3.color};
     visibility: ${statesGame.visibility};
-    border-radius: ${statesPlayers.P3.shape === 'circle' ||
-    statesPlayers.P3.shape === 'ellipse'
+    border-radius: ${statesParams.P3.shape === 'circle' ||
+    statesParams.P3.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesPlayers.P3.shape === 'rhombus'
+    transform: ${statesParams.P3.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesPlayers.P3.shape === 'ellipse'
+      : statesParams.P3.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -75,21 +107,21 @@ const Players = (): JSX.Element => {
     left: ${statesPlayers.P4.left}px;
     width: ${statesGame.dimensions}px;
     height: ${statesGame.dimensions}px;
-    background-color: ${statesPlayers.P4.color};
+    background-color: ${statesParams.P4.color};
     visibility: ${statesGame.visibility};
-    border-radius: ${statesPlayers.P4.shape === 'circle' ||
-    statesPlayers.P4.shape === 'ellipse'
+    border-radius: ${statesParams.P4.shape === 'circle' ||
+    statesParams.P4.shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesPlayers.P4.shape === 'rhombus'
+    transform: ${statesParams.P4.shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesPlayers.P4.shape === 'ellipse'
+      : statesParams.P4.shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
 
   useEffect(() => {
-    callbacks.matchFloatingPoint();
+    matchFloatingPoint();
   });
 
   return (

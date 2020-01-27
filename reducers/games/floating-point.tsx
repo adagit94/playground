@@ -1,5 +1,5 @@
 import { Reducer } from '../../interfaces/games/floating-point';
-import { initGame, init } from '../../inits/games/floating-point';
+import { initGame, initParams, init } from '../../inits/games/floating-point';
 import Defaults from '../../defaults/games/floating-point';
 
 export const reducerGame: Reducer = (state, action) => {
@@ -25,6 +25,7 @@ export const reducerGame: Reducer = (state, action) => {
       return {
         ...state,
         isRunning: false,
+        isPaused: false,
         visibility: 'hidden',
         dimensions: Defaults.dimensions,
         speed: Defaults.speed
@@ -33,7 +34,7 @@ export const reducerGame: Reducer = (state, action) => {
     case 'changePause':
       return {
         ...state,
-        isRunning: !state.isRunning
+        isPaused: !state.isPaused
       };
 
     case 'changeDimensions':
@@ -57,54 +58,26 @@ export const reducerPlayers: Reducer = (state, action) => {
   switch (action.type) {
     case 'init':
       return {
-        ...state,
         P1: {
-          ...state.P1,
           top: action.topP1P2,
-          left: 10
+          left: 10,
+          score: 0
         },
         P2: {
-          ...state.P2,
           top: action.topP1P2,
-          left: action.leftP2 - 10
+          left: action.leftP2 - 10,
+          score: 0
         },
         P3: {
-          ...state.P3,
           top: 10,
-          left: action.leftP3P4
+          left: action.leftP3P4,
+          score: 0
         },
         P4: {
-          ...state.P4,
           top: action.topP4 - 10,
-          left: action.leftP3P4
+          left: action.leftP3P4,
+          score: 0
         }
-      };
-
-    case 'reset':
-      return {
-        ...state,
-        P1: {
-          ...state.P1,
-          shape: '',
-          color: Defaults.P1.color
-        },
-        P2: {
-          ...state.P2,
-          shape: '',
-          color: Defaults.P2.color
-        },
-        P3: {
-          ...state.P3,
-          shape: '',
-          color: Defaults.P3.color
-        },
-        P4: {
-          ...state.P4,
-          shape: '',
-          color: Defaults.P4.color
-        },
-        shapesOthers: [],
-        colorsOthers: Defaults.colorsOthers
       };
 
     case 'move':
@@ -129,6 +102,17 @@ export const reducerPlayers: Reducer = (state, action) => {
           score: state[action.player].score + 1
         }
       };
+
+    default:
+      throw new Error('Unspecified action');
+  }
+};
+
+export const reducerParams: Reducer = (state, action) => {
+  switch (action.type) {
+    case 'reset':
+      return init(initParams);
+
     case 'changeShape':
       return {
         ...state,
