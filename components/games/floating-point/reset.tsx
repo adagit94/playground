@@ -28,7 +28,7 @@ const Reset = (): JSX.Element => {
     <Container>
       <Button
         onClick={(): void => {
-          dispatchGame({ type: 'reset' });
+          dispatchGame({ type: 'changeState', state: 'conf' });
           dispatchParams({ type: 'reset' });
         }}
         value='Reset'

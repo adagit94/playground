@@ -23,18 +23,18 @@ const Switch = (): JSX.Element => {
     width: 20px;
     height: 20px;
     border-radius: 100%;
-    background-color: ${states.isTurnedOn ? '#7dfa00' : '#f00'};
+    background-color: ${states.state !== 'off' ? '#7dfa00' : '#f00'};
   `;
 
   return (
     <Container>
       <Button
         onClick={(): void => {
-          if (states.isTurnedOn) {
+          if (states.state !== 'off') {
             dispatchGame({ type: 'switchOff' });
             dispatchParams({ type: 'reset' });
           } else {
-            dispatchGame({ type: 'switchOn' });
+            dispatchGame({ type: 'changeState', state: 'conf' });
           }
         }}
       />

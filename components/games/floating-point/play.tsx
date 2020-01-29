@@ -4,10 +4,7 @@ import styled from 'styled-components';
 import {
   ContextGame,
   ContextParams,
-  ContextGlobals,
   ContextDispatchGame,
-  ContextDispatchPlayers,
-  ContextDispatchFP,
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
@@ -28,11 +25,8 @@ const Button = styled.input`
 const Play = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
-  const globals = useContext(ContextGlobals);
   const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchParams = useContext(ContextDispatchParams);
-  const dispatchFP = useContext(ContextDispatchFP);
 
   const handlePlay = (): void => {
     let playable: boolean;
@@ -57,31 +51,9 @@ const Play = (): JSX.Element => {
 
     if (playable === false) return;
 
-    const topP1P2: number =
-      globals.monitor.height / 2 - statesGame.dimensions / 2;
-    const leftP3P4: number =
-      globals.monitor.width / 2 - statesGame.dimensions / 2;
-    const leftP2: number = globals.monitor.width - statesGame.dimensions;
-    const topP4: number = globals.monitor.height - statesGame.dimensions;
-
-    console.log(globals);
-
     dispatchGame({
-      type: 'init'
-    });
-
-    dispatchPlayers({
-      type: 'init',
-      topP1P2,
-      leftP3P4,
-      leftP2,
-      topP4
-    });
-
-    dispatchFP({
-      type: 'move',
-      top: globals.fp.top, // Math.random() * monitorWidth
-      left: globals.fp.left // Math.random() * monitorHeight
+      type: 'changeState',
+      state: 'init'
     });
   };
 
@@ -89,11 +61,15 @@ const Play = (): JSX.Element => {
     <Container>
       <Button
         onClick={
-          !statesGame.isRunning
+          statesGame.state === 'conf'
             ? handlePlay
-            : (): void => dispatchGame({ type: 'changePause' })
+            : (): void =>
+                dispatchGame({
+                  type: 'changeState',
+                  state: statesGame.state === 'running' ? 'paused' : 'running'
+                })
         }
-        value={!statesGame.isRunning || statesGame.isPaused ? 'Play' : 'Pause'}
+        value={statesGame.state !== 'running' ? 'Play' : 'Pause'}
         type='button'
       />
     </Container>

@@ -45,21 +45,21 @@ const DividerVertical = styled.div`
   background-color: #000000;
 `;
 
-const OptionsPlayer = ({ id }): JSX.Element => {
+const OptionsPlayer = ({ player }): JSX.Element => {
   const states = useContext(ContextGame);
 
   return (
     <Container>
       <Heading>
-        <h3>{id}</h3>
+        <h3>{player}</h3>
       </Heading>
       <Options>
-        <Shape id={id} />
+        <Shape player={player} />
         <DividerVertical />
-        <Color id={id} />
-        {(!states.isTurnedOn || states.isRunning || states.isPaused) && (
-          <OptionsDisabled />
-        )}
+        <Color player={player} />
+        {(states.state === 'off' ||
+          states.state === 'running' ||
+          states.state === 'paused') && <OptionsDisabled />}
       </Options>
     </Container>
   );

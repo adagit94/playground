@@ -1,52 +1,22 @@
 import { Reducer } from '../../interfaces/games/floating-point';
 import { initGame, initParams, init } from '../../inits/games/floating-point';
-import Defaults from '../../defaults/games/floating-point';
 
 export const reducerGame: Reducer = (state, action) => {
   switch (action.type) {
-    case 'switchOn':
-      return {
-        ...state,
-        isTurnedOn: !state.isTurnedOn,
-        dimensions: Defaults.dimensions,
-        speed: Defaults.speed
-      };
-
     case 'switchOff':
       return init(initGame);
 
-    case 'init':
+    case 'calculateDimensions':
       return {
         ...state,
-        isRunning: !state.isRunning,
-        visibility: 'visible'
-      };
-    case 'reset':
-      return {
-        ...state,
-        isRunning: false,
-        isPaused: false,
-        visibility: 'hidden',
-        dimensions: Defaults.dimensions,
-        speed: Defaults.speed
+        width: action.width,
+        height: action.height
       };
 
-    case 'changePause':
+    case 'changeState': // off / conf / init / running / paused
       return {
         ...state,
-        isPaused: !state.isPaused
-      };
-
-    case 'changeDimensions':
-      return {
-        ...state,
-        dimensions: action.dimensions
-      };
-
-    case 'changeSpeed':
-      return {
-        ...state,
-        speed: action.speed
+        state: action.state
       };
 
     default:
@@ -150,6 +120,18 @@ export const reducerParams: Reducer = (state, action) => {
           }),
           action.color
         ]
+      };
+
+    case 'changeDimensions':
+      return {
+        ...state,
+        dimensions: action.dimensions
+      };
+
+    case 'changeSpeed':
+      return {
+        ...state,
+        speed: action.speed
       };
 
     default:

@@ -38,9 +38,9 @@ const OptionsParameters = (): JSX.Element => {
       <Dimensions />
       <DividerHorizontal />
       <Speed />
-      {(!states.isTurnedOn || states.isRunning || states.isPaused) && (
-        <Disabled />
-      )}
+      {(states.state === 'off' ||
+        states.state === 'running' ||
+        states.state === 'paused') && <Disabled />}
     </Container>
   );
 };

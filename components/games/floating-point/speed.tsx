@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import {
-  ContextGame,
-  ContextDispatchGame
+  ContextParams,
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -15,8 +15,8 @@ const Container = styled.div`
 `;
 
 const Speed = (): JSX.Element => {
-  const states = useContext(ContextGame);
-  const dispatch = useContext(ContextDispatchGame);
+  const states = useContext(ContextParams);
+  const dispatch = useContext(ContextDispatchParams);
 
   return (
     <Container>

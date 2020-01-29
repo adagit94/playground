@@ -15,11 +15,11 @@ const Container = styled.div`
 const ControlPanel = (): JSX.Element => {
   return (
     <Container>
-      <OptionsPlayer id='P1' />
-      <OptionsPlayer id='P3' />
+      <OptionsPlayer player='P1' />
+      <OptionsPlayer player='P3' />
       <OptionsCommon />
-      <OptionsPlayer id='P4' />
-      <OptionsPlayer id='P2' />
+      <OptionsPlayer player='P4' />
+      <OptionsPlayer player='P2' />
     </Container>
   );
 };

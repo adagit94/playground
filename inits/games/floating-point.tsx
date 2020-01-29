@@ -12,13 +12,10 @@ export const init: Initializer = initState => initState;
 
 export const initGame: InitGame = {
   players: 4,
-  isTurnedOn: false,
-  isRunning: false,
-  isPaused: false,
+  state: 'off', // off / conf / init / running / paused
   mode: 'fP',
-  dimensions: undefined,
-  speed: undefined,
-  visibility: 'hidden'
+  width: undefined,
+  height: undefined
 };
 
 export const initPlayers: InitPlayers = {
@@ -62,7 +59,9 @@ export const initParams: InitParams = {
     color: Defaults.P4.color
   },
   shapesOthers: [],
-  colorsOthers: Defaults.colorsOthers
+  colorsOthers: Defaults.colorsOthers,
+  dimensions: undefined,
+  speed: undefined
 };
 
 export const initFP: InitFP = {

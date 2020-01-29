@@ -9,20 +9,11 @@ interface ParamsPlayer {
   color: string;
 }
 
-interface DefaultsPlayer {
-  color: string;
-}
-
 interface Key {
   pressed: boolean;
   operation: string;
   direction: string;
   player: string;
-}
-
-interface Monitor {
-  width: number;
-  height: number;
 }
 
 export interface ControlKeys {
@@ -53,13 +44,10 @@ export interface Initializer {
 
 export interface InitGame {
   readonly players: number;
-  readonly isTurnedOn: boolean;
-  readonly isRunning: boolean;
-  readonly isPaused: boolean;
+  readonly state: string;
   readonly mode: string;
-  readonly dimensions: number;
-  readonly speed: number;
-  readonly visibility: string;
+  readonly width: number;
+  readonly height: number;
 }
 
 export interface InitPlayers {
@@ -76,6 +64,8 @@ export interface InitParams {
   readonly P4: ParamsPlayer;
   readonly shapesOthers: Array<string>;
   readonly colorsOthers: Array<string>;
+  readonly dimensions: number;
+  readonly speed: number;
 }
 
 export interface InitFP {

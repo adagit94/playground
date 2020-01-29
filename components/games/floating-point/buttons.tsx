@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import Play from './play';
-import Button from './reset';
+import Reset from './reset';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
 
@@ -37,8 +37,8 @@ const Buttons = (): JSX.Element => {
     <Container>
       <Play />
       <DividerVertical />
-      <Button />
-      {!states.isTurnedOn && <Disabled />}
+      <Reset />
+      {states.state === 'off' && <Disabled />}
     </Container>
   );
 };
