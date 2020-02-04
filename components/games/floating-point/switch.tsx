@@ -14,8 +14,8 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Switch = (): JSX.Element => {
-  const states = useContext(ContextGame);
+const Switch: React.FC = (): JSX.Element => {
+  const statesGame = useContext(ContextGame);
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 
@@ -23,19 +23,18 @@ const Switch = (): JSX.Element => {
     width: 20px;
     height: 20px;
     border-radius: 100%;
-    background-color: ${states.state !== 'off' ? '#7dfa00' : '#f00'};
+    background-color: ${statesGame.state === 'off' ? '#f00' : '#7dfa00'};
   `;
 
   return (
     <Container>
       <Button
         onClick={(): void => {
-          if (states.state !== 'off') {
-            dispatchGame({ type: 'switchOff' });
-            dispatchParams({ type: 'reset' });
-          } else {
-            dispatchGame({ type: 'changeState', state: 'conf' });
-          }
+          dispatchGame({
+            type: 'changeState',
+            state: statesGame.state === 'off' ? 'conf' : 'off'
+          });
+          if (statesGame.state !== 'off') dispatchParams({ type: 'reset' });
         }}
       />
     </Container>

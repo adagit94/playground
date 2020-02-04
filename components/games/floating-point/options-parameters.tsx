@@ -30,7 +30,7 @@ const DividerHorizontal = styled.div`
   background-color: #000000;
 `;
 
-const OptionsParameters = (): JSX.Element => {
+const OptionsParameters: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
 
   return (

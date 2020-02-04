@@ -1,24 +1,26 @@
 import {
-  Initializer,
-  InitGame,
-  InitPlayers,
-  InitParams,
-  InitFP
+  StatesGame,
+  StatesPlayers,
+  StatesParams,
+  StatesFP
 } from '../../interfaces/games/floating-point';
+
+import { Inits } from '../../types/games/floating-point';
 
 import Defaults from '../../defaults/games/floating-point';
 
-export const init: Initializer = initState => initState;
+export const init = <Inits extends unknown>(initStates: Inits): Inits =>
+  initStates;
 
-export const initGame: InitGame = {
-  players: 4,
-  state: 'off', // off / conf / init / running / paused
+export const initGame: StatesGame = {
+  players: 2,
+  state: 'off', // off / conf / running / paused
   mode: 'fP',
   width: undefined,
   height: undefined
 };
 
-export const initPlayers: InitPlayers = {
+export const initPlayers: StatesPlayers = {
   P1: {
     top: undefined,
     left: undefined,
@@ -41,7 +43,7 @@ export const initPlayers: InitPlayers = {
   }
 };
 
-export const initParams: InitParams = {
+export const initParams: StatesParams = {
   P1: {
     shape: 'square',
     color: Defaults.P1.color
@@ -64,7 +66,7 @@ export const initParams: InitParams = {
   speed: undefined
 };
 
-export const initFP: InitFP = {
+export const initFP: StatesFP = {
   top: undefined,
   left: undefined
 };

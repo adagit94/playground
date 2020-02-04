@@ -30,7 +30,7 @@ const DividerVertical = styled.div`
   background-color: #000000;
 `;
 
-const Buttons = (): JSX.Element => {
+const Buttons: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
 
   return (

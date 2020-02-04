@@ -14,18 +14,22 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Speed = (): JSX.Element => {
+const Speed: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 
+  const Label = styled.label`
+    color: ${states.speed === null ? '#f00' : '#000000'};
+  `;
+
   return (
     <Container>
-      <label htmlFor='speed'>Speed:</label>
+      <Label htmlFor='speed'>Speed:</Label>
       <input
-        onChange={(e): void =>
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
         }
-        value={states.speed}
+        value={typeof states.speed === 'number' ? String(states.speed) : ''}
         type='range'
         min='1'
         max='5'

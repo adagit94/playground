@@ -23,7 +23,9 @@ const Container = styled.div`
     'footer';
 `;
 
-const Layout = ({ content }): JSX.Element => {
+const Layout: React.FC<{ content: JSX.Element }> = ({
+  content
+}): JSX.Element => {
   return (
     <Container>
       <Header />
@@ -35,4 +37,4 @@ const Layout = ({ content }): JSX.Element => {
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

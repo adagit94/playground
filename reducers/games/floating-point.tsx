@@ -1,10 +1,29 @@
-import { Reducer } from '../../interfaces/games/floating-point';
-import { initGame, initParams, init } from '../../inits/games/floating-point';
+import {
+  StatesGame,
+  StatesPlayers,
+  StatesParams,
+  StatesFP
+} from '../../interfaces/games/floating-point';
 
-export const reducerGame: Reducer = (state, action) => {
+import {
+  ActionsGame,
+  ActionsPlayers,
+  ActionsParams,
+  ActionsFP
+} from '../../types/games/floating-point';
+
+import { initParams, init } from '../../inits/games/floating-point';
+
+export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
+  state,
+  action
+): StatesGame => {
   switch (action.type) {
-    case 'switchOff':
-      return init(initGame);
+    case 'changeState': // off / conf / init / running / paused
+      return {
+        ...state,
+        state: action.state
+      };
 
     case 'calculateDimensions':
       return {
@@ -13,18 +32,22 @@ export const reducerGame: Reducer = (state, action) => {
         height: action.height
       };
 
-    case 'changeState': // off / conf / init / running / paused
+    case 'changePlayers':
       return {
         ...state,
-        state: action.state
+        players:
+          action.operation === 'add' ? state.players + 1 : state.players - 1
       };
 
     default:
-      throw new Error('Unspecified action');
+      throw new Error('Unspecified / Wrong action');
   }
 };
 
-export const reducerPlayers: Reducer = (state, action) => {
+export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
+  state,
+  action
+): StatesPlayers => {
   switch (action.type) {
     case 'init':
       return {
@@ -74,11 +97,14 @@ export const reducerPlayers: Reducer = (state, action) => {
       };
 
     default:
-      throw new Error('Unspecified action');
+      throw new Error('Unspecified / Wrong action');
   }
 };
 
-export const reducerParams: Reducer = (state, action) => {
+export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
+  state,
+  action
+): StatesParams => {
   switch (action.type) {
     case 'reset':
       return init(initParams);
@@ -135,11 +161,14 @@ export const reducerParams: Reducer = (state, action) => {
       };
 
     default:
-      throw new Error('Unspecified action');
+      throw new Error('Unspecified / Wrong action');
   }
 };
 
-export const reducerFP: Reducer = (state, action) => {
+export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
+  state,
+  action
+): StatesFP => {
   switch (action.type) {
     case 'move':
       return {
@@ -148,6 +177,6 @@ export const reducerFP: Reducer = (state, action) => {
       };
 
     default:
-      throw new Error('Unspecified action');
+      throw new Error('Unspecified / Wrong action');
   }
 };

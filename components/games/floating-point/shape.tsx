@@ -47,7 +47,7 @@ const Shape = ({ player }): JSX.Element => {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${states[player].shape === undefined ? '#f00' : '#000000'};
+    color: ${states[player].shape === null ? '#f00' : '#000000'};
   `;
 
   const Square = styled.div`

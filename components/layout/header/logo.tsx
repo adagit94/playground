@@ -9,7 +9,7 @@ const Container = styled.div`
   width: 150px;
 `;
 
-const Logo = (): JSX.Element => {
+const Logo: React.FC = (): JSX.Element => {
   return (
     <Container>
       <img src='' alt='' />
@@ -18,4 +18,4 @@ const Logo = (): JSX.Element => {
   );
 };
 
-export default Logo;
+export default React.memo(Logo);

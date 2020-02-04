@@ -10,8 +10,8 @@ const Container = styled.footer`
   border-top: 1px solid #000000;
 `;
 
-const Footer = (): JSX.Element => {
+const Footer: React.FC = (): JSX.Element => {
   return <Container>abc</Container>;
 };
 
-export default Footer;
+export default React.memo(Footer);

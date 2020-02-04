@@ -14,6 +14,7 @@ interface Key {
   operation: string;
   direction: string;
   player: string;
+  limit: string;
 }
 
 export interface ControlKeys {
@@ -33,46 +34,35 @@ export interface ControlKeys {
   '6': Key;
   '5': Key;
   '4': Key;
-  topLeft: Array<string>;
-  bottom: Array<string>;
-  right: Array<string>;
 }
 
-export interface Initializer {
-  (initStates: InitGame | InitPlayers | InitParams | InitFP): object;
+export interface StatesGame {
+  players: number;
+  state: string;
+  mode: string;
+  width: number;
+  height: number;
 }
 
-export interface InitGame {
-  readonly players: number;
-  readonly state: string;
-  readonly mode: string;
-  readonly width: number;
-  readonly height: number;
+export interface StatesPlayers {
+  P1: PlayersPlayer;
+  P2: PlayersPlayer;
+  P3: PlayersPlayer;
+  P4: PlayersPlayer;
 }
 
-export interface InitPlayers {
-  readonly P1: PlayersPlayer;
-  readonly P2: PlayersPlayer;
-  readonly P3: PlayersPlayer;
-  readonly P4: PlayersPlayer;
+export interface StatesParams {
+  P1: ParamsPlayer;
+  P2: ParamsPlayer;
+  P3: ParamsPlayer;
+  P4: ParamsPlayer;
+  shapesOthers: Array<string>;
+  colorsOthers: Array<string>;
+  dimensions: number;
+  speed: number;
 }
 
-export interface InitParams {
-  readonly P1: ParamsPlayer;
-  readonly P2: ParamsPlayer;
-  readonly P3: ParamsPlayer;
-  readonly P4: ParamsPlayer;
-  readonly shapesOthers: Array<string>;
-  readonly colorsOthers: Array<string>;
-  readonly dimensions: number;
-  readonly speed: number;
-}
-
-export interface InitFP {
-  readonly top: number;
-  readonly left: number;
-}
-
-export interface Reducer {
-  (state: any, action: any): any;
+export interface StatesFP {
+  top: number;
+  left: number;
 }

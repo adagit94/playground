@@ -1,120 +1,135 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { ControlKeys } from '../../../interfaces/games/floating-point';
-import { initPlayers, init } from '../../../inits/games/floating-point';
-import { reducerPlayers } from '../../../reducers/games/floating-point';
+
 import {
   ContextGame,
+  ContextPlayers,
   ContextParams,
-  ContextDispatchGame
+  ContextFP,
+  ContextDispatchPlayers,
+  ContextDispatchFP
 } from '../../../contexts/games/floating-point';
 
-let handlePointInterval;
+let handlePointInterval: number;
 
 const controlKeys: ControlKeys = {
   ArrowUp: {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
-    player: 'P1'
+    player: 'P1',
+    limit: 'topLeft'
   },
   ArrowRight: {
     pressed: false,
     operation: 'add',
     direction: 'left',
-    player: 'P1'
+    player: 'P1',
+    limit: 'right'
   },
   ArrowDown: {
     pressed: false,
     operation: 'add',
     direction: 'top',
-    player: 'P1'
+    player: 'P1',
+    limit: 'bottom'
   },
   ArrowLeft: {
     pressed: false,
     operation: 'subtract',
     direction: 'left',
-    player: 'P1'
+    player: 'P1',
+    limit: 'topLeft'
   },
   w: {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
-    player: 'P2'
+    player: 'P2',
+    limit: 'topLeft'
   },
   d: {
     pressed: false,
     operation: 'add',
     direction: 'left',
-    player: 'P2'
+    player: 'P2',
+    limit: 'right'
   },
   s: {
     pressed: false,
     operation: 'add',
     direction: 'top',
-    player: 'P2'
+    player: 'P2',
+    limit: 'bottom'
   },
   a: {
     pressed: false,
     operation: 'subtract',
     direction: 'left',
-    player: 'P2'
+    player: 'P2',
+    limit: 'topLeft'
   },
   i: {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
-    player: 'P3'
+    player: 'P3',
+    limit: 'topLeft'
   },
   l: {
     pressed: false,
     operation: 'add',
     direction: 'left',
-    player: 'P3'
+    player: 'P3',
+    limit: 'right'
   },
   k: {
     pressed: false,
     operation: 'add',
     direction: 'top',
-    player: 'P3'
+    player: 'P3',
+    limit: 'bottom'
   },
   j: {
     pressed: false,
     operation: 'subtract',
     direction: 'left',
-    player: 'P3'
+    player: 'P3',
+    limit: 'topLeft'
   },
   '8': {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
-    player: 'P4'
+    player: 'P4',
+    limit: 'topLeft'
   },
   '6': {
     pressed: false,
     operation: 'add',
     direction: 'left',
-    player: 'P4'
+    player: 'P4',
+    limit: 'right'
   },
   '5': {
     pressed: false,
     operation: 'add',
     direction: 'top',
-    player: 'P4'
+    player: 'P4',
+    limit: 'bottom'
   },
   '4': {
     pressed: false,
     operation: 'subtract',
     direction: 'left',
-    player: 'P4'
-  },
-  topLeft: ['ArrowUp', 'ArrowLeft', 'w', 'a', 'i', 'j', '8', '4'],
-  bottom: ['ArrowDown', 's', 'k', '5'],
-  right: ['ArrowRight', 'd', 'l', '6']
+    player: 'P4',
+    limit: 'topLeft'
+  }
 };
 
-const registerKey = (e): void => {
+const registerKey = (e: KeyboardEvent): void => {
   e.preventDefault();
 
   const key = e.key;
@@ -124,7 +139,7 @@ const registerKey = (e): void => {
   }
 };
 
-const cancelKey = (e): void => {
+const cancelKey = (e: KeyboardEvent): void => {
   const key = e.key;
 
   if (controlKeys.hasOwnProperty(key)) {
@@ -132,16 +147,13 @@ const cancelKey = (e): void => {
   }
 };
 
-const Players = ({ statesFP, dispatchFP }): JSX.Element => {
-  const [statesPlayers, dispatchPlayers]: any = useReducer(
-    reducerPlayers,
-    initPlayers,
-    init
-  );
-
+const Players: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
+  const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
-  const dispatchGame = useContext(ContextDispatchGame);
+  const statesFP = useContext(ContextFP);
+  const dispatchPlayers = useContext(ContextDispatchPlayers);
+  const dispatchFP = useContext(ContextDispatchFP);
 
   const PointP1 = styled.div`
     position: absolute;
@@ -235,8 +247,8 @@ const Players = ({ statesFP, dispatchFP }): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.random() * statesGame.width,
-            left: Math.random() * statesGame.height
+            top: Math.random() * statesGame.height,
+            left: Math.random() * statesGame.width
           });
         }
       }
@@ -251,20 +263,19 @@ const Players = ({ statesFP, dispatchFP }): JSX.Element => {
     const handleMove = (): void => {
       for (const key in controlKeys) {
         if (controlKeys[key].pressed === true) {
-          const direction = controlKeys[key].direction;
-          const player = controlKeys[key].player;
+          const direction: string = controlKeys[key].direction;
+          const player: string = controlKeys[key].player;
+          const playerPos: number = statesPlayers[player][direction];
+          const dimensions: number = statesParams.dimensions;
 
           if (
-            (controlKeys.topLeft.includes(key) &&
-              statesPlayers[player][direction] > 0) ||
-            (controlKeys.bottom.includes(key) &&
-              statesPlayers[player][direction] <
-                statesGame.height - statesParams.dimensions) ||
-            (controlKeys.right.includes(key) &&
-              statesPlayers[player][direction] <
-                statesGame.width - statesParams.dimensions)
+            (controlKeys[key].limit === 'topLeft' && playerPos > 0) ||
+            (controlKeys[key].limit === 'bottom' &&
+              playerPos + dimensions < statesGame.height) ||
+            (controlKeys[key].limit === 'right' &&
+              playerPos + dimensions < statesGame.width)
           ) {
-            const operation = controlKeys[key].operation;
+            const operation: string = controlKeys[key].operation;
 
             dispatchPlayers({
               type: 'move',
@@ -297,36 +308,6 @@ const Players = ({ statesFP, dispatchFP }): JSX.Element => {
     }
   });
 
-  useEffect(() => {
-    if (statesGame.state === 'init') {
-      const topP1P2: number =
-        statesGame.height / 2 - statesParams.dimensions / 2;
-      const leftP3P4: number =
-        statesGame.width / 2 - statesParams.dimensions / 2;
-      const leftP2: number = statesGame.width - statesParams.dimensions;
-      const topP4: number = statesGame.height - statesParams.dimensions;
-
-      dispatchPlayers({
-        type: 'init',
-        topP1P2,
-        leftP3P4,
-        leftP2,
-        topP4
-      });
-
-      dispatchFP({
-        type: 'move',
-        top: Math.random() * statesGame.height,
-        left: Math.random() * statesGame.width
-      });
-
-      dispatchGame({
-        type: 'changeState',
-        state: 'running'
-      });
-    }
-  });
-  console.log(statesPlayers.P1);
   return (
     <>
       <PointP1 />

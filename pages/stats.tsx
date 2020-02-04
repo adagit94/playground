@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/layout/layout';
 
@@ -5,7 +6,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Stats = (): JSX.Element => {
+const Stats: React.FC = (): JSX.Element => {
   const content = (
     <Container>
       <h1>Stats</h1>
@@ -16,4 +17,4 @@ const Stats = (): JSX.Element => {
   return <Layout content={content} />;
 };
 
-export default Stats;
+export default React.memo(Stats);

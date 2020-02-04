@@ -20,7 +20,7 @@ const Button = styled.input`
   height: 50px;
 `;
 
-const Reset = (): JSX.Element => {
+const Reset: React.FC = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 

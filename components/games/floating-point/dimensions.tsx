@@ -14,10 +14,14 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Dimensions = (): JSX.Element => {
+const Dimensions: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
-  let text = '';
+  let text: string;
+
+  const Label = styled.label`
+    color: ${states.dimensions === null ? '#f00' : '#000000'};
+  `;
 
   switch (states.dimensions) {
     case 10:
@@ -35,15 +39,17 @@ const Dimensions = (): JSX.Element => {
 
   return (
     <Container>
-      <label htmlFor='dimensions'>Dimensions: </label>
+      <Label htmlFor='dimensions'>Dimensions:</Label>
       <input
-        onChange={(e): void =>
+        onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({
             type: 'changeDimensions',
             dimensions: Number(e.target.value)
           })
         }
-        value={states.dimensions}
+        value={
+          typeof states.dimensions === 'number' ? String(states.dimensions) : ''
+        }
         type='range'
         min='10'
         max='30'

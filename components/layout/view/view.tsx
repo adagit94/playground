@@ -9,7 +9,7 @@ const Container = styled.section`
   flex-direction: row;
 `;
 
-const View = (): JSX.Element => {
+const View: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Nav />
@@ -18,4 +18,4 @@ const View = (): JSX.Element => {
   );
 };
 
-export default View;
+export default React.memo(View);

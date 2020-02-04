@@ -21,8 +21,10 @@ const Container = styled.nav`
     justify-content: center;
     align-items: center;
     width: 15%;
-    border-left: 2px solid #000000;
+    border-top: none;
     border-right: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-bottom: none;
     border-radius: 5px;
     list-style: none;
     transition-property: color, background-color, border-color;
@@ -37,7 +39,7 @@ const Container = styled.nav`
   }
 `;
 
-const Nav = (): JSX.Element => {
+const Nav: React.FC = (): JSX.Element => {
   return (
     <Container>
       <ul>
@@ -50,4 +52,4 @@ const Nav = (): JSX.Element => {
   );
 };
 
-export default Nav;
+export default React.memo(Nav);

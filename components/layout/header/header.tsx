@@ -11,7 +11,7 @@ const Container = styled.header`
   border-bottom: 1px solid #000000;
 `;
 
-const Header = (): JSX.Element => {
+const Header: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Logo />
@@ -21,4 +21,4 @@ const Header = (): JSX.Element => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

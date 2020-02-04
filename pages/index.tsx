@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Layout from '../components/layout/layout';
 
@@ -7,12 +8,8 @@ const Container = styled.div`
   }
 `;
 
-const Index = (): JSX.Element => {
-  return (
-    <Container>
-      <Layout content='' />
-    </Container>
-  );
+const Index: React.FC = (): JSX.Element => {
+  return <Container>{/*<Layout content='' />*/}</Container>;
 };
 
-export default Index;
+export default React.memo(Index);

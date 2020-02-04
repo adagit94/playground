@@ -92,7 +92,7 @@ const showForm = (): void => {
   $('#logInForm').slideToggle(100, 'linear');
 };
 
-const LogIn = (): JSX.Element => {
+const LogIn: React.FC = (): JSX.Element => {
   return (
     <Container>
       <FormBtn onClick={showForm}>Log in</FormBtn>
@@ -119,4 +119,4 @@ const LogIn = (): JSX.Element => {
   );
 };
 
-export default LogIn;
+export default React.memo(LogIn);

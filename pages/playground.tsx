@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -16,7 +17,7 @@ const Item = styled.div`
   height: 100px;
 `;
 
-const Playground = (): JSX.Element => {
+const Playground: React.FC = (): JSX.Element => {
   const content = (
     <Container>
       <Item>
@@ -30,4 +31,4 @@ const Playground = (): JSX.Element => {
   return <Layout content={content} />;
 };
 
-export default Playground;
+export default React.memo(Playground);

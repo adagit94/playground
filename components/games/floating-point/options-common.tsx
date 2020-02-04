@@ -16,7 +16,7 @@ const DividerHorizontalInvisible = styled.div`
   height: 2px;
 `;
 
-const OptionsCommon = (): JSX.Element => {
+const OptionsCommon: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Switch />

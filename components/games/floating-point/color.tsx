@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { ActionsParams } from '../../../types/games/floating-point';
+
 import {
   ContextParams,
   ContextDispatchParams
@@ -26,7 +28,9 @@ const Input = styled.input`
 
 const Color = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch = useContext(ContextDispatchParams);
+  const dispatch: React.Dispatch<ActionsParams> = useContext(
+    ContextDispatchParams
+  );
 
   const Label = styled.label`
     flex: 5 5 0;
@@ -41,7 +45,7 @@ const Color = ({ player }): JSX.Element => {
       <Label htmlFor='color'>Color:</Label>
       <InputContainer>
         <Input
-          onChange={(e): void =>
+          onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
             dispatch({ type: 'changeColor', color: e.target.value, player })
           }
           value={states[player].color}

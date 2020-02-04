@@ -7,10 +7,10 @@ const Container = styled.main`
   width: 100%;
 `;
 
-const Main = (): JSX.Element => {
+const Main: React.FC = (): JSX.Element => {
   const content = useContext(ContextContent);
 
   return <Container>{content}</Container>;
 };
 
-export default Main;
+export default React.memo(Main);

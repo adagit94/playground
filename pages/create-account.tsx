@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -56,7 +57,7 @@ const SubmitBtn = styled.button`
   }
 `;
 
-const CreateAccount = (): JSX.Element => {
+const CreateAccount: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Form>
@@ -89,4 +90,4 @@ const CreateAccount = (): JSX.Element => {
   );
 };
 
-export default CreateAccount;
+export default React.memo(CreateAccount);
