@@ -6,6 +6,13 @@ import Color from './color';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
 
+const Container = styled.div`
+  width: 225px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Heading = styled.div`
   height: 20px;
   display: flex;
@@ -18,16 +25,11 @@ const Options = styled.div`
   flex: auto;
   display: flex;
   flex-direction: row;
-`;
-
-const Params = styled.div`
-  padding: 10px;
   position: relative;
-  display: flex;
-  flex-direction: row;
+  padding: 10px;
 `;
 
-const ParamsDisabled = styled.div`
+const OptionsDisabled = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -43,22 +45,10 @@ const DividerVertical = styled.div`
   background-color: #000000;
 `;
 
-const RemovePlayer = styled.button`
-  width: 50px;
-  height: 50px;
-`;
-
 const OptionsPlayer: React.FC<{ player: string }> = ({
   player
 }): JSX.Element => {
   const states = useContext(ContextGame);
-
-  const Container = styled.div`
-    width: ${player === 'P3' || player === 'P4' ? '275px' : '225px'};
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  `;
 
   return (
     <Container>
@@ -66,15 +56,12 @@ const OptionsPlayer: React.FC<{ player: string }> = ({
         <h3>{player}</h3>
       </Heading>
       <Options>
-        <Params>
-          <Shape player={player} />
-          <DividerVertical />
-          <Color player={player} />
-          {(states.state === 'off' ||
-            states.state === 'running' ||
-            states.state === 'paused') && <ParamsDisabled />}
-        </Params>
-        {(player === 'P3' || player === 'P4') && <RemovePlayer>-</RemovePlayer>}
+        <Shape player={player} />
+        <DividerVertical />
+        <Color player={player} />
+        {(states.state === 'off' ||
+          states.state === 'running' ||
+          states.state === 'paused') && <OptionsDisabled />}
       </Options>
     </Container>
   );

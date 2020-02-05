@@ -6,13 +6,14 @@ import {
 } from '../../interfaces/games/floating-point';
 
 export type ActionsGame =
-  | { type: 'switchOff' }
-  | { type: 'calculateDimensions'; width: number; height: number }
   | {
       type: 'changeState';
       state: string;
     }
-  | { type: 'changePlayers'; operation: string };
+  | { type: 'switchOff' }
+  | { type: 'reset' }
+  | { type: 'calculateDimensions'; width: number; height: number }
+  | { type: 'logPlayer'; operation: string; pos: string };
 
 export type ActionsPlayers =
   | {

@@ -11,7 +11,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -35,7 +35,7 @@ const Play: React.FC = (): JSX.Element => {
   const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
     let playable: boolean;
 
-    for (let i = 1; i <= statesGame.players; i++) {
+    for (let i = 1; i <= statesGame.players.length; i++) {
       if (statesParams['P' + i].shape === undefined) {
         dispatchParams({
           type: 'changeShape',
@@ -77,8 +77,6 @@ const Play: React.FC = (): JSX.Element => {
     ) {
       playable = false;
     }
-
-    console.log();
 
     if (playable === false) return;
 

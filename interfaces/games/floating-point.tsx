@@ -37,7 +37,7 @@ export interface ControlKeys {
 }
 
 export interface StatesGame {
-  players: number;
+  players: Array<string | boolean>;
   state: string;
   mode: string;
   width: number;

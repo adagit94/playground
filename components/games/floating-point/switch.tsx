@@ -30,11 +30,18 @@ const Switch: React.FC = (): JSX.Element => {
     <Container>
       <Button
         onClick={(): void => {
-          dispatchGame({
-            type: 'changeState',
-            state: statesGame.state === 'off' ? 'conf' : 'off'
-          });
-          if (statesGame.state !== 'off') dispatchParams({ type: 'reset' });
+          if (statesGame.state === 'off') {
+            dispatchGame({
+              type: 'changeState',
+              state: 'conf'
+            });
+          } else {
+            dispatchGame({
+              type: 'changeState',
+              state: 'off'
+            });
+            dispatchParams({ type: 'reset' });
+          }
         }}
       />
     </Container>

@@ -13,7 +13,7 @@ export const init = <Inits extends unknown>(initStates: Inits): Inits =>
   initStates;
 
 export const initGame: StatesGame = {
-  players: 2,
+  players: [true, true],
   state: 'off', // off / conf / running / paused
   mode: 'fP',
   width: undefined,

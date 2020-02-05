@@ -7,14 +7,14 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Items = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -43,7 +43,7 @@ const Shape = ({ player }): JSX.Element => {
     states[player].shape !== 'ellipse';
 
   const Label = styled.label`
-    flex: 5 5 0;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

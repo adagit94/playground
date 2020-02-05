@@ -7,7 +7,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -28,7 +28,7 @@ const Reset: React.FC = (): JSX.Element => {
     <Container>
       <Button
         onClick={(): void => {
-          dispatchGame({ type: 'changeState', state: 'conf' });
+          dispatchGame({ type: 'reset' });
           dispatchParams({ type: 'reset' });
         }}
         value='Reset'

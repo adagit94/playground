@@ -9,14 +9,14 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const InputContainer = styled.div`
-  flex: 5 5 0;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -33,7 +33,7 @@ const Color = ({ player }): JSX.Element => {
   );
 
   const Label = styled.label`
-    flex: 5 5 0;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

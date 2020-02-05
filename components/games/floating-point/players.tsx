@@ -229,7 +229,7 @@ const Players: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      for (let i = 1; i <= statesGame.players; i++) {
+      for (let i = 1; i <= statesGame.players.length; i++) {
         if (
           (statesPlayers['P' + i].top >= statesFP.top ||
             statesPlayers['P' + i].top + statesParams.dimensions >=
