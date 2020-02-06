@@ -22,6 +22,7 @@ const Button = styled.input`
   border: none;
   width: 80px;
   height: 50px;
+  cursor: pointer;
 `;
 
 const Play: React.FC = (): JSX.Element => {
@@ -107,19 +108,21 @@ const Play: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <Button
-        onClick={
-          statesGame.state === 'conf'
-            ? handlePlay
-            : (): void =>
-                dispatchGame({
-                  type: 'changeState',
-                  state: statesGame.state === 'running' ? 'paused' : 'running'
-                })
-        }
-        value={statesGame.state !== 'running' ? 'Play' : 'Pause'}
-        type='button'
-      />
+      {statesGame.state !== 'off' && (
+        <Button
+          onClick={
+            statesGame.state === 'conf'
+              ? handlePlay
+              : (): void =>
+                  dispatchGame({
+                    type: 'changeState',
+                    state: statesGame.state === 'running' ? 'paused' : 'running'
+                  })
+          }
+          value={statesGame.state !== 'running' ? 'Play' : 'Pause'}
+          type='button'
+        />
+      )}
     </Container>
   );
 };

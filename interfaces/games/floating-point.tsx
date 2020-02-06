@@ -17,7 +17,7 @@ interface Key {
   limit: string;
 }
 
-export interface ControlKeys {
+export interface ControlKeys2P {
   ArrowUp: Key;
   ArrowRight: Key;
   ArrowDown: Key;
@@ -26,10 +26,16 @@ export interface ControlKeys {
   d: Key;
   s: Key;
   a: Key;
+}
+
+export interface ControlKeys3P extends ControlKeys2P {
   i: Key;
   l: Key;
   k: Key;
   j: Key;
+}
+
+export interface ControlKeys4P extends ControlKeys3P {
   '8': Key;
   '6': Key;
   '5': Key;

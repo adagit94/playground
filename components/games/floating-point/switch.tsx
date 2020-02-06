@@ -8,7 +8,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  height: 20px;
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,11 +19,12 @@ const Switch: React.FC = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 
-  const Button = styled.div`
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
+  const Button = styled.button`
+    width: 30px;
+    height: 100%;
+    border: none;
     background-color: ${statesGame.state === 'off' ? '#f00' : '#7dfa00'};
+    cursor: pointer;
   `;
 
   return (
@@ -37,8 +38,7 @@ const Switch: React.FC = (): JSX.Element => {
             });
           } else {
             dispatchGame({
-              type: 'changeState',
-              state: 'off'
+              type: 'switchOff'
             });
             dispatchParams({ type: 'reset' });
           }

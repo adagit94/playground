@@ -5,7 +5,8 @@ import OptionsCommon from './options-common';
 import OptionsPlayer from './options-player';
 import {
   ContextGame,
-  ContextDispatchGame
+  ContextDispatchGame,
+  ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
@@ -18,12 +19,14 @@ const Container = styled.div`
 `;
 
 const AddPlayer = styled.button`
+  position: relative;
   width: 50px;
   height: 50px;
   border: none;
   color: #ffffff;
   background-color: #008000;
   font-size: 2rem;
+  cursor: pointer;
 `;
 
 const RemovePlayer = styled.button`
@@ -33,11 +36,13 @@ const RemovePlayer = styled.button`
   color: #ffffff;
   background-color: #ff0000;
   font-size: 2rem;
+  cursor: pointer;
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
-  const dispatch = useContext(ContextDispatchGame);
+  const dispatchGame = useContext(ContextDispatchGame);
+  const dispatchParams = useContext(ContextDispatchParams);
   const playerLeft = states.players.includes('left');
   const playerRight = states.players.includes('right');
 
@@ -51,25 +56,31 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
       {states.state === 'conf' && playerLeft ? (
         <RemovePlayer
-          onClick={(): void =>
-            dispatch({
+          onClick={(): void => {
+            dispatchGame({
               type: 'logPlayer',
               operation: 'remove',
               pos: 'left'
-            })
-          }
+            });
+
+            dispatchParams({
+              type: 'changeShape',
+              operation: 'remove',
+              player: states.players.length === 3 ? 'P3' : 'P4'
+            });
+          }}
         >
           -
         </RemovePlayer>
-      ) : (states.state === 'conf' || states.state === 'off') && !playerLeft ? (
+      ) : states.state === 'conf' && !playerLeft ? (
         <AddPlayer
-          onClick={(): void =>
-            dispatch({
+          onClick={(): void => {
+            dispatchGame({
               type: 'logPlayer',
               operation: 'add',
               pos: 'left'
-            })
-          }
+            });
+          }}
         >
           +
         </AddPlayer>
@@ -83,26 +94,31 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
       {states.state === 'conf' && playerRight ? (
         <RemovePlayer
-          onClick={(): void =>
-            dispatch({
+          onClick={(): void => {
+            dispatchGame({
               type: 'logPlayer',
               operation: 'remove',
               pos: 'right'
-            })
-          }
+            });
+
+            dispatchParams({
+              type: 'changeShape',
+              operation: 'remove',
+              player: states.players.length === 3 ? 'P3' : 'P4'
+            });
+          }}
         >
           -
         </RemovePlayer>
-      ) : (states.state === 'conf' || states.state === 'off') &&
-        !playerRight ? (
+      ) : states.state === 'conf' && !playerRight ? (
         <AddPlayer
-          onClick={(): void =>
-            dispatch({
+          onClick={(): void => {
+            dispatchGame({
               type: 'logPlayer',
               operation: 'add',
               pos: 'right'
-            })
-          }
+            });
+          }}
         >
           +
         </AddPlayer>

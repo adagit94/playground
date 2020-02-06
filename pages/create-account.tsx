@@ -63,19 +63,19 @@ const CreateAccount: React.FC = (): JSX.Element => {
       <Form>
         <Row>
           <label htmlFor='username'>Username: </label>
-          <input type='text' name='username' id='username' required />
+          <Input type='text' name='username' id='username' required />
         </Row>
         <Row>
           <label htmlFor='email'>Email: </label>
-          <input type='email' name='email' id='email' required />
+          <Input type='email' name='email' id='email' required />
         </Row>
         <Row>
           <label htmlFor='password'>Password: </label>
-          <input type='password' name='password' id='password' required />
+          <Input type='password' name='password' id='password' required />
         </Row>
         <Row>
           <label htmlFor='confirmPassword'>Password: </label>
-          <input
+          <Input
             type='password'
             name='confirmPassword'
             id='confirmPassword'

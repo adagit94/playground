@@ -14,6 +14,10 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Input = styled.input`
+  cursor: move;
+`;
+
 const Dimensions: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
@@ -40,7 +44,7 @@ const Dimensions: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Label htmlFor='dimensions'>Dimensions:</Label>
-      <input
+      <Input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({
             type: 'changeDimensions',

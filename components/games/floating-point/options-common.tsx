@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Switch from './switch';
 import OptionsParameters from './options-parameters';
 import Buttons from './buttons';
 
 const Container = styled.div`
-  width: 225px;
+  width: 275px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -19,11 +18,9 @@ const DividerHorizontalInvisible = styled.div`
 const OptionsCommon: React.FC = (): JSX.Element => {
   return (
     <Container>
-      <Switch />
+      <Buttons />
       <DividerHorizontalInvisible />
       <OptionsParameters />
-      <DividerHorizontalInvisible />
-      <Buttons />
     </Container>
   );
 };

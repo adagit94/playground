@@ -45,19 +45,19 @@ export const initPlayers: StatesPlayers = {
 
 export const initParams: StatesParams = {
   P1: {
-    shape: 'square',
+    shape: undefined,
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'circle',
+    shape: undefined,
     color: Defaults.P2.color
   },
   P3: {
-    shape: 'rhombus',
+    shape: undefined,
     color: Defaults.P3.color
   },
   P4: {
-    shape: 'ellipse',
+    shape: undefined,
     color: Defaults.P4.color
   },
   shapesOthers: [],

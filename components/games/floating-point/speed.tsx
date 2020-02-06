@@ -14,6 +14,10 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Input = styled.input`
+  cursor: move;
+`;
+
 const Speed: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
@@ -25,7 +29,7 @@ const Speed: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Label htmlFor='speed'>Speed:</Label>
-      <input
+      <Input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
         }

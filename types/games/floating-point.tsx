@@ -2,8 +2,13 @@ import {
   StatesGame,
   StatesPlayers,
   StatesParams,
-  StatesFP
+  StatesFP,
+  ControlKeys2P,
+  ControlKeys3P,
+  ControlKeys4P
 } from '../../interfaces/games/floating-point';
+
+export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
 
 export type ActionsGame =
   | {
@@ -32,7 +37,7 @@ export type ActionsParams =
       type: 'changeShape';
       player: string;
       operation: string;
-      shape: string;
+      shape?: string;
     }
   | {
       type: 'changeColor';
@@ -44,4 +49,4 @@ export type ActionsParams =
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
-export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
+export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;

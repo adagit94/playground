@@ -128,7 +128,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
         ...state,
         [action.player]: {
           ...state[action.player],
-          shape: action.operation === 'remove' ? '' : action.shape
+          shape: action.operation === 'remove' ? undefined : action.shape
         },
         shapesOthers:
           action.operation === 'add'

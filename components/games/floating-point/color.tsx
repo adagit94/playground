@@ -24,6 +24,7 @@ const InputContainer = styled.div`
 
 const Input = styled.input`
   width: 50px;
+  cursor: pointer;
 `;
 
 const Color = ({ player }): JSX.Element => {

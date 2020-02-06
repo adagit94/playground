@@ -10,7 +10,6 @@ const Container = styled.div`
   flex: 2 2 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   position: relative;
   padding: 10px;
 `;
@@ -26,7 +25,7 @@ const Disabled = styled.div`
 
 const DividerHorizontal = styled.div`
   height: 2px;
-  margin: 10 0px;
+  margin: 10px 0;
   background-color: #000000;
 `;
 
