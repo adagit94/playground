@@ -54,7 +54,7 @@ const Shape = ({ player }): JSX.Element => {
     opacity: ${unclickableSquare ? 0.2 : '1'};
     background-color: ${states[player].color};
     border: ${states[player].shape === 'square' ? '2px solid #000000' : 'none'};
-    cursor: pointer;
+    cursor: ${unclickableSquare ? 'not-allowed' : 'pointer'};
   `;
 
   const Circle = styled.div`
@@ -62,7 +62,7 @@ const Shape = ({ player }): JSX.Element => {
     background-color: ${states[player].color};
     border: ${states[player].shape === 'circle' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
-    cursor: pointer;
+    cursor: ${unclickableCircle ? 'not-allowed' : 'pointer'};
   `;
 
   const Rhombus = styled.div`
@@ -72,7 +72,7 @@ const Shape = ({ player }): JSX.Element => {
       ? '2px solid #000000'
       : 'none'};
     transform: rotate(45deg);
-    cursor: pointer;
+    cursor: ${unclickableRhombus ? 'not-allowed' : 'pointer'};
   `;
 
   const Ellipse = styled.div`
@@ -83,7 +83,7 @@ const Shape = ({ player }): JSX.Element => {
       : 'none'};
     border-radius: 100%;
     transform: rotateX(45deg);
-    cursor: pointer;
+    cursor: ${unclickableEllipse ? 'not-allowed' : 'pointer'};
   `;
 
   return (

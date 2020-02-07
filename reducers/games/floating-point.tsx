@@ -12,7 +12,7 @@ import {
   ActionsFP
 } from '../../types/games/floating-point';
 
-import { initGame, initParams, init } from '../../inits/games/floating-point';
+import { initParams, init } from '../../inits/games/floating-point';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   state,
@@ -22,17 +22,11 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
     case 'changeState': // off / conf / init / running / paused
       return {
         ...state,
+        players:
+          action.state === 'off' || action.state === 'conf'
+            ? [true, true]
+            : state.players,
         state: action.state
-      };
-
-    case 'switchOff':
-      return init(initGame);
-
-    case 'reset':
-      return {
-        ...state,
-        players: [true, true],
-        state: 'conf'
       };
 
     case 'calculateDimensions':
@@ -84,6 +78,12 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           top: action.topP4 - 10,
           left: action.leftP3P4,
           score: 0
+        }
+      };
+      
+      case 'recalculatePos':
+      return {
+        
         }
       };
 

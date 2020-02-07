@@ -46,13 +46,25 @@ const Controller: React.FC = (): JSX.Element => {
   );
 
   useEffect(() => {
-    dispatchGame({
-      type: 'calculateDimensions',
-      width: document.querySelector('#monitor').clientWidth,
-      height: document.querySelector('#monitor').clientHeight
-    });
-  }, []);
+    const calculateDimensions = (): void => {
+      const width = document.querySelector('#monitor').clientWidth;
+      const height = document.querySelector('#monitor').clientHeight;
 
+      dispatchGame({
+        type: 'calculateDimensions',
+        width,
+        height
+      });
+    };
+
+    calculateDimensions();
+    window.addEventListener('resize', calculateDimensions);
+
+    return (): void => {
+      window.removeEventListener('resize', calculateDimensions);
+    };
+  }, []);
+  // console.log(statesGame.width);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

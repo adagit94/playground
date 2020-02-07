@@ -308,7 +308,7 @@ const Players: React.FC = (): JSX.Element => {
       : ''};
   `;
 
-  points.push(<PointP1 />);
+  points.push(<PointP1 key='P1' />);
 
   const PointP2 = styled.div`
     position: absolute;
@@ -328,7 +328,7 @@ const Players: React.FC = (): JSX.Element => {
       : ''};
   `;
 
-  points.push(<PointP2 />);
+  points.push(<PointP2 key='P2' />);
 
   if (statesGame.players.length > 2) {
     const PointP3 = styled.div`
@@ -349,7 +349,7 @@ const Players: React.FC = (): JSX.Element => {
         : ''};
     `;
 
-    points.push(<PointP3 />);
+    points.push(<PointP3 key='P3' />);
   }
 
   if (statesGame.players.length > 3) {
@@ -371,7 +371,7 @@ const Players: React.FC = (): JSX.Element => {
         : ''};
     `;
 
-    points.push(<PointP4 />);
+    points.push(<PointP4 key='P4' />);
   }
 
   useEffect(() => {
@@ -494,6 +494,21 @@ const Players: React.FC = (): JSX.Element => {
       window.removeEventListener('keydown', registerKey);
       window.removeEventListener('keyup', cancelKey);
     }
+  });
+
+  useEffect(() => {
+    const recalculatePos = (): void => {
+      for (let i = 1; i <= statesGame.players.length; i++) {
+        const player = statesPlayers['P' + i];
+        const top = (statesGame.height / player.top) * (height / 100);
+        const left = (statesGame.width / player.left) * (width / 100);
+
+        dispatchPlayers({ type: 'recalculatePos', player, top, left });
+      }
+    };
+
+    if (statesGame.state === 'running' || statesGame.state === 'paused')
+      recalculatePos();
   });
 
   return <>{points}</>;
