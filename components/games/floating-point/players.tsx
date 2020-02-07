@@ -509,7 +509,7 @@ const Players: React.FC = (): JSX.Element => {
 
     if (statesGame.state === 'running' || statesGame.state === 'paused')
       recalculatePos();
-  });
+  }, []);
 
   return <>{points}</>;
 };
