@@ -37,9 +37,7 @@ const OptionsParameters: React.FC = (): JSX.Element => {
       <Dimensions />
       <DividerHorizontal />
       <Speed />
-      {(states.state === 'off' ||
-        states.state === 'running' ||
-        states.state === 'paused') && <Disabled />}
+      {states.state !== 'conf' && <Disabled />}
     </Container>
   );
 };

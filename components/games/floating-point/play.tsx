@@ -81,10 +81,12 @@ const Play: React.FC = (): JSX.Element => {
 
     if (playable === false) return;
 
-    const topP1P2: number = statesGame.height / 2 - statesParams.dimensions / 2;
-    const leftP3P4: number = statesGame.width / 2 - statesParams.dimensions / 2;
-    const leftP2: number = statesGame.width - statesParams.dimensions;
-    const topP4: number = statesGame.height - statesParams.dimensions;
+    const topP1P2: number =
+      statesGame.height[0] / 2 - statesParams.dimensions / 2;
+    const leftP3P4: number =
+      statesGame.width[0] / 2 - statesParams.dimensions / 2;
+    const leftP2: number = statesGame.width[0] - statesParams.dimensions;
+    const topP4: number = statesGame.height[0] - statesParams.dimensions;
 
     dispatchGame({
       type: 'changeState',
@@ -101,8 +103,8 @@ const Play: React.FC = (): JSX.Element => {
 
     dispatchFP({
       type: 'move',
-      top: Math.random() * statesGame.height,
-      left: Math.random() * statesGame.width
+      top: Math.random() * statesGame.height[0],
+      left: Math.random() * statesGame.width[0]
     });
   };
 
@@ -119,7 +121,11 @@ const Play: React.FC = (): JSX.Element => {
                     state: statesGame.state === 'running' ? 'paused' : 'running'
                   })
           }
-          value={statesGame.state !== 'running' ? 'Play' : 'Pause'}
+          value={
+            statesGame.state !== 'running' && statesGame.state !== 'recalc'
+              ? 'Play'
+              : 'Pause'
+          }
           type='button'
         />
       )}

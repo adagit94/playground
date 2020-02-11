@@ -46,8 +46,8 @@ export interface StatesGame {
   players: Array<string | boolean>;
   state: string;
   mode: string;
-  width: number;
-  height: number;
+  width: Array<number>;
+  height: Array<number>;
 }
 
 export interface StatesPlayers {

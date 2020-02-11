@@ -15,7 +15,11 @@ export type ActionsGame =
       type: 'changeState';
       state: string;
     }
-  | { type: 'calculateDimensions'; width: number; height: number }
+  | {
+      type: 'calculateDimensions';
+      width: number;
+      height: number;
+    }
   | { type: 'logPlayer'; operation: string; pos: string };
 
 export type ActionsPlayers =
@@ -26,7 +30,12 @@ export type ActionsPlayers =
       leftP3P4: number;
       topP4: number;
     }
-  | { type: 'recalculatePos'; player: string; top: number; left: number }
+  | {
+      type: 'recalculatePos';
+      player: string;
+      top: number;
+      left: number;
+    }
   | { type: 'move'; player: string; direction: string; operation: string }
   | { type: 'addScore'; player: string };
 

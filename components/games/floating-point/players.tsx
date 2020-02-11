@@ -14,6 +14,7 @@ import {
   ContextPlayers,
   ContextParams,
   ContextFP,
+  ContextDispatchGame,
   ContextDispatchPlayers,
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
@@ -286,6 +287,7 @@ const Players: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);
+  const dispatchGame = useContext(ContextDispatchGame);
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchFP = useContext(ContextDispatchFP);
   const points = [];
@@ -394,8 +396,8 @@ const Players: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.random() * statesGame.height,
-            left: Math.random() * statesGame.width
+            top: Math.random() * statesGame.height[0],
+            left: Math.random() * statesGame.width[0]
           });
         }
       }
@@ -418,9 +420,9 @@ const Players: React.FC = (): JSX.Element => {
           if (
             (controlKeys[key].limit === 'topLeft' && playerPos > 0) ||
             (controlKeys[key].limit === 'bottom' &&
-              playerPos + dimensions < statesGame.height) ||
+              playerPos + dimensions < statesGame.height[0]) ||
             (controlKeys[key].limit === 'right' &&
-              playerPos + dimensions < statesGame.width)
+              playerPos + dimensions < statesGame.width[0])
           ) {
             const operation: string = controlKeys[key].operation;
 
@@ -498,18 +500,24 @@ const Players: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const recalculatePos = (): void => {
-      for (let i = 1; i <= statesGame.players.length; i++) {
-        const player = statesPlayers['P' + i];
-        const top = (statesGame.height / player.top) * (height / 100);
-        const left = (statesGame.width / player.left) * (width / 100);
+      const newHeight = statesGame.height[0];
+      const newWidth = statesGame.width[0];
+      const oldHeight = statesGame.height[1];
+      const oldWidth = statesGame.width[1];
 
-        dispatchPlayers({ type: 'recalculatePos', player, top, left });
+      for (let i = 1; i <= 1; i++) {
+        const player = statesPlayers['P' + i];
+        const top = (oldHeight / player.top) * (newHeight / 100);
+        const left = (oldWidth / player.left) * (newWidth / 100);
+        console.log(newHeight);
+        dispatchPlayers({ type: 'recalculatePos', player: 'P' + i, top, left });
       }
+
+      dispatchGame({ type: 'changeState', state: 'running' });
     };
 
-    if (statesGame.state === 'running' || statesGame.state === 'paused')
-      recalculatePos();
-  }, []);
+    if (statesGame.state === 'recalc') recalculatePos();
+  });
 
   return <>{points}</>;
 };

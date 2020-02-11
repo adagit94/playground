@@ -14,10 +14,10 @@ export const init = <Inits extends unknown>(initStates: Inits): Inits =>
 
 export const initGame: StatesGame = {
   players: [true, true],
-  state: 'off', // off / conf / running / paused
+  state: 'off', // off / conf / running / paused / recalc
   mode: 'fP',
-  width: undefined,
-  height: undefined
+  width: [undefined, undefined],
+  height: [undefined, undefined]
 };
 
 export const initPlayers: StatesPlayers = {

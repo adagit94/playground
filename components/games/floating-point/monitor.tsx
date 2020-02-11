@@ -13,7 +13,8 @@ const Monitor: React.FC = (): JSX.Element => {
     height: 70%;
     position: relative;
     visibility: ${statesGame.state === 'running' ||
-    statesGame.state === 'paused'
+    statesGame.state === 'paused' ||
+    statesGame.state === 'recalc'
       ? 'visible'
       : 'hidden'};
   `;
