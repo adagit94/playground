@@ -9,12 +9,14 @@ import { ContextGame } from '../../../contexts/games/floating-point';
 const Monitor: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
+  const state = statesGame.state;
+
   const Container = styled.div`
     height: 70%;
     position: relative;
-    visibility: ${statesGame.state === 'running' ||
-    statesGame.state === 'paused' ||
-    statesGame.state === 'recalc'
+    visibility: ${state === 'running' ||
+    state === 'paused' ||
+    state === 'recalc'
       ? 'visible'
       : 'hidden'};
   `;

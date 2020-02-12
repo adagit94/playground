@@ -17,6 +17,12 @@ interface Key {
   limit: string;
 }
 
+export interface ChangePlayer {
+  type: 'changePlayer';
+  operation: string;
+  player: string;
+}
+
 export interface ControlKeys2P {
   ArrowUp: Key;
   ArrowRight: Key;
@@ -53,15 +59,15 @@ export interface StatesGame {
 export interface StatesPlayers {
   P1: PlayersPlayer;
   P2: PlayersPlayer;
-  P3: PlayersPlayer;
-  P4: PlayersPlayer;
+  P3?: PlayersPlayer;
+  P4?: PlayersPlayer;
 }
 
 export interface StatesParams {
   P1: ParamsPlayer;
   P2: ParamsPlayer;
-  P3: ParamsPlayer;
-  P4: ParamsPlayer;
+  P3?: ParamsPlayer;
+  P4?: ParamsPlayer;
   shapesOthers: Array<string>;
   colorsOthers: Array<string>;
   dimensions: number;

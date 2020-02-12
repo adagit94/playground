@@ -5,7 +5,8 @@ import {
   StatesFP,
   ControlKeys2P,
   ControlKeys3P,
-  ControlKeys4P
+  ControlKeys4P,
+  ChangePlayer
 } from '../../interfaces/games/floating-point';
 
 export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
@@ -20,15 +21,14 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'logPlayer'; operation: string; pos: string };
+  | { type: 'changePlayers'; operation: string; pos: string };
 
 export type ActionsPlayers =
   | {
       type: 'init';
-      topP1P2: number;
-      leftP2: number;
-      leftP3P4: number;
-      topP4: number;
+      player: string;
+      top: number;
+      left: number;
     }
   | {
       type: 'recalculatePos';
@@ -37,7 +37,8 @@ export type ActionsPlayers =
       left: number;
     }
   | { type: 'move'; player: string; direction: string; operation: string }
-  | { type: 'addScore'; player: string };
+  | { type: 'addScore'; player: string }
+  | ChangePlayer;
 
 export type ActionsParams =
   | { type: 'reset' }
@@ -53,7 +54,8 @@ export type ActionsParams =
       color: string;
     }
   | { type: 'changeDimensions'; dimensions: number }
-  | { type: 'changeSpeed'; speed: number };
+  | { type: 'changeSpeed'; speed: number }
+  | ChangePlayer;
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 

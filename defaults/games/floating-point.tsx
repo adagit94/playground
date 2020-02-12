@@ -1,6 +1,4 @@
-const Defaults = {
-  speed: 1,
-  dimensions: 10,
+export const Defaults = {
   P1: {
     color: '#ff0000'
   },
@@ -13,7 +11,6 @@ const Defaults = {
   P4: {
     color: '#ffff00'
   },
-  colorsOthers: ['#ff0000', '#008000', '#0000ff', '#ffff00']
+  speed: 5,
+  dimensions: 30
 };
-
-export default Defaults;

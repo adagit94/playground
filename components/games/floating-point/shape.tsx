@@ -31,56 +31,53 @@ const Shape = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 
+  const shapesOthers = states.shapesOthers;
+  const shape = states[player].shape;
+  const color = states[player].color;
   const unclickableSquare =
-    states.shapesOthers.includes('square') && states[player].shape !== 'square';
+    shapesOthers.includes('square') && shape !== 'square';
   const unclickableCircle =
-    states.shapesOthers.includes('circle') && states[player].shape !== 'circle';
+    shapesOthers.includes('circle') && shape !== 'circle';
   const unclickableRhombus =
-    states.shapesOthers.includes('rhombus') &&
-    states[player].shape !== 'rhombus';
+    shapesOthers.includes('rhombus') && shape !== 'rhombus';
   const unclickableEllipse =
-    states.shapesOthers.includes('ellipse') &&
-    states[player].shape !== 'ellipse';
+    shapesOthers.includes('ellipse') && shape !== 'ellipse';
 
   const Label = styled.label`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${states[player].shape === null ? '#f00' : '#000000'};
+    color: ${shape === null ? '#f00' : '#000000'};
   `;
 
   const Square = styled.div`
     opacity: ${unclickableSquare ? 0.2 : '1'};
-    background-color: ${states[player].color};
-    border: ${states[player].shape === 'square' ? '2px solid #000000' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'square' ? '2px solid #000000' : 'none'};
     cursor: ${unclickableSquare ? 'not-allowed' : 'pointer'};
   `;
 
   const Circle = styled.div`
     opacity: ${unclickableCircle ? 0.2 : '1'};
-    background-color: ${states[player].color};
-    border: ${states[player].shape === 'circle' ? '2px solid #000000' : 'none'};
+    background-color: ${color};
+    border: ${shape === 'circle' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
     cursor: ${unclickableCircle ? 'not-allowed' : 'pointer'};
   `;
 
   const Rhombus = styled.div`
     opacity: ${unclickableRhombus ? 0.2 : '1'};
-    background-color: ${states[player].color};
-    border: ${states[player].shape === 'rhombus'
-      ? '2px solid #000000'
-      : 'none'};
+    background-color: ${color};
+    border: ${shape === 'rhombus' ? '2px solid #000000' : 'none'};
     transform: rotate(45deg);
     cursor: ${unclickableRhombus ? 'not-allowed' : 'pointer'};
   `;
 
   const Ellipse = styled.div`
     opacity: ${unclickableEllipse ? 0.2 : '1'};
-    background-color: ${states[player].color};
-    border: ${states[player].shape === 'ellipse'
-      ? '2px solid #000000'
-      : 'none'};
+    background-color: ${color};
+    border: ${shape === 'ellipse' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
     transform: rotateX(45deg);
     cursor: ${unclickableEllipse ? 'not-allowed' : 'pointer'};
@@ -98,10 +95,9 @@ const Shape = ({ player }): JSX.Element => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[player].shape === undefined ||
-                      states[player].shape === null
+                      shape === undefined || shape === null
                         ? 'add'
-                        : states[player].shape === 'square'
+                        : shape === 'square'
                         ? 'remove'
                         : 'change',
                     player,
@@ -118,10 +114,9 @@ const Shape = ({ player }): JSX.Element => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[player].shape === undefined ||
-                      states[player].shape === null
+                      shape === undefined || shape === null
                         ? 'add'
-                        : states[player].shape === 'circle'
+                        : shape === 'circle'
                         ? 'remove'
                         : 'change',
                     player,
@@ -138,10 +133,9 @@ const Shape = ({ player }): JSX.Element => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[player].shape === undefined ||
-                      states[player].shape === null
+                      shape === undefined || shape === null
                         ? 'add'
-                        : states[player].shape === 'rhombus'
+                        : shape === 'rhombus'
                         ? 'remove'
                         : 'change',
                     player,
@@ -158,10 +152,9 @@ const Shape = ({ player }): JSX.Element => {
                   dispatch({
                     type: 'changeShape',
                     operation:
-                      states[player].shape === undefined ||
-                      states[player].shape === null
+                      shape === undefined || shape === null
                         ? 'add'
-                        : states[player].shape === 'ellipse'
+                        : shape === 'ellipse'
                         ? 'remove'
                         : 'change',
                     player,

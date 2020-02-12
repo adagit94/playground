@@ -6,6 +6,7 @@ import OptionsPlayer from './options-player';
 import {
   ContextGame,
   ContextDispatchGame,
+  ContextDispatchPlayers,
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
@@ -42,7 +43,12 @@ const RemovePlayer = styled.button`
 const ControlPanel: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
   const dispatchGame = useContext(ContextDispatchGame);
+  const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchParams = useContext(ContextDispatchParams);
+
+  const state = states.state;
+  const players = states.players;
+  const playersCount = players.length;
   const playerLeft = states.players.includes('left');
   const playerRight = states.players.includes('right');
 
@@ -51,34 +57,52 @@ const ControlPanel: React.FC = (): JSX.Element => {
       <OptionsPlayer player='P1' />
 
       {playerLeft && (
-        <OptionsPlayer player={states.players[2] === 'left' ? 'P3' : 'P4'} />
+        <OptionsPlayer player={players[2] === 'left' ? 'P3' : 'P4'} />
       )}
 
-      {states.state === 'conf' && playerLeft ? (
+      {state === 'conf' && playerLeft ? (
         <RemovePlayer
           onClick={(): void => {
             dispatchGame({
-              type: 'logPlayer',
+              type: 'changePlayers',
               operation: 'remove',
               pos: 'left'
             });
 
-            dispatchParams({
-              type: 'changeShape',
+            dispatchPlayers({
+              type: 'changePlayer',
               operation: 'remove',
-              player: states.players.length === 3 ? 'P3' : 'P4'
+              player: playersCount === 3 ? 'P3' : 'P4'
+            });
+
+            dispatchParams({
+              type: 'changePlayer',
+              operation: 'remove',
+              player: playersCount === 3 ? 'P3' : 'P4'
             });
           }}
         >
           -
         </RemovePlayer>
-      ) : states.state === 'conf' && !playerLeft ? (
+      ) : state === 'conf' && !playerLeft ? (
         <AddPlayer
           onClick={(): void => {
             dispatchGame({
-              type: 'logPlayer',
+              type: 'changePlayers',
               operation: 'add',
               pos: 'left'
+            });
+
+            dispatchPlayers({
+              type: 'changePlayer',
+              operation: 'add',
+              player: playersCount === 2 ? 'P3' : 'P4'
+            });
+
+            dispatchParams({
+              type: 'changePlayer',
+              operation: 'add',
+              player: playersCount === 2 ? 'P3' : 'P4'
             });
           }}
         >
@@ -89,34 +113,52 @@ const ControlPanel: React.FC = (): JSX.Element => {
       <OptionsCommon />
 
       {playerRight && (
-        <OptionsPlayer player={states.players[2] === 'right' ? 'P3' : 'P4'} />
+        <OptionsPlayer player={players[2] === 'right' ? 'P3' : 'P4'} />
       )}
 
-      {states.state === 'conf' && playerRight ? (
+      {state === 'conf' && playerRight ? (
         <RemovePlayer
           onClick={(): void => {
             dispatchGame({
-              type: 'logPlayer',
+              type: 'changePlayers',
               operation: 'remove',
               pos: 'right'
             });
 
-            dispatchParams({
-              type: 'changeShape',
+            dispatchPlayers({
+              type: 'changePlayer',
               operation: 'remove',
-              player: states.players.length === 3 ? 'P3' : 'P4'
+              player: playersCount === 3 ? 'P3' : 'P4'
+            });
+
+            dispatchParams({
+              type: 'changePlayer',
+              operation: 'remove',
+              player: playersCount === 3 ? 'P3' : 'P4'
             });
           }}
         >
           -
         </RemovePlayer>
-      ) : states.state === 'conf' && !playerRight ? (
+      ) : state === 'conf' && !playerRight ? (
         <AddPlayer
           onClick={(): void => {
             dispatchGame({
-              type: 'logPlayer',
+              type: 'changePlayers',
               operation: 'add',
               pos: 'right'
+            });
+
+            dispatchPlayers({
+              type: 'changePlayer',
+              operation: 'add',
+              player: playersCount === 2 ? 'P3' : 'P4'
+            });
+
+            dispatchParams({
+              type: 'changePlayer',
+              operation: 'add',
+              player: playersCount === 2 ? 'P3' : 'P4'
             });
           }}
         >

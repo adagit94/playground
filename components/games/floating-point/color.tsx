@@ -29,16 +29,16 @@ const Input = styled.input`
 
 const Color = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch: React.Dispatch<ActionsParams> = useContext(
-    ContextDispatchParams
-  );
+  const dispatch = useContext(ContextDispatchParams);
+
+  const color = states[player].color;
 
   const Label = styled.label`
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${states[player].color === undefined ? '#f00' : '#000000'};
+    color: ${color === undefined ? '#f00' : '#000000'};
   `;
 
   return (
@@ -49,7 +49,7 @@ const Color = ({ player }): JSX.Element => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
             dispatch({ type: 'changeColor', color: e.target.value, player })
           }
-          value={states[player].color}
+          value={color}
           type='color'
           id='color'
         />

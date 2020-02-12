@@ -14,6 +14,8 @@ import {
 
 import { initParams, init } from '../../inits/games/floating-point';
 
+import { Defaults } from '../../defaults/games/floating-point';
+
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   state,
   action
@@ -37,7 +39,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         height: [action.height, state.height[0]]
       };
 
-    case 'logPlayer':
+    case 'changePlayers':
       return {
         ...state,
         players:
@@ -60,24 +62,10 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
   switch (action.type) {
     case 'init':
       return {
-        P1: {
-          top: action.topP1P2,
-          left: 10,
-          score: 0
-        },
-        P2: {
-          top: action.topP1P2,
-          left: action.leftP2 - 10,
-          score: 0
-        },
-        P3: {
-          top: 10,
-          left: action.leftP3P4,
-          score: 0
-        },
-        P4: {
-          top: action.topP4 - 10,
-          left: action.leftP3P4,
+        ...state,
+        [action.player]: {
+          top: action.top,
+          left: action.left,
           score: 0
         }
       };
@@ -114,6 +102,28 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           score: state[action.player].score + 1
         }
       };
+
+    case 'changePlayer':
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            [action.player]: {
+              top: undefined,
+              left: undefined,
+              score: undefined
+            }
+          };
+
+        case 'remove':
+          delete state[action.player];
+          return {
+            ...state
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -178,6 +188,33 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
         ...state,
         speed: action.speed
       };
+
+    case 'changePlayer':
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            [action.player]: {
+              shape: undefined,
+              color: Defaults[action.player].color
+            },
+            colorsOthers: [...state.colorsOthers, Defaults[action.player].color]
+          };
+
+        case 'remove':
+          delete state[action.player];
+          return {
+            ...state,
+            colorsOthers: [
+              ...state.colorsOthers.filter(el => {
+                return el !== state[action.player].color;
+              })
+            ]
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     default:
       throw new Error('Unspecified / Wrong action');

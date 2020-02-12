@@ -22,8 +22,10 @@ const Speed: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 
+  const speed = states.speed;
+
   const Label = styled.label`
-    color: ${states.speed === null ? '#f00' : '#000000'};
+    color: ${speed === null ? '#f00' : '#000000'};
   `;
 
   return (
@@ -33,13 +35,13 @@ const Speed: React.FC = (): JSX.Element => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
         }
-        value={typeof states.speed === 'number' ? String(states.speed) : ''}
+        value={typeof speed === 'number' ? String(speed) : ''}
         type='range'
         min='1'
         max='5'
         id='speed'
       />
-      {states.speed > 0 && states.speed + 'x'}
+      {speed > 0 && speed + 'x'}
     </Container>
   );
 };

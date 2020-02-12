@@ -21,13 +21,15 @@ const Input = styled.input`
 const Dimensions: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
+
+  const dimensions = states.dimensions;
   let text: string;
 
   const Label = styled.label`
-    color: ${states.dimensions === null ? '#f00' : '#000000'};
+    color: ${dimensions === null ? '#f00' : '#000000'};
   `;
 
-  switch (states.dimensions) {
+  switch (dimensions) {
     case 10:
       text = 'Small';
       break;
@@ -51,9 +53,7 @@ const Dimensions: React.FC = (): JSX.Element => {
             dimensions: Number(e.target.value)
           })
         }
-        value={
-          typeof states.dimensions === 'number' ? String(states.dimensions) : ''
-        }
+        value={typeof dimensions === 'number' ? String(dimensions) : ''}
         type='range'
         min='10'
         max='30'

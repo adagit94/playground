@@ -33,99 +33,117 @@ const Play: React.FC = (): JSX.Element => {
   const dispatchParams = useContext(ContextDispatchParams);
   const dispatchFP = useContext(ContextDispatchFP);
 
+  const state = statesGame.state;
+  const players = statesGame.players;
+
   const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
+    const dimensions: number = statesParams.dimensions;
+    const speed: number = statesParams.speed;
     let playable: boolean;
 
-    for (let i = 1; i <= statesGame.players.length; i++) {
-      if (statesParams['P' + i].shape === undefined) {
+    players.forEach((_, index) => {
+      const player = 'P' + index;
+      console.log(statesParams[player]);
+      const shape = statesParams[player].shape;
+
+      if (shape === undefined) {
         dispatchParams({
           type: 'changeShape',
           operation: '',
-          player: 'P' + i,
+          player,
           shape: null
+        });
+      }
+
+      if (dimensions === undefined) {
+        dispatchParams({
+          type: 'changeDimensions',
+          dimensions: null
+        });
+      }
+
+      if (speed === undefined) {
+        dispatchParams({
+          type: 'changeSpeed',
+          speed: null
         });
       }
 
       if (
         playable !== false &&
-        (statesParams['P' + i].shape === undefined ||
-          statesParams['P' + i].shape === null)
+        (shape === undefined ||
+          shape === null ||
+          dimensions === undefined ||
+          dimensions === null ||
+          speed === undefined ||
+          speed === null)
       ) {
         playable = false;
       }
-    }
-
-    if (statesParams.dimensions === undefined) {
-      dispatchParams({
-        type: 'changeDimensions',
-        dimensions: null
-      });
-    }
-
-    if (statesParams.speed === undefined) {
-      dispatchParams({
-        type: 'changeSpeed',
-        speed: null
-      });
-    }
-
-    if (
-      playable !== false &&
-      (statesParams.dimensions === undefined ||
-        statesParams.dimensions === null ||
-        statesParams.speed === undefined ||
-        statesParams.speed === null)
-    ) {
-      playable = false;
-    }
+    });
 
     if (playable === false) return;
 
-    const topP1P2: number =
-      statesGame.height[0] / 2 - statesParams.dimensions / 2;
-    const leftP3P4: number =
-      statesGame.width[0] / 2 - statesParams.dimensions / 2;
-    const leftP2: number = statesGame.width[0] - statesParams.dimensions;
-    const topP4: number = statesGame.height[0] - statesParams.dimensions;
+    const height: number = statesGame.height[0];
+    const width: number = statesGame.width[0];
+
+    players.forEach((_, index) => {
+      let top: number;
+      let left: number;
+
+      switch (index) {
+        case 1:
+          top = height / 2 - dimensions / 2;
+          left = 10;
+          break;
+        case 2:
+          top = height / 2 - dimensions / 2;
+          left = width - dimensions - 10;
+          break;
+        case 3:
+          top = 10;
+          left = width / 2 - dimensions / 2;
+          break;
+        case 4:
+          top = height - dimensions - 10;
+          left = width / 2 - dimensions / 2;
+          break;
+      }
+
+      dispatchPlayers({
+        type: 'init',
+        player: 'P' + index,
+        top,
+        left
+      });
+    });
+
+    dispatchFP({
+      type: 'move',
+      top: Math.random() * height,
+      left: Math.random() * width
+    });
 
     dispatchGame({
       type: 'changeState',
       state: 'running'
     });
-
-    dispatchPlayers({
-      type: 'init',
-      topP1P2,
-      leftP3P4,
-      leftP2,
-      topP4
-    });
-
-    dispatchFP({
-      type: 'move',
-      top: Math.random() * statesGame.height[0],
-      left: Math.random() * statesGame.width[0]
-    });
   };
 
   return (
     <Container>
-      {statesGame.state !== 'off' && (
+      {state !== 'off' && (
         <Button
           onClick={
-            statesGame.state === 'conf'
+            state === 'conf'
               ? handlePlay
               : (): void =>
                   dispatchGame({
                     type: 'changeState',
-                    state: statesGame.state === 'running' ? 'paused' : 'running'
+                    state: state === 'running' ? 'paused' : 'running'
                   })
           }
-          value={
-            statesGame.state !== 'running' && statesGame.state !== 'recalc'
-              ? 'Play'
-              : 'Pause'
-          }
+          value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
           type='button'
         />
       )}
