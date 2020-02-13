@@ -116,7 +116,13 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           };
 
         case 'remove':
-          delete state[action.player];
+          if (action.player === 'P3' && 'P4' in state) {
+            state.P3 = state.P4;
+            delete state['P4'];
+          } else {
+            delete state[action.player];
+          }
+
           return {
             ...state
           };
@@ -202,14 +208,23 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           };
 
         case 'remove':
-          delete state[action.player];
+          state.shapesOthers = state.shapesOthers.filter(el => {
+            return el !== state[action.player].shape;
+          });
+
+          state.colorsOthers = state.colorsOthers.filter(el => {
+            return el !== state[action.player].color;
+          });
+
+          if (action.player === 'P3' && 'P4' in state) {
+            state.P3 = state.P4;
+            delete state['P4'];
+          } else {
+            delete state[action.player];
+          }
+
           return {
-            ...state,
-            colorsOthers: [
-              ...state.colorsOthers.filter(el => {
-                return el !== state[action.player].color;
-              })
-            ]
+            ...state
           };
 
         default:

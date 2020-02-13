@@ -34,6 +34,10 @@ export const initPlayers: StatesPlayers = {
 };
 
 export const initParams: StatesParams = {
+  dimensions: Defaults.dimensions,
+  speed: Defaults.speed,
+  shapesOthers: [],
+  colorsOthers: [Defaults.P1.color, Defaults.P2.color],
   P1: {
     shape: undefined,
     color: Defaults.P1.color
@@ -41,11 +45,7 @@ export const initParams: StatesParams = {
   P2: {
     shape: undefined,
     color: Defaults.P2.color
-  },
-  shapesOthers: [],
-  colorsOthers: [Defaults.P1.color, Defaults.P2.color],
-  dimensions: Defaults.dimensions,
-  speed: Defaults.speed
+  }
 };
 
 export const initFP: StatesFP = {

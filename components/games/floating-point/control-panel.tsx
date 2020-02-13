@@ -72,13 +72,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'remove',
-              player: playersCount === 3 ? 'P3' : 'P4'
+              player: players[2] === 'left' ? 'P3' : 'P4'
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'remove',
-              player: playersCount === 3 ? 'P3' : 'P4'
+              player: players[2] === 'left' ? 'P3' : 'P4'
             });
           }}
         >
@@ -128,13 +128,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'remove',
-              player: playersCount === 3 ? 'P3' : 'P4'
+              player: players[2] === 'right' ? 'P3' : 'P4'
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'remove',
-              player: playersCount === 3 ? 'P3' : 'P4'
+              player: players[2] === 'right' ? 'P3' : 'P4'
             });
           }}
         >

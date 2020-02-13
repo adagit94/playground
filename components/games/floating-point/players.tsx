@@ -386,7 +386,7 @@ const Players: React.FC = (): JSX.Element => {
       const fPLeft = statesFP.left;
 
       players.forEach((_, index) => {
-        const player = 'P' + index;
+        const player = `P${index + 1}`;
         const playerTop = statesPlayers[player].top;
         const playerLeft = statesPlayers[player].left;
 
@@ -425,7 +425,8 @@ const Players: React.FC = (): JSX.Element => {
           const player: string = keyObj.player;
           const limit: string = keyObj.limit;
           const playerPos: number = statesPlayers[player][direction];
-
+          //console.log(key);
+          console.log(statesGame.height[0]);
           if (
             (limit === 'topLeft' && playerPos > 0) ||
             (limit === 'bottom' &&
@@ -514,7 +515,7 @@ const Players: React.FC = (): JSX.Element => {
       const oldWidth = statesGame.width[1];
 
       players.forEach((_, index) => {
-        const player = 'P' + index;
+        const player = `P${index + 1}`;
         const top =
           (statesPlayers[player].top / oldHeight) * 100 * (newHeight / 100);
         const left =

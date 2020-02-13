@@ -42,8 +42,8 @@ const Play: React.FC = (): JSX.Element => {
     let playable: boolean;
 
     players.forEach((_, index) => {
-      const player = 'P' + index;
-      console.log(statesParams[player]);
+      const player = `P${index + 1}`;
+
       const shape = statesParams[player].shape;
 
       if (shape === undefined) {
@@ -88,23 +88,24 @@ const Play: React.FC = (): JSX.Element => {
     const width: number = statesGame.width[0];
 
     players.forEach((_, index) => {
+      const player = `P${index + 1}`;
       let top: number;
       let left: number;
 
-      switch (index) {
-        case 1:
+      switch (player) {
+        case 'P1':
           top = height / 2 - dimensions / 2;
           left = 10;
           break;
-        case 2:
+        case 'P2':
           top = height / 2 - dimensions / 2;
           left = width - dimensions - 10;
           break;
-        case 3:
+        case 'P3':
           top = 10;
           left = width / 2 - dimensions / 2;
           break;
-        case 4:
+        case 'P4':
           top = height - dimensions - 10;
           left = width / 2 - dimensions / 2;
           break;
@@ -112,7 +113,7 @@ const Play: React.FC = (): JSX.Element => {
 
       dispatchPlayers({
         type: 'init',
-        player: 'P' + index,
+        player,
         top,
         left
       });
