@@ -1,15 +1,84 @@
-import {
-  StatesGame,
-  StatesPlayers,
-  StatesParams,
-  StatesFP,
-  ControlKeys2P,
-  ControlKeys3P,
-  ControlKeys4P,
-  ChangePlayer
-} from '../../interfaces/games/floating-point';
+type Key = {
+  pressed: boolean;
+  operation: string;
+  direction: string;
+  player: string;
+  limit: string;
+};
 
-export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
+type PlayersPlayer = {
+  top: number;
+  left: number;
+  score: number;
+};
+
+type ParamsPlayer = {
+  shape: string;
+  color: string;
+};
+
+type ChangePlayer = {
+  type: 'changePlayer';
+  operation: string;
+  player: string;
+};
+
+export type ControlKeys2P = {
+  ArrowUp: Key;
+  ArrowRight: Key;
+  ArrowDown: Key;
+  ArrowLeft: Key;
+  w: Key;
+  d: Key;
+  s: Key;
+  a: Key;
+};
+
+export type ControlKeys3P = ControlKeys2P & {
+  i: Key;
+  l: Key;
+  k: Key;
+  j: Key;
+};
+
+export type ControlKeys4P = ControlKeys3P & {
+  '8': Key;
+  '6': Key;
+  '5': Key;
+  '4': Key;
+};
+
+export type Keys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
+
+export type StatesGame = {
+  players: Array<string | boolean>;
+  state: string;
+  mode: string;
+  width: Array<number>;
+  height: Array<number>;
+};
+export type StatesPlayers = {
+  P1: PlayersPlayer;
+  P2: PlayersPlayer;
+  P3?: PlayersPlayer;
+  P4?: PlayersPlayer;
+};
+
+export type StatesParams = {
+  P1: ParamsPlayer;
+  P2: ParamsPlayer;
+  P3?: ParamsPlayer;
+  P4?: ParamsPlayer;
+  shapesOthers: Array<string>;
+  colorsOthers: Array<string>;
+  dimensions: number;
+  speed: number;
+};
+
+export type StatesFP = {
+  top: number;
+  left: number;
+};
 
 export type ActionsGame =
   | {
@@ -59,4 +128,4 @@ export type ActionsParams =
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
-export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
+export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;

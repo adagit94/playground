@@ -2,10 +2,9 @@ import {
   StatesGame,
   StatesPlayers,
   StatesParams,
-  StatesFP
-} from '../../interfaces/games/floating-point';
-
-import { Inits } from '../../types/games/floating-point';
+  StatesFP,
+  Inits
+} from '../../types/games/floating-point';
 
 import { Defaults } from '../../defaults/games/floating-point';
 

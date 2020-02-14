@@ -48,17 +48,19 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
   const state = states.state;
   const players = states.players;
-  const playersCount = players.length;
-  const playerLeft = states.players.includes('left');
-  const playerRight = states.players.includes('right');
-
+  const playerLeft = players.includes('left');
+  const playerRight = players.includes('right');
+  const P3 = players[2];
+  const PL = playerLeft && (P3 === 'left' ? 'P3' : 'P4');
+  const PR = playerRight && (P3 === 'right' ? 'P3' : 'P4');
+  const P_ = players.length === 2 ? 'P3' : 'P4';
+  console.log(PL);
+  console.log(PR);
   return (
     <Container>
       <OptionsPlayer player='P1' />
 
-      {playerLeft && (
-        <OptionsPlayer player={players[2] === 'left' ? 'P3' : 'P4'} />
-      )}
+      {playerLeft && <OptionsPlayer player={PL} />}
 
       {state === 'conf' && playerLeft ? (
         <RemovePlayer
@@ -72,13 +74,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'remove',
-              player: players[2] === 'left' ? 'P3' : 'P4'
+              player: PL
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'remove',
-              player: players[2] === 'left' ? 'P3' : 'P4'
+              player: PL
             });
           }}
         >
@@ -96,13 +98,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'add',
-              player: playersCount === 2 ? 'P3' : 'P4'
+              player: P_
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'add',
-              player: playersCount === 2 ? 'P3' : 'P4'
+              player: P_
             });
           }}
         >
@@ -112,9 +114,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
       <OptionsCommon />
 
-      {playerRight && (
-        <OptionsPlayer player={players[2] === 'right' ? 'P3' : 'P4'} />
-      )}
+      {playerRight && <OptionsPlayer player={PR} />}
 
       {state === 'conf' && playerRight ? (
         <RemovePlayer
@@ -128,13 +128,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'remove',
-              player: players[2] === 'right' ? 'P3' : 'P4'
+              player: PR
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'remove',
-              player: players[2] === 'right' ? 'P3' : 'P4'
+              player: PR
             });
           }}
         >
@@ -152,13 +152,13 @@ const ControlPanel: React.FC = (): JSX.Element => {
             dispatchPlayers({
               type: 'changePlayer',
               operation: 'add',
-              player: playersCount === 2 ? 'P3' : 'P4'
+              player: P_
             });
 
             dispatchParams({
               type: 'changePlayer',
               operation: 'add',
-              player: playersCount === 2 ? 'P3' : 'P4'
+              player: P_
             });
           }}
         >

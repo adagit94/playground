@@ -34,15 +34,15 @@ const Play: React.FC = (): JSX.Element => {
   const dispatchFP = useContext(ContextDispatchFP);
 
   const state = statesGame.state;
-  const players = statesGame.players;
 
   const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
+    const playersCount = statesGame.players.length;
     const dimensions: number = statesParams.dimensions;
     const speed: number = statesParams.speed;
     let playable: boolean;
 
-    players.forEach((_, index) => {
-      const player = `P${index + 1}`;
+    for (let i = 1; i <= playersCount; i++) {
+      const player = 'P' + i;
 
       const shape = statesParams[player].shape;
 
@@ -80,15 +80,15 @@ const Play: React.FC = (): JSX.Element => {
       ) {
         playable = false;
       }
-    });
+    }
 
     if (playable === false) return;
 
     const height: number = statesGame.height[0];
     const width: number = statesGame.width[0];
 
-    players.forEach((_, index) => {
-      const player = `P${index + 1}`;
+    for (let i = 1; i <= playersCount; i++) {
+      const player = 'P' + i;
       let top: number;
       let left: number;
 
@@ -117,7 +117,7 @@ const Play: React.FC = (): JSX.Element => {
         top,
         left
       });
-    });
+    }
 
     dispatchFP({
       type: 'move',

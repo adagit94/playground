@@ -4,10 +4,7 @@ import {
   StatesGame,
   StatesPlayers,
   StatesParams,
-  StatesFP
-} from '../../interfaces/games/floating-point';
-
-import {
+  StatesFP,
   ActionsGame,
   ActionsPlayers,
   ActionsParams,

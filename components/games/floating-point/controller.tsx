@@ -47,13 +47,10 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const calculateDimensions = (): void => {
-      const width = document.querySelector('#monitor').clientWidth;
-      const height = document.querySelector('#monitor').clientHeight;
-
       dispatchGame({
         type: 'calculateDimensions',
-        width,
-        height
+        width: document.querySelector('#monitor').clientWidth,
+        height: document.querySelector('#monitor').clientHeight
       });
     };
 
