@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ActionsParams } from '../../../types/games/floating-point';
-
 import {
   ContextParams,
   ContextDispatchParams
@@ -20,36 +18,34 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+
+  input {
+    width: 50px;
+    cursor: pointer;
+  }
 `;
 
-const Input = styled.input`
-  width: 50px;
-  cursor: pointer;
+const Label = styled.label`
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: '#000000';
 `;
 
 const Color = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 
-  const color = states[player].color;
-
-  const Label = styled.label`
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    color: ${color === undefined ? '#f00' : '#000000'};
-  `;
-
   return (
     <Container>
       <Label htmlFor='color'>Color:</Label>
       <InputContainer>
-        <Input
+        <input
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
             dispatch({ type: 'changeColor', color: e.target.value, player })
           }
-          value={color}
+          value={states[player].color}
           type='color'
           id='color'
         />

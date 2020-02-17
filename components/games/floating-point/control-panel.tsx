@@ -54,8 +54,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
   const PL = playerLeft && (P3 === 'left' ? 'P3' : 'P4');
   const PR = playerRight && (P3 === 'right' ? 'P3' : 'P4');
   const P_ = players.length === 2 ? 'P3' : 'P4';
-  console.log(PL);
-  console.log(PR);
+
   return (
     <Container>
       <OptionsPlayer player='P1' />

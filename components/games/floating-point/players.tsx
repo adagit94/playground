@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -17,8 +17,6 @@ import {
   ContextDispatchPlayers,
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
-
-let handlePointInterval: number;
 
 const controlKeys2P: ControlKeys2P = {
   ArrowUp: {
@@ -143,6 +141,27 @@ const controlKeys4P: ControlKeys4P = {
   }
 };
 
+let keys: Keys;
+let handlePointInterval: number;
+
+const registerKey = (e: KeyboardEvent): void => {
+  e.preventDefault();
+
+  const key = e.key;
+
+  if (keys.hasOwnProperty(key) && keys[key].pressed !== true) {
+    keys[key].pressed = true;
+  }
+};
+
+const cancelKey = (e: KeyboardEvent): void => {
+  const key = e.key;
+
+  if (keys.hasOwnProperty(key)) {
+    keys[key].pressed = false;
+  }
+};
+
 const Players: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
@@ -152,6 +171,7 @@ const Players: React.FC = (): JSX.Element => {
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchFP = useContext(ContextDispatchFP);
 
+  const currentHandleMove = useRef();
   const playersCount: number = statesGame.players.length;
   const dimensions: number = statesParams.dimensions;
   const points: Array<JSX.Element> = [];
@@ -240,6 +260,37 @@ const Players: React.FC = (): JSX.Element => {
     points.push(<PointP4 key='P4' />);
   }
 
+  const handleMove = (): void => {
+    const height = statesGame.height[0];
+    const width = statesGame.width[0];
+
+    for (const key in keys) {
+      const keyObj = keys[key];
+
+      if (keyObj.pressed === true) {
+        const direction: string = keyObj.direction;
+        const player: string = keyObj.player;
+        const limit: string = keyObj.limit;
+        const playerPos: number = statesPlayers[player][direction];
+
+        if (
+          (limit === 'topLeft' && playerPos > 0) ||
+          (limit === 'bottom' && playerPos + dimensions < height) ||
+          (limit === 'right' && playerPos + dimensions < width)
+        ) {
+          const operation: string = keyObj.operation;
+
+          dispatchPlayers({
+            type: 'move',
+            operation,
+            direction,
+            player
+          });
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     const matchFloatingPoint = (): void => {
       const fPTop = statesFP.top;
@@ -271,6 +322,7 @@ const Players: React.FC = (): JSX.Element => {
     };
 
     if (statesGame.state === 'running') {
+      currentHandleMove.current = handleMove;
       matchFloatingPoint();
     }
   });
@@ -299,43 +351,11 @@ const Players: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const handleMove = (controlKeys): void => {
-      const height = statesGame.height[0];
-      const width = statesGame.width[0];
-
-      for (const key in controlKeys) {
-        const keyObj = controlKeys[key];
-
-        if (keyObj.pressed === true) {
-          const direction: string = keyObj.direction;
-          const player: string = keyObj.player;
-          const limit: string = keyObj.limit;
-          const playerPos: number = statesPlayers[player][direction];
-
-          if (
-            (limit === 'topLeft' && playerPos > 0) ||
-            (limit === 'bottom' && playerPos + dimensions < height) ||
-            (limit === 'right' && playerPos + dimensions < width)
-          ) {
-            const operation: string = keyObj.operation;
-
-            dispatchPlayers({
-              type: 'move',
-              operation,
-              direction,
-              player
-            });
-          }
-        }
-      }
+    const callHandleMove = (): void => {
+      currentHandleMove.current();
     };
 
-    let registerKey;
-    let cancelKey;
-
     if (statesGame.state === 'running' && handlePointInterval === undefined) {
-      let keys: Keys;
-
       switch (playersCount) {
         case 2:
           keys = controlKeys2P;
@@ -348,28 +368,9 @@ const Players: React.FC = (): JSX.Element => {
           break;
       }
 
-      registerKey = (e: KeyboardEvent): void => {
-        e.preventDefault();
-
-        const key = e.key;
-
-        if (keys.hasOwnProperty(key) && keys[key].pressed !== true) {
-          keys[key].pressed = true;
-        }
-      };
-
-      cancelKey = (e: KeyboardEvent): void => {
-        const key = e.key;
-
-        if (keys.hasOwnProperty(key)) {
-          keys[key].pressed = false;
-        }
-      };
-
       handlePointInterval = window.setInterval(
-        handleMove,
-        30 - 5 * statesParams.speed,
-        keys
+        callHandleMove,
+        30 - 5 * statesParams.speed
       );
 
       window.addEventListener('keydown', registerKey);

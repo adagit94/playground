@@ -34,6 +34,7 @@ const Shape = ({ player }): JSX.Element => {
   const shapesOthers = states.shapesOthers;
   const shape = states[player].shape;
   const color = states[player].color;
+  const isDefined = typeof shape === 'string';
   const unclickableSquare =
     shapesOthers.includes('square') && shape !== 'square';
   const unclickableCircle =
@@ -52,14 +53,14 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Square = styled.div`
-    opacity: ${unclickableSquare ? 0.2 : '1'};
+    opacity: ${unclickableSquare ? 0.2 : 1};
     background-color: ${color};
     border: ${shape === 'square' ? '2px solid #000000' : 'none'};
     cursor: ${unclickableSquare ? 'not-allowed' : 'pointer'};
   `;
 
   const Circle = styled.div`
-    opacity: ${unclickableCircle ? 0.2 : '1'};
+    opacity: ${unclickableCircle ? 0.2 : 1};
     background-color: ${color};
     border: ${shape === 'circle' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
@@ -67,7 +68,7 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Rhombus = styled.div`
-    opacity: ${unclickableRhombus ? 0.2 : '1'};
+    opacity: ${unclickableRhombus ? 0.2 : 1};
     background-color: ${color};
     border: ${shape === 'rhombus' ? '2px solid #000000' : 'none'};
     transform: rotate(45deg);
@@ -75,7 +76,7 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Ellipse = styled.div`
-    opacity: ${unclickableEllipse ? 0.2 : '1'};
+    opacity: ${unclickableEllipse ? 0.2 : 1};
     background-color: ${color};
     border: ${shape === 'ellipse' ? '2px solid #000000' : 'none'};
     border-radius: 100%;
@@ -94,12 +95,11 @@ const Shape = ({ player }): JSX.Element => {
               : (): void => {
                   dispatch({
                     type: 'changeShape',
-                    operation:
-                      shape === undefined || shape === null
-                        ? 'add'
-                        : shape === 'square'
-                        ? 'remove'
-                        : 'change',
+                    operation: !isDefined
+                      ? 'add'
+                      : shape === 'square'
+                      ? 'remove'
+                      : 'change',
                     player,
                     shape: 'square'
                   });
@@ -113,12 +113,11 @@ const Shape = ({ player }): JSX.Element => {
               : (): void => {
                   dispatch({
                     type: 'changeShape',
-                    operation:
-                      shape === undefined || shape === null
-                        ? 'add'
-                        : shape === 'circle'
-                        ? 'remove'
-                        : 'change',
+                    operation: !isDefined
+                      ? 'add'
+                      : shape === 'circle'
+                      ? 'remove'
+                      : 'change',
                     player,
                     shape: 'circle'
                   });
@@ -132,12 +131,11 @@ const Shape = ({ player }): JSX.Element => {
               : (): void => {
                   dispatch({
                     type: 'changeShape',
-                    operation:
-                      shape === undefined || shape === null
-                        ? 'add'
-                        : shape === 'rhombus'
-                        ? 'remove'
-                        : 'change',
+                    operation: !isDefined
+                      ? 'add'
+                      : shape === 'rhombus'
+                      ? 'remove'
+                      : 'change',
                     player,
                     shape: 'rhombus'
                   });
@@ -151,12 +149,11 @@ const Shape = ({ player }): JSX.Element => {
               : (): void => {
                   dispatch({
                     type: 'changeShape',
-                    operation:
-                      shape === undefined || shape === null
-                        ? 'add'
-                        : shape === 'ellipse'
-                        ? 'remove'
-                        : 'change',
+                    operation: !isDefined
+                      ? 'add'
+                      : shape === 'ellipse'
+                      ? 'remove'
+                      : 'change',
                     player,
                     shape: 'ellipse'
                   });

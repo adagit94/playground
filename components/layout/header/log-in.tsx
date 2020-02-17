@@ -25,18 +25,18 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-`;
 
-const Input = styled.input`
-  border: none;
-  border-radius: 5px;
-  transition-property: box-shadow;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
+  input {
+    border: none;
+    border-radius: 5px;
+    transition-property: box-shadow;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
 
-  :focus {
-    box-shadow: 0 0 0 2px #ffffff;
-    outline: none;
+    :focus {
+      box-shadow: 0 0 0 2px #ffffff;
+      outline: none;
+    }
   }
 `;
 
@@ -99,11 +99,11 @@ const LogIn: React.FC = (): JSX.Element => {
       <Form style={{ display: 'none' }} id='logInForm'>
         <Row>
           <label htmlFor='username'>Username: </label>
-          <Input type='text' name='username' id='username' required />
+          <input type='text' name='username' id='username' required />
         </Row>
         <Row>
           <label htmlFor='password'>Password: </label>
-          <Input type='password' name='password' id='password' required />
+          <input type='password' name='password' id='password' required />
         </Row>
         <Row>
           <LogInBtn>Log in</LogInBtn>

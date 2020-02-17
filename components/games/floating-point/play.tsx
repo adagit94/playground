@@ -55,31 +55,33 @@ const Play: React.FC = (): JSX.Element => {
         });
       }
 
-      if (dimensions === undefined) {
-        dispatchParams({
-          type: 'changeDimensions',
-          dimensions: null
-        });
-      }
-
-      if (speed === undefined) {
-        dispatchParams({
-          type: 'changeSpeed',
-          speed: null
-        });
-      }
-
-      if (
-        playable !== false &&
-        (shape === undefined ||
-          shape === null ||
-          dimensions === undefined ||
-          dimensions === null ||
-          speed === undefined ||
-          speed === null)
-      ) {
+      if (playable !== false && (shape === undefined || shape === null)) {
         playable = false;
       }
+    }
+
+    if (dimensions === undefined) {
+      dispatchParams({
+        type: 'changeDimensions',
+        dimensions: null
+      });
+    }
+
+    if (speed === undefined) {
+      dispatchParams({
+        type: 'changeSpeed',
+        speed: null
+      });
+    }
+
+    if (
+      playable !== false &&
+      (dimensions === undefined ||
+        dimensions === null ||
+        speed === undefined ||
+        speed === null)
+    ) {
+      playable = false;
     }
 
     if (playable === false) return;

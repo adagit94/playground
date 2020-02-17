@@ -114,7 +114,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
 
         case 'remove':
           if (action.player === 'P3' && 'P4' in state) {
-            state.P3 = state.P4;
             delete state['P4'];
           } else {
             delete state[action.player];
@@ -195,14 +194,28 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
     case 'changePlayer':
       switch (action.operation) {
         case 'add':
-          return {
-            ...state,
-            [action.player]: {
-              shape: undefined,
-              color: Defaults[action.player].color
-            },
-            colorsOthers: [...state.colorsOthers, Defaults[action.player].color]
-          };
+          if (action.player === 'P4' && Defaults.P4.color === state.P3.color) {
+            return {
+              ...state,
+              [action.player]: {
+                shape: undefined,
+                color: Defaults.P3.color
+              },
+              colorsOthers: [...state.colorsOthers, Defaults.P3.color]
+            };
+          } else {
+            return {
+              ...state,
+              [action.player]: {
+                shape: undefined,
+                color: Defaults[action.player].color
+              },
+              colorsOthers: [
+                ...state.colorsOthers,
+                Defaults[action.player].color
+              ]
+            };
+          }
 
         case 'remove':
           state.shapesOthers = state.shapesOthers.filter(el => {

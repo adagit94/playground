@@ -12,10 +12,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-`;
 
-const Input = styled.input`
-  cursor: move;
+  input {
+    cursor: move;
+  }
 `;
 
 const Dimensions: React.FC = (): JSX.Element => {
@@ -23,6 +23,7 @@ const Dimensions: React.FC = (): JSX.Element => {
   const dispatch = useContext(ContextDispatchParams);
 
   const dimensions = states.dimensions;
+  const isDefined = typeof dimensions === 'number';
   let text: string;
 
   const Label = styled.label`
@@ -39,28 +40,26 @@ const Dimensions: React.FC = (): JSX.Element => {
     case 30:
       text = 'Big';
       break;
-    default:
-      text = '';
   }
 
   return (
     <Container>
       <Label htmlFor='dimensions'>Dimensions:</Label>
-      <Input
+      <input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({
             type: 'changeDimensions',
             dimensions: Number(e.target.value)
           })
         }
-        value={typeof dimensions === 'number' ? String(dimensions) : ''}
+        value={isDefined ? String(dimensions) : ''}
         type='range'
         min='10'
         max='30'
         step='10'
         id='dimensions'
       />
-      {text}
+      {isDefined && text}
     </Container>
   );
 };

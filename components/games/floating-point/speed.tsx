@@ -12,10 +12,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-`;
 
-const Input = styled.input`
-  cursor: move;
+  input {
+    cursor: move;
+  }
 `;
 
 const Speed: React.FC = (): JSX.Element => {
@@ -23,6 +23,7 @@ const Speed: React.FC = (): JSX.Element => {
   const dispatch = useContext(ContextDispatchParams);
 
   const speed = states.speed;
+  const isDefined = typeof speed === 'number';
 
   const Label = styled.label`
     color: ${speed === null ? '#f00' : '#000000'};
@@ -31,17 +32,17 @@ const Speed: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Label htmlFor='speed'>Speed:</Label>
-      <Input
+      <input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
         }
-        value={typeof speed === 'number' ? String(speed) : ''}
+        value={isDefined ? String(speed) : ''}
         type='range'
         min='1'
         max='5'
         id='speed'
       />
-      {speed > 0 && speed + 'x'}
+      {isDefined && speed + 'x'}
     </Container>
   );
 };
