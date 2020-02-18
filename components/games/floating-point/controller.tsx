@@ -61,7 +61,7 @@ const Controller: React.FC = (): JSX.Element => {
       window.removeEventListener('resize', calculateDimensions);
     };
   }, []);
-  // console.log(statesPlayers);
+  //console.log(keyObj);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

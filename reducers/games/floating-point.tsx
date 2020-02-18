@@ -100,6 +100,17 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         }
       };
 
+    case 'changePressedKeys':
+      return {
+        ...state,
+        pressedKeys:
+          action.operation === 'add'
+            ? [state.pressedKeys, action.key]
+            : action.operation === 'remove'
+            ? state.pressedKeys.filter(key => key !== action.key)
+            : state.pressedKeys
+      };
+
     case 'changePlayer':
       switch (action.operation) {
         case 'add':

@@ -20,6 +20,7 @@ export const initGame: StatesGame = {
 };
 
 export const initPlayers: StatesPlayers = {
+  pressedKeys: [],
   P1: {
     top: undefined,
     left: undefined,
