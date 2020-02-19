@@ -29,13 +29,14 @@ const Reset: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      {statesGame.state !== 'off' && (
+      {statesGame.state[0] !== 'off' && (
         <Button
           onClick={(): void => {
             dispatchGame({
               type: 'changeState',
               state: 'conf'
             });
+
             dispatchParams({ type: 'reset' });
           }}
           value='Reset'

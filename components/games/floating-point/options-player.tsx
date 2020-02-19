@@ -59,7 +59,7 @@ const OptionsPlayer: React.FC<{ player: string }> = ({
         <Shape player={player} />
         <DividerVertical />
         <Color player={player} />
-        {states.state !== 'conf' && <OptionsDisabled />}
+        {states.state[0] !== 'conf' && <OptionsDisabled />}
       </Options>
     </Container>
   );

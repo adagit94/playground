@@ -13,7 +13,7 @@ export const init = <Inits extends unknown>(initStates: Inits): Inits =>
 
 export const initGame: StatesGame = {
   players: [true, true],
-  state: 'off', // off / conf / running / paused / recalc
+  state: ['off', undefined], // off / conf / running / paused / recalc    new / prev
   mode: 'fP',
   width: [undefined, undefined], // new / prev
   height: [undefined, undefined] // new / prev
@@ -30,22 +30,26 @@ export const initPlayers: StatesPlayers = {
     top: undefined,
     left: undefined,
     score: undefined
-  }
+  },
+  P3: undefined,
+  P4: undefined
 };
 
 export const initParams: StatesParams = {
-  dimensions: Defaults.dimensions,
-  speed: Defaults.speed,
+  dimensions: 30,
+  speed: 5,
   shapesOthers: [],
   colorsOthers: [Defaults.P1.color, Defaults.P2.color],
   P1: {
-    shape: undefined,
+    shape: 'circle',
     color: Defaults.P1.color
   },
   P2: {
-    shape: undefined,
+    shape: 'square',
     color: Defaults.P2.color
-  }
+  },
+  P3: undefined,
+  P4: undefined
 };
 
 export const initFP: StatesFP = {

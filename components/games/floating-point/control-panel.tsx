@@ -46,7 +46,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchParams = useContext(ContextDispatchParams);
 
-  const state = states.state;
+  const state = states.state[0];
   const players = states.players;
   const playerLeft = players.includes('left');
   const playerRight = players.includes('right');

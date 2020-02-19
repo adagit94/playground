@@ -19,7 +19,7 @@ const Switch: React.FC = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 
-  const state = statesGame.state;
+  const state = statesGame.state[0];
 
   const Button = styled.button`
     width: 30px;
@@ -37,7 +37,8 @@ const Switch: React.FC = (): JSX.Element => {
             type: 'changeState',
             state: state === 'off' ? 'conf' : 'off'
           });
-          if (state === 'off') dispatchParams({ type: 'reset' });
+
+          state !== 'off' && dispatchParams({ type: 'reset' });
         }}
       />
     </Container>

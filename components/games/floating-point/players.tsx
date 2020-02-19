@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { ControlKeys, Key } from '../../../types/games/floating-point';
@@ -121,7 +121,8 @@ const Players: React.FC = (): JSX.Element => {
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchFP = useContext(ContextDispatchFP);
 
-  const currentHandleMove: React.MutableRefObject<Function> = useRef(null);
+  const newState = statesGame.state[0];
+  const prevState = statesGame.state[1];
   const playersCount: number = statesGame.players.length;
   const dimensions: number = statesParams.dimensions;
   const points: Array<JSX.Element> = [];
@@ -214,29 +215,32 @@ const Players: React.FC = (): JSX.Element => {
     const height = statesGame.height[0];
     const width = statesGame.width[0];
 
-    const matchFloatingPoint = (player): void => {
+    const matchFloatingPoint = (): void => {
       const fPTop = statesFP.top;
       const fPLeft = statesFP.left;
 
-      const playerTop = statesPlayers[player].top;
-      const playerLeft = statesPlayers[player].left;
+      for (let i = 1; i < playersCount; i++) {
+        const player = 'P' + i;
+        const playerTop = statesPlayers[player].top;
+        const playerLeft = statesPlayers[player].left;
 
-      if (
-        (playerTop >= fPTop || playerTop + dimensions >= fPTop) &&
-        playerTop <= fPTop + 50 &&
-        (playerLeft >= fPLeft || playerLeft + dimensions >= fPLeft) &&
-        playerLeft <= fPLeft + 50
-      ) {
-        dispatchPlayers({
-          type: 'addScore',
-          player
-        });
+        if (
+          (playerTop >= fPTop || playerTop + dimensions >= fPTop) &&
+          playerTop <= fPTop + dimensions &&
+          (playerLeft >= fPLeft || playerLeft + dimensions >= fPLeft) &&
+          playerLeft <= fPLeft + dimensions
+        ) {
+          dispatchPlayers({
+            type: 'addScore',
+            player
+          });
 
-        dispatchFP({
-          type: 'move',
-          top: Math.random() * height,
-          left: Math.random() * width
-        });
+          dispatchFP({
+            type: 'move',
+            top: Math.random() * height,
+            left: Math.random() * width
+          });
+        }
       }
     };
 
@@ -264,15 +268,13 @@ const Players: React.FC = (): JSX.Element => {
             direction,
             player
           });
-
-          matchFloatingPoint(player);
         }
       }
     };
 
-    if (statesGame.state === 'running') {
-      //currentHandleMove.current = handleMove;
+    if (newState === 'running') {
       handleMove();
+      matchFloatingPoint();
     }
   });
 
@@ -296,7 +298,7 @@ const Players: React.FC = (): JSX.Element => {
       dispatchGame({ type: 'changeState', state: 'running' });
     };
 
-    if (statesGame.state === 'recalc') recalculatePos();
+    if (newState === 'recalc') recalculatePos();
   });
 
   useEffect(() => {
@@ -305,7 +307,7 @@ const Players: React.FC = (): JSX.Element => {
 
       const key = e.key;
 
-      if (!statesPlayers.pressedKeys.includes(key) && key in controlKeys) {
+      if (key in controlKeys) {
         dispatchPlayers({ type: 'changePressedKeys', operation: 'add', key });
       }
     };
@@ -313,7 +315,7 @@ const Players: React.FC = (): JSX.Element => {
     const cancelKey = (e: KeyboardEvent): void => {
       const key = e.key;
 
-      if (statesPlayers.pressedKeys.includes(key)) {
+      if (key in controlKeys) {
         dispatchPlayers({
           type: 'changePressedKeys',
           operation: 'remove',
@@ -322,18 +324,16 @@ const Players: React.FC = (): JSX.Element => {
       }
     };
 
-    if (statesGame.state === 'running') {
+    if (newState === 'running' && prevState !== 'recalc') {
       window.addEventListener('keydown', registerKey);
       window.addEventListener('keyup', cancelKey);
-    } else if (statesGame.state !== 'running') {
+    } else if (newState !== 'recalc' && prevState === 'running') {
       window.removeEventListener('keydown', registerKey);
       window.removeEventListener('keyup', cancelKey);
     }
-  });
+  }, [newState, prevState, dispatchPlayers]);
 
   return <>{points}</>;
 };
 
 export default React.memo(Players);
-
-// 30 - 5 * statesParams.speed

@@ -18,34 +18,44 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   action
 ): StatesGame => {
   switch (action.type) {
-    case 'changeState': // off / conf / init / running / paused / recalculate
+    case 'changeState': // off / conf / running / paused / recalculate
       return {
         ...state,
         players:
           action.state === 'off' || action.state === 'conf'
             ? [true, true]
             : state.players,
-        state: action.state
+        state: [action.state, state.state[0]]
       };
 
     case 'calculateDimensions':
       return {
         ...state,
-        state: state.state === 'running' ? 'recalc' : state.state,
+        state:
+          state.state[0] === 'running' || state.state[0] === 'paused'
+            ? ['recalc', state.state[0]]
+            : state.state,
         width: [action.width, state.width[0]],
         height: [action.height, state.height[0]]
       };
 
     case 'changePlayers':
-      return {
-        ...state,
-        players:
-          action.operation === 'add'
-            ? [...state.players, action.pos]
-            : action.operation === 'remove'
-            ? state.players.filter(pos => pos !== action.pos)
-            : state.players
-      };
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            players: [...state.players, action.pos]
+          };
+
+        case 'remove':
+          return {
+            ...state,
+            players: state.players.filter(pos => pos !== action.pos)
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -78,18 +88,28 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       };
 
     case 'move':
-      return {
-        ...state,
-        [action.player]: {
-          ...state[action.player],
-          [action.direction]:
-            action.operation === 'add'
-              ? state[action.player][action.direction] + 1
-              : action.operation === 'subtract'
-              ? state[action.player][action.direction] - 1
-              : state[action.player][action.direction]
-        }
-      };
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            [action.player]: {
+              ...state[action.player],
+              [action.direction]: state[action.player][action.direction] + 1
+            }
+          };
+
+        case 'subtract':
+          return {
+            ...state,
+            [action.player]: {
+              ...state[action.player],
+              [action.direction]: state[action.player][action.direction] - 1
+            }
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     case 'addScore':
       return {
@@ -101,15 +121,24 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       };
 
     case 'changePressedKeys':
-      return {
-        ...state,
-        pressedKeys:
-          action.operation === 'add'
-            ? [state.pressedKeys, action.key]
-            : action.operation === 'remove'
-            ? state.pressedKeys.filter(key => key !== action.key)
-            : state.pressedKeys
-      };
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            pressedKeys: !state.pressedKeys.includes(action.key)
+              ? [...state.pressedKeys, action.key]
+              : state.pressedKeys
+          };
+
+        case 'remove':
+          return {
+            ...state,
+            pressedKeys: state.pressedKeys.filter(key => key !== action.key)
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     case 'changePlayer':
       switch (action.operation) {
@@ -124,14 +153,11 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           };
 
         case 'remove':
-          if (action.player === 'P3' && 'P4' in state) {
-            delete state['P4'];
-          } else {
-            delete state[action.player];
-          }
-
           return {
-            ...state
+            ...state,
+            [action.player === 'P3' && state['P4'] !== undefined
+              ? 'P4'
+              : action.player]: undefined
           };
 
         default:
@@ -152,42 +178,61 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
       return init(initParams);
 
     case 'changeShape':
-      return {
-        ...state,
-        [action.player]: {
-          ...state[action.player],
-          shape: action.operation === 'remove' ? undefined : action.shape
-        },
-        shapesOthers:
-          action.operation === 'add'
-            ? [...state.shapesOthers, action.shape]
-            : action.operation === 'remove'
-            ? state.shapesOthers.filter(el => {
+      switch (action.operation) {
+        case 'add':
+          return {
+            ...state,
+            shapesOthers: [...state.shapesOthers, action.shape],
+            [action.player]: {
+              ...state[action.player],
+              shape: action.shape
+            }
+          };
+
+        case 'remove':
+          return {
+            ...state,
+            shapesOthers: state.shapesOthers.filter(el => {
+              return el !== state[action.player].shape;
+            }),
+            [action.player]: {
+              ...state[action.player],
+              shape: undefined
+            }
+          };
+
+        case 'change':
+          return {
+            ...state,
+            shapesOthers: [
+              ...state.shapesOthers.filter(el => {
                 return el !== state[action.player].shape;
-              })
-            : action.operation === 'change'
-            ? [
-                ...state.shapesOthers.filter(el => {
-                  return el !== state[action.player].shape;
-                }),
-                action.shape
-              ]
-            : state.shapesOthers
-      };
+              }),
+              action.shape
+            ],
+            [action.player]: {
+              ...state[action.player],
+              shape: action.shape
+            }
+          };
+
+        default:
+          throw new Error('Unspecified / Wrong operation');
+      }
 
     case 'changeColor':
       return {
         ...state,
-        [action.player]: {
-          ...state[action.player],
-          color: action.color
-        },
         colorsOthers: [
           ...state.colorsOthers.filter(el => {
             return el !== state[action.player].color;
           }),
           action.color
-        ]
+        ],
+        [action.player]: {
+          ...state[action.player],
+          color: action.color
+        }
       };
 
     case 'changeDimensions':
@@ -208,45 +253,51 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           if (action.player === 'P4' && Defaults.P4.color === state.P3.color) {
             return {
               ...state,
+              colorsOthers: [...state.colorsOthers, Defaults.P3.color],
               [action.player]: {
                 shape: undefined,
                 color: Defaults.P3.color
-              },
-              colorsOthers: [...state.colorsOthers, Defaults.P3.color]
+              }
             };
           } else {
             return {
               ...state,
-              [action.player]: {
-                shape: undefined,
-                color: Defaults[action.player].color
-              },
               colorsOthers: [
                 ...state.colorsOthers,
                 Defaults[action.player].color
-              ]
+              ],
+              [action.player]: {
+                shape: undefined,
+                color: Defaults[action.player].color
+              }
             };
           }
 
         case 'remove':
-          state.shapesOthers = state.shapesOthers.filter(el => {
-            return el !== state[action.player].shape;
-          });
-
-          state.colorsOthers = state.colorsOthers.filter(el => {
-            return el !== state[action.player].color;
-          });
-
-          if (action.player === 'P3' && 'P4' in state) {
-            state.P3 = state.P4;
-            delete state['P4'];
+          if (action.player === 'P3' && state['P4'] !== undefined) {
+            return {
+              ...state,
+              shapesOthers: state.shapesOthers.filter(el => {
+                return el !== state[action.player].shape;
+              }),
+              colorsOthers: state.colorsOthers.filter(el => {
+                return el !== state[action.player].color;
+              }),
+              P3: state.P4,
+              P4: undefined
+            };
           } else {
-            delete state[action.player];
+            return {
+              ...state,
+              shapesOthers: state.shapesOthers.filter(el => {
+                return el !== state[action.player].shape;
+              }),
+              colorsOthers: state.colorsOthers.filter(el => {
+                return el !== state[action.player].color;
+              }),
+              [action.player]: undefined
+            };
           }
-
-          return {
-            ...state
-          };
 
         default:
           throw new Error('Unspecified / Wrong operation');

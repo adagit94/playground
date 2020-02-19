@@ -43,7 +43,7 @@ export type ControlKeys = {
 
 export type StatesGame = {
   players: Array<string | boolean>;
-  state: string;
+  state: Array<string>;
   mode: string;
   width: Array<number>;
   height: Array<number>;
@@ -52,15 +52,15 @@ export type StatesPlayers = {
   pressedKeys: Array<string>;
   P1: PlayersPlayer;
   P2: PlayersPlayer;
-  P3?: PlayersPlayer;
-  P4?: PlayersPlayer;
+  P3: PlayersPlayer;
+  P4: PlayersPlayer;
 };
 
 export type StatesParams = {
   P1: ParamsPlayer;
   P2: ParamsPlayer;
-  P3?: ParamsPlayer;
-  P4?: ParamsPlayer;
+  P3: ParamsPlayer;
+  P4: ParamsPlayer;
   shapesOthers: Array<string>;
   colorsOthers: Array<string>;
   dimensions: number;
