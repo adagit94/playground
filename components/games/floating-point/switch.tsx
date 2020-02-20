@@ -19,7 +19,7 @@ const Switch: React.FC = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 
-  const state = statesGame.state[0];
+  const state = statesGame.state;
 
   const Button = styled.button`
     width: 30px;

@@ -9,7 +9,7 @@ import { ContextGame } from '../../../contexts/games/floating-point';
 const Monitor: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
-  const state = statesGame.state[0];
+  const state = statesGame.state;
 
   const Container = styled.div`
     height: 70%;

@@ -25,15 +25,15 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
           action.state === 'off' || action.state === 'conf'
             ? [true, true]
             : state.players,
-        state: [action.state, state.state[0]]
+        state: action.state
       };
 
     case 'calculateDimensions':
       return {
         ...state,
         state:
-          state.state[0] === 'running' || state.state[0] === 'paused'
-            ? ['recalc', state.state[0]]
+          state.state === 'running' || state.state === 'paused'
+            ? 'recalc'
             : state.state,
         width: [action.width, state.width[0]],
         height: [action.height, state.height[0]]
@@ -119,26 +119,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           score: state[action.player].score + 1
         }
       };
-
-    case 'changePressedKeys':
-      switch (action.operation) {
-        case 'add':
-          return {
-            ...state,
-            pressedKeys: !state.pressedKeys.includes(action.key)
-              ? [...state.pressedKeys, action.key]
-              : state.pressedKeys
-          };
-
-        case 'remove':
-          return {
-            ...state,
-            pressedKeys: state.pressedKeys.filter(key => key !== action.key)
-          };
-
-        default:
-          throw new Error('Unspecified / Wrong operation');
-      }
 
     case 'changePlayer':
       switch (action.operation) {

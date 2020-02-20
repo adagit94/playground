@@ -1,7 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-import { ControlKeys, Key } from '../../../types/games/floating-point';
+import {
+  Key,
+  ControlKeys,
+  ControlKeys2P,
+  ControlKeys3P,
+  ControlKeys4P
+} from '../../../types/games/floating-point';
 
 import {
   ContextGame,
@@ -13,104 +19,132 @@ import {
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
 
-const controlKeys: ControlKeys = {
+const controlKeys2P: ControlKeys2P = {
   ArrowUp: {
+    pressed: false,
     operation: 'subtract',
     direction: 'top',
     player: 'P1',
     limit: 'topLeft'
   },
   ArrowRight: {
+    pressed: false,
     operation: 'add',
     direction: 'left',
     player: 'P1',
     limit: 'right'
   },
   ArrowDown: {
+    pressed: false,
     operation: 'add',
     direction: 'top',
     player: 'P1',
     limit: 'bottom'
   },
   ArrowLeft: {
+    pressed: false,
     operation: 'subtract',
     direction: 'left',
     player: 'P1',
     limit: 'topLeft'
   },
   w: {
+    pressed: false,
     operation: 'subtract',
     direction: 'top',
     player: 'P2',
     limit: 'topLeft'
   },
   d: {
+    pressed: false,
     operation: 'add',
     direction: 'left',
     player: 'P2',
     limit: 'right'
   },
   s: {
+    pressed: false,
     operation: 'add',
     direction: 'top',
     player: 'P2',
     limit: 'bottom'
   },
   a: {
+    pressed: false,
     operation: 'subtract',
     direction: 'left',
     player: 'P2',
     limit: 'topLeft'
-  },
+  }
+};
+
+const controlKeys3P: ControlKeys3P = {
+  ...controlKeys2P,
   i: {
+    pressed: false,
     operation: 'subtract',
     direction: 'top',
     player: 'P3',
     limit: 'topLeft'
   },
   l: {
+    pressed: false,
     operation: 'add',
     direction: 'left',
     player: 'P3',
     limit: 'right'
   },
   k: {
+    pressed: false,
     operation: 'add',
     direction: 'top',
     player: 'P3',
     limit: 'bottom'
   },
   j: {
+    pressed: false,
     operation: 'subtract',
     direction: 'left',
     player: 'P3',
     limit: 'topLeft'
-  },
+  }
+};
+
+const controlKeys4P: ControlKeys4P = {
+  ...controlKeys3P,
   '8': {
+    pressed: false,
     operation: 'subtract',
     direction: 'top',
     player: 'P4',
     limit: 'topLeft'
   },
   '6': {
+    pressed: false,
     operation: 'add',
     direction: 'left',
     player: 'P4',
     limit: 'right'
   },
   '5': {
+    pressed: false,
     operation: 'add',
     direction: 'top',
     player: 'P4',
     limit: 'bottom'
   },
   '4': {
+    pressed: false,
     operation: 'subtract',
     direction: 'left',
     player: 'P4',
     limit: 'topLeft'
   }
 };
+
+let intervalHandleMove: number;
+let registerKey;
+let cancelKey;
 
 const Players: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
@@ -121,10 +155,11 @@ const Players: React.FC = (): JSX.Element => {
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchFP = useContext(ContextDispatchFP);
 
-  const newState = statesGame.state[0];
-  const prevState = statesGame.state[1];
-  const playersCount: number = statesGame.players.length;
-  const dimensions: number = statesParams.dimensions;
+  const state = statesGame.state;
+  const playersCount = statesGame.players.length;
+  const dimensions = statesParams.dimensions;
+
+  const refHandleMove = useRef(null);
   const points: Array<JSX.Element> = [];
 
   const PointP1 = styled.div`
@@ -211,10 +246,76 @@ const Players: React.FC = (): JSX.Element => {
     points.push(<PointP4 key='P4' />);
   }
 
-  useEffect(() => {
+  const handleMove = (keys): void => {
     const height = statesGame.height[0];
     const width = statesGame.width[0];
 
+    for (const key in keys) {
+      const keyObj: Key = keys[key];
+      const direction = keyObj.direction;
+      const player = keyObj.player;
+      const limit = keyObj.limit;
+      const playerPos: number = statesPlayers[player][direction];
+
+      if (
+        (limit === 'topLeft' && playerPos > 0) ||
+        (limit === 'bottom' && playerPos + dimensions < height) ||
+        (limit === 'right' && playerPos + dimensions < width)
+      ) {
+        const operation: string = keyObj.operation;
+
+        dispatchPlayers({
+          type: 'move',
+          operation,
+          direction,
+          player
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const currentHandleMove = (): void => {
+      refHandleMove.current();
+    };
+
+    if (state === 'running' && intervalHandleMove === undefined) {
+      let controlKeys: ControlKeys;
+      registerKey = (e: KeyboardEvent): void => {
+        e.preventDefault();
+
+        const key = e.key;
+
+        if (key in keys && keys[key].pressed !== true) {
+          keys[key].pressed = true;
+        }
+      };
+
+      cancelKey = (e: KeyboardEvent): void => {
+        const key = e.key;
+
+        if (key in controlKeys) {
+          keys[key].pressed = false;
+        }
+      };
+
+      intervalHandleMove = window.setInterval(
+        currentHandleMove,
+        30 - 5 * statesParams.speed
+      );
+
+      window.addEventListener('keydown', registerKey);
+      window.addEventListener('keyup', cancelKey);
+    } else if (state !== 'running' && intervalHandleMove !== undefined) {
+      window.clearInterval(intervalHandleMove);
+      intervalHandleMove = undefined;
+
+      window.removeEventListener('keydown', registerKey);
+      window.removeEventListener('keyup', cancelKey);
+    }
+  });
+
+  useEffect(() => {
     const matchFloatingPoint = (): void => {
       const fPTop = statesFP.top;
       const fPLeft = statesFP.left;
@@ -237,43 +338,15 @@ const Players: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.random() * height,
-            left: Math.random() * width
+            top: Math.random() * statesGame.height[0],
+            left: Math.random() * statesGame.width[0]
           });
         }
       }
     };
 
-    const handleMove = (): void => {
-      const pressedKeys = statesPlayers.pressedKeys;
-      const pressedKeysCount = pressedKeys.length;
-
-      for (let i = 0; i < pressedKeysCount; i++) {
-        const keyObj: Key = controlKeys[pressedKeys[i]];
-        const direction = keyObj.direction;
-        const player = keyObj.player;
-        const limit = keyObj.limit;
-        const playerPos: number = statesPlayers[player][direction];
-
-        if (
-          (limit === 'topLeft' && playerPos > 0) ||
-          (limit === 'bottom' && playerPos + dimensions < height) ||
-          (limit === 'right' && playerPos + dimensions < width)
-        ) {
-          const operation: string = keyObj.operation;
-
-          dispatchPlayers({
-            type: 'move',
-            operation,
-            direction,
-            player
-          });
-        }
-      }
-    };
-
-    if (newState === 'running') {
-      handleMove();
+    if (state === 'running') {
+      refHandleMove.current = handleMove;
       matchFloatingPoint();
     }
   });
@@ -298,41 +371,9 @@ const Players: React.FC = (): JSX.Element => {
       dispatchGame({ type: 'changeState', state: 'running' });
     };
 
-    if (newState === 'recalc') recalculatePos();
+    if (state === 'recalc') recalculatePos();
   });
-
-  useEffect(() => {
-    const registerKey = (e: KeyboardEvent): void => {
-      e.preventDefault();
-
-      const key = e.key;
-
-      if (key in controlKeys) {
-        dispatchPlayers({ type: 'changePressedKeys', operation: 'add', key });
-      }
-    };
-
-    const cancelKey = (e: KeyboardEvent): void => {
-      const key = e.key;
-
-      if (key in controlKeys) {
-        dispatchPlayers({
-          type: 'changePressedKeys',
-          operation: 'remove',
-          key
-        });
-      }
-    };
-
-    if (newState === 'running' && prevState !== 'recalc') {
-      window.addEventListener('keydown', registerKey);
-      window.addEventListener('keyup', cancelKey);
-    } else if (newState !== 'recalc' && prevState === 'running') {
-      window.removeEventListener('keydown', registerKey);
-      window.removeEventListener('keyup', cancelKey);
-    }
-  }, [newState, prevState, dispatchPlayers]);
-
+  console.log(1);
   return <>{points}</>;
 };
 

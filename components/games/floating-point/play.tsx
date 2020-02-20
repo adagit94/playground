@@ -33,7 +33,7 @@ const Play: React.FC = (): JSX.Element => {
   const dispatchParams = useContext(ContextDispatchParams);
   const dispatchFP = useContext(ContextDispatchFP);
 
-  const state = statesGame.state[0];
+  const state = statesGame.state;
 
   const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
     const playersCount = statesGame.players.length;

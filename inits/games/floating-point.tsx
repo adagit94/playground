@@ -13,14 +13,13 @@ export const init = <Inits extends unknown>(initStates: Inits): Inits =>
 
 export const initGame: StatesGame = {
   players: [true, true],
-  state: ['off', undefined], // off / conf / running / paused / recalc    new / prev
+  state: 'off', // off / conf / running / paused / recalc
   mode: 'fP',
   width: [undefined, undefined], // new / prev
   height: [undefined, undefined] // new / prev
 };
 
 export const initPlayers: StatesPlayers = {
-  pressedKeys: [],
   P1: {
     top: undefined,
     left: undefined,

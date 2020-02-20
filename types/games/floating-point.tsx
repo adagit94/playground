@@ -16,13 +16,14 @@ type ChangePlayer = {
 };
 
 export type Key = {
+  pressed: boolean;
   operation: string;
   direction: string;
   player: string;
   limit: string;
 };
 
-export type ControlKeys = {
+export type ControlKeys2P = {
   ArrowUp: Key;
   ArrowRight: Key;
   ArrowDown: Key;
@@ -31,25 +32,32 @@ export type ControlKeys = {
   d: Key;
   s: Key;
   a: Key;
+};
+
+export type ControlKeys3P = ControlKeys2P & {
   i: Key;
   l: Key;
   k: Key;
   j: Key;
+};
+
+export type ControlKeys4P = ControlKeys3P & {
   '8': Key;
   '6': Key;
   '5': Key;
   '4': Key;
 };
 
+export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
+
 export type StatesGame = {
   players: Array<string | boolean>;
-  state: Array<string>;
+  state: string;
   mode: string;
   width: Array<number>;
   height: Array<number>;
 };
 export type StatesPlayers = {
-  pressedKeys: Array<string>;
   P1: PlayersPlayer;
   P2: PlayersPlayer;
   P3: PlayersPlayer;
@@ -99,7 +107,6 @@ export type ActionsPlayers =
     }
   | { type: 'move'; player: string; direction: string; operation: string }
   | { type: 'addScore'; player: string }
-  | { type: 'changePressedKeys'; key: string; operation: string }
   | ChangePlayer;
 
 export type ActionsParams =
