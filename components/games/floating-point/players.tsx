@@ -155,6 +155,10 @@ const Players: React.FC = (): JSX.Element => {
   const dispatchPlayers = useContext(ContextDispatchPlayers);
   const dispatchFP = useContext(ContextDispatchFP);
 
+  const newHeight = statesGame.height[0];
+  const newWidth = statesGame.width[0];
+  const oldHeight = statesGame.height[1];
+  const oldWidth = statesGame.width[1];
   const state = statesGame.state;
   const playersCount = statesGame.players.length;
   const dimensions = statesParams.dimensions;
@@ -247,9 +251,6 @@ const Players: React.FC = (): JSX.Element => {
   }
 
   const handleMove = (keys): void => {
-    const height = statesGame.height[0];
-    const width = statesGame.width[0];
-
     for (const key in keys) {
       const keyObj: Key = keys[key];
       const direction = keyObj.direction;
@@ -259,8 +260,8 @@ const Players: React.FC = (): JSX.Element => {
 
       if (
         (limit === 'topLeft' && playerPos > 0) ||
-        (limit === 'bottom' && playerPos + dimensions < height) ||
-        (limit === 'right' && playerPos + dimensions < width)
+        (limit === 'bottom' && playerPos + dimensions < newHeight) ||
+        (limit === 'right' && playerPos + dimensions < newWidth)
       ) {
         const operation: string = keyObj.operation;
 
@@ -338,8 +339,8 @@ const Players: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.random() * statesGame.height[0],
-            left: Math.random() * statesGame.width[0]
+            top: Math.random() * newHeight,
+            left: Math.random() * newWidth
           });
         }
       }
@@ -353,11 +354,6 @@ const Players: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const recalculatePos = (): void => {
-      const newHeight = statesGame.height[0];
-      const newWidth = statesGame.width[0];
-      const oldHeight = statesGame.height[1];
-      const oldWidth = statesGame.width[1];
-
       for (let i = 1; i <= playersCount; i++) {
         const player = 'P' + i;
         const top =
