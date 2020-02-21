@@ -7,7 +7,7 @@ const Container = styled.footer`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid #000000;
+  border-top: 1px solid;
 `;
 
 const Footer: React.FC = (): JSX.Element => {

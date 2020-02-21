@@ -8,7 +8,7 @@ const Container = styled.header`
   grid-area: header;
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid;
 `;
 
 const Header: React.FC = (): JSX.Element => {

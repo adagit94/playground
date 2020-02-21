@@ -24,7 +24,6 @@ const AddPlayer = styled.button`
   width: 50px;
   height: 50px;
   border: none;
-  color: #ffffff;
   background-color: #008000;
   font-size: 2rem;
   cursor: pointer;
@@ -34,7 +33,6 @@ const RemovePlayer = styled.button`
   width: 50px;
   height: 50px;
   border: none;
-  color: #ffffff;
   background-color: #ff0000;
   font-size: 2rem;
   cursor: pointer;

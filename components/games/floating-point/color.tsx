@@ -30,7 +30,6 @@ const Label = styled.label`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  color: '#000000';
 `;
 
 const Color = ({ player }): JSX.Element => {

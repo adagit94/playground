@@ -17,7 +17,7 @@ const Container = styled.div`
 const DividerHorizontal = styled.div`
   height: 2px;
   margin: 10 0px;
-  background-color: #000000;
+  background-color: #ffffff;
 `;
 
 const Controller: React.FC = (): JSX.Element => {

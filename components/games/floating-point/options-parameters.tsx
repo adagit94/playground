@@ -20,13 +20,13 @@ const Disabled = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background-color: #00000080;
+  background-color: #ffffff80;
 `;
 
 const DividerHorizontal = styled.div`
   height: 2px;
   margin: 10px 0;
-  background-color: #000000;
+  background-color: #ffffff;
 `;
 
 const OptionsParameters: React.FC = (): JSX.Element => {

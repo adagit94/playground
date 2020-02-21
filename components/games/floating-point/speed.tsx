@@ -26,7 +26,7 @@ const Speed: React.FC = (): JSX.Element => {
   const isDefined = typeof speed === 'number';
 
   const Label = styled.label`
-    color: ${speed === null ? '#f00' : '#000000'};
+    color: ${speed === null && '#f00'};
   `;
 
   return (
@@ -40,6 +40,7 @@ const Speed: React.FC = (): JSX.Element => {
         type='range'
         min='1'
         max='5'
+        step='2'
         id='speed'
       />
       {isDefined && speed + 'x'}

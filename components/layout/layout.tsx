@@ -8,7 +8,7 @@ import Footer from './footer/footer';
 import { ContextContent } from '../../contexts/layout/content';
 
 const Container = styled.div`
-  border: 1px solid black;
+  background-color: #000000;
   position: absolute;
   top: 0;
   right: 0;
@@ -16,11 +16,16 @@ const Container = styled.div`
   left: 0;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 75px 1fr 75px;
+  grid-template-rows: 75px 1fr 25px;
   grid-template-areas:
     'header'
     'view'
     'footer';
+
+  * {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({

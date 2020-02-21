@@ -142,9 +142,26 @@ const controlKeys4P: ControlKeys4P = {
   }
 };
 
+let controlKeys: ControlKeys;
 let intervalHandleMove: number;
-let registerKey;
-let cancelKey;
+
+const registerKey = (e: KeyboardEvent): void => {
+  e.preventDefault();
+
+  const key = e.key;
+
+  if (key in controlKeys && controlKeys[key].pressed !== true) {
+    controlKeys[key].pressed = true;
+  }
+};
+
+const cancelKey = (e: KeyboardEvent): void => {
+  const key = e.key;
+
+  if (key in controlKeys) {
+    controlKeys[key].pressed = false;
+  }
+};
 
 const Players: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
@@ -250,27 +267,31 @@ const Players: React.FC = (): JSX.Element => {
     points.push(<PointP4 key='P4' />);
   }
 
-  const handleMove = (keys): void => {
-    for (const key in keys) {
-      const keyObj: Key = keys[key];
-      const direction = keyObj.direction;
-      const player = keyObj.player;
-      const limit = keyObj.limit;
-      const playerPos: number = statesPlayers[player][direction];
+  const handleMove = (): void => {
+    for (const key in controlKeys) {
+      const keyObj: Key = controlKeys[key];
 
-      if (
-        (limit === 'topLeft' && playerPos > 0) ||
-        (limit === 'bottom' && playerPos + dimensions < newHeight) ||
-        (limit === 'right' && playerPos + dimensions < newWidth)
-      ) {
-        const operation: string = keyObj.operation;
+      if (keyObj.pressed === true) {
+        const direction = keyObj.direction;
+        const player = keyObj.player;
+        const limit = keyObj.limit;
+        const playerPos: number = statesPlayers[player][direction];
 
-        dispatchPlayers({
-          type: 'move',
-          operation,
-          direction,
-          player
-        });
+        if (
+          (limit === 'topLeft' && playerPos > 0) ||
+          (limit === 'bottom' && playerPos + dimensions < newHeight) ||
+          (limit === 'right' && playerPos + dimensions < newWidth)
+        ) {
+          console.log(1);
+          const operation = keyObj.operation;
+
+          dispatchPlayers({
+            type: 'move',
+            operation,
+            direction,
+            player
+          });
+        }
       }
     }
   };
@@ -281,24 +302,17 @@ const Players: React.FC = (): JSX.Element => {
     };
 
     if (state === 'running' && intervalHandleMove === undefined) {
-      let controlKeys: ControlKeys;
-      registerKey = (e: KeyboardEvent): void => {
-        e.preventDefault();
-
-        const key = e.key;
-
-        if (key in keys && keys[key].pressed !== true) {
-          keys[key].pressed = true;
-        }
-      };
-
-      cancelKey = (e: KeyboardEvent): void => {
-        const key = e.key;
-
-        if (key in controlKeys) {
-          keys[key].pressed = false;
-        }
-      };
+      switch (playersCount) {
+        case 2:
+          controlKeys = controlKeys2P;
+          break;
+        case 3:
+          controlKeys = controlKeys3P;
+          break;
+        case 4:
+          controlKeys = controlKeys4P;
+          break;
+      }
 
       intervalHandleMove = window.setInterval(
         currentHandleMove,
@@ -369,7 +383,7 @@ const Players: React.FC = (): JSX.Element => {
 
     if (state === 'recalc') recalculatePos();
   });
-  console.log(1);
+
   return <>{points}</>;
 };
 

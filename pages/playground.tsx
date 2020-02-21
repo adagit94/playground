@@ -12,7 +12,7 @@ const Container = styled.div`
 `;
 
 const Item = styled.div`
-  border: 1px solid black;
+  border: 1px solid;
   width: 100px;
   height: 100px;
 `;

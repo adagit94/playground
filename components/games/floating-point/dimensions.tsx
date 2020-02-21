@@ -27,7 +27,7 @@ const Dimensions: React.FC = (): JSX.Element => {
   let text: string;
 
   const Label = styled.label`
-    color: ${dimensions === null ? '#f00' : '#000000'};
+    color: ${dimensions === null && '#f00'};
   `;
 
   switch (dimensions) {

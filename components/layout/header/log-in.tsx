@@ -17,8 +17,8 @@ const Form = styled.form`
   right: 0;
   width: 300px;
   height: 150px;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
 `;
 
 const Row = styled.div`
@@ -43,8 +43,8 @@ const Row = styled.div`
 const FormBtn = styled.button`
   width: 150px;
   height: 100%;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   border: none;
   transition-property: font-weight, font-size;
   transition-duration: 0.1s;
@@ -61,11 +61,11 @@ const LogInBtn = styled.button`
   width: 70px;
   border-top: none;
   border-bottom: none;
-  border-left: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
+  border-left: 2px solid #000000;
+  border-right: 2px solid #000000;
   border-radius: 5px;
   color: #ffffff;
-  background-color: #000000;
+  background-color: #ffffff;
   padding: 5px;
   transition-property: color, background-color, border-color;
   transition-duration: 0.1s;
@@ -73,14 +73,14 @@ const LogInBtn = styled.button`
 
   :hover {
     color: #000000;
-    background-color: #ffffff;
-    border-color: #000000;
+    background-color: #000000;
+    border-color: #ffffff;
     cursor: pointer;
   }
 `;
 
 const LinkTxt = styled.a`
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
 
   :hover {

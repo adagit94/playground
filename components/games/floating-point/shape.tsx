@@ -49,20 +49,20 @@ const Shape = ({ player }): JSX.Element => {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    color: ${shape === null ? '#f00' : '#000000'};
+    color: ${shape === null && '#f00'};
   `;
 
   const Square = styled.div`
     opacity: ${unclickableSquare ? 0.2 : 1};
     background-color: ${color};
-    border: ${shape === 'square' ? '2px solid #000000' : 'none'};
+    border: ${shape === 'square' && '2px solid'};
     cursor: ${unclickableSquare ? 'not-allowed' : 'pointer'};
   `;
 
   const Circle = styled.div`
     opacity: ${unclickableCircle ? 0.2 : 1};
     background-color: ${color};
-    border: ${shape === 'circle' ? '2px solid #000000' : 'none'};
+    border: ${shape === 'circle' && '2px solid'};
     border-radius: 100%;
     cursor: ${unclickableCircle ? 'not-allowed' : 'pointer'};
   `;
@@ -70,7 +70,7 @@ const Shape = ({ player }): JSX.Element => {
   const Rhombus = styled.div`
     opacity: ${unclickableRhombus ? 0.2 : 1};
     background-color: ${color};
-    border: ${shape === 'rhombus' ? '2px solid #000000' : 'none'};
+    border: ${shape === 'rhombus' && '2px solid'};
     transform: rotate(45deg);
     cursor: ${unclickableRhombus ? 'not-allowed' : 'pointer'};
   `;
@@ -78,7 +78,7 @@ const Shape = ({ player }): JSX.Element => {
   const Ellipse = styled.div`
     opacity: ${unclickableEllipse ? 0.2 : 1};
     background-color: ${color};
-    border: ${shape === 'ellipse' ? '2px solid #000000' : 'none'};
+    border: ${shape === 'ellipse' && '2px solid'};
     border-radius: 100%;
     transform: rotateX(45deg);
     cursor: ${unclickableEllipse ? 'not-allowed' : 'pointer'};
