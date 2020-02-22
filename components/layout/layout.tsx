@@ -8,7 +8,6 @@ import Footer from './footer/footer';
 import { ContextContent } from '../../contexts/layout/content';
 
 const Container = styled.div`
-  background-color: #000000;
   position: absolute;
   top: 0;
   right: 0;
@@ -24,6 +23,7 @@ const Container = styled.div`
 
   * {
     color: #ffffff;
+    background-color: #000000;
     border-color: #ffffff;
   }
 `;
