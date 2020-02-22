@@ -27,7 +27,6 @@ const Container = styled.nav`
         width: 100%;
         height: 100%;
         text-decoration: none;
-        color: #ffffff;
         border-top: 2px solid;
         border-right-color: transparent;
         border-bottom: 2px solid;

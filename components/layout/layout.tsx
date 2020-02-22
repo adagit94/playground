@@ -20,12 +20,12 @@ const Container = styled.div`
     'header'
     'view'
     'footer';
-
-  * {
     color: #ffffff;
     background-color: #000000;
-    border-color: #ffffff;
-  }
+
+    a {
+    color: #ffffff;
+    }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({

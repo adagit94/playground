@@ -5,10 +5,8 @@ import $ from 'jquery';
 
 const Container = styled.div`
   position: relative;
+  color: #000000;
 
-  * {
-    color: #000000;
-  }
 `;
 
 const Form = styled.form`
@@ -21,6 +19,7 @@ const Form = styled.form`
   right: 0;
   width: 300px;
   height: 150px;
+  background-color: #ffffff;
 `;
 
 const Row = styled.div`
@@ -29,14 +28,14 @@ const Row = styled.div`
   justify-content: space-around;
 
   input {
-    border: none;
+    border: 2px solid #000000;
     border-radius: 5px;
     transition-property: box-shadow;
     transition-duration: 0.1s;
     transition-timing-function: linear;
 
     :focus {
-      box-shadow: 0 0 0 2px #ffffff;
+      box-shadow: 0 0 0 2px #000000;
       outline: none;
     }
   }
@@ -46,6 +45,7 @@ const FormBtn = styled.button`
   width: 150px;
   height: 100%;
   border: none;
+  background-color: #ffffff;
   transition-property: font-weight, font-size;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -65,6 +65,7 @@ const LogInBtn = styled.button`
   border-right: 2px solid #000000;
   border-radius: 5px;
   padding: 5px;
+  background-color: #ffffff;
   transition-property: color, background-color, border-color;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -79,6 +80,7 @@ const LogInBtn = styled.button`
 
 const LinkTxt = styled.a`
   text-decoration: none;
+  color: #000000;
 
   :hover {
     cursor: pointer;
@@ -86,14 +88,14 @@ const LinkTxt = styled.a`
 `;
 
 const showForm = (): void => {
-  $('#logInForm').slideToggle(100, 'linear');
+  $('#log-in-form').slideToggle(100, 'linear');
 };
 
 const LogIn: React.FC = (): JSX.Element => {
   return (
     <Container>
       <FormBtn onClick={showForm}>Log in</FormBtn>
-      <Form style={{ display: 'none' }} id='logInForm'>
+      <Form style={{ display: 'none' }} id='log-in-form'>
         <Row>
           <label htmlFor='username'>Username: </label>
           <input type='text' name='username' id='username' required />
