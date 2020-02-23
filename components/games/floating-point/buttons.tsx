@@ -6,7 +6,7 @@ import Play from './play';
 import Reset from './reset';
 
 const Container = styled.div`
-  flex: 1 1 0;
+  height: 50px;
   display: flex;
   flex-direction: row;
   padding: 0 20px;

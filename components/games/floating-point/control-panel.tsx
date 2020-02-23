@@ -13,10 +13,16 @@ import {
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 30%;
+  height: 40%;
   padding: 10px;
+`;
+
+const Side = styled.div`
+  border: 1px solid red;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 40%;
 `;
 
 const AddPlayer = styled.button`
@@ -24,6 +30,7 @@ const AddPlayer = styled.button`
   width: 50px;
   height: 50px;
   border: none;
+  color: #ffffff;
   background-color: #008000;
   font-size: 2rem;
   cursor: pointer;
@@ -33,6 +40,7 @@ const RemovePlayer = styled.button`
   width: 50px;
   height: 50px;
   border: none;
+  color: #ffffff;
   background-color: #ff0000;
   font-size: 2rem;
   cursor: pointer;
@@ -55,9 +63,11 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <OptionsPlayer player='P1' />
+      <Side>
+        <OptionsPlayer player='P1' />
 
-      {playerLeft && <OptionsPlayer player={PL} />}
+        {playerLeft && <OptionsPlayer player={PL} />}
+      </Side>
 
       {state === 'conf' && playerLeft ? (
         <RemovePlayer
@@ -111,8 +121,6 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
       <OptionsCommon />
 
-      {playerRight && <OptionsPlayer player={PR} />}
-
       {state === 'conf' && playerRight ? (
         <RemovePlayer
           onClick={(): void => {
@@ -162,8 +170,11 @@ const ControlPanel: React.FC = (): JSX.Element => {
           +
         </AddPlayer>
       ) : null}
+      <Side>
+        {playerRight && <OptionsPlayer player={PR} />}
 
-      <OptionsPlayer player='P2' />
+        <OptionsPlayer player='P2' />
+      </Side>
     </Container>
   );
 };

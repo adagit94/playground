@@ -7,7 +7,7 @@ import Speed from './speed';
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 2 2 0;
+  flex: auto;
   display: flex;
   flex-direction: column;
   position: relative;

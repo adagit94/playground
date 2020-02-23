@@ -32,6 +32,7 @@ const Container = styled.nav`
         border-bottom: 2px solid;
         border-left-color: transparent;
         border-radius: 5px;
+        color: #ffffff;
         transition-property: color, background-color, border-color;
         transition-duration: 0.1s;
         transition-timing-function: linear;

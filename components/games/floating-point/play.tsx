@@ -20,8 +20,8 @@ const Container = styled.div`
 
 const Button = styled.input`
   border: none;
-  width: 80px;
-  height: 50px;
+  width: 50px;
+  height: 20px;
   cursor: pointer;
 `;
 

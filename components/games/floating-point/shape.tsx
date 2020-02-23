@@ -106,6 +106,7 @@ const Shape = ({ player }): JSX.Element => {
                 }
           }
         />
+
         <Circle
           onClick={
             unclickableCircle
@@ -124,6 +125,7 @@ const Shape = ({ player }): JSX.Element => {
                 }
           }
         />
+
         <Rhombus
           onClick={
             unclickableRhombus
@@ -142,6 +144,7 @@ const Shape = ({ player }): JSX.Element => {
                 }
           }
         />
+
         <Ellipse
           onClick={
             unclickableEllipse

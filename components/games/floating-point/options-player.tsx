@@ -7,8 +7,7 @@ import Color from './color';
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  width: 225px;
-  height: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
 `;

@@ -22,10 +22,6 @@ const Container = styled.div`
     'footer';
     color: #ffffff;
     background-color: #000000;
-
-    a {
-    color: #ffffff;
-    }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({
