@@ -20,8 +20,15 @@ const InputContainer = styled.div`
   justify-content: space-evenly;
 
   input {
-    width: 50px;
     cursor: pointer;
+    width: 50px;
+    padding: 0;
+    border: 2px solid #ffffff;
+    background-color: unset;
+
+    ::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
   }
 `;
 

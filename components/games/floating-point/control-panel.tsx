@@ -13,12 +13,13 @@ import {
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  height: 40%;
+  height: 30%;
   padding: 10px;
+  border: 5px solid;
+  border-radius: 250px 250px 0 0;
 `;
 
 const Side = styled.div`
-  border: 1px solid red;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -34,6 +35,10 @@ const AddPlayer = styled.button`
   background-color: #008000;
   font-size: 2rem;
   cursor: pointer;
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const RemovePlayer = styled.button`
@@ -44,6 +49,10 @@ const RemovePlayer = styled.button`
   background-color: #ff0000;
   font-size: 2rem;
   cursor: pointer;
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {

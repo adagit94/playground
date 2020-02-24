@@ -12,7 +12,7 @@ const Monitor: React.FC = (): JSX.Element => {
   const state = statesGame.state;
 
   const Container = styled.div`
-    height: 60%;
+    height: 70%;
     position: relative;
     visibility: ${state === 'running' ||
     state === 'paused' ||

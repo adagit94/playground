@@ -14,12 +14,6 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const DividerHorizontal = styled.div`
-  height: 2px;
-  margin: 10 0px;
-  background-color: #ffffff;
-`;
-
 const Controller: React.FC = (): JSX.Element => {
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
@@ -61,7 +55,7 @@ const Controller: React.FC = (): JSX.Element => {
       window.removeEventListener('resize', calculateDimensions);
     };
   }, []);
-  //console.log(statesGame.state);
+
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
@@ -77,8 +71,6 @@ const Controller: React.FC = (): JSX.Element => {
                   >
                     <Contexts.ContextDispatchFP.Provider value={dispatchFP}>
                       <Monitor />
-
-                      <DividerHorizontal />
                       <ControlPanel />
                     </Contexts.ContextDispatchFP.Provider>
                   </Contexts.ContextDispatchParams.Provider>
@@ -93,3 +85,5 @@ const Controller: React.FC = (): JSX.Element => {
 };
 
 export default React.memo(Controller);
+
+//console.log(statesGame.state); border: 1px solid red;

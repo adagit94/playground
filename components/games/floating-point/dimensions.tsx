@@ -14,7 +14,36 @@ const Container = styled.div`
   align-items: center;
 
   input {
+    -webkit-appearance: none;
     cursor: move;
+
+    :focus {
+      outline: none;
+    }
+
+    ::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 1px;
+      background: #ffffff;
+    }
+
+    ::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      margin-top: -7.5px;
+      border-radius: 100%;
+      background: #ffffff;
+      transition-property: width, height;
+      transition-duration: 0.1s;
+      transition-timing-function: linear;
+    }
+
+    :active::-webkit-slider-thumb {
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+    }
   }
 `;
 

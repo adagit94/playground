@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const Container = styled.nav`
   flex-grow: 1;
   padding: 10px 0;
+  border-bottom: 5px solid;
 
   ul {
     display: flex;
@@ -53,13 +54,13 @@ const Nav: React.FC = (): JSX.Element => {
     <Container>
       <ul>
         <li>
-          <Link href='/how-to-play'>
-            <a>How to play</a>
+          <Link href='/playground'>
+            <a>Playground</a>
           </Link>
         </li>
         <li>
-          <Link href='/contact'>
-            <a>Contact</a>
+          <Link href='/stats'>
+            <a>Stats</a>
           </Link>
         </li>
       </ul>

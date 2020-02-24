@@ -5,7 +5,7 @@ import Nav from './nav';
 import LogIn from './log-in';
 
 const Container = styled.header`
-  grid-area: header;
+  height: 75px;
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid;

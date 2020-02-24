@@ -15,6 +15,7 @@ const Container = styled.div`
 
 const Items = styled.div`
   flex: 1 1 0;
+  width: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

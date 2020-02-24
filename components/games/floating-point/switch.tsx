@@ -25,8 +25,13 @@ const Switch: React.FC = (): JSX.Element => {
     width: 30px;
     height: 100%;
     border: none;
+    border-radius: 5px;
     background-color: ${state === 'off' ? '#f00' : '#7dfa00'};
     cursor: pointer;
+
+    :focus {
+      outline: none;
+    }
   `;
 
   return (

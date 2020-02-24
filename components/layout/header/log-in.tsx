@@ -6,7 +6,6 @@ import $ from 'jquery';
 const Container = styled.div`
   position: relative;
   color: #000000;
-
 `;
 
 const Form = styled.form`
@@ -44,6 +43,8 @@ const Row = styled.div`
 const FormBtn = styled.button`
   width: 150px;
   height: 100%;
+  font-size: 1rem;
+  font-weight: bold;
   border: none;
   background-color: #ffffff;
   transition-property: font-weight, font-size;
@@ -52,7 +53,7 @@ const FormBtn = styled.button`
 
   :hover {
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.3rem;
     cursor: pointer;
   }
 `;

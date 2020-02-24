@@ -19,10 +19,27 @@ const Container = styled.div`
 `;
 
 const Button = styled.input`
-  border: none;
-  width: 50px;
-  height: 20px;
+  width: 80px;
+  height: 100%;
+  font-weight: bold;
   cursor: pointer;
+  border-top: none;
+  border-right: 2px solid;
+  border-bottom: none;
+  border-left: 2px solid;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: unset;
+  transition-property: color, background-color, border-color;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+
+  :hover {
+    color: #000000;
+    background-color: #ffffff;
+    border-right-color: #000000;
+    border-left-color: #000000;
+  }
 `;
 
 const Play: React.FC = (): JSX.Element => {
