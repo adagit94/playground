@@ -18,16 +18,15 @@ const Container = styled.div`
 const Button = styled.input`
   width: 80px;
   height: 100%;
-  cursor: pointer;
-  font-weight: bold;
-  border-top: none;
+  border-top: transparent;
   border-right: 2px solid;
-  border-bottom: none;
+  border-bottom: transparent;
   border-left: 2px solid;
   border-radius: 5px;
   color: #ffffff;
   background-color: unset;
-  transition-property: color, background-color, border-color;
+  transition-property: color, background-color, border-right-color,
+    border-left-color;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 

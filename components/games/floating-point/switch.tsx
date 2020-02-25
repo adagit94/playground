@@ -21,17 +21,15 @@ const Switch: React.FC = (): JSX.Element => {
 
   const state = statesGame.state;
 
-  const Button = styled.button`
+  const Button = styled.input`
     width: 30px;
     height: 100%;
     border: none;
     border-radius: 5px;
-    background-color: ${state === 'off' ? '#f00' : '#7dfa00'};
-    cursor: pointer;
-
-    :focus {
-      outline: none;
-    }
+    transform: ${state !== 'off' && 'rotateX(45deg)'};
+    box-shadow: ${state !== 'off' && '0 15px 0 0 #32cd3280'};
+    background-color: ${state !== 'off' ? '#32cd32' : '#ff0000'};
+    color: #ffffff;
   `;
 
   return (
@@ -40,11 +38,12 @@ const Switch: React.FC = (): JSX.Element => {
         onClick={(): void => {
           dispatchGame({
             type: 'changeState',
-            state: state === 'off' ? 'conf' : 'off'
+            state: state !== 'off' ? 'off' : 'conf'
           });
 
           state !== 'off' && dispatchParams({ type: 'reset' });
         }}
+        type='button'
       />
     </Container>
   );

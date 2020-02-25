@@ -27,64 +27,63 @@ const Row = styled.div`
   justify-content: space-around;
 
   input {
-    border: 2px solid #000000;
-    border-radius: 5px;
-    transition-property: box-shadow;
-    transition-duration: 0.1s;
-    transition-timing-function: linear;
+    &[type='text'],
+    &[type='password'] {
+      border: 2px solid #000000;
+      border-radius: 5px;
+      transition-property: box-shadow;
+      transition-duration: 0.1s;
+      transition-timing-function: linear;
 
-    :focus {
-      box-shadow: 0 0 0 2px #000000;
-      outline: none;
+      :focus {
+        box-shadow: 0 0 0 2px #000000;
+        outline: none;
+      }
     }
   }
 `;
 
-const FormBtn = styled.button`
+const FormBtn = styled.input`
   width: 150px;
   height: 100%;
   font-size: 1rem;
-  font-weight: bold;
   border: none;
   background-color: #ffffff;
-  transition-property: font-weight, font-size;
+  transition-property: font-size;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   :hover {
-    font-weight: bold;
     font-size: 1.3rem;
-    cursor: pointer;
   }
 `;
 
-const LogInBtn = styled.button`
-  width: 70px;
-  border-top: none;
-  border-bottom: none;
-  border-left: 2px solid #000000;
+const LogInBtn = styled.input`
+  padding: 10px;
+  border-top: transparent;
   border-right: 2px solid #000000;
+  border-bottom: transparent;
+  border-left: 2px solid #000000;
   border-radius: 5px;
-  padding: 5px;
   background-color: #ffffff;
-  transition-property: color, background-color, border-color;
+  transition-property: color, background-color, border-right-color,
+    border-left-color;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   :hover {
     color: #ffffff;
     background-color: #000000;
-    border-color: #ffffff;
-    cursor: pointer;
+    border-right-color: #ffffff;
+    border-left-color: #ffffff;
   }
 `;
 
 const LinkTxt = styled.a`
-  text-decoration: none;
   color: #000000;
 
   :hover {
-    cursor: pointer;
+    font-weight: bold;
   }
 `;
 
@@ -95,7 +94,7 @@ const showForm = (): void => {
 const LogIn: React.FC = (): JSX.Element => {
   return (
     <Container>
-      <FormBtn onClick={showForm}>Log in</FormBtn>
+      <FormBtn onClick={showForm} value='Log in' type='button' />
       <Form style={{ display: 'none' }} id='log-in-form'>
         <Row>
           <label htmlFor='username'>Username: </label>
@@ -106,7 +105,7 @@ const LogIn: React.FC = (): JSX.Element => {
           <input type='password' name='password' id='password' required />
         </Row>
         <Row>
-          <LogInBtn>Log in</LogInBtn>
+          <LogInBtn value='Log in' type='button' />
         </Row>
         <Row>
           <LinkTxt href=''>Reset password</LinkTxt>

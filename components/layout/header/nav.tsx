@@ -27,14 +27,14 @@ const Container = styled.nav`
         align-items: center;
         width: 100%;
         height: 100%;
-        text-decoration: none;
         border-top-color: transparent;
         border-right: 2px solid;
         border-bottom-color: transparent;
         border-left: 2px solid;
         border-radius: 5px;
         color: #ffffff;
-        transition-property: color, background-color, border-color;
+        transition-property: color, background-color, border-right-color,
+          border-left-color;
         transition-duration: 0.1s;
         transition-timing-function: linear;
 

@@ -40,11 +40,11 @@ export const initParams: StatesParams = {
   shapesOthers: [],
   colorsOthers: [Defaults.P1.color, Defaults.P2.color],
   P1: {
-    shape: 'circle',
+    shape: '',
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'square',
+    shape: '',
     color: Defaults.P2.color
   },
   P3: undefined,

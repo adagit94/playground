@@ -3,7 +3,7 @@ export const Defaults = {
     color: '#ff0000'
   },
   P2: {
-    color: '#008000'
+    color: '#32cd32'
   },
   P3: {
     color: '#0000ff'

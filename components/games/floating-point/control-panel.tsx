@@ -26,33 +26,25 @@ const Side = styled.div`
   width: 40%;
 `;
 
-const AddPlayer = styled.button`
+const AddPlayer = styled.input`
   position: relative;
   width: 50px;
   height: 50px;
   border: none;
-  color: #ffffff;
-  background-color: #008000;
   font-size: 2rem;
-  cursor: pointer;
-
-  :focus {
-    outline: none;
-  }
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #32cd32;
 `;
 
-const RemovePlayer = styled.button`
+const RemovePlayer = styled.input`
   width: 50px;
   height: 50px;
   border: none;
+  font-size: 2rem;
+  border-radius: 5px;
   color: #ffffff;
   background-color: #ff0000;
-  font-size: 2rem;
-  cursor: pointer;
-
-  :focus {
-    outline: none;
-  }
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {
@@ -99,9 +91,9 @@ const ControlPanel: React.FC = (): JSX.Element => {
               player: PL
             });
           }}
-        >
-          -
-        </RemovePlayer>
+          value='-'
+          type='button'
+        />
       ) : state === 'conf' && !playerLeft ? (
         <AddPlayer
           onClick={(): void => {
@@ -123,9 +115,9 @@ const ControlPanel: React.FC = (): JSX.Element => {
               player: P_
             });
           }}
-        >
-          +
-        </AddPlayer>
+          value='+'
+          type='button'
+        />
       ) : null}
 
       <OptionsCommon />
@@ -151,9 +143,9 @@ const ControlPanel: React.FC = (): JSX.Element => {
               player: PR
             });
           }}
-        >
-          -
-        </RemovePlayer>
+          value='-'
+          type='button'
+        />
       ) : state === 'conf' && !playerRight ? (
         <AddPlayer
           onClick={(): void => {
@@ -175,9 +167,9 @@ const ControlPanel: React.FC = (): JSX.Element => {
               player: P_
             });
           }}
-        >
-          +
-        </AddPlayer>
+          value='+'
+          type='button'
+        />
       ) : null}
       <Side>
         {playerRight && <OptionsPlayer player={PR} />}

@@ -5,6 +5,8 @@ import Header from './header/header';
 import Main from './main/main';
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 0;
   right: 0;
@@ -12,6 +14,32 @@ const Container = styled.div`
   left: 0;
   color: #ffffff;
   background-color: #000000;
+
+  a {
+    text-decoration: none;
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+
+  input {
+    &[type='button'] {
+      font-weight: bold;
+
+      :hover {
+        cursor: pointer;
+      }
+
+      :focus {
+        outline: none;
+      }
+    }
+
+    &[type='color'] {
+      cursor: pointer;
+    }
+  }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({

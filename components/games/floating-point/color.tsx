@@ -20,7 +20,6 @@ const InputContainer = styled.div`
   justify-content: space-evenly;
 
   input {
-    cursor: pointer;
     width: 50px;
     padding: 0;
     border: 2px solid #ffffff;

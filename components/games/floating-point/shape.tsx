@@ -54,14 +54,14 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Square = styled.div`
-    opacity: ${unclickableSquare ? 0.2 : 1};
+    opacity: ${unclickableSquare ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'square' && '2px solid'};
     cursor: ${unclickableSquare ? 'not-allowed' : 'pointer'};
   `;
 
   const Circle = styled.div`
-    opacity: ${unclickableCircle ? 0.2 : 1};
+    opacity: ${unclickableCircle ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'circle' && '2px solid'};
     border-radius: 100%;
@@ -69,7 +69,7 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Rhombus = styled.div`
-    opacity: ${unclickableRhombus ? 0.2 : 1};
+    opacity: ${unclickableRhombus ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'rhombus' && '2px solid'};
     transform: rotate(45deg);
@@ -77,7 +77,7 @@ const Shape = ({ player }): JSX.Element => {
   `;
 
   const Ellipse = styled.div`
-    opacity: ${unclickableEllipse ? 0.2 : 1};
+    opacity: ${unclickableEllipse ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'ellipse' && '2px solid'};
     border-radius: 100%;

@@ -5,6 +5,7 @@ import Nav from './nav';
 import LogIn from './log-in';
 
 const Container = styled.header`
+  flex: initial;
   height: 75px;
   display: flex;
   flex-direction: row;

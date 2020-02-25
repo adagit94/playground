@@ -22,38 +22,42 @@ const Row = styled.div`
   align-items: center;
 
   input {
-    border: 2px solid #000000;
-    border-radius: 5px;
-    transition-property: box-shadow;
-    transition-duration: 0.1s;
-    transition-timing-function: linear;
+    &[type='text'],
+    &[type='email'],
+    &[type='password'] {
+      border: 2px solid #000000;
+      border-radius: 5px;
+      transition-property: box-shadow;
+      transition-duration: 0.1s;
+      transition-timing-function: linear;
 
-    :focus {
-      box-shadow: 0 0 0 2px #000000;
-      outline: none;
+      :focus {
+        box-shadow: 0 0 0 2px #000000;
+        outline: none;
+      }
     }
   }
 `;
 
-const SubmitBtn = styled.button`
-  width: 110px;
+const SubmitBtn = styled.input`
+  padding: 10px;
   border-top: none;
+  border-right: 2px solid #000000;
   border-bottom: none;
   border-left: 2px solid #000000;
-  border-right: 2px solid #000000;
   border-radius: 5px;
   color: #000000;
   background-color: #ffffff;
-  padding: 5px;
-  transition-property: color, background-color, border-color;
+  transition-property: color, background-color, border-right-color,
+    border-left-color;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   :hover {
     color: #ffffff;
     background-color: #000000;
-    border-color: #ffffff;
-    cursor: pointer;
+    border-right-color: #ffffff;
+    border-left-color: #ffffff;
   }
 `;
 
@@ -83,7 +87,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </Row>
         <Row>
-          <SubmitBtn>Create account</SubmitBtn>
+          <SubmitBtn value='Create account' type='button' />
         </Row>
       </Form>
     </Container>

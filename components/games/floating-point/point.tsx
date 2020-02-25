@@ -18,8 +18,9 @@ const Point: React.FC = (): JSX.Element => {
     left: ${statesFP.left}px;
     width: ${dimensions}px;
     height: ${dimensions}px;
-    background-color: #8b0000;
+    background-color: #ffffff;
     border-radius: 100%;
+    animation: 
   `;
 
   return (
