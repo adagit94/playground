@@ -14,10 +14,8 @@ const Container = styled.div`
 `;
 
 const InputContainer = styled.div`
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+flex: auto;
+border: 1px solid red;
 
   input {
     width: 50px;
@@ -32,10 +30,8 @@ const InputContainer = styled.div`
 `;
 
 const Label = styled.label`
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  height: 20px;
+  border: 1px solid red;
 `;
 
 const Color = ({ player }): JSX.Element => {
