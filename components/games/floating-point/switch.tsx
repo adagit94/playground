@@ -22,7 +22,7 @@ const Switch: React.FC = (): JSX.Element => {
   const state = statesGame.state;
 
   const Button = styled.input`
-    width: 30px;
+    width: 40%;
     height: 100%;
     border: none;
     border-radius: 5px;

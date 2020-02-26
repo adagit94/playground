@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 const Button = styled.input`
-  width: 80px;
+  width: 100%;
   height: 100%;
   border-top: transparent;
   border-right: 2px solid;
