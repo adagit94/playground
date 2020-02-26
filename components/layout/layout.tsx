@@ -14,32 +14,6 @@ const Container = styled.div`
   left: 0;
   color: #ffffff;
   background-color: #000000;
-
-  a {
-    text-decoration: none;
-
-    :hover {
-      cursor: pointer;
-    }
-  }
-
-  input {
-    &[type='button'] {
-      font-weight: bold;
-
-      :hover {
-        cursor: pointer;
-      }
-
-      :focus {
-        outline: none;
-      }
-    }
-
-    &[type='color'] {
-      cursor: pointer;
-    }
-  }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({

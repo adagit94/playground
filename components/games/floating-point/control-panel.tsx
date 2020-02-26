@@ -35,6 +35,15 @@ const AddPlayer = styled.input`
   border-radius: 5px;
   color: #ffffff;
   background-color: #32cd32;
+  font-weight: bold;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const RemovePlayer = styled.input`
@@ -45,6 +54,15 @@ const RemovePlayer = styled.input`
   border-radius: 5px;
   color: #ffffff;
   background-color: #ff0000;
+  font-weight: bold;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {

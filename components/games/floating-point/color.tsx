@@ -25,6 +25,10 @@ const InputContainer = styled.div`
     border: 2px solid #ffffff;
     background-color: unset;
 
+    :hover {
+      cursor: pointer;
+    }
+
     ::-webkit-color-swatch-wrapper {
       padding: 0;
     }

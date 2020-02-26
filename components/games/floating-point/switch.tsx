@@ -26,10 +26,20 @@ const Switch: React.FC = (): JSX.Element => {
     height: 100%;
     border: none;
     border-radius: 5px;
-    transform: ${state !== 'off' && 'rotateX(45deg)'};
-    box-shadow: ${state !== 'off' && '0 15px 0 0 #32cd3280'};
+    transform: ${state !== 'off' ? 'rotateX(65deg)' : 'rotateX(25deg)'};
+    box-shadow: ${state !== 'off'
+      ? '0 30px 0 0 #32cd3280'
+      : '0 -5px 0 0 #ff000080'};
     background-color: ${state !== 'off' ? '#32cd32' : '#ff0000'};
     color: #ffffff;
+
+    :hover {
+      cursor: pointer;
+    }
+
+    :focus {
+      outline: none;
+    }
   `;
 
   return (

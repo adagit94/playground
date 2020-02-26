@@ -14,17 +14,16 @@ const Monitor: React.FC = (): JSX.Element => {
   const Container = styled.div`
     height: 70%;
     position: relative;
-    visibility: ${state === 'running' ||
-    state === 'paused' ||
-    state === 'recalc'
-      ? 'visible'
-      : 'hidden'};
   `;
 
   return (
     <Container id='monitor'>
-      <Players />
-      <Point />
+      {(state === 'running' || state === 'paused' || state === 'recalc') && (
+        <>
+          <Players />
+          <Point />
+        </>
+      )}
     </Container>
   );
 };

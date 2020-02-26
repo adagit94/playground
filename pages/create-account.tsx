@@ -32,8 +32,8 @@ const Row = styled.div`
       transition-timing-function: linear;
 
       :focus {
-        box-shadow: 0 0 0 2px #000000;
         outline: none;
+        box-shadow: 0 0 0 2px #000000;
       }
     }
   }
@@ -41,9 +41,10 @@ const Row = styled.div`
 
 const SubmitBtn = styled.input`
   padding: 10px;
-  border-top: none;
+  font-weight: bold;
+  border-top: transparent;
   border-right: 2px solid #000000;
-  border-bottom: none;
+  border-bottom: transparent;
   border-left: 2px solid #000000;
   border-radius: 5px;
   color: #000000;
@@ -54,10 +55,15 @@ const SubmitBtn = styled.input`
   transition-timing-function: linear;
 
   :hover {
+    cursor: pointer;
     color: #ffffff;
     background-color: #000000;
     border-right-color: #ffffff;
     border-left-color: #ffffff;
+  }
+
+  :focus {
+    outline: none;
   }
 `;
 

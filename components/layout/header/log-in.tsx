@@ -47,6 +47,7 @@ const FormBtn = styled.input`
   width: 150px;
   height: 100%;
   font-size: 1rem;
+  font-weight: bold;
   border: none;
   background-color: #ffffff;
   transition-property: font-size;
@@ -54,12 +55,18 @@ const FormBtn = styled.input`
   transition-timing-function: linear;
 
   :hover {
+    cursor: pointer;
     font-size: 1.3rem;
+  }
+
+  :focus {
+    outline: none;
   }
 `;
 
 const LogInBtn = styled.input`
   padding: 10px;
+  font-weight: bold;
   border-top: transparent;
   border-right: 2px solid #000000;
   border-bottom: transparent;
@@ -72,17 +79,24 @@ const LogInBtn = styled.input`
   transition-timing-function: linear;
 
   :hover {
+    cursor: pointer;
     color: #ffffff;
     background-color: #000000;
     border-right-color: #ffffff;
     border-left-color: #ffffff;
   }
+
+  :focus {
+    outline: none;
+  }
 `;
 
 const LinkTxt = styled.a`
+  text-decoration: none;
   color: #000000;
 
   :hover {
+    cursor: pointer;
     font-weight: bold;
   }
 `;

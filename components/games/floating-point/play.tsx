@@ -21,6 +21,7 @@ const Container = styled.div`
 const Button = styled.input`
   width: 80px;
   height: 100%;
+  font-weight: bold;
   border-top: transparent;
   border-right: 2px solid;
   border-bottom: transparent;
@@ -34,10 +35,15 @@ const Button = styled.input`
   transition-timing-function: linear;
 
   :hover {
+    cursor: pointer;
     color: #000000;
     background-color: #ffffff;
     border-right-color: #000000;
     border-left-color: #000000;
+  }
+
+  :focus {
+    outline: none;
   }
 `;
 
