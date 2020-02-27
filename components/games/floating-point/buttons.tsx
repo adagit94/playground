@@ -6,9 +6,11 @@ import Play from './play';
 import Reset from './reset';
 
 const Container = styled.div`
+border: 1px solid red;
   height: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   padding: 0 20px;
 `;
 
