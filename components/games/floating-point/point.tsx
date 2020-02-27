@@ -15,7 +15,6 @@ const Point: React.FC = (): JSX.Element => {
   const dimensions = statesParams.dimensions;
 
   const Point = styled.div`
-    border: 2px solid;
     border-radius: 100%;
     width: ${dimensions}px;
     height: ${dimensions}px;
@@ -45,12 +44,12 @@ const Point: React.FC = (): JSX.Element => {
   const InnerCircle = styled.div`
     border-radius: 100%;
     animation-name: ${waving};
-    animation-duration: 1s;
+    animation-duration: ${2 - 2 * (statesParams.speed / 10)}s;
     animation-timing-function: ease-in;
     animation-iteration-count: infinite;
-    animation-play-state: ${statesGame.state === 'running'
-      ? 'running'
-      : 'paused'};
+    animation-play-state: ${statesGame.state === 'paused'
+      ? 'paused'
+      : 'running'};
   `;
 
   return (

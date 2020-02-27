@@ -14,6 +14,10 @@ const Container = styled.div`
   left: 0;
   color: #ffffff;
   background-color: #000000;
+
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 const Layout: React.FC<{ content: JSX.Element }> = ({

@@ -10,7 +10,7 @@ const Container = styled.div`
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 
   input {
@@ -55,6 +55,7 @@ const Speed: React.FC = (): JSX.Element => {
   const isDefined = typeof speed === 'number';
 
   const Label = styled.label`
+    height: 30px;
     color: ${speed === null && '#f00'};
   `;
 
@@ -69,10 +70,9 @@ const Speed: React.FC = (): JSX.Element => {
         type='range'
         min='1'
         max='5'
-        step='2'
         id='speed'
       />
-      {isDefined && speed + 'x'}
+      {isDefined && `${speed}x`}
     </Container>
   );
 };

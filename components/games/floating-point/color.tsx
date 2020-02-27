@@ -10,12 +10,17 @@ const Container = styled.div`
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 
 const InputContainer = styled.div`
-flex: auto;
-border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
 
   input {
     width: 50px;
@@ -34,8 +39,7 @@ border: 1px solid red;
 `;
 
 const Label = styled.label`
-  height: 20px;
-  border: 1px solid red;
+  height: 30px;
 `;
 
 const Color = ({ player }): JSX.Element => {

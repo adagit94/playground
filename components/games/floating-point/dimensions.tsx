@@ -10,7 +10,7 @@ const Container = styled.div`
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 
   input {
@@ -53,23 +53,11 @@ const Dimensions: React.FC = (): JSX.Element => {
 
   const dimensions = states.dimensions;
   const isDefined = typeof dimensions === 'number';
-  let text: string;
 
   const Label = styled.label`
+    height: 30px;
     color: ${dimensions === null && '#f00'};
   `;
-
-  switch (dimensions) {
-    case 10:
-      text = 'Small';
-      break;
-    case 20:
-      text = 'Medium';
-      break;
-    case 30:
-      text = 'Big';
-      break;
-  }
 
   return (
     <Container>
@@ -85,10 +73,10 @@ const Dimensions: React.FC = (): JSX.Element => {
         type='range'
         min='10'
         max='30'
-        step='10'
+        step='5'
         id='dimensions'
       />
-      {isDefined && text}
+      {isDefined && `${dimensions}px`}
     </Container>
   );
 };

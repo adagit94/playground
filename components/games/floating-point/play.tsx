@@ -10,16 +10,8 @@ import {
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
 
-const Container = styled.div`
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
 const Button = styled.input`
-  width: 100%;
+  width: 80px;
   height: 100%;
   font-weight: bold;
   border-top: transparent;
@@ -156,23 +148,21 @@ const Play: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Container>
-      {state !== 'off' && (
-        <Button
-          onClick={
-            state === 'conf'
-              ? handlePlay
-              : (): void =>
-                  dispatchGame({
-                    type: 'changeState',
-                    state: state === 'running' ? 'paused' : 'running'
-                  })
-          }
-          value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
-          type='button'
-        />
-      )}
-    </Container>
+    <>
+      <Button
+        onClick={
+          state === 'conf'
+            ? handlePlay
+            : (): void =>
+                dispatchGame({
+                  type: 'changeState',
+                  state: state === 'running' ? 'paused' : 'running'
+                })
+        }
+        value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
+        type='button'
+      />
+    </>
   );
 };
 

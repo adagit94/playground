@@ -5,7 +5,6 @@ import OptionsParameters from './options-parameters';
 import Buttons from './buttons';
 
 const Container = styled.div`
-border: 1px solid red;
   width: 20%;
   display: flex;
   flex-direction: column;

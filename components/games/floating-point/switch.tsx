@@ -7,13 +7,6 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
-const Container = styled.div`
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const Switch: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const dispatchGame = useContext(ContextDispatchGame);
@@ -22,7 +15,7 @@ const Switch: React.FC = (): JSX.Element => {
   const state = statesGame.state;
 
   const Button = styled.input`
-    width: 40%;
+    width: 30px;
     height: 100%;
     border: none;
     border-radius: 5px;
@@ -43,7 +36,7 @@ const Switch: React.FC = (): JSX.Element => {
   `;
 
   return (
-    <Container>
+    <>
       <Button
         onClick={(): void => {
           dispatchGame({
@@ -55,7 +48,7 @@ const Switch: React.FC = (): JSX.Element => {
         }}
         type='button'
       />
-    </Container>
+    </>
   );
 };
 
