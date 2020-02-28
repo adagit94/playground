@@ -19,8 +19,7 @@ const Container = styled.div`
 const Buttons: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
 
-  const state = states.state;
-  const players = states.players;
+  const { state, players } = states;
 
   return (
     <Container>

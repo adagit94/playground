@@ -6,6 +6,8 @@ import Color from './color';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
 
+import { PropsOptions } from '../../../types/games/floating-point';
+
 const Container = styled.div`
   width: 50%;
   display: flex;
@@ -45,9 +47,7 @@ const DividerVertical = styled.div`
   background-color: #ffffff;
 `;
 
-const OptionsPlayer: React.FC<{ player: string }> = ({
-  player
-}): JSX.Element => {
+const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextGame);
 
   return (

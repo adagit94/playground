@@ -8,8 +8,7 @@ import {
 
 import { Defaults } from '../../defaults/games/floating-point';
 
-export const init = <Inits extends unknown>(initStates: Inits): Inits =>
-  initStates;
+export const init = (initStates: Inits): Inits => initStates;
 
 export const initGame: StatesGame = {
   players: [true, true],

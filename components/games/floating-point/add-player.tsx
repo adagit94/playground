@@ -8,6 +8,8 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
+import { PropsButtons } from '../../../types/games/floating-point';
+
 const Button = styled.input`
   width: 50px;
   height: 100%;
@@ -27,7 +29,7 @@ const Button = styled.input`
   }
 `;
 
-const AddPlayer: React.FC<{ pos: string }> = ({ pos }): JSX.Element => {
+const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
   const states = useContext(ContextGame);
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchPlayers = useContext(ContextDispatchPlayers);

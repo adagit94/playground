@@ -50,6 +50,18 @@ export type ControlKeys4P = ControlKeys3P & {
 
 export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
 
+export type PropsLayout = {
+  content: JSX.Element;
+};
+
+export type PropsOptions = {
+  player: string;
+};
+
+export type PropsButtons = {
+  pos: string;
+};
+
 export type StatesGame = {
   players: Array<string | boolean>;
   state: string;
@@ -62,18 +74,18 @@ export type StatesPlayers = {
   P2: PlayersPlayer;
   P3: PlayersPlayer;
   P4: PlayersPlayer;
-};
+} & { [key: string]: PlayersPlayer };
 
 export type StatesParams = {
-  P1: ParamsPlayer;
-  P2: ParamsPlayer;
-  P3: ParamsPlayer;
-  P4: ParamsPlayer;
   shapesOthers: Array<string>;
   colorsOthers: Array<string>;
   dimensions: number;
   speed: number;
-};
+  P1: ParamsPlayer;
+  P2: ParamsPlayer;
+  P3: ParamsPlayer;
+  P4: ParamsPlayer;
+} & { [key: string]: ParamsPlayer };
 
 export type StatesFP = {
   top: number;
@@ -128,4 +140,7 @@ export type ActionsParams =
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
-export type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
+type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
+
+export type Init: (initStates: Inits): Inits;
+

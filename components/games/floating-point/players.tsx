@@ -13,7 +13,11 @@ const Players: React.FC = (): JSX.Element => {
   const statesParams = useContext(ContextParams);
 
   const playersCount = statesGame.players.length;
-  const dimensions = statesParams.dimensions;
+  const {
+    dimensions,
+    P1: { shape: P1Shape },
+    P2: { shape: P2Shape }
+  } = statesParams;
 
   const points: Array<JSX.Element> = [];
 
@@ -24,13 +28,12 @@ const Players: React.FC = (): JSX.Element => {
     width: ${dimensions}px;
     height: ${dimensions}px;
     background-color: ${statesParams.P1.color};
-    border-radius: ${statesParams.P1.shape === 'circle' ||
-    statesParams.P1.shape === 'ellipse'
+    border-radius: ${P1Shape === 'circle' || P1Shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesParams.P1.shape === 'rhombus'
+    transform: ${P1Shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesParams.P1.shape === 'ellipse'
+      : P1Shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -44,13 +47,12 @@ const Players: React.FC = (): JSX.Element => {
     width: ${dimensions}px;
     height: ${dimensions}px;
     background-color: ${statesParams.P2.color};
-    border-radius: ${statesParams.P2.shape === 'circle' ||
-    statesParams.P2.shape === 'ellipse'
+    border-radius: ${P2Shape === 'circle' || P2Shape === 'ellipse'
       ? '100%'
       : ''};
-    transform: ${statesParams.P2.shape === 'rhombus'
+    transform: ${P2Shape === 'rhombus'
       ? 'rotate(45deg)'
-      : statesParams.P2.shape === 'ellipse'
+      : P2Shape === 'ellipse'
       ? 'rotateX(45deg)'
       : ''};
   `;
@@ -58,6 +60,8 @@ const Players: React.FC = (): JSX.Element => {
   points.push(<PointP2 key='P2' />);
 
   if (playersCount > 2) {
+    const P3Shape = statesParams.P3.shape;
+
     const PointP3 = styled.div`
       position: absolute;
       top: ${statesPlayers.P3.top}px;
@@ -65,13 +69,12 @@ const Players: React.FC = (): JSX.Element => {
       width: ${dimensions}px;
       height: ${dimensions}px;
       background-color: ${statesParams.P3.color};
-      border-radius: ${statesParams.P3.shape === 'circle' ||
-      statesParams.P3.shape === 'ellipse'
+      border-radius: ${P3Shape === 'circle' || P3Shape === 'ellipse'
         ? '100%'
         : ''};
-      transform: ${statesParams.P3.shape === 'rhombus'
+      transform: ${P3Shape === 'rhombus'
         ? 'rotate(45deg)'
-        : statesParams.P3.shape === 'ellipse'
+        : P3Shape === 'ellipse'
         ? 'rotateX(45deg)'
         : ''};
     `;
@@ -80,6 +83,8 @@ const Players: React.FC = (): JSX.Element => {
   }
 
   if (playersCount > 3) {
+    const P4Shape = statesParams.P4.shape;
+
     const PointP4 = styled.div`
       position: absolute;
       top: ${statesPlayers.P4.top}px;
@@ -87,13 +92,12 @@ const Players: React.FC = (): JSX.Element => {
       width: ${dimensions}px;
       height: ${dimensions}px;
       background-color: ${statesParams.P4.color};
-      border-radius: ${statesParams.P4.shape === 'circle' ||
-      statesParams.P4.shape === 'ellipse'
+      border-radius: ${P4Shape === 'circle' || P4Shape === 'ellipse'
         ? '100%'
         : ''};
-      transform: ${statesParams.P4.shape === 'rhombus'
+      transform: ${P4Shape === 'rhombus'
         ? 'rotate(45deg)'
-        : statesParams.P4.shape === 'ellipse'
+        : P4Shape === 'ellipse'
         ? 'rotateX(45deg)'
         : ''};
     `;

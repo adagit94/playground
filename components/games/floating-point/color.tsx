@@ -6,6 +6,8 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
+import { PropsOptions } from '../../../types/games/floating-point';
+
 const Container = styled.div`
   flex: 1 1 0;
   display: flex;
@@ -42,7 +44,7 @@ const Label = styled.label`
   height: 30px;
 `;
 
-const Color = ({ player }): JSX.Element => {
+const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 

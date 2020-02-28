@@ -6,6 +6,8 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
+import { PropsOptions } from '../../../types/games/floating-point';
+
 const Container = styled.div`
   flex: 1 1 0;
   display: flex;
@@ -29,13 +31,15 @@ const Items = styled.div`
   }
 `;
 
-const Shape = ({ player }): JSX.Element => {
+const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatch = useContext(ContextDispatchParams);
 
-  const shapesOthers = states.shapesOthers;
-  const shape = states[player].shape;
-  const color = states[player].color;
+  const {
+    shapesOthers,
+    [player]: { shape, color }
+  } = states;
+
   const isDefined = typeof shape === 'string';
   const unclickableSquare =
     shapesOthers.includes('square') && shape !== 'square';
@@ -99,8 +103,8 @@ const Shape = ({ player }): JSX.Element => {
                       : shape === 'square'
                       ? 'remove'
                       : 'change',
-                    player,
-                    shape: 'square'
+                    shape: 'square',
+                    player
                   });
                 }
           }
@@ -118,8 +122,8 @@ const Shape = ({ player }): JSX.Element => {
                       : shape === 'circle'
                       ? 'remove'
                       : 'change',
-                    player,
-                    shape: 'circle'
+                    shape: 'circle',
+                    player
                   });
                 }
           }
@@ -137,8 +141,8 @@ const Shape = ({ player }): JSX.Element => {
                       : shape === 'rhombus'
                       ? 'remove'
                       : 'change',
-                    player,
-                    shape: 'rhombus'
+                    shape: 'rhombus',
+                    player
                   });
                 }
           }
@@ -156,8 +160,8 @@ const Shape = ({ player }): JSX.Element => {
                       : shape === 'ellipse'
                       ? 'remove'
                       : 'change',
-                    player,
-                    shape: 'ellipse'
+                    shape: 'ellipse',
+                    player
                   });
                 }
           }

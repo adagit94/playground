@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Header from './header/header';
 import Main from './main/main';
 
+import { PropsLayout } from '../../types/games/floating-point';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,9 +22,7 @@ const Container = styled.div`
   }
 `;
 
-const Layout: React.FC<{ content: JSX.Element }> = ({
-  content
-}): JSX.Element => {
+const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   return (
     <Container>
       <Header />

@@ -51,8 +51,7 @@ const Play: React.FC = (): JSX.Element => {
 
   const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
     const playersCount = statesGame.players.length;
-    const dimensions: number = statesParams.dimensions;
-    const speed: number = statesParams.speed;
+    const { dimensions, speed } = statesParams;
     let playable: boolean;
 
     for (let i = 1; i <= playersCount; i++) {
@@ -100,8 +99,8 @@ const Play: React.FC = (): JSX.Element => {
 
     if (playable === false) return;
 
-    const height: number = statesGame.height[0];
-    const width: number = statesGame.width[0];
+    const height = statesGame.height[0];
+    const width = statesGame.width[0];
 
     for (let i = 1; i <= playersCount; i++) {
       const player = 'P' + i;
