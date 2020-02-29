@@ -6,7 +6,7 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
-import { PropsOptions } from '../../../types/games/floating-point';
+import { PropsOptions, StatesPlayers } from '../../../types/games/floating-point';
 
 const Container = styled.div`
   flex: 1 1 0;
@@ -37,7 +37,7 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
 
   const {
     shapesOthers,
-    [player]: { shape, color }
+    [player as keyof StatesPlayers]: { shape, color }
   } = states;
 
   const isDefined = typeof shape === 'string';

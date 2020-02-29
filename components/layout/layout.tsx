@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Header from './header/header';
-import Main from './main/main';
+import Main from './main';
 
 import { PropsLayout } from '../../types/games/floating-point';
 

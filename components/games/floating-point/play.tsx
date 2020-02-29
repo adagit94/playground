@@ -55,7 +55,7 @@ const Play: React.FC = (): JSX.Element => {
     let playable: boolean;
 
     for (let i = 1; i <= playersCount; i++) {
-      const player = 'P' + i;
+      const player = `P${i}`;
 
       const shape = statesParams[player].shape;
 
@@ -103,7 +103,7 @@ const Play: React.FC = (): JSX.Element => {
     const width = statesGame.width[0];
 
     for (let i = 1; i <= playersCount; i++) {
-      const player = 'P' + i;
+      const player = `P${i}`;
       let top: number;
       let left: number;
 

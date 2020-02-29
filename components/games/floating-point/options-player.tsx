@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import Shape from './shape';
 import Color from './color';
 
-import { ContextGame } from '../../../contexts/games/floating-point';
+import { DividerVertical } from '../../styled-components/dividers';
+import { Disabled } from '../../styled-components/overlaps';
 
+import { ContextGame } from '../../../contexts/games/floating-point';
 import { PropsOptions } from '../../../types/games/floating-point';
 
 const Container = styled.div`
@@ -30,23 +32,6 @@ const Options = styled.div`
   padding: 10px;
 `;
 
-const OptionsDisabled = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  border-radius: 5px;
-  background-color: #ffffff80;
-`;
-
-const DividerVertical = styled.div`
-  width: 2px;
-  margin: 0 10px;
-  display: inline-block;
-  background-color: #ffffff;
-`;
-
 const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextGame);
 
@@ -59,7 +44,7 @@ const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
         <Shape player={player} />
         <DividerVertical />
         <Color player={player} />
-        {states.state !== 'conf' && <OptionsDisabled />}
+        {states.state !== 'conf' && <Disabled />}
       </Options>
     </Container>
   );

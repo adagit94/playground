@@ -264,10 +264,8 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const matchFloatingPoint = (): void => {
       for (let i = 1; i <= playersCount; i++) {
-        const player = 'P' + i;
-        const {
-          [player]: { top: playerTop, left: playerLeft }
-        } = statesPlayers;
+        const player = `P${i}`;
+        const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
         if (
           (playerTop >= fPTop || playerTop + dimensions >= fPTop) &&
@@ -298,7 +296,7 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const recalculatePos = (): void => {
       for (let i = 1; i <= playersCount; i++) {
-        const player = 'P' + i;
+        const player = `P${i}`;
 
         dispatchPlayers({
           type: 'recalculatePos',

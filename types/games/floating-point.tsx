@@ -15,6 +15,8 @@ type ChangePlayer = {
   player: string;
 };
 
+type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
+
 export type Key = {
   pressed: boolean;
   operation: string;
@@ -65,16 +67,16 @@ export type PropsButtons = {
 export type StatesGame = {
   players: Array<string | boolean>;
   state: string;
-  mode: string;
   width: Array<number>;
   height: Array<number>;
 };
+
 export type StatesPlayers = {
   P1: PlayersPlayer;
   P2: PlayersPlayer;
   P3: PlayersPlayer;
   P4: PlayersPlayer;
-} & { [key: string]: PlayersPlayer };
+};
 
 export type StatesParams = {
   shapesOthers: Array<string>;
@@ -85,7 +87,7 @@ export type StatesParams = {
   P2: ParamsPlayer;
   P3: ParamsPlayer;
   P4: ParamsPlayer;
-} & { [key: string]: ParamsPlayer };
+};
 
 export type StatesFP = {
   top: number;
@@ -140,7 +142,4 @@ export type ActionsParams =
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
-type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
-
-export type Init: (initStates: Inits): Inits;
-
+export type Init = (initStates: Inits) => any; // return Inits zpusobuje error (963)C:\_data\projects\GitHub\playground\node_modules\@types\react\index.d.ts

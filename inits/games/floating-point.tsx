@@ -3,17 +3,16 @@ import {
   StatesPlayers,
   StatesParams,
   StatesFP,
-  Inits
+  Init
 } from '../../types/games/floating-point';
 
 import { Defaults } from '../../defaults/games/floating-point';
 
-export const init = (initStates: Inits): Inits => initStates;
+export const init: Init = initStates => initStates;
 
 export const initGame: StatesGame = {
   players: [true, true],
   state: 'off', // off / conf / running / paused / recalc
-  mode: 'fP',
   width: [undefined, undefined], // new / prev
   height: [undefined, undefined] // new / prev
 };
