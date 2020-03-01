@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const Container = styled.nav`
   flex-grow: 1;
   padding: 10px 0;
-  border-bottom: 5px solid;
 
   ul {
     display: flex;

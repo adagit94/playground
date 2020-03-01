@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Dimensions from './dimensions';
 import Speed from './speed';
 
-import { DividerHorizontal } from '../../styled-components/dividers';
+import { DividerVertical } from '../../styled-components/dividers';
 import { Disabled } from '../../styled-components/overlaps';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
@@ -12,7 +12,8 @@ import { ContextGame } from '../../../contexts/games/floating-point';
 const Container = styled.div`
   flex: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
   position: relative;
   padding: 10px;
 `;
@@ -23,7 +24,7 @@ const OptionsParameters: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Dimensions />
-      <DividerHorizontal />
+      <DividerVertical />
       <Speed />
       {states.state !== 'conf' && <Disabled />}
     </Container>

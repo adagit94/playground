@@ -13,7 +13,3 @@ export const DividerHorizontal = styled.div`
   background-color: #ffffff;
 `;
 
-export const DividerHorizontalInvisible = styled.div`
-  height: 2px;
-`;
-

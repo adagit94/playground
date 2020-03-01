@@ -10,9 +10,18 @@ import {
 
 import { PropsButtons } from '../../../types/games/floating-point';
 
+const Container = styled.div`
+border: 1px solid red;
+
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
 const Button = styled.input`
-  width: 50px;
-  height: 100%;
+  width: 35px;
+  height: 35px;
   border: none;
   font-size: 2rem;
   border-radius: 5px;
@@ -38,7 +47,7 @@ const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
   const player = states.players.length === 2 ? 'P3' : 'P4';
 
   return (
-    <>
+    <Container>
       <Button
         onClick={(): void => {
           dispatchGame({
@@ -62,7 +71,7 @@ const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
         value='+'
         type='button'
       />
-    </>
+    </Container>
   );
 };
 

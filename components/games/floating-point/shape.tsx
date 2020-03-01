@@ -9,7 +9,7 @@ import {
 import { PropsOptions, StatesPlayers } from '../../../types/games/floating-point';
 
 const Container = styled.div`
-  flex: 1 1 0;
+border: 1px solid red;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -160,9 +160,9 @@ const cancelKey = (e: KeyboardEvent): void => {
 };
 
 const Container = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 
 const Controller: React.FC = (): JSX.Element => {

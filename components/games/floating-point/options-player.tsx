@@ -28,6 +28,7 @@ const Options = styled.div`
   flex: auto;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   position: relative;
   padding: 10px;
 `;

@@ -7,13 +7,16 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  flex: 1 1 0;
+border: 1px solid red;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+    width: 100px;
 
   input {
+    width: 100%;
+    margin: 10px 0;
     -webkit-appearance: none;
     cursor: move;
 
@@ -22,7 +25,6 @@ const Container = styled.div`
     }
 
     ::-webkit-slider-runnable-track {
-      width: 100%;
       height: 1px;
       background: #ffffff;
     }
@@ -55,7 +57,6 @@ const Dimensions: React.FC = (): JSX.Element => {
   const isDefined = typeof dimensions === 'number';
 
   const Label = styled.label`
-    height: 30px;
     color: ${dimensions === null && '#f00'};
   `;
 

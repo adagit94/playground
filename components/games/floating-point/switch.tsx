@@ -15,8 +15,8 @@ const Switch: React.FC = (): JSX.Element => {
   const state = statesGame.state;
 
   const Button = styled.input`
-    width: 30px;
-    height: 100%;
+    width: 20px;
+    height: 35px;
     border: none;
     border-radius: 5px;
     transform: ${state !== 'off' ? 'rotateX(65deg)' : 'rotateX(25deg)'};

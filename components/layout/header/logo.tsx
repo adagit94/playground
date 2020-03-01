@@ -7,7 +7,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 150px;
-  border-bottom: 5px solid;
 `;
 
 const Logo: React.FC = (): JSX.Element => {

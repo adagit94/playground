@@ -1,49 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import Switch from './switch';
-import Play from './play';
-import Reset from './reset';
-import AddPlayer from './add-player';
-import RemovePlayer from './remove-player';
-
-import { ContextGame } from '../../../contexts/games/floating-point';
-
 const Container = styled.div`
-  height: 50px;
+border: 1px solid red;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
 `;
 
-const Buttons: React.FC = (): JSX.Element => {
-  const states = useContext(ContextGame);
-
-  const { state, players } = states;
-
-  return (
-    <Container>
-      {state === 'conf' &&
-        (players.includes('left') ? (
-          <RemovePlayer pos='left' />
-        ) : (
-          <AddPlayer pos='left' />
-        ))}
-
-      {state !== 'off' && <Play />}
-
-      <Switch />
-
-      {state !== 'off' && <Reset />}
-
-      {state === 'conf' &&
-        (players.includes('right') ? (
-          <RemovePlayer pos='right' />
-        ) : (
-          <AddPlayer pos='right' />
-        ))}
-    </Container>
-  );
+const Buttons: React.FC<{children: Array<JSX.Element>}> = ({children}): JSX.Element => {
+  return <Container>{children}</Container>;
 };
 
 export default React.memo(Buttons);
