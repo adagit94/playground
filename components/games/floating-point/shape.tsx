@@ -1,34 +1,26 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { LabelOption } from '../../styled-components/labels';
+import {
+  ContainerRowBetween,
+  ContainerOption
+} from '../../styled-components/containers';
+
 import {
   ContextParams,
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
-import { PropsOptions, StatesPlayers } from '../../../types/games/floating-point';
+import {
+  PropsOptions,
+  StatesPlayers
+} from '../../../types/games/floating-point';
 
-const Container = styled.div`
-border: 1px solid red;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Items = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-content: space-between;
+const ContainerIcons = styled(ContainerRowBetween)`
   flex-wrap: wrap;
   height: 100px;
   width: 100px;
-
-  div {
-    width: 35px;
-    height: 35px;
-  }
 `;
 
 const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
@@ -50,12 +42,13 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const unclickableEllipse =
     shapesOthers.includes('ellipse') && shape !== 'ellipse';
 
-  const Label = styled.label`
-    height: 30px;
+  const Label = styled(LabelOption)`
     color: ${shape === null && '#f00'};
   `;
 
   const Square = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableSquare ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'square' && '2px solid'};
@@ -63,6 +56,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   `;
 
   const Circle = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableCircle ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'circle' && '2px solid'};
@@ -71,6 +66,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   `;
 
   const Rhombus = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableRhombus ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'rhombus' && '2px solid'};
@@ -79,6 +76,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   `;
 
   const Ellipse = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableEllipse ? 0.5 : 1};
     background-color: ${color};
     border: ${shape === 'ellipse' && '2px solid'};
@@ -88,9 +87,9 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   `;
 
   return (
-    <Container>
+    <ContainerOption>
       <Label htmlFor='color'>Shape:</Label>
-      <Items>
+      <ContainerIcons>
         <Square
           onClick={
             unclickableSquare
@@ -166,8 +165,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
                 }
           }
         />
-      </Items>
-    </Container>
+      </ContainerIcons>
+    </ContainerOption>
   );
 };
 

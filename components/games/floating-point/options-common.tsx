@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import OptionsParameters from './options-parameters';
+import Dimensions from './dimensions';
+import Speed from './speed';
 import Buttons from './buttons';
 import Switch from './switch';
 import Play from './play';
@@ -9,13 +10,17 @@ import Reset from './reset';
 import AddPlayer from './add-player';
 import RemovePlayer from './remove-player';
 
+import { DividerVertical } from '../../styled-components/dividers';
+import { OverlapDisabled } from '../../styled-components/overlaps';
+import {
+  ContainerColumn,
+  ContainerOptions
+} from '../../styled-components/containers';
+
 import { ContextGame } from '../../../contexts/games/floating-point';
 
-const Container = styled.div`
-  border: 1px solid red;
+const Container = styled(ContainerColumn)`
   width: 20%;
-  display: flex;
-  flex-direction: column;
 `;
 
 const OptionsCommon: React.FC = (): JSX.Element => {
@@ -43,7 +48,12 @@ const OptionsCommon: React.FC = (): JSX.Element => {
           ))}
       </Buttons>
 
-      <OptionsParameters />
+      <ContainerOptions>
+        <Dimensions />
+        <DividerVertical />
+        <Speed />
+        {states.state !== 'conf' && <OverlapDisabled />}
+      </ContainerOptions>
 
       <Buttons>
         <Play />

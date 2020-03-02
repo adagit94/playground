@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+
+import { ContainerButton } from '../../styled-components/containers';
+import { ButtonState } from '../../styled-components/buttons';
 
 import {
   ContextGame,
@@ -9,45 +11,6 @@ import {
   ContextDispatchParams,
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
-
-const Container = styled.div`
-border: 1px solid red;
-
-  width: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
-
-const Button = styled.input`
-  width: 80px;
-  height: 35px;
-  margin: 0 5px;
-  font-weight: bold;
-  border-top: transparent;
-  border-right: 2px solid;
-  border-bottom: transparent;
-  border-left: 2px solid;
-  border-radius: 5px;
-  color: #ffffff;
-  background-color: unset;
-  transition-property: color, background-color, border-right-color,
-    border-left-color;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
-
-  :hover {
-    cursor: pointer;
-    color: #000000;
-    background-color: #ffffff;
-    border-right-color: #000000;
-    border-left-color: #000000;
-  }
-
-  :focus {
-    outline: none;
-  }
-`;
 
 const Play: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
@@ -157,8 +120,8 @@ const Play: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Container>
-      <Button
+    <ContainerButton>
+      <ButtonState
         onClick={
           state === 'conf'
             ? handlePlay
@@ -171,7 +134,7 @@ const Play: React.FC = (): JSX.Element => {
         value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
         type='button'
       />
-    </Container>
+    </ContainerButton>
   );
 };
 

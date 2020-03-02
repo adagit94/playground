@@ -1,47 +1,36 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { LabelOption } from '../../styled-components/labels';
+import {
+  ContainerColumnCenter,
+  ContainerOption
+} from '../../styled-components/containers';
+
+import { PropsOptions } from '../../../types/games/floating-point';
 import {
   ContextParams,
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
-import { PropsOptions } from '../../../types/games/floating-point';
-
-const Container = styled.div`
-border: 1px solid red;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const ContainerInput = styled(ContainerColumnCenter)`
   height: 100px;
   width: 100px;
-
-  input {
-    width: 50px;
-    padding: 0;
-    border: 2px solid #ffffff;
-    background-color: unset;
-
-    :hover {
-      cursor: pointer;
-    }
-
-    ::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-  }
 `;
 
-const Label = styled.label`
-  height: 30px;
+const Input = styled.input`
+  width: 50px;
+  padding: 0;
+  border: 2px solid #ffffff;
+  background-color: unset;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
 `;
 
 const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
@@ -49,10 +38,10 @@ const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const dispatch = useContext(ContextDispatchParams);
 
   return (
-    <Container>
-      <Label htmlFor='color'>Color:</Label>
-      <InputContainer>
-        <input
+    <ContainerOption>
+      <LabelOption htmlFor='color'>Color:</LabelOption>
+      <ContainerInput>
+        <Input
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
             dispatch({ type: 'changeColor', color: e.target.value, player })
           }
@@ -60,8 +49,8 @@ const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
           type='color'
           id='color'
         />
-      </InputContainer>
-    </Container>
+      </ContainerInput>
+    </ContainerOption>
   );
 };
 
