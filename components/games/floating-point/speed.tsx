@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
-import { LabelOption } from '../../styled-components/labels';
 
 import {
   ContextParams,
@@ -17,7 +16,7 @@ const Speed: React.FC = (): JSX.Element => {
   const speed = states.speed;
   const isDefined = typeof speed === 'number';
 
-  const Label = styled(LabelOption)`
+  const Label = styled.label`
     color: ${speed === null && '#f00'};
   `;
 

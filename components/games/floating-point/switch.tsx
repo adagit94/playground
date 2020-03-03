@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ContainerButton } from '../../styled-components/containers';
-
 import {
   ContextGame,
   ContextDispatchGame,
@@ -17,8 +15,9 @@ const Switch: React.FC = (): JSX.Element => {
   const state = statesGame.state;
 
   const Button = styled.input`
-    width: 20px;
-    height: 100%;
+    width: 25px;
+    height: 50px;
+    margin: 0 20px;
     border: none;
     border-radius: 5px;
     transform: ${state !== 'off' ? 'rotateX(65deg)' : 'rotateX(25deg)'};
@@ -38,7 +37,7 @@ const Switch: React.FC = (): JSX.Element => {
   `;
 
   return (
-    <ContainerButton>
+    <>
       <Button
         onClick={(): void => {
           dispatchGame({
@@ -50,7 +49,7 @@ const Switch: React.FC = (): JSX.Element => {
         }}
         type='button'
       />
-    </ContainerButton>
+    </>
   );
 };
 

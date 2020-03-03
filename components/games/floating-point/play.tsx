@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import { ContainerButton } from '../../styled-components/containers';
 import { ButtonState } from '../../styled-components/buttons';
 
 import {
@@ -11,6 +11,10 @@ import {
   ContextDispatchParams,
   ContextDispatchFP
 } from '../../../contexts/games/floating-point';
+
+const Button = styled(ButtonState)`
+  margin-right: 10px;
+`;
 
 const Play: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
@@ -120,8 +124,8 @@ const Play: React.FC = (): JSX.Element => {
   };
 
   return (
-    <ContainerButton>
-      <ButtonState
+    <>
+      <Button
         onClick={
           state === 'conf'
             ? handlePlay
@@ -134,7 +138,7 @@ const Play: React.FC = (): JSX.Element => {
         value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
         type='button'
       />
-    </ContainerButton>
+    </>
   );
 };
 

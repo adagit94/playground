@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+import { ContainerColumnCenter } from '../../styled-components/containers';
+
+const Container = styled(ContainerColumnCenter)`
   width: 150px;
 `;
 

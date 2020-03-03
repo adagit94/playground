@@ -1,17 +1,15 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ContainerButton } from '../../styled-components/containers';
 import { ButtonPlayer } from '../../styled-components/buttons';
 
+import { PropsButtons } from '../../../types/games/floating-point';
 import {
   ContextGame,
   ContextDispatchGame,
   ContextDispatchPlayers,
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
-
-import { PropsButtons } from '../../../types/games/floating-point';
 
 const Button = styled(ButtonPlayer)`
   background-color: #ff0000;
@@ -26,7 +24,7 @@ const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
   const player = `P${states.players.indexOf(pos) + 1}`;
 
   return (
-    <ContainerButton>
+    <>
       <Button
         onClick={(): void => {
           dispatchGame({
@@ -50,7 +48,7 @@ const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
         value='-'
         type='button'
       />
-    </ContainerButton>
+    </>
   );
 };
 

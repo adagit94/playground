@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { LabelOption } from '../../styled-components/labels';
 import {
-  ContainerRowBetween,
+  ContainerRowBetweenWrap,
   ContainerOption
 } from '../../styled-components/containers';
 
@@ -17,8 +16,7 @@ import {
   StatesPlayers
 } from '../../../types/games/floating-point';
 
-const ContainerIcons = styled(ContainerRowBetween)`
-  flex-wrap: wrap;
+const ContainerIcons = styled(ContainerRowBetweenWrap)`
   height: 100px;
   width: 100px;
 `;
@@ -42,7 +40,7 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const unclickableEllipse =
     shapesOthers.includes('ellipse') && shape !== 'ellipse';
 
-  const Label = styled(LabelOption)`
+  const Label = styled.label`
     color: ${shape === null && '#f00'};
   `;
 

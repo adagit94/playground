@@ -31,3 +31,16 @@ export const InputOptionsCommon = styled.input`
     margin-top: -10px;
   }
 `;
+
+export const InputForm = styled.input`
+  border: 2px solid #000000;
+  border-radius: 5px;
+  transition-property: box-shadow;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+
+  :focus {
+    box-shadow: 0 0 0 2px #000000;
+    outline: none;
+  }
+`;

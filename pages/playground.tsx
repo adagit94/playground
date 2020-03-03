@@ -4,11 +4,10 @@ import styled from 'styled-components';
 
 import Layout from '../components/layout/layout';
 
-const Container = styled.div`
+import { ContainerRowBetweenWrap } from '../components/styled-components/containers';
+
+const Container = styled(ContainerRowBetweenWrap)`
   border: 1px solid red;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
 `;
 
 const Item = styled.div`

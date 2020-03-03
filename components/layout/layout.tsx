@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import Header from './header/header';
 import Main from './main';
 
+import { ContainerColumn } from '../styled-components/containers';
+
 import { PropsLayout } from '../../types/games/floating-point';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+const Container = styled(ContainerColumn)`
   position: absolute;
   top: 0;
   right: 0;

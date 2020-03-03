@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 const Container = styled.nav`
-  flex-grow: 1;
+  flex: auto;
   padding: 10px 0;
 
   ul {
@@ -39,7 +39,7 @@ const Container = styled.nav`
         transition-duration: 0.1s;
         transition-timing-function: linear;
 
-        :hover {
+        &:hover {
           cursor: pointer;
           color: #000000;
           background-color: #ffffff;

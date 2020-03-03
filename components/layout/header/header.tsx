@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import Logo from './logo';
 import Nav from './nav';
 import LogIn from './log-in';
 
-const Container = styled.header`
+import { ContainerRow } from '../../styled-components/containers';
+
+const Container = styled(ContainerRow)`
   flex: initial;
   height: 75px;
-  display: flex;
-  flex-direction: row;
   border-bottom: 1px solid;
 `;
 

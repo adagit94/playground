@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
-import { LabelOption } from '../../styled-components/labels';
 
 import {
   ContextParams,
@@ -17,7 +16,7 @@ const Dimensions: React.FC = (): JSX.Element => {
   const dimensions = states.dimensions;
   const isDefined = typeof dimensions === 'number';
 
-  const Label = styled(LabelOption)`
+  const Label = styled.label`
     color: ${dimensions === null && '#f00'};
   `;
 

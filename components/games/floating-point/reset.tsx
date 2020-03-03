@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 
-import { ContainerButton } from '../../styled-components/containers';
 import { ButtonState } from '../../styled-components/buttons';
 
 import {
@@ -8,13 +8,17 @@ import {
   ContextDispatchParams
 } from '../../../contexts/games/floating-point';
 
+const Button = styled(ButtonState)`
+  margin-left: 10px;
+`;
+
 const Reset: React.FC = (): JSX.Element => {
   const dispatchGame = useContext(ContextDispatchGame);
   const dispatchParams = useContext(ContextDispatchParams);
 
   return (
-    <ContainerButton>
-      <ButtonState
+    <>
+      <Button
         onClick={(): void => {
           dispatchGame({
             type: 'changeState',
@@ -26,7 +30,7 @@ const Reset: React.FC = (): JSX.Element => {
         value='Reset'
         type='button'
       />
-    </ContainerButton>
+    </>
   );
 };
 

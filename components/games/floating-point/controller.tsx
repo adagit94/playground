@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
+import { ContainerColumn } from '../../styled-components/containers';
+
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
@@ -159,10 +161,8 @@ const cancelKey = (e: KeyboardEvent): void => {
   }
 };
 
-const Container = styled.div`
+const Container = styled(ContainerColumn)`
   height: 100%;
-  display: flex;
-  flex-direction: column;
 `;
 
 const Controller: React.FC = (): JSX.Element => {

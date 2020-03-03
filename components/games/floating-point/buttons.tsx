@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ContainerRowCenter } from '../../styled-components/containers';
 
 const Container = styled(ContainerRowCenter)`
-  height: 50px;
+  height: 75px;
 `;
 
 const Buttons: React.FC<{ children: Array<JSX.Element> }> = ({

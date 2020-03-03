@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { LabelOption } from '../../styled-components/labels';
 import {
   ContainerColumnCenter,
   ContainerOption
@@ -39,7 +38,7 @@ const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
 
   return (
     <ContainerOption>
-      <LabelOption htmlFor='color'>Color:</LabelOption>
+      <label htmlFor='color'>Color:</label>
       <ContainerInput>
         <Input
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
