@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const InputOptionsCommon = styled.input`
   -webkit-appearance: none;
   cursor: move;
+  width: 100%;
 
   &:focus {
     outline: none;

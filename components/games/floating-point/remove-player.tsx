@@ -6,9 +6,7 @@ import { ButtonPlayer } from '../../styled-components/buttons';
 import { PropsButtons } from '../../../types/games/floating-point';
 import {
   ContextGame,
-  ContextDispatchGame,
-  ContextDispatchPlayers,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonPlayer)`
@@ -17,9 +15,7 @@ const Button = styled(ButtonPlayer)`
 
 const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
   const states = useContext(ContextGame);
-  const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
-  const dispatchParams = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const player = `P${states.players.indexOf(pos) + 1}`;
 
@@ -27,19 +23,19 @@ const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
     <>
       <Button
         onClick={(): void => {
-          dispatchGame({
+          dispatches.game({
             type: 'changePlayers',
             operation: 'remove',
             pos
           });
 
-          dispatchPlayers({
+          dispatches.players({
             type: 'changePlayer',
             operation: 'remove',
             player
           });
 
-          dispatchParams({
+          dispatches.params({
             type: 'changePlayer',
             operation: 'remove',
             player

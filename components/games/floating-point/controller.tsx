@@ -14,8 +14,12 @@ import {
   ControlKeys,
   ControlKeys2P,
   ControlKeys3P,
-  ControlKeys4P
+  ControlKeys4P,
+  Dispatches
 } from '../../../types/games/floating-point';
+
+let controlKeys: ControlKeys;
+let intervalHandleMove: number;
 
 const controlKeys2P: ControlKeys2P = {
   ArrowUp: {
@@ -140,9 +144,6 @@ const controlKeys4P: ControlKeys4P = {
   }
 };
 
-let controlKeys: ControlKeys;
-let intervalHandleMove: number;
-
 const registerKey = (e: KeyboardEvent): void => {
   e.preventDefault();
 
@@ -159,6 +160,13 @@ const cancelKey = (e: KeyboardEvent): void => {
   if (key in controlKeys) {
     controlKeys[key].pressed = false;
   }
+};
+
+const dispatches: Dispatches = {
+  game: undefined,
+  players: undefined,
+  params: undefined,
+  fp: undefined
 };
 
 const Container = styled(ContainerColumn)`
@@ -225,6 +233,8 @@ const Controller: React.FC = (): JSX.Element => {
     }
   };
 
+  refHandleMove.current = handleMove;
+
   useEffect(() => {
     const currentHandleMove = (): void => {
       refHandleMove.current();
@@ -250,14 +260,12 @@ const Controller: React.FC = (): JSX.Element => {
 
       window.addEventListener('keydown', registerKey);
       window.addEventListener('keyup', cancelKey);
-      console.log(intervalHandleMove);
     } else if (state !== 'running' && intervalHandleMove !== undefined) {
       window.clearInterval(intervalHandleMove);
       intervalHandleMove = undefined;
 
       window.removeEventListener('keydown', registerKey);
       window.removeEventListener('keyup', cancelKey);
-      console.log(intervalHandleMove);
     }
   });
 
@@ -280,15 +288,14 @@ const Controller: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.random() * heightNew,
-            left: Math.random() * widthNew
+            top: Math.min(Math.random() * heightNew, heightNew - dimensions),
+            left: Math.min(Math.random() * widthNew, widthNew - dimensions)
           });
         }
       }
     };
 
     if (state === 'running') {
-      refHandleMove.current = handleMove;
       matchFloatingPoint();
     }
   });
@@ -337,6 +344,13 @@ const Controller: React.FC = (): JSX.Element => {
     };
   }, []);
 
+  useEffect(() => {
+    dispatches.game = dispatchGame;
+    dispatches.players = dispatchPlayers;
+    dispatches.params = dispatchParams;
+    dispatches.fp = dispatchFP;
+  }, []);
+
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
@@ -344,19 +358,9 @@ const Controller: React.FC = (): JSX.Element => {
           <Contexts.ContextParams.Provider value={statesParams}>
             <Contexts.ContextFP.Provider value={statesFP}>
               <Monitor />
-              <Contexts.ContextDispatchGame.Provider value={dispatchGame}>
-                <Contexts.ContextDispatchPlayers.Provider
-                  value={dispatchPlayers}
-                >
-                  <Contexts.ContextDispatchParams.Provider
-                    value={dispatchParams}
-                  >
-                    <Contexts.ContextDispatchFP.Provider value={dispatchFP}>
-                      <ControlPanel />
-                    </Contexts.ContextDispatchFP.Provider>
-                  </Contexts.ContextDispatchParams.Provider>
-                </Contexts.ContextDispatchPlayers.Provider>
-              </Contexts.ContextDispatchGame.Provider>
+              <Contexts.ContextDispatches.Provider value={dispatches}>
+                <ControlPanel />
+              </Contexts.ContextDispatches.Provider>
             </Contexts.ContextFP.Provider>
           </Contexts.ContextParams.Provider>
         </Contexts.ContextPlayers.Provider>

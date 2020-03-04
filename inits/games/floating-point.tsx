@@ -42,7 +42,7 @@ export const initParams: StatesParams = {
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'circle',
+    shape: 'rhombus',
     color: Defaults.P2.color
   },
   P3: undefined,

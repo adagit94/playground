@@ -6,9 +6,7 @@ import { ButtonPlayer } from '../../styled-components/buttons';
 import { PropsButtons } from '../../../types/games/floating-point';
 import {
   ContextGame,
-  ContextDispatchGame,
-  ContextDispatchPlayers,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonPlayer)`
@@ -17,9 +15,7 @@ const Button = styled(ButtonPlayer)`
 
 const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
   const states = useContext(ContextGame);
-  const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
-  const dispatchParams = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const player = states.players.length === 2 ? 'P3' : 'P4';
 
@@ -27,19 +23,19 @@ const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
     <>
       <Button
         onClick={(): void => {
-          dispatchGame({
+          dispatches.game({
             type: 'changePlayers',
             operation: 'add',
             pos
           });
 
-          dispatchPlayers({
+          dispatches.players({
             type: 'changePlayer',
             operation: 'add',
             player
           });
 
-          dispatchParams({
+          dispatches.params({
             type: 'changePlayer',
             operation: 'add',
             player

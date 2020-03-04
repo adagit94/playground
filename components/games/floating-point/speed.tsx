@@ -3,15 +3,16 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
+import { TextBlockValue } from '../../styled-components/text-blocks';
 
 import {
   ContextParams,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Speed: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const speed = states.speed;
   const isDefined = typeof speed === 'number';
@@ -25,7 +26,10 @@ const Speed: React.FC = (): JSX.Element => {
       <Label htmlFor='speed'>Speed:</Label>
       <InputOptionsCommon
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          dispatch({ type: 'changeSpeed', speed: Number(e.target.value) })
+          dispatches.params({
+            type: 'changeSpeed',
+            speed: Number(e.target.value)
+          })
         }
         value={isDefined ? String(speed) : ''}
         type='range'
@@ -33,7 +37,7 @@ const Speed: React.FC = (): JSX.Element => {
         max='5'
         id='speed'
       />
-      {isDefined && `${speed}x`}
+      <TextBlockValue>{isDefined && `${speed}x`}</TextBlockValue>
     </ContainerOption>
   );
 };

@@ -3,20 +3,18 @@ import styled from 'styled-components';
 
 import {
   ContextGame,
-  ContextDispatchGame,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Switch: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
-  const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchParams = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const state = statesGame.state;
 
   const Button = styled.input`
     width: 25px;
-    height: 50px;
+    height: 35px;
     margin: 0 20px;
     border: none;
     border-radius: 5px;
@@ -27,11 +25,11 @@ const Switch: React.FC = (): JSX.Element => {
     background-color: ${state !== 'off' ? '#32cd32' : '#ff0000'};
     color: #ffffff;
 
-    :hover {
+    &:hover {
       cursor: pointer;
     }
 
-    :focus {
+    &:focus {
       outline: none;
     }
   `;
@@ -40,12 +38,12 @@ const Switch: React.FC = (): JSX.Element => {
     <>
       <Button
         onClick={(): void => {
-          dispatchGame({
+          dispatches.game({
             type: 'changeState',
             state: state !== 'off' ? 'off' : 'conf'
           });
 
-          state !== 'off' && dispatchParams({ type: 'reset' });
+          state !== 'off' && dispatches.params({ type: 'reset' });
         }}
         type='button'
       />

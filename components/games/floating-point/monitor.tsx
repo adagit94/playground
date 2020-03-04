@@ -7,7 +7,7 @@ import Point from './point';
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
-  height: 70%;
+  height: 65%;
   position: relative;
 `;
 

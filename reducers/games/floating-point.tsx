@@ -135,7 +135,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         case 'remove':
           return {
             ...state,
-            [action.player === 'P3' && state['P4'] !== undefined
+            [action.player === 'P3' && state.P4 !== undefined
               ? 'P4'
               : action.player]: undefined
           };
@@ -157,7 +157,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
     case 'reset':
       return init(initParams);
 
-    case 'changeShape':
+    case 'handleShape':
       switch (action.operation) {
         case 'add':
           return {
@@ -193,6 +193,15 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             [action.player]: {
               ...state[action.player],
               shape: action.shape
+            }
+          };
+
+        case 'nullify':
+          return {
+            ...state,
+            [action.player]: {
+              ...state[action.player],
+              shape: null
             }
           };
 
@@ -254,7 +263,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           }
 
         case 'remove':
-          if (action.player === 'P3' && state['P4'] !== undefined) {
+          if (action.player === 'P3' && state.P4 !== undefined) {
             return {
               ...state,
               shapesOthers: state.shapesOthers.filter(el => {

@@ -30,7 +30,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           <InputForm type='password' name='password' id='password' required />
         </Row>
         <Row>
-          <label htmlFor='password-confirm'>Password: </label>
+          <label htmlFor='password-confirm'>Confirm password: </label>
           <InputForm
             type='password'
             name='password-confirm'

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const ButtonPlayer = styled.input`
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border: none;
   font-size: 2rem;
   border-radius: 5px;
@@ -20,7 +20,7 @@ export const ButtonPlayer = styled.input`
 
 export const ButtonState = styled.input`
   width: 80px;
-  height: 50px;
+  height: 35px;
   font-weight: bold;
   border-top: transparent;
   border-right: 2px solid;

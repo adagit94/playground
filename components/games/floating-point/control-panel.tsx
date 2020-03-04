@@ -12,7 +12,7 @@ import {
 import { ContextGame } from '../../../contexts/games/floating-point';
 
 const Container = styled(ContainerRow)`
-  height: 30%;
+  height: 35%;
   padding: 10px;
   border-top: 1px solid;
 `;

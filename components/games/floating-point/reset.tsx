@@ -3,29 +3,25 @@ import styled from 'styled-components';
 
 import { ButtonState } from '../../styled-components/buttons';
 
-import {
-  ContextDispatchGame,
-  ContextDispatchParams
-} from '../../../contexts/games/floating-point';
+import { ContextDispatches } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonState)`
   margin-left: 10px;
 `;
 
 const Reset: React.FC = (): JSX.Element => {
-  const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchParams = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   return (
     <>
       <Button
         onClick={(): void => {
-          dispatchGame({
+          dispatches.game({
             type: 'changeState',
             state: 'conf'
           });
 
-          dispatchParams({ type: 'reset' });
+          dispatches.params({ type: 'reset' });
         }}
         value='Reset'
         type='button'

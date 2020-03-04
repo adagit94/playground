@@ -3,15 +3,16 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
+import { TextBlockValue } from '../../styled-components/text-blocks';
 
 import {
   ContextParams,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Dimensions: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const dimensions = states.dimensions;
   const isDefined = typeof dimensions === 'number';
@@ -25,7 +26,7 @@ const Dimensions: React.FC = (): JSX.Element => {
       <Label htmlFor='dimensions'>Dimensions:</Label>
       <InputOptionsCommon
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-          dispatch({
+          dispatches.params({
             type: 'changeDimensions',
             dimensions: Number(e.target.value)
           })
@@ -37,7 +38,7 @@ const Dimensions: React.FC = (): JSX.Element => {
         step='5'
         id='dimensions'
       />
-      {isDefined && `${dimensions}px`}
+      <TextBlockValue>{isDefined && `${dimensions}px`}</TextBlockValue>
     </ContainerOption>
   );
 };

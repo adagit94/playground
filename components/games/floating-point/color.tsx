@@ -9,7 +9,7 @@ import {
 import { PropsOptions } from '../../../types/games/floating-point';
 import {
   ContextParams,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const ContainerInput = styled(ContainerColumnCenter)`
@@ -34,7 +34,7 @@ const Input = styled.input`
 
 const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   return (
     <ContainerOption>
@@ -42,7 +42,11 @@ const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
       <ContainerInput>
         <Input
           onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-            dispatch({ type: 'changeColor', color: e.target.value, player })
+            dispatches.params({
+              type: 'changeColor',
+              color: e.target.value,
+              player
+            })
           }
           value={states[player].color}
           type='color'

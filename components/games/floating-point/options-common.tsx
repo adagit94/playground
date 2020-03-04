@@ -56,8 +56,12 @@ const OptionsCommon: React.FC = (): JSX.Element => {
       </ContainerOptions>
 
       <Buttons>
-        <Play />
-        <Reset />
+        {states.state !== 'off' && (
+          <>
+            <Play />
+            <Reset />
+          </>
+        )}
       </Buttons>
     </Container>
   );

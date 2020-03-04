@@ -126,7 +126,7 @@ export type ActionsPlayers =
 export type ActionsParams =
   | { type: 'reset' }
   | {
-      type: 'changeShape';
+      type: 'handleShape';
       player: string;
       operation: string;
       shape?: string;
@@ -143,3 +143,10 @@ export type ActionsParams =
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
 export type Init = (initStates: Inits) => any; // return Inits zpusobuje error (963)C:\_data\projects\GitHub\playground\node_modules\@types\react\index.d.ts
+
+export type Dispatches = {
+  game: React.Dispatch<ActionsGame>;
+  players: React.Dispatch<ActionsPlayers>;
+  params: React.Dispatch<ActionsParams>;
+  fp: React.Dispatch<ActionsFP>;
+};

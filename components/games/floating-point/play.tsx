@@ -6,10 +6,7 @@ import { ButtonState } from '../../styled-components/buttons';
 import {
   ContextGame,
   ContextParams,
-  ContextDispatchGame,
-  ContextDispatchPlayers,
-  ContextDispatchParams,
-  ContextDispatchFP
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonState)`
@@ -19,10 +16,7 @@ const Button = styled(ButtonState)`
 const Play: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
-  const dispatchGame = useContext(ContextDispatchGame);
-  const dispatchPlayers = useContext(ContextDispatchPlayers);
-  const dispatchParams = useContext(ContextDispatchParams);
-  const dispatchFP = useContext(ContextDispatchFP);
+  const dispatches = useContext(ContextDispatches);
 
   const state = statesGame.state;
 
@@ -37,11 +31,10 @@ const Play: React.FC = (): JSX.Element => {
       const shape = statesParams[player].shape;
 
       if (shape === undefined) {
-        dispatchParams({
-          type: 'changeShape',
-          operation: '',
-          player,
-          shape: null
+        dispatches.params({
+          type: 'handleShape',
+          operation: 'nullify',
+          player
         });
       }
 
@@ -51,14 +44,14 @@ const Play: React.FC = (): JSX.Element => {
     }
 
     if (dimensions === undefined) {
-      dispatchParams({
+      dispatches.params({
         type: 'changeDimensions',
         dimensions: null
       });
     }
 
     if (speed === undefined) {
-      dispatchParams({
+      dispatches.params({
         type: 'changeSpeed',
         speed: null
       });
@@ -103,7 +96,7 @@ const Play: React.FC = (): JSX.Element => {
           break;
       }
 
-      dispatchPlayers({
+      dispatches.players({
         type: 'init',
         player,
         top,
@@ -111,13 +104,13 @@ const Play: React.FC = (): JSX.Element => {
       });
     }
 
-    dispatchFP({
+    dispatches.fp({
       type: 'move',
-      top: Math.random() * height,
-      left: Math.random() * width
+      top: height / 2 - dimensions / 2,
+      left: width / 2 - dimensions / 2
     });
 
-    dispatchGame({
+    dispatches.game({
       type: 'changeState',
       state: 'running'
     });
@@ -130,7 +123,7 @@ const Play: React.FC = (): JSX.Element => {
           state === 'conf'
             ? handlePlay
             : (): void =>
-                dispatchGame({
+                dispatches.game({
                   type: 'changeState',
                   state: state === 'running' ? 'paused' : 'running'
                 })

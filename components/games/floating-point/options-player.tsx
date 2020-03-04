@@ -20,7 +20,7 @@ const Container = styled(ContainerColumn)`
 `;
 
 const ContainerPlayer = styled(ContainerRowCenter)`
-  height: 35px;
+  height: 25px;
 `;
 
 const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {

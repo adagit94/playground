@@ -8,7 +8,7 @@ import {
 
 import {
   ContextParams,
-  ContextDispatchParams
+  ContextDispatches
 } from '../../../contexts/games/floating-point';
 
 import {
@@ -23,7 +23,7 @@ const ContainerIcons = styled(ContainerRowBetweenWrap)`
 
 const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
-  const dispatch = useContext(ContextDispatchParams);
+  const dispatches = useContext(ContextDispatches);
 
   const {
     shapesOthers,
@@ -93,8 +93,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
             unclickableSquare
               ? null
               : (): void => {
-                  dispatch({
-                    type: 'changeShape',
+                  dispatches.params({
+                    type: 'handleShape',
                     operation: !isDefined
                       ? 'add'
                       : shape === 'square'
@@ -112,8 +112,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
             unclickableCircle
               ? null
               : (): void => {
-                  dispatch({
-                    type: 'changeShape',
+                  dispatches.params({
+                    type: 'handleShape',
                     operation: !isDefined
                       ? 'add'
                       : shape === 'circle'
@@ -131,8 +131,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
             unclickableRhombus
               ? null
               : (): void => {
-                  dispatch({
-                    type: 'changeShape',
+                  dispatches.params({
+                    type: 'handleShape',
                     operation: !isDefined
                       ? 'add'
                       : shape === 'rhombus'
@@ -150,8 +150,8 @@ const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
             unclickableEllipse
               ? null
               : (): void => {
-                  dispatch({
-                    type: 'changeShape',
+                  dispatches.params({
+                    type: 'handleShape',
                     operation: !isDefined
                       ? 'add'
                       : shape === 'ellipse'
