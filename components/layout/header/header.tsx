@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Logo from './logo';
 import Nav from './nav';
+import ThemeButton from './theme-button';
 import LogIn from './log-in';
 
 import { ContainerRow } from '../../styled-components/containers';
@@ -18,6 +19,7 @@ const Header: React.FC = (): JSX.Element => {
     <Container>
       <Logo />
       <Nav />
+      <ThemeButton />
       <LogIn />
     </Container>
   );

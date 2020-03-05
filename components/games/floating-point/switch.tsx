@@ -23,7 +23,6 @@ const Switch: React.FC = (): JSX.Element => {
       ? '0 30px 0 0 #32cd3280'
       : '0 -5px 0 0 #ff000080'};
     background-color: ${state !== 'off' ? '#32cd32' : '#ff0000'};
-    color: #ffffff;
 
     &:hover {
       cursor: pointer;

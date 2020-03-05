@@ -10,6 +10,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonPlayer)`
+  color: ${(props): string => props.theme.inverted};
   background-color: #ff0000;
 `;
 

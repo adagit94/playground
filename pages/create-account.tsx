@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FormStandard } from '../components/styled-components/forms';
-import { ButtonForm } from '../components/styled-components/buttons';
+import { ButtonSubmit } from '../components/styled-components/buttons';
 import { InputForm } from '../components/styled-components/inputs';
 import {
   ContainerRowCenter,
@@ -39,7 +39,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </Row>
         <Row>
-          <ButtonForm value='Create account' type='button' />
+          <ButtonSubmit value='Create account' type='button' />
         </Row>
       </FormStandard>
     </ContainerRowCenter>

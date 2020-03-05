@@ -37,7 +37,7 @@ const Point: React.FC = (): JSX.Element => {
     to {
     width: ${dimensions}px;
     height: ${dimensions}px;
-    background-color: #ffffff;
+    background-color: ${(props): string => props.theme.inverted};
     }
 `;
 

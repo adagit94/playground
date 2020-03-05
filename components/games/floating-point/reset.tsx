@@ -7,6 +7,14 @@ import { ContextDispatches } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonState)`
   margin-left: 10px;
+  color: ${(props): string => props.theme.inverted};
+
+  &:hover {
+    color: ${(props): string => props.theme.inverted};
+    background-color: ${(props): string => props.theme.background};
+    border-right-color: ${(props): string => props.theme.inverted};
+    border-left-color: ${(props): string => props.theme.inverted};
+  }
 `;
 
 const Reset: React.FC = (): JSX.Element => {

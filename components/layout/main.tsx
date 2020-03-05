@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { PropsLayout } from '../../types/games/floating-point';
+import { PropsLayout } from '../../types/layout';
 
 const Container = styled.main`
   flex: auto;

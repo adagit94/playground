@@ -20,7 +20,7 @@ const ContainerInput = styled(ContainerColumnCenter)`
 const Input = styled.input`
   width: 50px;
   padding: 0;
-  border: 2px solid #ffffff;
+  border: 2px solid ${(props): string => props.theme.inverted};
   background-color: unset;
 
   &:hover {

@@ -11,6 +11,14 @@ import {
 
 const Button = styled(ButtonState)`
   margin-right: 10px;
+  color: ${(props): string => props.theme.inverted};
+
+  &:hover {
+    color: ${(props): string => props.theme.inverted};
+    background-color: ${(props): string => props.theme.background};
+    border-right-color: ${(props): string => props.theme.inverted};
+    border-left-color: ${(props): string => props.theme.inverted};
+  }
 `;
 
 const Play: React.FC = (): JSX.Element => {

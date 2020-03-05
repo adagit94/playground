@@ -52,10 +52,6 @@ export type ControlKeys4P = ControlKeys3P & {
 
 export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
 
-export type PropsLayout = {
-  content: JSX.Element;
-};
-
 export type PropsOptions = {
   player: string;
 };
