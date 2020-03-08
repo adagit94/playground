@@ -21,10 +21,20 @@ const Speed: React.FC = (): JSX.Element => {
     color: ${speed === null && '#f00'};
   `;
 
+  const Input = styled(InputOptionsCommon)`
+    &::-webkit-slider-runnable-track {
+      background-color: ${(props): string => props.theme.inverted};
+    }
+
+    &::-webkit-slider-thumb {
+      background-color: ${(props): string => props.theme.inverted};
+    }
+  `;
+
   return (
     <ContainerOption>
       <Label htmlFor='speed'>Speed:</Label>
-      <InputOptionsCommon
+      <Input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatches.params({
             type: 'changeSpeed',

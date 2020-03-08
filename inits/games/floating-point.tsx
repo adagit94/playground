@@ -12,9 +12,9 @@ export const init: Init = initStates => initStates;
 
 export const initGame: StatesGame = {
   players: [true, true],
-  state: 'off', // off / conf / running / paused / recalc
-  width: [undefined, undefined], // new / prev
-  height: [undefined, undefined] // new / prev
+  state: 'conf', // off / conf / running / paused
+  width: undefined,
+  height: undefined
 };
 
 export const initPlayers: StatesPlayers = {
@@ -33,16 +33,16 @@ export const initPlayers: StatesPlayers = {
 };
 
 export const initParams: StatesParams = {
-  dimensions: 30,
-  speed: 5,
+  dimensions: Defaults.dimensions,
+  speed: Defaults.speed,
   shapesOthers: [],
   colorsOthers: [Defaults.P1.color, Defaults.P2.color],
   P1: {
-    shape: 'square',
+    shape: 'circle',
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'rhombus',
+    shape: 'triangle',
     color: Defaults.P2.color
   },
   P3: undefined,

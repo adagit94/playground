@@ -10,8 +10,7 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonPlayer)`
-  color: ${(props): string => props.theme.inverted};
-  background-color: #32cd32;
+  background-image: url('/icons/add.svg');
 `;
 
 const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
@@ -42,7 +41,6 @@ const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
             player
           });
         }}
-        value='+'
         type='button'
       />
     </>

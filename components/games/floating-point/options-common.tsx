@@ -23,6 +23,15 @@ const Container = styled(ContainerColumn)`
   width: 20%;
 `;
 
+const Divider = styled(DividerVertical)`
+  background-color: ${(props): string => props.theme.inverted};
+`;
+
+const Overlap = styled(OverlapDisabled)`
+  background-color: ${(props): string =>
+    props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
+`;
+
 const OptionsCommon: React.FC = (): JSX.Element => {
   const states = useContext(ContextGame);
 
@@ -50,9 +59,9 @@ const OptionsCommon: React.FC = (): JSX.Element => {
 
       <ContainerOptions>
         <Dimensions />
-        <DividerVertical />
+        <Divider />
         <Speed />
-        {states.state !== 'conf' && <OverlapDisabled />}
+        {states.state !== 'conf' && <Overlap />}
       </ContainerOptions>
 
       <Buttons>

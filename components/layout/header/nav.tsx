@@ -70,4 +70,4 @@ const Nav: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Nav);
+export default Nav;

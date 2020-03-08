@@ -23,6 +23,15 @@ const ContainerPlayer = styled(ContainerRowCenter)`
   height: 25px;
 `;
 
+const Divider = styled(DividerVertical)`
+  background-color: ${(props): string => props.theme.inverted};
+`;
+
+const Overlap = styled(OverlapDisabled)`
+  background-color: ${(props): string =>
+    props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
+`;
+
 const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextGame);
 
@@ -33,9 +42,9 @@ const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
       </ContainerPlayer>
       <ContainerOptions>
         <Shape player={player} />
-        <DividerVertical />
+        <Divider />
         <Color player={player} />
-        {states.state !== 'conf' && <OverlapDisabled />}
+        {states.state !== 'conf' && <Overlap />}
       </ContainerOptions>
     </Container>
   );

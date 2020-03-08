@@ -2,8 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import Layout from '../components/layout/layout';
-
 import { ContainerRowBetweenWrap } from '../components/styled-components/containers';
 
 const Container = styled(ContainerRowBetweenWrap)`
@@ -17,7 +15,7 @@ const Item = styled.div`
 `;
 
 const Playground: React.FC = (): JSX.Element => {
-  const content = (
+  return (
     <Container>
       <Item>
         <Link href='/playground/floating-point'>
@@ -26,8 +24,6 @@ const Playground: React.FC = (): JSX.Element => {
       </Item>
     </Container>
   );
-
-  return <Layout content={content} />;
 };
 
-export default React.memo(Playground);
+export default Playground;

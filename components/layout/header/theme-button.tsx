@@ -8,34 +8,38 @@ import { ContextDispatchLayout } from '../../../contexts/layout';
 
 const Container = styled(ContainerColumn)`
   position: relative;
-  width: 25px;
+  width: 20px;
   margin: 10px;
-  border-top: 2px solid;
-  border-bottom: 2px solid;
-  border-radius: 5px;
+  border: 1px solid;
 `;
 
 const ThemeButton: React.FC = (): JSX.Element => {
-  const dispatch = useContext(ContextDispatchLayout);
   const colors: any = useContext(ThemeContext);
+  const dispatch = useContext(ContextDispatchLayout);
 
   const toggleTheme = (): void => {
     $('#theme-button').animate(
-      { [colors.theme === 'dark' ? 'top' : 'bottom']: '0' },
-      250,
+      { top: colors.theme === 'dark' ? 0 : '50%' },
+      200,
       (): void => dispatch({ type: 'changeTheme' })
     );
   };
 
   const Button = styled.input`
     position: absolute;
-    top: ${colors.theme === 'dark' ? 'auto' : 0};
-    bottom: ${colors.theme === 'dark' ? '0' : 'auto'};
+    top: ${colors.theme === 'dark' ? '50%' : 0};
     width: 100%;
-    height: 25px;
+    height: 50%;
     border: none;
-    border-radius: 100%;
     background-color: ${(props): string => props.theme.inverted};
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: none;
+    }
   `;
 
   return (
@@ -45,4 +49,4 @@ const ThemeButton: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(ThemeButton);
+export default ThemeButton;

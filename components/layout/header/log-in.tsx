@@ -17,7 +17,8 @@ const LogIn: React.FC = (): JSX.Element => {
     position: relative;
     width: 150px;
     height: 100%;
-    color: ${(props): string => props.theme.inverted};
+    color: ${(props): string => props.theme.background};
+    background-color: ${(props): string => props.theme.inverted};
   `;
 
   const Form = styled(FormStandard)`
@@ -31,13 +32,19 @@ const LogIn: React.FC = (): JSX.Element => {
     background-color: ${(props): string => props.theme.inverted};
   `;
 
+  const Input = styled(InputForm)`
+    color: ${(props): string => props.theme.background};
+    border-color: ${(props): string => props.theme.background};
+  `;
+
   const ButtonToggle = styled.input`
     width: 100%;
     height: 100%;
     font-size: 1rem;
     font-weight: bold;
     border: none;
-    background-color: ${(props): string => props.theme.background};
+    color: ${(props): string => props.theme.background};
+    background-color: ${(props): string => props.theme.inverted};
     transition-property: font-size;
     transition-duration: 0.1s;
     transition-timing-function: linear;
@@ -59,16 +66,15 @@ const LogIn: React.FC = (): JSX.Element => {
     background-color: ${(props): string => props.theme.inverted};
 
     &:hover {
-      color: ${(props): string => props.theme.inverted};
-      background-color: ${(props): string => props.theme.background};
       border-right-color: ${(props): string => props.theme.inverted};
       border-left-color: ${(props): string => props.theme.inverted};
+      color: ${(props): string => props.theme.inverted};
+      background-color: ${(props): string => props.theme.background};
     }
   `;
 
   const LinkTxt = styled.a`
     text-decoration: none;
-    color: ${(props): string => props.theme.inverted};
 
     &:hover {
       cursor: pointer;
@@ -82,11 +88,11 @@ const LogIn: React.FC = (): JSX.Element => {
       <Form style={{ display: 'none' }} id='log-in-form'>
         <ContainerRowAround>
           <label htmlFor='username'>Username: </label>
-          <InputForm type='text' name='username' id='username' required />
+          <Input type='text' name='username' id='username' required />
         </ContainerRowAround>
         <ContainerRowAround>
           <label htmlFor='password'>Password: </label>
-          <InputForm type='password' name='password' id='password' required />
+          <Input type='password' name='password' id='password' required />
         </ContainerRowAround>
         <ContainerRowAround>
           <ButtonForm value='Log in' type='button' />
@@ -104,4 +110,4 @@ const LogIn: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(LogIn);
+export default LogIn;

@@ -11,7 +11,6 @@ export const InputOptionsCommon = styled.input`
 
   &::-webkit-slider-runnable-track {
     height: 1px;
-    background: #ffffff;
   }
 
   &::-webkit-slider-thumb {
@@ -34,14 +33,15 @@ export const InputOptionsCommon = styled.input`
 `;
 
 export const InputForm = styled.input`
-  border: 2px solid #000000;
+  border: 2px solid;
   border-radius: 5px;
+  background: transparent;
   transition-property: box-shadow;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   :focus {
-    box-shadow: 0 0 0 2px #000000;
+    box-shadow: 0 0 0 2px;
     outline: none;
   }
 `;

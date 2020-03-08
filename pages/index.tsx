@@ -1,11 +1,8 @@
 import React from 'react';
 //import styled from 'styled-components';
-import Layout from '../components/layout/layout';
 
 const Index: React.FC = (): JSX.Element => {
-  const content = <div>abc</div>;
-
-  return <Layout content={content} />;
+  return <div>abc</div>;
 };
 
-export default React.memo(Index);
+export default Index;

@@ -17,6 +17,11 @@ type ChangePlayer = {
 
 type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
 
+type Shape = {
+  viewBox: string;
+  path: string;
+};
+
 export type Key = {
   pressed: boolean;
   operation: string;
@@ -63,8 +68,8 @@ export type PropsButtons = {
 export type StatesGame = {
   players: Array<string | boolean>;
   state: string;
-  width: Array<number>;
-  height: Array<number>;
+  width: number;
+  height: number;
 };
 
 export type StatesPlayers = {
@@ -96,7 +101,7 @@ export type ActionsGame =
       state: string;
     }
   | {
-      type: 'calculateDimensions';
+      type: 'changeDimensions';
       width: number;
       height: number;
     }
@@ -110,12 +115,13 @@ export type ActionsPlayers =
       left: number;
     }
   | {
-      type: 'recalculatePos';
+      type: 'move';
       player: string;
-      top: number;
-      left: number;
+      operation: string;
+      direction?: string;
+      top?: number;
+      left?: number;
     }
-  | { type: 'move'; player: string; direction: string; operation: string }
   | { type: 'addScore'; player: string }
   | ChangePlayer;
 
@@ -145,4 +151,11 @@ export type Dispatches = {
   players: React.Dispatch<ActionsPlayers>;
   params: React.Dispatch<ActionsParams>;
   fp: React.Dispatch<ActionsFP>;
+};
+
+export type Shapes = {
+  square: Shape;
+  circle: Shape;
+  triangle: Shape;
+  cross: Shape;
 };

@@ -48,4 +48,4 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   );
 };
 
-export default React.memo(Layout);
+export default Layout;

@@ -7,5 +7,4 @@ export const OverlapDisabled = styled.div`
   bottom: 0;
   right: 0;
   border-radius: 5px;
-  background-color: #ffffff80;
 `;

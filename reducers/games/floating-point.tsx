@@ -18,7 +18,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   action
 ): StatesGame => {
   switch (action.type) {
-    case 'changeState': // off / conf / running / paused / recalculate
+    case 'changeState': // off / conf / running / paused
       return {
         ...state,
         players:
@@ -28,15 +28,11 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         state: action.state
       };
 
-    case 'calculateDimensions':
+    case 'changeDimensions':
       return {
         ...state,
-        state:
-          state.state === 'running' || state.state === 'paused'
-            ? 'recalc'
-            : state.state,
-        width: [action.width, state.width[0]],
-        height: [action.height, state.height[0]]
+        width: action.width,
+        height: action.height
       };
 
     case 'changePlayers':
@@ -77,16 +73,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         }
       };
 
-    case 'recalculatePos':
-      return {
-        ...state,
-        [action.player]: {
-          ...state[action.player],
-          top: action.top,
-          left: action.left
-        }
-      };
-
     case 'move':
       switch (action.operation) {
         case 'add':
@@ -104,6 +90,16 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
             [action.player]: {
               ...state[action.player],
               [action.direction]: state[action.player][action.direction] - 1
+            }
+          };
+
+        case 'changePos':
+          return {
+            ...state,
+            [action.player]: {
+              ...state[action.player],
+              top: action.top,
+              left: action.left
             }
           };
 

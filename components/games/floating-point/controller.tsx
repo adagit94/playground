@@ -201,11 +201,10 @@ const Controller: React.FC = (): JSX.Element => {
   const { players, state, width, height } = statesGame;
   const { dimensions, speed } = statesParams;
   const { top: fPTop, left: fPLeft } = statesFP;
-  const [widthNew, widthPrev] = width;
-  const [heightNew, heightPrev] = height;
   const playersCount = players.length;
 
   const refHandleMove = useRef(null);
+  const refRecalculate = useRef(null);
 
   const handleMove = (): void => {
     for (const key in controlKeys) {
@@ -217,8 +216,8 @@ const Controller: React.FC = (): JSX.Element => {
 
         if (
           (limit === 'topLeft' && playerPos > 0) ||
-          (limit === 'bottom' && playerPos + dimensions < heightNew) ||
-          (limit === 'right' && playerPos + dimensions < widthNew)
+          (limit === 'bottom' && playerPos + dimensions < height) ||
+          (limit === 'right' && playerPos + dimensions < width)
         ) {
           const operation = keyObj.operation;
 
@@ -233,41 +232,61 @@ const Controller: React.FC = (): JSX.Element => {
     }
   };
 
-  refHandleMove.current = handleMove;
+  const recalculate = (): void => {
+    if (state === 'running' || state === 'paused') {
+      const newWidth = document.querySelector('#monitor').clientWidth;
+      const newHeight = document.querySelector('#monitor').clientHeight;
 
-  useEffect(() => {
-    const currentHandleMove = (): void => {
-      refHandleMove.current();
-    };
+      for (let i = 1; i <= playersCount; i++) {
+        const player = `P${i}`;
 
-    if (state === 'running' && intervalHandleMove === undefined) {
-      switch (playersCount) {
-        case 2:
-          controlKeys = controlKeys2P;
-          break;
-        case 3:
-          controlKeys = controlKeys3P;
-          break;
-        case 4:
-          controlKeys = controlKeys4P;
-          break;
+        dispatchPlayers({
+          type: 'move',
+          operation: 'changePos',
+          top: (statesPlayers[player].top / height) * 100 * (newHeight / 100),
+          left: (statesPlayers[player].left / width) * 100 * (newWidth / 100),
+          player
+        });
       }
 
-      intervalHandleMove = window.setInterval(
-        currentHandleMove,
-        30 - 5 * speed
-      );
-
-      window.addEventListener('keydown', registerKey);
-      window.addEventListener('keyup', cancelKey);
-    } else if (state !== 'running' && intervalHandleMove !== undefined) {
-      window.clearInterval(intervalHandleMove);
-      intervalHandleMove = undefined;
-
-      window.removeEventListener('keydown', registerKey);
-      window.removeEventListener('keyup', cancelKey);
+      dispatchFP({
+        type: 'move',
+        top: (fPTop / height) * 100 * (newHeight / 100),
+        left: (fPLeft / width) * 100 * (newWidth / 100)
+      });
     }
+  };
+
+  useEffect(() => {
+    refHandleMove.current = handleMove;
+    refRecalculate.current = recalculate;
   });
+
+  useEffect(() => {
+    dispatches.game = dispatchGame;
+    dispatches.players = dispatchPlayers;
+    dispatches.params = dispatchParams;
+    dispatches.fp = dispatchFP;
+  }, []);
+
+  useEffect(() => {
+    const changeDimensions = (): void => {
+      dispatchGame({
+        type: 'changeDimensions',
+        width: document.querySelector('#monitor').clientWidth,
+        height: document.querySelector('#monitor').clientHeight
+      });
+
+      refRecalculate.current();
+    };
+
+    changeDimensions();
+    window.addEventListener('resize', changeDimensions);
+
+    return (): void => {
+      window.removeEventListener('resize', changeDimensions);
+    };
+  }, []);
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
@@ -288,68 +307,55 @@ const Controller: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.min(Math.random() * heightNew, heightNew - dimensions),
-            left: Math.min(Math.random() * widthNew, widthNew - dimensions)
+            top: Math.min(Math.random() * height, height - dimensions),
+            left: Math.min(Math.random() * width, width - dimensions)
           });
         }
       }
     };
 
-    if (state === 'running') {
-      matchFloatingPoint();
-    }
+    if (state === 'running') matchFloatingPoint();
   });
 
   useEffect(() => {
-    const recalculatePos = (): void => {
-      for (let i = 1; i <= playersCount; i++) {
-        const player = `P${i}`;
-
-        dispatchPlayers({
-          type: 'recalculatePos',
-          top:
-            (statesPlayers[player].top / heightPrev) * 100 * (heightNew / 100),
-          left:
-            (statesPlayers[player].left / widthPrev) * 100 * (widthNew / 100),
-          player
-        });
+    if (state === 'running' && intervalHandleMove === undefined) {
+      switch (playersCount) {
+        case 2:
+          controlKeys = controlKeys2P;
+          break;
+        case 3:
+          controlKeys = controlKeys3P;
+          break;
+        case 4:
+          controlKeys = controlKeys4P;
+          break;
       }
 
-      dispatchFP({
-        type: 'move',
-        top: (fPTop / heightPrev) * 100 * (heightNew / 100),
-        left: (fPLeft / widthPrev) * 100 * (widthNew / 100)
-      });
+      intervalHandleMove = window.setInterval(
+        refHandleMove.current,
+        30 - 5 * speed
+      );
 
-      dispatchGame({ type: 'changeState', state: 'running' });
-    };
+      window.addEventListener('keydown', registerKey);
+      window.addEventListener('keyup', cancelKey);
+    } else if (state !== 'running' && intervalHandleMove !== undefined) {
+      window.clearInterval(intervalHandleMove);
+      intervalHandleMove = undefined;
 
-    if (state === 'recalc') recalculatePos();
-  });
-
-  useEffect(() => {
-    const calculateDimensions = (): void => {
-      dispatchGame({
-        type: 'calculateDimensions',
-        width: document.querySelector('#monitor').clientWidth,
-        height: document.querySelector('#monitor').clientHeight
-      });
-    };
-
-    calculateDimensions();
-    window.addEventListener('resize', calculateDimensions);
+      window.removeEventListener('keydown', registerKey);
+      window.removeEventListener('keyup', cancelKey);
+    }
 
     return (): void => {
-      window.removeEventListener('resize', calculateDimensions);
-    };
-  }, []);
+      if (intervalHandleMove !== undefined) {
+        window.clearInterval(intervalHandleMove);
+        intervalHandleMove = undefined;
 
-  useEffect(() => {
-    dispatches.game = dispatchGame;
-    dispatches.players = dispatchPlayers;
-    dispatches.params = dispatchParams;
-    dispatches.fp = dispatchFP;
-  }, []);
+        window.removeEventListener('keydown', registerKey);
+        window.removeEventListener('keyup', cancelKey);
+      }
+    };
+  });
 
   return (
     <Container>
@@ -369,6 +375,6 @@ const Controller: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Controller);
+export default Controller;
 
 //console.log(statesGame.state); border: 1px solid red;

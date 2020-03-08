@@ -4,9 +4,8 @@ export const ButtonPlayer = styled.input`
   width: 35px;
   height: 35px;
   border: none;
-  font-size: 2rem;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 100%;
+  background-color: transparent;
 
   &:hover {
     cursor: pointer;

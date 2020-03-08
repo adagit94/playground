@@ -21,10 +21,20 @@ const Dimensions: React.FC = (): JSX.Element => {
     color: ${dimensions === null && '#f00'};
   `;
 
+  const Input = styled(InputOptionsCommon)`
+    &::-webkit-slider-runnable-track {
+      background-color: ${(props): string => props.theme.inverted};
+    }
+
+    &::-webkit-slider-thumb {
+      background-color: ${(props): string => props.theme.inverted};
+    }
+  `;
+
   return (
     <ContainerOption>
       <Label htmlFor='dimensions'>Dimensions:</Label>
-      <InputOptionsCommon
+      <Input
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatches.params({
             type: 'changeDimensions',
@@ -33,8 +43,8 @@ const Dimensions: React.FC = (): JSX.Element => {
         }
         value={isDefined ? String(dimensions) : ''}
         type='range'
-        min='10'
-        max='30'
+        min='20'
+        max='40'
         step='5'
         id='dimensions'
       />

@@ -10,8 +10,8 @@ const Button = styled(ButtonState)`
   color: ${(props): string => props.theme.inverted};
 
   &:hover {
-    color: ${(props): string => props.theme.inverted};
-    background-color: ${(props): string => props.theme.background};
+    color: ${(props): string => props.theme.background};
+    background-color: ${(props): string => props.theme.inverted};
     border-right-color: ${(props): string => props.theme.inverted};
     border-left-color: ${(props): string => props.theme.inverted};
   }

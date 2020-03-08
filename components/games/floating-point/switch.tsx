@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
 import {
   ContextGame,
@@ -8,6 +8,7 @@ import {
 
 const Switch: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
+  const colors: any = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatches);
 
   const state = statesGame.state;
@@ -20,9 +21,9 @@ const Switch: React.FC = (): JSX.Element => {
     border-radius: 5px;
     transform: ${state !== 'off' ? 'rotateX(65deg)' : 'rotateX(25deg)'};
     box-shadow: ${state !== 'off'
-      ? '0 30px 0 0 #32cd3280'
-      : '0 -5px 0 0 #ff000080'};
-    background-color: ${state !== 'off' ? '#32cd32' : '#ff0000'};
+      ? '0 30px 0 0 #009900'
+      : '0 -5px 0 0 #990000'};
+    background-color: ${state !== 'off' ? '#00ff00' : '#ff0000'};
 
     &:hover {
       cursor: pointer;

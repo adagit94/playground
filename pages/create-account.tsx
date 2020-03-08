@@ -46,4 +46,4 @@ const CreateAccount: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(CreateAccount);
+export default CreateAccount;
