@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
 import {
   ContextGame,
@@ -8,7 +8,6 @@ import {
 
 const Switch: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
-  const colors: any = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatches);
 
   const state = statesGame.state;

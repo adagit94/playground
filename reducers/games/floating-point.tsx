@@ -9,7 +9,7 @@ import {
   ActionsFP
 } from '../../types/games/floating-point';
 
-import { initParams, init } from '../../inits/games/floating-point';
+import { initParams } from '../../inits/games/floating-point';
 
 import { Defaults } from '../../defaults/games/floating-point';
 
@@ -151,7 +151,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
 ): StatesParams => {
   switch (action.type) {
     case 'reset':
-      return init(initParams);
+      return initParams;
 
     case 'handleShape':
       switch (action.operation) {

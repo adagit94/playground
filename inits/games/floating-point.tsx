@@ -2,13 +2,10 @@ import {
   StatesGame,
   StatesPlayers,
   StatesParams,
-  StatesFP,
-  Init
+  StatesFP
 } from '../../types/games/floating-point';
 
 import { Defaults } from '../../defaults/games/floating-point';
-
-export const init: Init = initStates => initStates;
 
 export const initGame: StatesGame = {
   players: [true, true],

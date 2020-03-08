@@ -12,6 +12,7 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
+import { Colors } from '../../../types/layout';
 import {
   PropsOptions,
   StatesPlayers
@@ -24,7 +25,7 @@ const ContainerIcons = styled(ContainerRowBetweenWrap)`
 
 const Shape: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
-  const colors: any = useContext(ThemeContext);
+  const colors: Colors = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatches);
 
   const {

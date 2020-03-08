@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, ThemeContext } from 'styled-components';
 
+import { ContainerColumnCenter } from '../../styled-components/containers';
+
+import { Colors } from '../../../types/layout';
 import {
   ContextGame,
   ContextParams,
@@ -11,20 +14,17 @@ const Point: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);
+  const colors: Colors = useContext(ThemeContext);
 
   const dimensions = statesParams.dimensions;
 
-  const Point = styled.div`
-    border-radius: 100%;
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+  const Point = styled(ContainerColumnCenter)`
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     top: ${statesFP.top}px;
     left: ${statesFP.left}px;
+    width: ${dimensions}px;
+    height: ${dimensions}px;
+    border-radius: 100%;
   `;
 
   const waving = keyframes`
@@ -37,7 +37,7 @@ const Point: React.FC = (): JSX.Element => {
     to {
     width: ${dimensions}px;
     height: ${dimensions}px;
-    background-color: ${(props): string => props.theme.inverted};
+    background-color: ${colors.inverted};
     }
 `;
 

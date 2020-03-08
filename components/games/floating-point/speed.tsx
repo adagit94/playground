@@ -45,6 +45,7 @@ const Speed: React.FC = (): JSX.Element => {
         type='range'
         min='1'
         max='5'
+        step='2'
         id='speed'
       />
       <TextBlockValue>{isDefined && `${speed}x`}</TextBlockValue>

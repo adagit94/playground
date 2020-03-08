@@ -44,7 +44,7 @@ const Dimensions: React.FC = (): JSX.Element => {
         value={isDefined ? String(dimensions) : ''}
         type='range'
         min='20'
-        max='40'
+        max='30'
         step='5'
         id='dimensions'
       />

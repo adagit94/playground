@@ -78,7 +78,7 @@ const LogIn: React.FC = (): JSX.Element => {
 
     &:hover {
       cursor: pointer;
-      font-weight: bold;
+      text-decoration: underline;
     }
   `;
 

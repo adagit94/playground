@@ -58,7 +58,7 @@ const Players: React.FC = (): JSX.Element => {
   `;
 
   points.push(
-    <IconP1>
+    <IconP1 key='IconP1'>
       <svg xmlns='http://www.w3.org/2000/svg' viewBox={shapes[shapeP1].viewBox}>
         <path fill={colorP1} d={shapes[shapeP1].path} />
       </svg>
@@ -74,7 +74,7 @@ const Players: React.FC = (): JSX.Element => {
   `;
 
   points.push(
-    <IconP2>
+    <IconP2 key='IconP2'>
       <svg xmlns='http://www.w3.org/2000/svg' viewBox={shapes[shapeP2].viewBox}>
         <path fill={colorP2} d={shapes[shapeP2].path} />
       </svg>
@@ -94,7 +94,7 @@ const Players: React.FC = (): JSX.Element => {
     `;
 
     points.push(
-      <IconP3>
+      <IconP3 key='IconP3'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox={shapes[shapeP3].viewBox}
@@ -118,7 +118,7 @@ const Players: React.FC = (): JSX.Element => {
     `;
 
     points.push(
-      <IconP4>
+      <IconP4 key='IconP4'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox={shapes[shapeP4].viewBox}

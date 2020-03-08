@@ -15,8 +15,6 @@ type ChangePlayer = {
   player: string;
 };
 
-type Inits = StatesGame | StatesPlayers | StatesParams | StatesFP;
-
 type Shape = {
   viewBox: string;
   path: string;
@@ -143,8 +141,6 @@ export type ActionsParams =
   | ChangePlayer;
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
-
-export type Init = (initStates: Inits) => any; // return Inits zpusobuje error (963)C:\_data\projects\GitHub\playground\node_modules\@types\react\index.d.ts
 
 export type Dispatches = {
   game: React.Dispatch<ActionsGame>;

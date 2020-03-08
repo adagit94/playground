@@ -176,27 +176,20 @@ const Container = styled(ContainerColumn)`
 const Controller: React.FC = (): JSX.Element => {
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
-    Inits.initGame,
-    Inits.init
+    Inits.initGame
   );
 
   const [statesPlayers, dispatchPlayers] = useReducer(
     Reducers.reducerPlayers,
-    Inits.initPlayers,
-    Inits.init
+    Inits.initPlayers
   );
 
   const [statesParams, dispatchParams] = useReducer(
     Reducers.reducerParams,
-    Inits.initParams,
-    Inits.init
+    Inits.initParams
   );
 
-  const [statesFP, dispatchFP] = useReducer(
-    Reducers.reducerFP,
-    Inits.initFP,
-    Inits.init
-  );
+  const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
 
   const { players, state, width, height } = statesGame;
   const { dimensions, speed } = statesParams;

@@ -4,6 +4,7 @@ import $ from 'jquery';
 
 import { ContainerColumn } from '../../styled-components/containers';
 
+import { Colors } from '../../../types/layout';
 import { ContextDispatchLayout } from '../../../contexts/layout';
 
 const Container = styled(ContainerColumn)`
@@ -14,7 +15,7 @@ const Container = styled(ContainerColumn)`
 `;
 
 const ThemeButton: React.FC = (): JSX.Element => {
-  const colors: any = useContext(ThemeContext);
+  const colors: Colors = useContext(ThemeContext);
   const dispatch = useContext(ContextDispatchLayout);
 
   const toggleTheme = (): void => {

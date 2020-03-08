@@ -9,13 +9,30 @@ import {
   ContainerColumnAround
 } from '../components/styled-components/containers';
 
+const Container = styled(ContainerRowCenter)`
+  height: 100%;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
+`;
+
 const Row = styled(ContainerColumnAround)`
   height: 75px;
 `;
 
+const Button = styled(ButtonSubmit)`
+  background-color: ${(props): string => props.theme.inverted};
+
+  &:hover {
+    border-right-color: ${(props): string => props.theme.inverted};
+    border-left-color: ${(props): string => props.theme.inverted};
+    color: ${(props): string => props.theme.inverted};
+    background-color: ${(props): string => props.theme.background};
+  }
+`;
+
 const CreateAccount: React.FC = (): JSX.Element => {
   return (
-    <ContainerRowCenter>
+    <Container>
       <FormStandard>
         <Row>
           <label htmlFor='username'>Username: </label>
@@ -39,10 +56,10 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </Row>
         <Row>
-          <ButtonSubmit value='Create account' type='button' />
+          <Button value='Create account' type='button' />
         </Row>
       </FormStandard>
-    </ContainerRowCenter>
+    </Container>
   );
 };
 
