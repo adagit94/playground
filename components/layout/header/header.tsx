@@ -6,10 +6,10 @@ import Nav from './nav';
 import ThemeButton from './theme-button';
 import LogIn from './log-in';
 
-import { ContainerRow } from '../../styled-components/containers';
-
-const Container = styled(ContainerRow)`
+const Container = styled.header`
   flex: initial;
+  display: flex;
+  flex-direction: row;
   height: 75px;
   border-bottom: 1px solid;
 `;

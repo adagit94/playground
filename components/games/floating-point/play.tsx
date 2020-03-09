@@ -28,14 +28,13 @@ const Play: React.FC = (): JSX.Element => {
 
   const state = statesGame.state;
 
-  const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
+  const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
     const playersCount = statesGame.players.length;
     const { dimensions, speed } = statesParams;
     let playable: boolean;
 
     for (let i = 1; i <= playersCount; i++) {
       const player = `P${i}`;
-
       const shape = statesParams[player].shape;
 
       if (shape === undefined) {
@@ -136,7 +135,7 @@ const Play: React.FC = (): JSX.Element => {
                   state: state === 'running' ? 'paused' : 'running'
                 })
         }
-        value={state !== 'running' && state !== 'recalc' ? 'Play' : 'Pause'}
+        value={state === 'running' ? 'Pause' : 'Play'}
         type='button'
       />
     </>

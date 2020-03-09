@@ -3,8 +3,6 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import $ from 'jquery';
 
-import { ContainerRowAround } from '../../styled-components/containers';
-import { FormStandard } from '../../styled-components/forms';
 import { ButtonSubmit } from '../../styled-components/buttons';
 import { InputForm } from '../../styled-components/inputs';
 
@@ -12,16 +10,24 @@ const showForm = (): void => {
   $('#log-in-form').slideToggle(100, 'linear');
 };
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`;
+
 const LogIn: React.FC = (): JSX.Element => {
   const Container = styled.div`
     position: relative;
     width: 150px;
-    height: 100%;
     color: ${(props): string => props.theme.background};
     background-color: ${(props): string => props.theme.inverted};
   `;
 
-  const Form = styled(FormStandard)`
+  const Form = styled.form`
+    display: flex;
+    flex-direction: column;
     justify-content: space-around;
     position: absolute;
     top: 75px;
@@ -62,7 +68,6 @@ const LogIn: React.FC = (): JSX.Element => {
   const ButtonForm = styled(ButtonSubmit)`
     border-right-color: ${(props): string => props.theme.background};
     border-left-color: ${(props): string => props.theme.background};
-    color: ${(props): string => props.theme.background};
     background-color: ${(props): string => props.theme.inverted};
 
     &:hover {
@@ -86,25 +91,25 @@ const LogIn: React.FC = (): JSX.Element => {
     <Container>
       <ButtonToggle onClick={showForm} value='Log in' type='button' />
       <Form style={{ display: 'none' }} id='log-in-form'>
-        <ContainerRowAround>
+        <Row>
           <label htmlFor='username'>Username: </label>
           <Input type='text' name='username' id='username' required />
-        </ContainerRowAround>
-        <ContainerRowAround>
+        </Row>
+        <Row>
           <label htmlFor='password'>Password: </label>
           <Input type='password' name='password' id='password' required />
-        </ContainerRowAround>
-        <ContainerRowAround>
+        </Row>
+        <Row>
           <ButtonForm value='Log in' type='button' />
-        </ContainerRowAround>
-        <ContainerRowAround>
+        </Row>
+        <Row>
           <Link href='/reset-password'>
             <LinkTxt>Reset password</LinkTxt>
           </Link>
           <Link href='/create-account'>
             <LinkTxt>Create account</LinkTxt>
           </Link>
-        </ContainerRowAround>
+        </Row>
       </Form>
     </Container>
   );

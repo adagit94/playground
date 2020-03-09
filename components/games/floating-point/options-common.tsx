@@ -12,14 +12,13 @@ import RemovePlayer from './remove-player';
 
 import { DividerVertical } from '../../styled-components/dividers';
 import { OverlapDisabled } from '../../styled-components/overlaps';
-import {
-  ContainerColumn,
-  ContainerOptions
-} from '../../styled-components/containers';
+import { ContainerOptions } from '../../styled-components/containers';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
 
-const Container = styled(ContainerColumn)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 20%;
 `;
 

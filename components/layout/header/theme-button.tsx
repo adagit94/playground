@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
-import { ContainerColumn } from '../../styled-components/containers';
-
 import { Colors } from '../../../types/layout';
 import { ContextDispatchLayout } from '../../../contexts/layout';
 
-const Container = styled(ContainerColumn)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 20px;
   margin: 10px;

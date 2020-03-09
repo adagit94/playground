@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import { ContainerColumn } from '../../styled-components/containers';
-
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
@@ -169,7 +167,9 @@ const dispatches: Dispatches = {
   fp: undefined
 };
 
-const Container = styled(ContainerColumn)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%;
 `;
 

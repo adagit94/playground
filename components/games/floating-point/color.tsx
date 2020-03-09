@@ -1,18 +1,20 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-import {
-  ContainerColumnCenter,
-  ContainerOption
-} from '../../styled-components/containers';
+import { ContainerOption } from '../../styled-components/containers';
 
+import { Colors } from '../../../types/layout';
 import { PropsOptions } from '../../../types/games/floating-point';
 import {
   ContextParams,
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const ContainerInput = styled(ContainerColumnCenter)`
+const ContainerInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100px;
   width: 100px;
 `;
@@ -44,6 +46,7 @@ const Input = styled.input`
 
 const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
   const states = useContext(ContextParams);
+  const colors: Colors = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatches);
 
   return (
@@ -52,13 +55,20 @@ const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
       <ContainerInput>
         <WrapperInput>
           <Input
-            onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-              dispatches.params({
-                type: 'changeColor',
-                color: e.target.value,
-                player
-              })
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+              const color = e.target.value;
+
+              if (
+                !states.colorsOthers.includes(color) &&
+                colors.background !== color
+              ) {
+                dispatches.params({
+                  type: 'changeColor',
+                  color,
+                  player
+                });
+              }
+            }}
             value={states[player].color}
             type='color'
             id='color'

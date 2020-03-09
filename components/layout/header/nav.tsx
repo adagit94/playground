@@ -4,21 +4,20 @@ import styled from 'styled-components';
 
 const Nav: React.FC = (): JSX.Element => {
   const Container = styled.nav`
-    flex-grow: 1;
-    padding: 10px 0;
+    flex: auto;
+    margin: 10px 0;
 
     ul {
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
       height: 100%;
-      width: 300px;
       padding: 0;
       margin: 0;
 
       li {
-        width: 100px;
         list-style: none;
+        width: 100px;
+        margin: 0 20px;
 
         a {
           display: flex;
@@ -32,7 +31,6 @@ const Nav: React.FC = (): JSX.Element => {
           border-bottom-color: transparent;
           border-left: 2px solid;
           border-radius: 5px;
-          text-decoration: none;
           color: ${(props): string => props.theme.inverted};
           text-decoration: none;
           transition-property: color, background-color, border-right-color,

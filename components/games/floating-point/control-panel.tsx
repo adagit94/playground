@@ -4,20 +4,20 @@ import styled from 'styled-components';
 import OptionsCommon from './options-common';
 import OptionsPlayer from './options-player';
 
-import {
-  ContainerRow,
-  ContainerRowCenter
-} from '../../styled-components/containers';
-
 import { ContextGame } from '../../../contexts/games/floating-point';
 
-const Container = styled(ContainerRow)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
   height: 35%;
   padding: 10px;
   border-top: 1px solid;
 `;
 
-const Side = styled(ContainerRowCenter)`
+const Side = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   width: 40%;
 `;
 

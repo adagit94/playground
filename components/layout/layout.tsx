@@ -5,8 +5,6 @@ import styled, { ThemeProvider } from 'styled-components';
 import Header from './header/header';
 import Main from './main';
 
-import { ContainerColumn } from '../styled-components/containers';
-
 import { reducerLayout } from '../../reducers/layout';
 import { initLayout } from '../../inits/layout';
 import { PropsLayout, Colors } from '../../types/layout';
@@ -17,14 +15,15 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const router = useRouter();
 
   const theme = statesLayout.theme;
-
   const colors: Colors = {
     theme,
     background: theme === 'dark' ? '#000000' : '#ffffff',
     inverted: theme === 'dark' ? '#ffffff' : '#000000'
   };
 
-  const Container = styled(ContainerColumn)`
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     right: 0;

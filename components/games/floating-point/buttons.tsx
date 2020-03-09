@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ContainerRowCenter } from '../../styled-components/containers';
-
-const Container = styled(ContainerRowCenter)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 50px;
   padding: 10px;
 `;

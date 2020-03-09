@@ -6,20 +6,22 @@ import Color from './color';
 
 import { DividerVertical } from '../../styled-components/dividers';
 import { OverlapDisabled } from '../../styled-components/overlaps';
-import {
-  ContainerRowCenter,
-  ContainerColumn,
-  ContainerOptions
-} from '../../styled-components/containers';
+import { ContainerOptions } from '../../styled-components/containers';
 
 import { ContextGame } from '../../../contexts/games/floating-point';
 import { PropsOptions } from '../../../types/games/floating-point';
 
-const Container = styled(ContainerColumn)`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 50%;
 `;
 
-const ContainerPlayer = styled(ContainerRowCenter)`
+const ContainerPlayer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   height: 25px;
 `;
 

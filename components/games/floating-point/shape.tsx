@@ -2,10 +2,7 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { IconShape } from '../../styled-components/icons';
-import {
-  ContainerRowBetweenWrap,
-  ContainerOption
-} from '../../styled-components/containers';
+import { ContainerOption } from '../../styled-components/containers';
 
 import {
   ContextParams,
@@ -18,7 +15,12 @@ import {
   StatesPlayers
 } from '../../../types/games/floating-point';
 
-const ContainerIcons = styled(ContainerRowBetweenWrap)`
+const ContainerIcons = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   height: 100px;
   width: 100px;
 `;
