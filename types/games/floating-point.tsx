@@ -64,7 +64,7 @@ export type PropsButtons = {
 };
 
 export type StatesGame = {
-  players: Array<string | boolean>;
+  players: Array<string>;
   state: string;
   width: number;
   height: number;

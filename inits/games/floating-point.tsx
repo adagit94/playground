@@ -8,7 +8,7 @@ import {
 import { Defaults } from '../../defaults/games/floating-point';
 
 export const initGame: StatesGame = {
-  players: [true, true],
+  players: ['left', 'right'],
   state: 'conf', // off / conf / running / paused
   width: undefined,
   height: undefined

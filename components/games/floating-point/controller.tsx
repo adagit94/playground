@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import $ from 'jquery';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
@@ -207,12 +208,30 @@ const Controller: React.FC = (): JSX.Element => {
         const { direction, player, limit } = keyObj;
         const playerPos: number = statesPlayers[player][direction];
 
-        if (
-          (limit === 'topLeft' && playerPos > 0) ||
-          (limit === 'bottom' && playerPos + dimensions < height) ||
-          (limit === 'right' && playerPos + dimensions < width)
+switch (limit) {
+  case 'topLeft':
+    if (playerPos > 0)
+  case 'bottom':
+    if (playerPos + dimensions < height)
+  case 'right':
+    if (playerPos + dimensions < width)
+}
         ) {
           const operation = keyObj.operation;
+
+          for (let i = 1; i < playersCount; i++) {
+            const computed = `P${i}`;
+
+            if (player !== computed) {
+              const { playerTop, playerLeft } = statesPlayers[player];
+              const { computedTop, computedLeft } = statesPlayers[computed];
+
+              playerTop > computedTop + dimensions;
+              playerTop + dimensions < computedTop;
+              playerLeft > computedLeft + dimensions;
+              playerLeft + dimensions < computedLeft;
+            }
+          }
 
           dispatchPlayers({
             type: 'move',
@@ -227,8 +246,8 @@ const Controller: React.FC = (): JSX.Element => {
 
   const recalculate = (): void => {
     if (state === 'running' || state === 'paused') {
-      const newWidth = document.querySelector('#monitor').clientWidth;
-      const newHeight = document.querySelector('#monitor').clientHeight;
+      const newWidth = $('#monitor').clientWidth;
+      const newHeight = $('#monitor').clientHeight;
 
       for (let i = 1; i <= playersCount; i++) {
         const player = `P${i}`;
@@ -266,8 +285,8 @@ const Controller: React.FC = (): JSX.Element => {
     const changeDimensions = (): void => {
       dispatchGame({
         type: 'changeDimensions',
-        width: document.querySelector('#monitor').clientWidth,
-        height: document.querySelector('#monitor').clientHeight
+        width: $('#monitor').clientWidth,
+        height: $('#monitor').clientHeight
       });
 
       refRecalculate.current();
