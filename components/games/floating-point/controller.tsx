@@ -231,13 +231,14 @@ const Controller: React.FC = (): JSX.Element => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
-          (playerTop >= playerOtherTop ||
-            playerTop + dimensions >= playerOtherTop) &&
+          (playerTop + dimensions >= playerOtherTop ||
+            playerTop >= playerOtherTop) &&
           playerTop <= playerOtherTop + dimensions &&
-          (playerLeft >= playerOtherLeft ||
-            playerLeft + dimensions >= playerOtherLeft) &&
+          (playerLeft + dimensions >= playerOtherLeft ||
+            playerLeft >= playerOtherLeft) &&
           playerLeft <= playerOtherLeft + dimensions
         ) {
+          console.log(1);
           break;
         }
       }
@@ -252,28 +253,28 @@ const Controller: React.FC = (): JSX.Element => {
   };
 
   const recalculate = (): void => {
-    if (state === 'running' || state === 'paused') {
-      const newHeight = document.querySelector('#monitor').clientHeight;
-      const newWidth = document.querySelector('#monitor').clientWidth;
+    if (state !== 'running' && state !== 'paused') return;
 
-      for (let i = 1; i <= playersCount; i++) {
-        const player = `P${i}`;
+    const newHeight = document.querySelector('#monitor').clientHeight;
+    const newWidth = document.querySelector('#monitor').clientWidth;
 
-        dispatchPlayers({
-          type: 'move',
-          operation: 'changePos',
-          top: (statesPlayers[player].top / height) * 100 * (newHeight / 100),
-          left: (statesPlayers[player].left / width) * 100 * (newWidth / 100),
-          player
-        });
-      }
+    for (let i = 1; i <= playersCount; i++) {
+      const player = `P${i}`;
 
-      dispatchFP({
+      dispatchPlayers({
         type: 'move',
-        top: (fPTop / height) * 100 * (newHeight / 100),
-        left: (fPLeft / width) * 100 * (newWidth / 100)
+        operation: 'changePos',
+        top: (statesPlayers[player].top / height) * 100 * (newHeight / 100),
+        left: (statesPlayers[player].left / width) * 100 * (newWidth / 100),
+        player
       });
     }
+
+    dispatchFP({
+      type: 'move',
+      top: (fPTop / height) * 100 * (newHeight / 100),
+      left: (fPLeft / width) * 100 * (newWidth / 100)
+    });
   };
 
   useEffect(() => {
@@ -314,9 +315,9 @@ const Controller: React.FC = (): JSX.Element => {
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
         if (
-          (playerTop >= fPTop || playerTop + dimensions >= fPTop) &&
+          (playerTop + dimensions >= fPTop || playerTop >= fPTop) &&
           playerTop <= fPTop + dimensions &&
-          (playerLeft >= fPLeft || playerLeft + dimensions >= fPLeft) &&
+          (playerLeft + dimensions >= fPLeft || playerLeft >= fPLeft) &&
           playerLeft <= fPLeft + dimensions
         ) {
           dispatchPlayers({
