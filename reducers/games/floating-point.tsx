@@ -9,7 +9,7 @@ import {
   ActionsFP
 } from '../../types/games/floating-point';
 
-import { initParams } from '../../inits/games/floating-point';
+import { initGame, initParams } from '../../inits/games/floating-point';
 
 import { Defaults } from '../../defaults/games/floating-point';
 
@@ -23,7 +23,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         ...state,
         players:
           action.state === 'off' || action.state === 'conf'
-            ? [true, true]
+            ? initGame.players
             : state.players,
         state: action.state
       };

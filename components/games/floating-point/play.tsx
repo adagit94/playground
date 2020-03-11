@@ -31,6 +31,7 @@ const Play: React.FC = (): JSX.Element => {
   const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
     const playersCount = statesGame.players.length;
     const { dimensions, speed } = statesParams;
+
     let playable: boolean;
 
     for (let i = 1; i <= playersCount; i++) {

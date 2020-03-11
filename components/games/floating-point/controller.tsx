@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import $ from 'jquery';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
@@ -9,7 +8,6 @@ import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
 import {
-  Key,
   ControlKeys,
   ControlKeys2P,
   ControlKeys3P,
@@ -26,7 +24,7 @@ const controlKeys2P: ControlKeys2P = {
     operation: 'subtract',
     direction: 'top',
     player: 'P1',
-    limit: 'topLeft'
+    limit: 'top'
   },
   ArrowRight: {
     pressed: false,
@@ -47,14 +45,14 @@ const controlKeys2P: ControlKeys2P = {
     operation: 'subtract',
     direction: 'left',
     player: 'P1',
-    limit: 'topLeft'
+    limit: 'left'
   },
   w: {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
     player: 'P2',
-    limit: 'topLeft'
+    limit: 'top'
   },
   d: {
     pressed: false,
@@ -75,7 +73,7 @@ const controlKeys2P: ControlKeys2P = {
     operation: 'subtract',
     direction: 'left',
     player: 'P2',
-    limit: 'topLeft'
+    limit: 'left'
   }
 };
 
@@ -86,7 +84,7 @@ const controlKeys3P: ControlKeys3P = {
     operation: 'subtract',
     direction: 'top',
     player: 'P3',
-    limit: 'topLeft'
+    limit: 'top'
   },
   l: {
     pressed: false,
@@ -107,7 +105,7 @@ const controlKeys3P: ControlKeys3P = {
     operation: 'subtract',
     direction: 'left',
     player: 'P3',
-    limit: 'topLeft'
+    limit: 'left'
   }
 };
 
@@ -118,7 +116,7 @@ const controlKeys4P: ControlKeys4P = {
     operation: 'subtract',
     direction: 'top',
     player: 'P4',
-    limit: 'topLeft'
+    limit: 'top'
   },
   '6': {
     pressed: false,
@@ -139,7 +137,7 @@ const controlKeys4P: ControlKeys4P = {
     operation: 'subtract',
     direction: 'left',
     player: 'P4',
-    limit: 'topLeft'
+    limit: 'left'
   }
 };
 
@@ -202,52 +200,61 @@ const Controller: React.FC = (): JSX.Element => {
 
   const handleMove = (): void => {
     for (const key in controlKeys) {
-      const keyObj: Key = controlKeys[key];
+      if (controlKeys[key].pressed === false) continue;
 
-      if (keyObj.pressed === true) {
-        const { direction, player, limit } = keyObj;
-        const playerPos: number = statesPlayers[player][direction];
+      const { player, limit } = controlKeys[key];
+      const playerLeft: number = statesPlayers[player].left;
+      const playerTop: number = statesPlayers[player].top;
 
-switch (limit) {
-  case 'topLeft':
-    if (playerPos > 0)
-  case 'bottom':
-    if (playerPos + dimensions < height)
-  case 'right':
-    if (playerPos + dimensions < width)
-}
+      switch (limit) {
+        case 'top':
+          if (playerTop === 0) continue;
+          break;
+        case 'right':
+          if (playerLeft + dimensions === width) continue;
+          break;
+        case 'bottom':
+          if (playerTop + dimensions === height) continue;
+          break;
+        case 'left':
+          if (playerLeft === 0) continue;
+          break;
+      }
+
+      const { operation, direction } = controlKeys[key];
+
+      for (let i = 1; i <= playersCount; i++) {
+        if (player === `P${i}`) continue;
+
+        const playerOther = `P${i}`;
+        const playerOtherLeft: number = statesPlayers[playerOther].left;
+        const playerOtherTop: number = statesPlayers[playerOther].top;
+
+        if (
+          (playerTop >= playerOtherTop ||
+            playerTop + dimensions >= playerOtherTop) &&
+          playerTop <= playerOtherTop + dimensions &&
+          (playerLeft >= playerOtherLeft ||
+            playerLeft + dimensions >= playerOtherLeft) &&
+          playerLeft <= playerOtherLeft + dimensions
         ) {
-          const operation = keyObj.operation;
-
-          for (let i = 1; i < playersCount; i++) {
-            const computed = `P${i}`;
-
-            if (player !== computed) {
-              const { playerTop, playerLeft } = statesPlayers[player];
-              const { computedTop, computedLeft } = statesPlayers[computed];
-
-              playerTop > computedTop + dimensions;
-              playerTop + dimensions < computedTop;
-              playerLeft > computedLeft + dimensions;
-              playerLeft + dimensions < computedLeft;
-            }
-          }
-
-          dispatchPlayers({
-            type: 'move',
-            operation,
-            direction,
-            player
-          });
+          break;
         }
       }
+
+      dispatchPlayers({
+        type: 'move',
+        operation,
+        direction,
+        player
+      });
     }
   };
 
   const recalculate = (): void => {
     if (state === 'running' || state === 'paused') {
-      const newWidth = $('#monitor').clientWidth;
-      const newHeight = $('#monitor').clientHeight;
+      const newHeight = document.querySelector('#monitor').clientHeight;
+      const newWidth = document.querySelector('#monitor').clientWidth;
 
       for (let i = 1; i <= playersCount; i++) {
         const player = `P${i}`;
@@ -285,8 +292,8 @@ switch (limit) {
     const changeDimensions = (): void => {
       dispatchGame({
         type: 'changeDimensions',
-        width: $('#monitor').clientWidth,
-        height: $('#monitor').clientHeight
+        height: document.querySelector('#monitor').clientHeight,
+        width: document.querySelector('#monitor').clientWidth
       });
 
       refRecalculate.current();
