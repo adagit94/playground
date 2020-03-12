@@ -239,7 +239,7 @@ const Controller: React.FC = (): JSX.Element => {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
-            direction,
+            direction: 'top',
             player
           });
 
@@ -254,7 +254,7 @@ const Controller: React.FC = (): JSX.Element => {
           dispatchPlayers({
             type: 'move',
             operation: 'add',
-            direction,
+            direction: 'top',
             player
           });
 
@@ -269,7 +269,7 @@ const Controller: React.FC = (): JSX.Element => {
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
-            direction,
+            direction: 'left',
             player
           });
 
@@ -284,7 +284,7 @@ const Controller: React.FC = (): JSX.Element => {
           dispatchPlayers({
             type: 'move',
             operation: 'add',
-            direction,
+            direction: 'left',
             player
           });
 
