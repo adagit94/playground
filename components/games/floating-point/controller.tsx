@@ -222,6 +222,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
 
       const { operation, direction } = controlKeys[key];
+      let overlap: boolean;
 
       for (let i = 1; i <= playersCount; i++) {
         if (player === `P${i}`) continue;
@@ -231,17 +232,69 @@ const Controller: React.FC = (): JSX.Element => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
-          (playerTop + dimensions >= playerOtherTop ||
-            playerTop >= playerOtherTop) &&
-          playerTop <= playerOtherTop + dimensions &&
-          (playerLeft + dimensions >= playerOtherLeft ||
-            playerLeft >= playerOtherLeft) &&
+          playerTop + dimensions === playerOtherTop &&
+          playerLeft + dimensions >= playerOtherLeft &&
           playerLeft <= playerOtherLeft + dimensions
         ) {
-          console.log(1);
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction,
+            player
+          });
+
+          overlap = true;
+
+          break;
+        } else if (
+          playerTop === playerOtherTop + dimensions &&
+          playerLeft + dimensions >= playerOtherLeft &&
+          playerLeft <= playerOtherLeft + dimensions
+        ) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction,
+            player
+          });
+
+          overlap = true;
+
+          break;
+        } else if (
+          playerLeft + dimensions === playerOtherLeft &&
+          playerTop + dimensions >= playerOtherTop &&
+          playerTop <= playerOtherTop + dimensions
+        ) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction,
+            player
+          });
+
+          overlap = true;
+
+          break;
+        } else if (
+          playerLeft === playerOtherLeft + dimensions &&
+          playerTop + dimensions >= playerOtherTop &&
+          playerTop <= playerOtherTop + dimensions
+        ) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction,
+            player
+          });
+
+          overlap = true;
+
           break;
         }
       }
+
+      if (overlap === true) break;
 
       dispatchPlayers({
         type: 'move',
