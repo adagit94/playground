@@ -232,6 +232,27 @@ const Controller: React.FC = (): JSX.Element => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
+          ((playerTop + dimensions > playerOtherTop &&
+            playerOtherTop < playerTop + dimensions) ||
+            (playerTop < playerOtherTop + dimensions &&
+              playerOtherTop + dimensions > playerTop)) &&
+          playerLeft + dimensions >= playerOtherLeft &&
+          playerLeft <= playerOtherLeft + dimensions
+          /*((playerLeft + dimensions > playerOtherLeft &&
+            playerOtherLeft < playerLeft + dimensions) ||
+            (playerLeft < playerOtherLeft + dimensions &&
+              playerOtherLeft + dimensions > playerLeft) &&
+            playerOtherTop + dimensions > playerTop &&
+            playerTop < playerOtherTop + dimensions)*/
+        ) {
+          console.log(playerTop);
+          console.log(playerOtherTop);
+          overlap = true;
+
+          break;
+        }
+
+        if (
           playerTop + dimensions === playerOtherTop &&
           playerLeft + dimensions >= playerOtherLeft &&
           playerLeft <= playerOtherLeft + dimensions
