@@ -4,6 +4,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   margin: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
 
   ul {
     display: flex;
@@ -22,8 +24,8 @@ const Container = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height: 100%;
+        width: 120%;
+        height: 120%;
         border: 1px solid;
         border-radius: 5px;
         color: ${(props): string => props.theme.background};
@@ -35,7 +37,7 @@ const Container = styled.div`
 
         &:hover {
           cursor: pointer;
-          font-size: 1.1rem;
+          font-size: 1.3rem;
         }
 
         &:focus {

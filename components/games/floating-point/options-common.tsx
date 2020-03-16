@@ -20,6 +20,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 20%;
+  margin: 5px;
 `;
 
 const Divider = styled(DividerVertical)`

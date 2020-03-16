@@ -10,7 +10,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   height: 35%;
-  padding: 10px;
   border-top: 1px solid;
 `;
 

@@ -15,6 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+  margin: 5px;
 `;
 
 const ContainerPlayer = styled.div`

@@ -8,7 +8,7 @@ import {
 import { Defaults } from '../../defaults/games/floating-point';
 
 export const initGame: StatesGame = {
-  players: [true, true],
+  players: [true, true, 'left', 'right'],
   state: 'conf', // off / conf / running / paused
   width: undefined,
   height: undefined
@@ -25,8 +25,16 @@ export const initPlayers: StatesPlayers = {
     left: undefined,
     score: undefined
   },
-  P3: undefined,
-  P4: undefined
+  P3: {
+    top: undefined,
+    left: undefined,
+    score: undefined
+  },
+  P4: {
+    top: undefined,
+    left: undefined,
+    score: undefined
+  }
 };
 
 export const initParams: StatesParams = {
@@ -35,15 +43,21 @@ export const initParams: StatesParams = {
   shapesOthers: [],
   colorsOthers: [Defaults.P1.color, Defaults.P2.color],
   P1: {
-    shape: 'circle',
+    shape: 'square',
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'triangle',
+    shape: 'circle',
     color: Defaults.P2.color
   },
-  P3: undefined,
-  P4: undefined
+  P3: {
+    shape: 'triangle',
+    color: Defaults.P3.color
+  },
+  P4: {
+    shape: 'cross',
+    color: Defaults.P4.color
+  }
 };
 
 export const initFP: StatesFP = {

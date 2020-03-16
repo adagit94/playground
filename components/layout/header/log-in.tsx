@@ -46,7 +46,7 @@ const LogIn: React.FC = (): JSX.Element => {
   const ButtonToggle = styled.input`
     width: 100%;
     height: 100%;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     border: none;
     color: ${(props): string => props.theme.background};

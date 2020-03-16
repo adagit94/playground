@@ -6,6 +6,7 @@ const Nav: React.FC = (): JSX.Element => {
   const Container = styled.nav`
     flex: auto;
     margin: 10px 0;
+    font-size: 1.1rem;
 
     ul {
       display: flex;
