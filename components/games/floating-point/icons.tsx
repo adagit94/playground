@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { IconShape } from '../../styled-components/icons';
+import { IconPlayer } from '../../styled-components/icons';
 import { ContainerOption } from '../../styled-components/containers';
 
 import {
@@ -45,22 +45,22 @@ const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
     color: ${icon === null && '#f00'};
   `;
 
-  const Ball1 = styled(IconShape)`
+  const Ball1 = styled(IconPlayer)`
     opacity: ${unclickableBall1 ? 0.5 : 1};
     cursor: ${unclickableBall1 ? 'not-allowed' : 'pointer'};
   `;
 
-  const Ball2 = styled(IconShape)`
+  const Ball2 = styled(IconPlayer)`
     opacity: ${unclickableBall2 ? 0.5 : 1};
     cursor: ${unclickableBall2 ? 'not-allowed' : 'pointer'};
   `;
 
-  const Ball3 = styled(IconShape)`
+  const Ball3 = styled(IconPlayer)`
     opacity: ${unclickableBall3 ? 0.5 : 1};
     cursor: ${unclickableBall3 ? 'not-allowed' : 'pointer'};
   `;
 
-  const Ball4 = styled(IconShape)`
+  const Ball4 = styled(IconPlayer)`
     opacity: ${unclickableBall4 ? 0.5 : 1};
     cursor: ${unclickableBall4 ? 'not-allowed' : 'pointer'};
   `;
