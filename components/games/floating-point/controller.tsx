@@ -232,23 +232,11 @@ const Controller: React.FC = (): JSX.Element => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
-          ((playerTop + dimensions > playerOtherTop &&
-            playerOtherTop < playerTop + dimensions) ||
-            (playerTop < playerOtherTop + dimensions &&
-              playerOtherTop + dimensions > playerTop)) &&
+          playerTop + dimensions > playerOtherTop &&
+          playerTop < playerOtherTop + dimensions &&
           playerLeft + dimensions >= playerOtherLeft &&
           playerLeft <= playerOtherLeft + dimensions
-          /*((playerLeft + dimensions > playerOtherLeft &&
-            playerOtherLeft < playerLeft + dimensions) ||
-            (playerLeft < playerOtherLeft + dimensions &&
-              playerOtherLeft + dimensions > playerLeft) &&
-            playerOtherTop + dimensions > playerTop &&
-            playerTop < playerOtherTop + dimensions)*/
         ) {
-          console.log(playerTop);
-          console.log(playerOtherTop);
-          overlap = true;
-
           break;
         }
 
@@ -265,8 +253,6 @@ const Controller: React.FC = (): JSX.Element => {
           });
 
           overlap = true;
-
-          break;
         } else if (
           playerTop === playerOtherTop + dimensions &&
           playerLeft + dimensions >= playerOtherLeft &&
@@ -280,8 +266,6 @@ const Controller: React.FC = (): JSX.Element => {
           });
 
           overlap = true;
-
-          break;
         } else if (
           playerLeft + dimensions === playerOtherLeft &&
           playerTop + dimensions >= playerOtherTop &&
@@ -295,8 +279,6 @@ const Controller: React.FC = (): JSX.Element => {
           });
 
           overlap = true;
-
-          break;
         } else if (
           playerLeft === playerOtherLeft + dimensions &&
           playerTop + dimensions >= playerOtherTop &&
@@ -310,8 +292,6 @@ const Controller: React.FC = (): JSX.Element => {
           });
 
           overlap = true;
-
-          break;
         }
       }
 
