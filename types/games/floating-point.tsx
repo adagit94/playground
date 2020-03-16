@@ -5,7 +5,7 @@ type PlayersPlayer = {
 };
 
 type ParamsPlayer = {
-  shape: string;
+  icon: string;
   color: string;
 };
 
@@ -15,7 +15,7 @@ type ChangePlayer = {
   player: string;
 };
 
-type Shape = {
+type Icon = {
   viewBox: string;
   path: string;
 };
@@ -78,7 +78,7 @@ export type StatesPlayers = {
 };
 
 export type StatesParams = {
-  shapesOthers: Array<string>;
+  iconsOthers: Array<string>;
   colorsOthers: Array<string>;
   dimensions: number;
   speed: number;
@@ -126,10 +126,10 @@ export type ActionsPlayers =
 export type ActionsParams =
   | { type: 'reset' }
   | {
-      type: 'handleShape';
+      type: 'handleIcon';
       player: string;
       operation: string;
-      shape?: string;
+      icon?: string;
     }
   | {
       type: 'changeColor';
@@ -149,9 +149,9 @@ export type Dispatches = {
   fp: React.Dispatch<ActionsFP>;
 };
 
-export type Shapes = {
-  square: Shape;
-  circle: Shape;
-  triangle: Shape;
-  cross: Shape;
+export type Icons = {
+  ball1: Icon;
+  ball2: Icon;
+  ball3: Icon;
+  ball4: Icon;
 };

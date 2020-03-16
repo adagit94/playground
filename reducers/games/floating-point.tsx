@@ -153,42 +153,42 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
     case 'reset':
       return initParams;
 
-    case 'handleShape':
+    case 'handleIcon':
       switch (action.operation) {
         case 'add':
           return {
             ...state,
-            shapesOthers: [...state.shapesOthers, action.shape],
+            iconsOthers: [...state.iconsOthers, action.icon],
             [action.player]: {
               ...state[action.player],
-              shape: action.shape
+              icon: action.icon
             }
           };
 
         case 'remove':
           return {
             ...state,
-            shapesOthers: state.shapesOthers.filter(el => {
-              return el !== state[action.player].shape;
+            iconsOthers: state.iconsOthers.filter(el => {
+              return el !== state[action.player].icon;
             }),
             [action.player]: {
               ...state[action.player],
-              shape: undefined
+              icon: undefined
             }
           };
 
         case 'change':
           return {
             ...state,
-            shapesOthers: [
-              ...state.shapesOthers.filter(el => {
+            iconsOthers: [
+              ...state.iconsOthers.filter(el => {
                 return el !== state[action.player].shape;
               }),
-              action.shape
+              action.icon
             ],
             [action.player]: {
               ...state[action.player],
-              shape: action.shape
+              icon: action.icon
             }
           };
 
@@ -197,7 +197,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             ...state,
             [action.player]: {
               ...state[action.player],
-              shape: null
+              icon: null
             }
           };
 
@@ -240,7 +240,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
               ...state,
               colorsOthers: [...state.colorsOthers, Defaults.P3.color],
               [action.player]: {
-                shape: undefined,
+                icon: undefined,
                 color: Defaults.P3.color
               }
             };
@@ -262,7 +262,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           if (action.player === 'P3' && state.P4 !== undefined) {
             return {
               ...state,
-              shapesOthers: state.shapesOthers.filter(el => {
+              iconsOthers: state.iconsOthers.filter(el => {
                 return el !== state[action.player].shape;
               }),
               colorsOthers: state.colorsOthers.filter(el => {
@@ -274,7 +274,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           } else {
             return {
               ...state,
-              shapesOthers: state.shapesOthers.filter(el => {
+              iconsOthers: state.iconsOthers.filter(el => {
                 return el !== state[action.player].shape;
               }),
               colorsOthers: state.colorsOthers.filter(el => {

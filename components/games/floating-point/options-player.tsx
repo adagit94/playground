@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import Shape from './shape';
+import Icons from './icons';
 import Color from './color';
 
 import { DividerVertical } from '../../styled-components/dividers';
@@ -44,7 +44,7 @@ const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
         <h3>{player}</h3>
       </ContainerPlayer>
       <ContainerOptions>
-        <Shape player={player} />
+        <Icons player={player} />
         <Divider />
         <Color player={player} />
         {states.state !== 'conf' && <Overlap />}

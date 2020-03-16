@@ -36,17 +36,17 @@ const Play: React.FC = (): JSX.Element => {
 
     for (let i = 1; i <= playersCount; i++) {
       const player = `P${i}`;
-      const shape = statesParams[player].shape;
+      const icon = statesParams[player].icon;
 
-      if (shape === undefined) {
+      if (icon === undefined) {
         dispatches.params({
-          type: 'handleShape',
+          type: 'handleIcon',
           operation: 'nullify',
           player
         });
       }
 
-      if (playable !== false && (shape === undefined || shape === null)) {
+      if (playable !== false && (icon === undefined || icon === null)) {
         playable = false;
       }
     }

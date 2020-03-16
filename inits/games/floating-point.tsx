@@ -40,22 +40,27 @@ export const initPlayers: StatesPlayers = {
 export const initParams: StatesParams = {
   dimensions: Defaults.dimensions,
   speed: Defaults.speed,
-  shapesOthers: [],
-  colorsOthers: [Defaults.P1.color, Defaults.P2.color],
+  iconsOthers: ['ball1', 'ball2', 'ball3', 'ball4'],
+  colorsOthers: [
+    Defaults.P1.color,
+    Defaults.P2.color,
+    Defaults.P3.color,
+    Defaults.P4.color
+  ],
   P1: {
-    shape: 'square',
+    icon: 'ball1',
     color: Defaults.P1.color
   },
   P2: {
-    shape: 'circle',
+    icon: 'ball2',
     color: Defaults.P2.color
   },
   P3: {
-    shape: 'triangle',
+    icon: 'ball3',
     color: Defaults.P3.color
   },
   P4: {
-    shape: 'cross',
+    icon: 'ball4',
     color: Defaults.P4.color
   }
 };

@@ -267,9 +267,19 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
+          if (playerTop + 1 === playerOtherTop + dimensions) {
+            dispatchPlayers({
+              type: 'move',
+              operation: 'subtract',
+              direction: 'top',
+              player: playerOther
+            });
+          }
+
           overlap = true;
         } else if (
-          playerLeft + dimensions === playerOtherLeft &&
+          (playerLeft + dimensions === playerOtherLeft ||
+            playerLeft + dimensions - 1 === playerOtherLeft) &&
           playerTop + dimensions >= playerOtherTop &&
           playerTop <= playerOtherTop + dimensions
         ) {
@@ -280,9 +290,19 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
+          if (playerLeft + dimensions - 1 === playerOtherLeft) {
+            dispatchPlayers({
+              type: 'move',
+              operation: 'add',
+              direction: 'left',
+              player: playerOther
+            });
+          }
+
           overlap = true;
         } else if (
-          playerLeft === playerOtherLeft + dimensions &&
+          (playerLeft === playerOtherLeft + dimensions ||
+            playerLeft + 1 === playerOtherLeft + dimensions) &&
           playerTop + dimensions >= playerOtherTop &&
           playerTop <= playerOtherTop + dimensions
         ) {
@@ -292,6 +312,15 @@ const Controller: React.FC = (): JSX.Element => {
             direction: 'left',
             player
           });
+
+          if (playerLeft + 1 === playerOtherLeft + dimensions) {
+            dispatchPlayers({
+              type: 'move',
+              operation: 'subtract',
+              direction: 'left',
+              player: playerOther
+            });
+          }
 
           overlap = true;
         }
@@ -371,9 +400,9 @@ const Controller: React.FC = (): JSX.Element => {
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
         if (
-          (playerTop + dimensions >= fPTop || playerTop >= fPTop) &&
+          playerTop + dimensions >= fPTop &&
           playerTop <= fPTop + dimensions &&
-          (playerLeft + dimensions >= fPLeft || playerLeft >= fPLeft) &&
+          playerLeft + dimensions >= fPLeft &&
           playerLeft <= fPLeft + dimensions
         ) {
           dispatchPlayers({
