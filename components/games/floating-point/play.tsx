@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ButtonState } from '../../styled-components/buttons';
+import { ButtonOptions } from '../../styled-components/buttons';
 
 import {
   ContextGame,
@@ -9,15 +9,13 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const Button = styled(ButtonState)`
+const Button = styled(ButtonOptions)`
   margin-right: 10px;
-  color: ${(props): string => props.theme.inverted};
 
-  &:hover {
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
-    border-right-color: ${(props): string => props.theme.inverted};
-    border-left-color: ${(props): string => props.theme.inverted};
+  svg path {
+    fill: ${(props): string => props.theme.inverted};
+    width: auto;
+    height: auto;
   }
 `;
 
@@ -136,9 +134,22 @@ const Play: React.FC = (): JSX.Element => {
                   state: state === 'running' ? 'paused' : 'running'
                 })
         }
-        value={state === 'running' ? 'Pause' : 'Play'}
         type='button'
-      />
+      >
+        {state === 'running' ? (
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='1 1 25 25'>
+            <path d='M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z' />
+          </svg>
+        ) : (
+          <svg
+            style={{ borderRadius: '100%', border: '1px solid red' }}
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='4 4 16 16'
+          >
+            <path d='M10 16.5l6-4.5-6-4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z' />
+          </svg>
+        )}
+      </Button>
     </>
   );
 };

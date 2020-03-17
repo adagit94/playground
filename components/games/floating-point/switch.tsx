@@ -12,7 +12,7 @@ const Switch: React.FC = (): JSX.Element => {
 
   const state = statesGame.state;
 
-  const Button = styled.input`
+  const Button = styled.button`
     width: 25px;
     height: 35px;
     margin: 0 20px;

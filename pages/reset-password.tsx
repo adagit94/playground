@@ -48,7 +48,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
           <Input type='email' name='email' id='email' required />
         </Row>
         <Row>
-          <Button value='Reset' type='button' />
+          <Button type='button'>Reset</Button>
         </Row>
       </FormPage>
     </Container>

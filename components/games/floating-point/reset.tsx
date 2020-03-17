@@ -1,19 +1,15 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ButtonState } from '../../styled-components/buttons';
+import { ButtonOptions } from '../../styled-components/buttons';
 
 import { ContextDispatches } from '../../../contexts/games/floating-point';
 
-const Button = styled(ButtonState)`
+const Button = styled(ButtonOptions)`
   margin-left: 10px;
-  color: ${(props): string => props.theme.inverted};
 
-  &:hover {
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
-    border-right-color: ${(props): string => props.theme.inverted};
-    border-left-color: ${(props): string => props.theme.inverted};
+  svg path {
+    fill: ${(props): string => props.theme.inverted};
   }
 `;
 
@@ -31,9 +27,12 @@ const Reset: React.FC = (): JSX.Element => {
 
           dispatches.params({ type: 'reset' });
         }}
-        value='Reset'
         type='button'
-      />
+      >
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='1.85 1.85 20 20'>
+          <path d='M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z' />
+        </svg>
+      </Button>
     </>
   );
 };

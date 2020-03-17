@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { ButtonPlayer } from '../../styled-components/buttons';
+import { ButtonOptions } from '../../styled-components/buttons';
 
 import { PropsButtons } from '../../../types/games/floating-point';
 import {
@@ -9,7 +9,7 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const Button = styled(ButtonPlayer)`
+const Button = styled(ButtonOptions)`
   background-image: url('/icons/remove.svg');
 `;
 

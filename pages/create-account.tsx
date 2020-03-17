@@ -65,7 +65,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </Row>
         <Row>
-          <Button value='Create account' type='button' />
+          <Button type='button'>Create account</Button>
         </Row>
       </FormPage>
     </Container>

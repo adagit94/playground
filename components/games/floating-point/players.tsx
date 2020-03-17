@@ -56,12 +56,16 @@ const Players: React.FC = (): JSX.Element => {
     left: ${leftP1}px;
     width: ${dimensions}px;
     height: ${dimensions}px;
+
+    svg path {
+      fill: ${colorP1};
+    }
   `;
 
   points.push(
     <IconP1 key='IconP1'>
       <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP1].viewBox}>
-        <path fill={colorP1} d={icons[iconP1].path} />
+        <path d={icons[iconP1].path} />
       </svg>
     </IconP1>
   );
@@ -72,12 +76,16 @@ const Players: React.FC = (): JSX.Element => {
     left: ${leftP2}px;
     width: ${dimensions}px;
     height: ${dimensions}px;
+
+    svg path {
+      fill: ${colorP2};
+    }
   `;
 
   points.push(
     <IconP2 key='IconP2'>
       <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP2].viewBox}>
-        <path fill={colorP2} d={icons[iconP2].path} />
+        <path d={icons[iconP2].path} />
       </svg>
     </IconP2>
   );
@@ -92,12 +100,16 @@ const Players: React.FC = (): JSX.Element => {
       left: ${leftP3}px;
       width: ${dimensions}px;
       height: ${dimensions}px;
+
+      svg path {
+        fill: ${colorP3};
+      }
     `;
 
     points.push(
       <IconP3 key='IconP3'>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP3].viewBox}>
-          <path fill={colorP3} d={icons[iconP3].path} />
+          <path d={icons[iconP3].path} />
         </svg>
       </IconP3>
     );
@@ -113,12 +125,16 @@ const Players: React.FC = (): JSX.Element => {
       left: ${leftP4}px;
       width: ${dimensions}px;
       height: ${dimensions}px;
+
+      svg path {
+        fill: ${colorP4};
+      }
     `;
 
     points.push(
       <IconP4 key='IconP4'>
         <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP4].viewBox}>
-          <path fill={colorP4} d={icons[iconP4].path} />
+          <path d={icons[iconP4].path} />
         </svg>
       </IconP4>
     );

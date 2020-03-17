@@ -43,7 +43,7 @@ const LogIn: React.FC = (): JSX.Element => {
     border-color: ${(props): string => props.theme.background};
   `;
 
-  const ButtonToggle = styled.input`
+  const ButtonToggle = styled.button`
     width: 100%;
     height: 100%;
     font-size: 1.1rem;
@@ -89,7 +89,9 @@ const LogIn: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <ButtonToggle onClick={showForm} value='Log in' type='button' />
+      <ButtonToggle onClick={showForm} type='button'>
+        Log in
+      </ButtonToggle>
       <Form style={{ display: 'none' }} id='log-in-form'>
         <Row>
           <label htmlFor='username'>Username: </label>
@@ -100,7 +102,7 @@ const LogIn: React.FC = (): JSX.Element => {
           <Input type='password' name='password' id='password' required />
         </Row>
         <Row>
-          <ButtonForm value='Log in' type='button' />
+          <ButtonForm type='button'>Log in</ButtonForm>
         </Row>
         <Row>
           <Link href='/reset-password'>
