@@ -10,7 +10,9 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonOptions)`
-  background-image: url('/icons/remove.svg');
+  svg path {
+    fill: #ff0000;
+  }
 `;
 
 const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
@@ -42,7 +44,11 @@ const RemovePlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
           });
         }}
         type='button'
-      />
+      >
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='7 7 10 10'>
+          <path d='M19 13H5v-2h14v2z' />
+        </svg>
+      </Button>
     </>
   );
 };

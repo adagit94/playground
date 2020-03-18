@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
-import { TextBlockValue } from '../../styled-components/text-blocks';
 
 import {
   ContextParams,
@@ -48,7 +47,7 @@ const Dimensions: React.FC = (): JSX.Element => {
         step='5'
         id='dimensions'
       />
-      <TextBlockValue>{isDefined && `${dimensions}px`}</TextBlockValue>
+      <div>{isDefined && `${dimensions}px`}</div>
     </ContainerOption>
   );
 };

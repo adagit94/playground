@@ -8,8 +8,11 @@ import { DividerVertical } from '../../styled-components/dividers';
 import { OverlapDisabled } from '../../styled-components/overlaps';
 import { ContainerOptions } from '../../styled-components/containers';
 
-import { ContextGame } from '../../../contexts/games/floating-point';
 import { PropsOptions } from '../../../types/games/floating-point';
+import {
+  ContextGame,
+  ContextPlayers
+} from '../../../contexts/games/floating-point';
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +21,7 @@ const Container = styled.div`
   margin: 5px;
 `;
 
-const ContainerPlayer = styled.div`
+const ContainerInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -36,18 +39,23 @@ const Overlap = styled(OverlapDisabled)`
 `;
 
 const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
-  const states = useContext(ContextGame);
+  const statesGame = useContext(ContextGame);
+  const statesPlayers = useContext(ContextPlayers);
 
   return (
     <Container>
-      <ContainerPlayer>
+      <ContainerInfo>
         <h3>{player}</h3>
-      </ContainerPlayer>
+      </ContainerInfo>
+      <ContainerInfo>
+        {(statesGame.state === 'running' || statesGame.state === 'paused') &&
+          statesPlayers[player].score}
+      </ContainerInfo>
       <ContainerOptions>
         <Icons player={player} />
         <Divider />
         <Color player={player} />
-        {states.state !== 'conf' && <Overlap />}
+        {statesGame.state !== 'conf' && <Overlap />}
       </ContainerOptions>
     </Container>
   );

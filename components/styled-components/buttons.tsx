@@ -4,7 +4,6 @@ export const ButtonOptions = styled.button`
   width: 35px;
   height: 35px;
   border: none;
-  border-radius: 100%;
   background-color: transparent;
 
   &:hover {

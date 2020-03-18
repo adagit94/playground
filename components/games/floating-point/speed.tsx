@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsCommon } from '../../styled-components/inputs';
-import { TextBlockValue } from '../../styled-components/text-blocks';
 
 import {
   ContextParams,
@@ -48,7 +47,7 @@ const Speed: React.FC = (): JSX.Element => {
         step='2'
         id='speed'
       />
-      <TextBlockValue>{isDefined && `${speed}x`}</TextBlockValue>
+      <div>{isDefined && `${speed}x`}</div>
     </ContainerOption>
   );
 };

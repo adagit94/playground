@@ -10,7 +10,9 @@ import {
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonOptions)`
-  background-image: url('/icons/add.svg');
+  svg path {
+    fill: #00ff00;
+  }
 `;
 
 const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
@@ -42,7 +44,11 @@ const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
           });
         }}
         type='button'
-      />
+      >
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='7 7 10 10'>
+          <path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z' />
+        </svg>
+      </Button>
     </>
   );
 };
