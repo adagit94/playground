@@ -14,8 +14,6 @@ const Button = styled(ButtonOptions)`
 
   svg path {
     fill: ${(props): string => props.theme.inverted};
-    width: auto;
-    height: auto;
   }
 `;
 
@@ -137,16 +135,12 @@ const Play: React.FC = (): JSX.Element => {
         type='button'
       >
         {state === 'running' ? (
-          <svg xmlns='http://www.w3.org/2000/svg' viewBox='1 1 25 25'>
-            <path d='M9 16h2V8H9v8zm3-14C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-4h2V8h-2v8z' />
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='5 3 15 15'>
+            <path d='M6 19h4V5H6v14zm8-14v14h4V5h-4z' />
           </svg>
         ) : (
-          <svg
-            style={{ borderRadius: '100%', border: '1px solid red' }}
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='4 4 16 16'
-          >
-            <path d='M10 16.5l6-4.5-6-4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z' />
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='6 4.5 13 14.5'>
+            <path d='M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z' />
           </svg>
         )}
       </Button>

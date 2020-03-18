@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const ButtonOptions = styled.button`
-border: 1px solid red;
   width: 35px;
   height: 35px;
+  border: none;
   border-radius: 100%;
   background-color: transparent;
 

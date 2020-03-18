@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { IconPlayer } from '../../styled-components/icons';
 import { ContainerOption } from '../../styled-components/containers';
 
 import {
@@ -43,7 +42,9 @@ const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
     color: ${icon === null && '#f00'};
   `;
 
-  const Ball1 = styled(IconPlayer)`
+  const Ball1 = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableBall1 ? 0.5 : 1};
     cursor: ${unclickableBall1 ? 'not-allowed' : 'pointer'};
 
@@ -55,7 +56,9 @@ const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
     }
   `;
 
-  const Ball2 = styled(IconPlayer)`
+  const Ball2 = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableBall2 ? 0.5 : 1};
     cursor: ${unclickableBall2 ? 'not-allowed' : 'pointer'};
 
@@ -67,7 +70,9 @@ const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
     }
   `;
 
-  const Ball3 = styled(IconPlayer)`
+  const Ball3 = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableBall3 ? 0.5 : 1};
     cursor: ${unclickableBall3 ? 'not-allowed' : 'pointer'};
 
@@ -79,7 +84,9 @@ const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
     }
   `;
 
-  const Ball4 = styled(IconPlayer)`
+  const Ball4 = styled.div`
+    width: 35px;
+    height: 35px;
     opacity: ${unclickableBall4 ? 0.5 : 1};
     cursor: ${unclickableBall4 ? 'not-allowed' : 'pointer'};
 
