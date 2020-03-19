@@ -7,7 +7,7 @@ import ThemeButton from './theme-button';
 import LogIn from './log-in';
 
 const Container = styled.header`
-  flex: initial;
+  flex: none;
   display: flex;
   flex-direction: row;
   height: 75px;
