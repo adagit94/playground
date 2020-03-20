@@ -92,7 +92,7 @@ const LineHorizontal = styled.div`
 const Logo: React.FC = (): JSX.Element => {
   return (
     <Container>
-      <Link href='/index'>
+      <Link href='/'>
         <a>
           <Square>
             <Rotator>
