@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FormPage } from '../components/styled-components/forms';
-import { ButtonSubmit } from '../components/styled-components/buttons';
+import { ButtonStandard } from '../components/styled-components/buttons';
 import { InputForm } from '../components/styled-components/inputs';
 
 const Container = styled.div`
@@ -23,32 +23,16 @@ const Row = styled.div`
   color: ${(props): string => props.theme.background};
 `;
 
-const Input = styled(InputForm)`
-  color: ${(props): string => props.theme.background};
-  border-color: ${(props): string => props.theme.background};
-`;
-
-const Button = styled(ButtonSubmit)`
-  background-color: ${(props): string => props.theme.inverted};
-
-  &:hover {
-    border-right-color: ${(props): string => props.theme.inverted};
-    border-left-color: ${(props): string => props.theme.inverted};
-    color: ${(props): string => props.theme.inverted};
-    background-color: ${(props): string => props.theme.background};
-  }
-`;
-
 const ResetPassword: React.FC = (): JSX.Element => {
   return (
     <Container>
       <FormPage>
         <Row>
           <label htmlFor='email'>Email: </label>
-          <Input type='email' name='email' id='email' required />
+          <InputForm type='email' name='email' id='email' required />
         </Row>
         <Row>
-          <Button type='button'>Reset</Button>
+          <ButtonStandard type='button'>Reset</ButtonStandard>
         </Row>
       </FormPage>
     </Container>

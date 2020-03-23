@@ -1,14 +1,14 @@
 import { StatesLayout, ActionsLayout } from '../types/layout';
 
 export const reducerLayout: React.Reducer<StatesLayout, ActionsLayout> = (
-  state,
+  states,
   action
 ): StatesLayout => {
   switch (action.type) {
     case 'changeTheme':
       return {
-        ...state,
-        theme: state.theme === 'dark' ? 'light' : 'dark'
+        ...states,
+        theme: states.theme === 'dark' ? 'light' : 'dark'
       };
 
     default:

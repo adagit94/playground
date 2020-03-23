@@ -14,23 +14,23 @@ import { initGame, initParams } from '../../inits/games/floating-point';
 import { Defaults } from '../../defaults/games/floating-point';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
-  state,
+  states,
   action
 ): StatesGame => {
   switch (action.type) {
     case 'changeState': // off / conf / running / paused
       return {
-        ...state,
+        ...states,
         players:
           action.state === 'off' || action.state === 'conf'
             ? initGame.players
-            : state.players,
+            : states.players,
         state: action.state
       };
 
     case 'changeDimensions':
       return {
-        ...state,
+        ...states,
         width: action.width,
         height: action.height
       };
@@ -39,14 +39,14 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
       switch (action.operation) {
         case 'add':
           return {
-            ...state,
-            players: [...state.players, action.pos]
+            ...states,
+            players: [...states.players, action.pos]
           };
 
         case 'remove':
           return {
-            ...state,
-            players: state.players.filter(pos => pos !== action.pos)
+            ...states,
+            players: states.players.filter(pos => pos !== action.pos)
           };
 
         default:
@@ -59,13 +59,13 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
 };
 
 export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
-  state,
+  states,
   action
 ): StatesPlayers => {
   switch (action.type) {
     case 'init':
       return {
-        ...state,
+        ...states,
         [action.player]: {
           top: action.top,
           left: action.left,
@@ -77,27 +77,27 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       switch (action.operation) {
         case 'add':
           return {
-            ...state,
+            ...states,
             [action.player]: {
-              ...state[action.player],
-              [action.direction]: state[action.player][action.direction] + 1
+              ...states[action.player],
+              [action.direction]: states[action.player][action.direction] + 1
             }
           };
 
         case 'subtract':
           return {
-            ...state,
+            ...states,
             [action.player]: {
-              ...state[action.player],
-              [action.direction]: state[action.player][action.direction] - 1
+              ...states[action.player],
+              [action.direction]: states[action.player][action.direction] - 1
             }
           };
 
         case 'changePos':
           return {
-            ...state,
+            ...states,
             [action.player]: {
-              ...state[action.player],
+              ...states[action.player],
               top: action.top,
               left: action.left
             }
@@ -109,10 +109,10 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
 
     case 'addScore':
       return {
-        ...state,
+        ...states,
         [action.player]: {
-          ...state[action.player],
-          score: state[action.player].score + 1
+          ...states[action.player],
+          score: states[action.player].score + 1
         }
       };
 
@@ -120,7 +120,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       switch (action.operation) {
         case 'add':
           return {
-            ...state,
+            ...states,
             [action.player]: {
               top: undefined,
               left: undefined,
@@ -130,8 +130,8 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
 
         case 'remove':
           return {
-            ...state,
-            [action.player === 'P3' && state.P4 !== undefined
+            ...states,
+            [action.player === 'P3' && states.P4 !== undefined
               ? 'P4'
               : action.player]: undefined
           };
@@ -146,7 +146,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
 };
 
 export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
-  state,
+  states,
   action
 ): StatesParams => {
   switch (action.type) {
@@ -157,46 +157,46 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
       switch (action.operation) {
         case 'add':
           return {
-            ...state,
-            iconsOthers: [...state.iconsOthers, action.icon],
+            ...states,
+            iconsOthers: [...states.iconsOthers, action.icon],
             [action.player]: {
-              ...state[action.player],
+              ...states[action.player],
               icon: action.icon
             }
           };
 
         case 'remove':
           return {
-            ...state,
-            iconsOthers: state.iconsOthers.filter(el => {
-              return el !== state[action.player].icon;
+            ...states,
+            iconsOthers: states.iconsOthers.filter(el => {
+              return el !== states[action.player].icon;
             }),
             [action.player]: {
-              ...state[action.player],
+              ...states[action.player],
               icon: undefined
             }
           };
 
         case 'change':
           return {
-            ...state,
+            ...states,
             iconsOthers: [
-              ...state.iconsOthers.filter(el => {
-                return el !== state[action.player].shape;
+              ...states.iconsOthers.filter(el => {
+                return el !== states[action.player].shape;
               }),
               action.icon
             ],
             [action.player]: {
-              ...state[action.player],
+              ...states[action.player],
               icon: action.icon
             }
           };
 
         case 'nullify':
           return {
-            ...state,
+            ...states,
             [action.player]: {
-              ...state[action.player],
+              ...states[action.player],
               icon: null
             }
           };
@@ -207,38 +207,38 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
 
     case 'changeColor':
       return {
-        ...state,
+        ...states,
         colorsOthers: [
-          ...state.colorsOthers.filter(el => {
-            return el !== state[action.player].color;
+          ...states.colorsOthers.filter(el => {
+            return el !== states[action.player].color;
           }),
           action.color
         ],
         [action.player]: {
-          ...state[action.player],
+          ...states[action.player],
           color: action.color
         }
       };
 
     case 'changeDimensions':
       return {
-        ...state,
+        ...states,
         dimensions: action.dimensions
       };
 
     case 'changeSpeed':
       return {
-        ...state,
+        ...states,
         speed: action.speed
       };
 
     case 'changePlayer':
       switch (action.operation) {
         case 'add':
-          if (action.player === 'P4' && Defaults.P4.color === state.P3.color) {
+          if (action.player === 'P4' && Defaults.P4.color === states.P3.color) {
             return {
-              ...state,
-              colorsOthers: [...state.colorsOthers, Defaults.P3.color],
+              ...states,
+              colorsOthers: [...states.colorsOthers, Defaults.P3.color],
               [action.player]: {
                 icon: undefined,
                 color: Defaults.P3.color
@@ -246,9 +246,9 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             };
           } else {
             return {
-              ...state,
+              ...states,
               colorsOthers: [
-                ...state.colorsOthers,
+                ...states.colorsOthers,
                 Defaults[action.player].color
               ],
               [action.player]: {
@@ -259,26 +259,26 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           }
 
         case 'remove':
-          if (action.player === 'P3' && state.P4 !== undefined) {
+          if (action.player === 'P3' && states.P4 !== undefined) {
             return {
-              ...state,
-              iconsOthers: state.iconsOthers.filter(el => {
-                return el !== state[action.player].shape;
+              ...states,
+              iconsOthers: states.iconsOthers.filter(el => {
+                return el !== states[action.player].shape;
               }),
-              colorsOthers: state.colorsOthers.filter(el => {
-                return el !== state[action.player].color;
+              colorsOthers: states.colorsOthers.filter(el => {
+                return el !== states[action.player].color;
               }),
-              P3: state.P4,
+              P3: states.P4,
               P4: undefined
             };
           } else {
             return {
-              ...state,
-              iconsOthers: state.iconsOthers.filter(el => {
-                return el !== state[action.player].shape;
+              ...states,
+              iconsOthers: states.iconsOthers.filter(el => {
+                return el !== states[action.player].shape;
               }),
-              colorsOthers: state.colorsOthers.filter(el => {
-                return el !== state[action.player].color;
+              colorsOthers: states.colorsOthers.filter(el => {
+                return el !== states[action.player].color;
               }),
               [action.player]: undefined
             };
@@ -294,7 +294,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
 };
 
 export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
-  state,
+  states,
   action
 ): StatesFP => {
   switch (action.type) {

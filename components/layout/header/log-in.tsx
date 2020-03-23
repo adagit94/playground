@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import $ from 'jquery';
 
-import { ButtonSubmit } from '../../styled-components/buttons';
+import { ButtonStandard } from '../../styled-components/buttons';
 import { InputForm } from '../../styled-components/inputs';
+import { LinkStandard } from '../../styled-components/links';
 
-const showForm = (): void => {
-  $('#log-in-form').slideToggle(100, 'linear');
-};
+import { ContextFunctionsAuth0 } from '../../../contexts/auth0';
+
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
 
 const Row = styled.div`
   display: flex;
@@ -18,102 +24,35 @@ const Row = styled.div`
 `;
 
 const LogIn: React.FC = (): JSX.Element => {
-  const Container = styled.div`
-    position: relative;
-    width: 150px;
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
-  `;
-
-  const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    position: absolute;
-    top: 75px;
-    right: 0;
-    width: 300px;
-    height: 150px;
-    z-index: 1;
-    background-color: ${(props): string => props.theme.inverted};
-  `;
-
-  const Input = styled(InputForm)`
-    color: ${(props): string => props.theme.background};
-    border-color: ${(props): string => props.theme.background};
-  `;
-
-  const ButtonToggle = styled.button`
-    width: 100%;
-    height: 100%;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border: none;
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
-    transition-property: font-size;
-    transition-duration: 0.1s;
-    transition-timing-function: linear;
-
-    &:hover {
-      cursor: pointer;
-      font-size: 1.3rem;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  `;
-
-  const ButtonForm = styled(ButtonSubmit)`
-    border-right-color: ${(props): string => props.theme.background};
-    border-left-color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
-
-    &:hover {
-      border-right-color: ${(props): string => props.theme.inverted};
-      border-left-color: ${(props): string => props.theme.inverted};
-      color: ${(props): string => props.theme.inverted};
-      background-color: ${(props): string => props.theme.background};
-    }
-  `;
-
-  const LinkTxt = styled.a`
-    text-decoration: none;
-
-    &:hover {
-      cursor: pointer;
-      text-decoration: underline;
-    }
-  `;
+  const functionsAuth0 = useContext(ContextFunctionsAuth0);
 
   return (
-    <Container>
-      <ButtonToggle onClick={showForm} type='button'>
-        Log in
-      </ButtonToggle>
-      <Form style={{ display: 'none' }} id='log-in-form'>
-        <Row>
-          <label htmlFor='username'>Username: </label>
-          <Input type='text' name='username' id='username' required />
-        </Row>
-        <Row>
-          <label htmlFor='password'>Password: </label>
-          <Input type='password' name='password' id='password' required />
-        </Row>
-        <Row>
-          <ButtonForm type='button'>Log in</ButtonForm>
-        </Row>
-        <Row>
-          <Link href='/reset-password'>
-            <LinkTxt>Reset password</LinkTxt>
-          </Link>
-          <Link href='/create-account'>
-            <LinkTxt>Create account</LinkTxt>
-          </Link>
-        </Row>
-      </Form>
-    </Container>
+    <Form>
+      <Row>
+        <label htmlFor='username'>Username: </label>
+        <InputForm type='text' name='username' id='username' required />
+      </Row>
+      <Row>
+        <label htmlFor='password'>Password: </label>
+        <InputForm type='password' name='password' id='password' required />
+      </Row>
+      <Row>
+        <ButtonStandard
+          onClick={functionsAuth0.loginWithRedirect}
+          type='button'
+        >
+          Log in
+        </ButtonStandard>
+      </Row>
+      <Row>
+        <Link href='/reset-password' passHref>
+          <LinkStandard>Reset password</LinkStandard>
+        </Link>
+        <Link href='/create-account' passHref>
+          <LinkStandard>Create account</LinkStandard>
+        </Link>
+      </Row>
+    </Form>
   );
 };
 

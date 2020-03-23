@@ -11,6 +11,7 @@ export const InputOptionsCommon = styled.input`
 
   &::-webkit-slider-runnable-track {
     height: 1px;
+    background-color: ${(props): string => props.theme.inverted};
   }
 
   &::-webkit-slider-thumb {
@@ -19,7 +20,7 @@ export const InputOptionsCommon = styled.input`
     height: 15px;
     margin-top: -7.5px;
     border-radius: 100%;
-    background: #ffffff;
+    background-color: ${(props): string => props.theme.inverted};
     transition-property: width, height;
     transition-duration: 0.1s;
     transition-timing-function: linear;
@@ -35,6 +36,8 @@ export const InputOptionsCommon = styled.input`
 export const InputForm = styled.input`
   border: 2px solid;
   border-radius: 5px;
+  border-color: ${(props): string => props.theme.background};
+  color: ${(props): string => props.theme.background};
   background: transparent;
   transition-property: box-shadow;
   transition-duration: 0.1s;

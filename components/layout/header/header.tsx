@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Logo from './logo';
 import Nav from './nav';
 import ThemeButton from './theme-button';
-import LogIn from './log-in';
+import Account from './account';
 
 const Container = styled.header`
   flex: none;
@@ -20,7 +20,7 @@ const Header: React.FC = (): JSX.Element => {
       <Logo />
       <Nav />
       <ThemeButton />
-      <LogIn />
+      <Account />
     </Container>
   );
 };
