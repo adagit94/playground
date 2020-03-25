@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
+import { useRouter } from 'next/router';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 import $ from 'jquery';
 
-import LogIn from './log-in';
 import Profile from './profile';
 
 import { Colors } from '../../../types/layout';
-import { ContextStatesAuth0 } from '../../../contexts/auth0';
+import { ContextAuth0 } from '../../../contexts/auth0';
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -19,8 +19,6 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 150px;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
 `;
 
 const Button = styled.button`
@@ -29,6 +27,7 @@ const Button = styled.button`
   font-size: 1.1rem;
   font-weight: bold;
   border: none;
+  color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
   transition-property: font-size;
   transition-duration: 0.1s;
@@ -52,10 +51,12 @@ const LoadingContainer = styled.div`
 `;
 
 const Account: React.FC = (): JSX.Element => {
-  const statesAuth0 = useContext(ContextStatesAuth0);
+  const auth0 = useContext(ContextAuth0);
   const colors: Colors = useContext(ThemeContext);
+  const router = useRouter();
 
-  const { isAuthenticated, loading } = statesAuth0;
+  const statesAuth0 = auth0.statesAuth0;
+  const isAuthenticated = statesAuth0.isAuthenticated;
 
   const Slider = styled.div`
     position: absolute;
@@ -112,16 +113,30 @@ const Account: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      {loading ? (
+      {statesAuth0.loading ? (
         LoadingIndicator
       ) : (
-        <Button onClick={toggleSlider} type='button'>
+        <Button
+          onClick={
+            isAuthenticated
+              ? toggleSlider
+              : async (): Promise<void> => {
+                  await auth0.loginWithRedirect({
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    redirect_uri: `http://localhost:3000${router.pathname}`
+                  });
+                }
+          }
+          type='button'
+        >
           {isAuthenticated ? statesAuth0.user.name : 'Log in'}
         </Button>
       )}
-      <Slider style={{ display: 'none' }} id='slider'>
-        {isAuthenticated ? <Profile /> : <LogIn />}
-      </Slider>
+      {isAuthenticated && (
+        <Slider style={{ display: 'none' }} id='slider'>
+          <Profile />
+        </Slider>
+      )}
     </Container>
   );
 };

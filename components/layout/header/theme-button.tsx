@@ -22,7 +22,13 @@ const ThemeButton: React.FC = (): JSX.Element => {
     $('#theme-button').animate(
       { top: colors.theme === 'dark' ? 0 : '50%' },
       200,
-      (): void => dispatch({ type: 'changeTheme' })
+      (): void => {
+        sessionStorage.setItem(
+          'theme',
+          colors.theme === 'dark' ? 'light' : 'dark'
+        );
+        dispatch({ type: 'changeTheme' });
+      }
     );
   };
 

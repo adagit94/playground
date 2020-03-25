@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import Header from './header/header';
@@ -12,7 +11,6 @@ import { ContextDispatchLayout } from '../../contexts/layout';
 
 const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
-  const router = useRouter();
 
   const theme = statesLayout.theme;
   const colors: Colors = {
@@ -37,15 +35,22 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     }
   `;
 
+  useEffect((): void => {
+    const theme = sessionStorage.getItem('theme');
+
+    if (theme && theme !== statesLayout.theme)
+      dispatchLayout({
+        type: 'changeTheme',
+        theme
+      });
+  });
+
   return (
     <Container>
       <ThemeProvider theme={colors}>
-        {router.pathname !== '/create-account' &&
-          router.pathname !== '/reset-password' && (
-            <ContextDispatchLayout.Provider value={dispatchLayout}>
-              <Header />
-            </ContextDispatchLayout.Provider>
-          )}
+        <ContextDispatchLayout.Provider value={dispatchLayout}>
+          <Header />
+        </ContextDispatchLayout.Provider>
         <Main content={content} />
       </ThemeProvider>
     </Container>

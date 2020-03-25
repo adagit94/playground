@@ -32,19 +32,3 @@ export const InputOptionsCommon = styled.input`
     margin-top: -10px;
   }
 `;
-
-export const InputForm = styled.input`
-  border: 2px solid;
-  border-radius: 5px;
-  border-color: ${(props): string => props.theme.background};
-  color: ${(props): string => props.theme.background};
-  background: transparent;
-  transition-property: box-shadow;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
-
-  :focus {
-    box-shadow: 0 0 0 2px;
-    outline: none;
-  }
-`;

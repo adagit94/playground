@@ -2,9 +2,9 @@ import React, { useState, useEffect, useReducer } from 'react';
 import createAuth0Client from '@auth0/auth0-spa-js';
 
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
-import { ContextStatesAuth0, ContextFunctionsAuth0 } from '../contexts/auth0';
+import { ContextAuth0 } from '../contexts/auth0';
 import { reducerAuth0 } from '../reducers/auth0';
-import { initsAuth0 } from '../inits/auth0';
+import { initAuth0 } from '../inits/auth0';
 
 const DEFAULT_REDIRECT_CALLBACK = (): void =>
   window.history.replaceState({}, document.title, window.location.pathname);
@@ -14,7 +14,7 @@ export const Auth0Provider: React.FC<Auth0ClientOptions> = ({
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
-  const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initsAuth0);
+  const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initAuth0);
   const [auth0, setAuth0] = useState<Auth0Client>(null);
 
   const loginWithPopup = async (params = {}): Promise<void> => {
@@ -43,16 +43,6 @@ export const Auth0Provider: React.FC<Auth0ClientOptions> = ({
     dispatchAuth0({ type: 'setLoading', value: false });
     dispatchAuth0({ type: 'setIsAuthenticated', value: true });
     dispatchAuth0({ type: 'setUser', user });
-  };
-
-  const functions = {
-    loginWithPopup,
-    handleRedirectCallback,
-    getIdTokenClaims: (...p): Promise<IdToken> => auth0.getIdTokenClaims(...p),
-    loginWithRedirect: (...p): Promise<void> => auth0.loginWithRedirect(...p),
-    getTokenSilently: (...p): Promise<any> => auth0.getTokenSilently(...p),
-    getTokenWithPopup: (...p): Promise<string> => auth0.getTokenWithPopup(...p),
-    logout: (...p): void => auth0.logout(...p)
   };
 
   useEffect(() => {
@@ -86,11 +76,24 @@ export const Auth0Provider: React.FC<Auth0ClientOptions> = ({
   }, []);
 
   return (
-    <ContextStatesAuth0.Provider value={statesAuth0}>
-      <ContextFunctionsAuth0.Provider value={functions}>
-        {children}
-      </ContextFunctionsAuth0.Provider>
-    </ContextStatesAuth0.Provider>
+    <ContextAuth0.Provider
+      value={{
+        statesAuth0,
+        clientID: initOptions.client_id,
+        loginWithPopup,
+        handleRedirectCallback,
+        getIdTokenClaims: (...p): Promise<IdToken> =>
+          auth0.getIdTokenClaims(...p),
+        loginWithRedirect: (...p): Promise<void> =>
+          auth0.loginWithRedirect(...p),
+        getTokenSilently: (...p): Promise<any> => auth0.getTokenSilently(...p),
+        getTokenWithPopup: (...p): Promise<string> =>
+          auth0.getTokenWithPopup(...p),
+        logout: (...p): void => auth0.logout(...p)
+      }}
+    >
+      {children}
+    </ContextAuth0.Provider>
   );
 };
 

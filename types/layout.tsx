@@ -6,9 +6,7 @@ export type StatesLayout = {
   theme: string;
 };
 
-export type ActionsLayout = {
-  type: 'changeTheme';
-};
+export type ActionsLayout = { type: 'changeTheme'; theme?: string };
 
 export type Colors = {
   theme: string;

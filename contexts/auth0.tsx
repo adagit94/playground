@@ -2,10 +2,16 @@ import React from 'react';
 
 import { StatesAuth0 } from '../types/auth0';
 
-export const ContextStatesAuth0 = React.createContext<StatesAuth0>(null);
-export const ContextFunctionsAuth0 = React.createContext<{
-  [key: string]: Function;
+export const ContextAuth0 = React.createContext<{
+  statesAuth0: StatesAuth0;
+  clientID: string;
+  loginWithPopup: Function;
+  handleRedirectCallback: Function;
+  getIdTokenClaims: Function;
+  loginWithRedirect: Function;
+  getTokenSilently: Function;
+  getTokenWithPopup: Function;
+  logout: Function;
 }>(null);
 
-ContextStatesAuth0.displayName = 'ContextStatesAuth0';
-ContextFunctionsAuth0.displayName = 'ContextFunctionsAuth0';
+ContextAuth0.displayName = 'ContextAuth0';

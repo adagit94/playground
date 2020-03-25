@@ -10,11 +10,13 @@ export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
         ...states,
         user: action.user
       };
+
     case 'setIsAuthenticated':
       return {
         ...states,
         isAuthenticated: action.value
       };
+
     case 'setLoading':
       return {
         ...states,
