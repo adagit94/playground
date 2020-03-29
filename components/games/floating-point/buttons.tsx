@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const Buttons: React.FC<{ children: Array<JSX.Element> | JSX.Element }> = ({
   children
-}): JSX.Element => {
+}) => {
   return <Container>{children}</Container>;
 };
 

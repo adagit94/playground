@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { ContextAuth0 } from '../../../contexts/auth0';
+import { PropsProfile } from '../../../types/layout';
 
 const Container = styled.div`
   display: flex;
@@ -11,6 +11,7 @@ const Container = styled.div`
   justify-content: space-around;
   width: 100%;
   height: 100%;
+  color: ${(props): string => props.theme.background};
 `;
 
 const Row = styled.div`
@@ -30,7 +31,7 @@ const Row = styled.div`
 `;
 
 const Button = styled.button`
-  padding: 10px;
+  padding: 5px;
   font-weight: bold;
   border-top: transparent;
   border-right: 2px solid;
@@ -57,24 +58,12 @@ const Button = styled.button`
   }
 `;
 
-const Profile: React.FC = (): JSX.Element => {
-  const auth0 = useContext(ContextAuth0);
+const Profile: React.FC<PropsProfile> = ({ clientID, name, logout }) => {
   const router = useRouter();
-
-  const statesAuth0 = auth0.statesAuth0;
-
-  const Avatar = styled.div`
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    background-image: url(${!statesAuth0.loading && statesAuth0.user.picture});
-  `;
 
   return (
     <Container>
-      <Row>
-        <Avatar />
-      </Row>
+      <Row>{name}</Row>
       <Row>
         <Link href='/stats'>
           <a>Stats</a>
@@ -88,10 +77,10 @@ const Profile: React.FC = (): JSX.Element => {
       <Row>
         <Button
           onClick={(): void =>
-            auth0.logout({
+            logout({
               returnTo: `http://localhost:3000${router.pathname}`,
               // eslint-disable-next-line @typescript-eslint/camelcase
-              client_id: auth0.clientID
+              client_id: clientID
             })
           }
           type='button'

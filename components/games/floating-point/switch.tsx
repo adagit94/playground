@@ -6,7 +6,7 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const Switch: React.FC = (): JSX.Element => {
+const Switch: React.FC = () => {
   const statesGame = useContext(ContextGame);
   const dispatches = useContext(ContextDispatches);
 

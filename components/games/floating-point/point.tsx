@@ -8,7 +8,7 @@ import {
   ContextFP
 } from '../../../contexts/games/floating-point';
 
-const Point: React.FC = (): JSX.Element => {
+const Point: React.FC = () => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);

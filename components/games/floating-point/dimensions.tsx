@@ -9,7 +9,7 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const Dimensions: React.FC = (): JSX.Element => {
+const Dimensions: React.FC = () => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatches);
 

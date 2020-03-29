@@ -38,7 +38,7 @@ const Overlap = styled(OverlapDisabled)`
     props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
 `;
 
-const OptionsPlayer: React.FC<PropsOptions> = ({ player }): JSX.Element => {
+const OptionsPlayer: React.FC<PropsOptions> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 

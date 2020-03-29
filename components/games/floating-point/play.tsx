@@ -17,7 +17,7 @@ const Button = styled(ButtonOptions)`
   }
 `;
 
-const Play: React.FC = (): JSX.Element => {
+const Play: React.FC = () => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const dispatches = useContext(ContextDispatches);

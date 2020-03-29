@@ -48,7 +48,7 @@ const Container = styled.div`
   }
 `;
 
-const Playground: React.FC = (): JSX.Element => {
+const Playground: React.FC = () => {
   return (
     <Container>
       <ul>

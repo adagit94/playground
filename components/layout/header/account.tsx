@@ -1,12 +1,25 @@
-import React, { useContext } from 'react';
-import { useRouter } from 'next/router';
+/* eslint-disable @typescript-eslint/camelcase */
+
+import Router, { useRouter } from 'next/router';
+import React, { useContext, useReducer, useEffect } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
+import createAuth0Client from '@auth0/auth0-spa-js';
 import $ from 'jquery';
 
 import Profile from './profile';
 
+import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { Colors } from '../../../types/layout';
-import { ContextAuth0 } from '../../../contexts/auth0';
+import { reducerAuth0 } from '../../../reducers/auth0';
+import { initAuth0 } from '../../../inits/auth0';
+
+let auth0: Auth0Client;
+let user: any;
+
+const configAuth0 = {
+  domain: 'dev-vjh7k4cm.eu.auth0.com',
+  client_id: 'TC2CpHMYRPlkL7nQtVHgeHvO1Hqqab4n'
+};
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -19,16 +32,21 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 150px;
+  background-color: ${(props): string => props.theme.inverted};
 `;
 
 const Button = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   font-size: 1.1rem;
   font-weight: bold;
   border: none;
   color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  background-color: transparent;
   transition-property: font-size;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -50,19 +68,25 @@ const LoadingContainer = styled.div`
   height: 12.5px;
 `;
 
-const Account: React.FC = (): JSX.Element => {
-  const auth0 = useContext(ContextAuth0);
+const Account: React.FC = () => {
+  const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initAuth0);
   const colors: Colors = useContext(ThemeContext);
   const router = useRouter();
 
-  const statesAuth0 = auth0.statesAuth0;
-  const isAuthenticated = statesAuth0.isAuthenticated;
+  const { isAuthenticated, loading } = statesAuth0;
+
+  const Avatar = styled.div`
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-image: url(${isAuthenticated && !loading && user.picture});
+  `;
 
   const Slider = styled.div`
     position: absolute;
     top: 75px;
     right: 0;
-    width: ${isAuthenticated ? 150 : 300}px;
+    width: 150px;
     height: 150px;
     z-index: 1;
     background-color: ${(props): string => props.theme.inverted};
@@ -111,30 +135,70 @@ const Account: React.FC = (): JSX.Element => {
     </LoadingContainer>
   );
 
+  useEffect(() => {
+    const onRedirectCallback = (appState): void => {
+      Router.push(
+        appState && appState.targetUrl
+          ? appState.targetUrl
+          : window.location.pathname
+      );
+    };
+
+    const initAuth0 = async (): Promise<void> => {
+      auth0 = await createAuth0Client({
+        domain: 'dev-vjh7k4cm.eu.auth0.com',
+        client_id: 'TC2CpHMYRPlkL7nQtVHgeHvO1Hqqab4n',
+        redirect_uri: window.location.origin
+      });
+
+      if (
+        window.location.search.includes('code=') &&
+        window.location.search.includes('state=')
+      ) {
+        const { appState } = await auth0.handleRedirectCallback();
+
+        onRedirectCallback(appState);
+      }
+      const isAuthenticated = await auth0.isAuthenticated();
+
+      dispatchAuth0({ type: 'setIsAuthenticated', value: isAuthenticated });
+
+      if (isAuthenticated) user = await auth0.getUser();
+
+      dispatchAuth0({ type: 'setLoading', value: false });
+    };
+
+    initAuth0().catch(err => console.log(err));
+  }, []);
+
   return (
     <Container>
-      {statesAuth0.loading ? (
-        LoadingIndicator
-      ) : (
+      {loading && LoadingIndicator}
+
+      {!loading && (
         <Button
           onClick={
             isAuthenticated
               ? toggleSlider
               : async (): Promise<void> => {
                   await auth0.loginWithRedirect({
-                    // eslint-disable-next-line @typescript-eslint/camelcase
                     redirect_uri: `http://localhost:3000${router.pathname}`
                   });
                 }
           }
           type='button'
         >
-          {isAuthenticated ? statesAuth0.user.name : 'Log in'}
+          {isAuthenticated ? <Avatar /> : 'Log in'}
         </Button>
       )}
-      {isAuthenticated && (
+
+      {isAuthenticated && !loading && (
         <Slider style={{ display: 'none' }} id='slider'>
-          <Profile />
+          <Profile
+            clientID={configAuth0.client_id}
+            name={user.name}
+            logout={(): void => auth0.logout()}
+          />
         </Slider>
       )}
     </Container>

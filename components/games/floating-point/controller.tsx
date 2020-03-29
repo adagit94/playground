@@ -172,7 +172,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Controller: React.FC = (): JSX.Element => {
+const Controller: React.FC = () => {
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
     Inits.initGame

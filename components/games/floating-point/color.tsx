@@ -44,7 +44,7 @@ const Input = styled.input`
   }
 `;
 
-const Color: React.FC<PropsOptions> = ({ player }): JSX.Element => {
+const Color: React.FC<PropsOptions> = ({ player }) => {
   const states = useContext(ContextParams);
   const colors: Colors = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatches);

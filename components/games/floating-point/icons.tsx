@@ -23,7 +23,7 @@ const ContainerIcons = styled.div`
   width: 100px;
 `;
 
-const Icons: React.FC<PropsOptions> = ({ player }): JSX.Element => {
+const Icons: React.FC<PropsOptions> = ({ player }) => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatches);
 

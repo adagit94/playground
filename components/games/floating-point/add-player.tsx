@@ -15,7 +15,7 @@ const Button = styled(ButtonOptions)`
   }
 `;
 
-const AddPlayer: React.FC<PropsButtons> = ({ pos }): JSX.Element => {
+const AddPlayer: React.FC<PropsButtons> = ({ pos }) => {
   const states = useContext(ContextGame);
   const dispatches = useContext(ContextDispatches);
 

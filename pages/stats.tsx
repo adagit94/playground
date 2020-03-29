@@ -5,7 +5,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-const Stats: React.FC = (): JSX.Element => {
+const Stats: React.FC = () => {
   return (
     <Container>
       <h1>Stats</h1>

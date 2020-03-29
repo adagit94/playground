@@ -9,7 +9,7 @@ import {
   ContextDispatches
 } from '../../../contexts/games/floating-point';
 
-const Speed: React.FC = (): JSX.Element => {
+const Speed: React.FC = () => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatches);
 

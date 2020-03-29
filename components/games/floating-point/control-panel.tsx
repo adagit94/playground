@@ -20,7 +20,7 @@ const Side = styled.div`
   width: 40%;
 `;
 
-const ControlPanel: React.FC = (): JSX.Element => {
+const ControlPanel: React.FC = () => {
   const states = useContext(ContextGame);
 
   const players = states.players;

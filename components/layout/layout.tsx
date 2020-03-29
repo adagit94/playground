@@ -9,7 +9,7 @@ import { initLayout } from '../../inits/layout';
 import { PropsLayout, Colors } from '../../types/layout';
 import { ContextDispatchLayout } from '../../contexts/layout';
 
-const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
+const Layout: React.FC<PropsLayout> = ({ content }) => {
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
 
   const theme = statesLayout.theme;
@@ -35,14 +35,15 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     }
   `;
 
-  useEffect((): void => {
+  useEffect(() => {
     const theme = sessionStorage.getItem('theme');
 
-    if (theme && theme !== statesLayout.theme)
+    if (theme && theme !== statesLayout.theme) {
       dispatchLayout({
         type: 'changeTheme',
         theme
       });
+    }
   });
 
   return (

@@ -88,7 +88,7 @@ const LineHorizontal = styled.div`
   transition-timing-function: linear;
 `;
 
-const Logo: React.FC = (): JSX.Element => {
+const Logo: React.FC = () => {
   return (
     <Container>
       <Link href='/'>

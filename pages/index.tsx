@@ -1,7 +1,7 @@
 import React from 'react';
 //import styled from 'styled-components';
 
-const Index: React.FC = (): JSX.Element => {
+const Index: React.FC = () => {
   return <div>abc</div>;
 };
 

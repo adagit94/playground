@@ -14,7 +14,7 @@ const Container = styled.div`
   border: 1px solid;
 `;
 
-const ThemeButton: React.FC = (): JSX.Element => {
+const ThemeButton: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
   const dispatch = useContext(ContextDispatchLayout);
 

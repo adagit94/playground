@@ -5,12 +5,6 @@ export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
   action
 ): StatesAuth0 => {
   switch (action.type) {
-    case 'setUser':
-      return {
-        ...states,
-        user: action.user
-      };
-
     case 'setIsAuthenticated':
       return {
         ...states,

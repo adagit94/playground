@@ -7,7 +7,7 @@ const Container = styled.main`
   flex: auto;
 `;
 
-const Main: React.FC<PropsLayout> = ({ content }): JSX.Element => {
+const Main: React.FC<PropsLayout> = ({ content }) => {
   return <Container>{content}</Container>;
 };
 

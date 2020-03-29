@@ -13,7 +13,7 @@ const Button = styled(ButtonOptions)`
   }
 `;
 
-const Reset: React.FC = (): JSX.Element => {
+const Reset: React.FC = () => {
   const dispatches = useContext(ContextDispatches);
 
   return (

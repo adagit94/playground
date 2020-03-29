@@ -31,7 +31,7 @@ const icons: Icons = {
   }
 };
 
-const Players: React.FC = (): JSX.Element => {
+const Players: React.FC = () => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
