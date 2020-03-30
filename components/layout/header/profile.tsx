@@ -77,11 +77,7 @@ const Profile: React.FC<PropsProfile> = ({ clientID, name, logout }) => {
       <Row>
         <Button
           onClick={(): void =>
-            logout({
-              returnTo: `http://localhost:3000${router.pathname}`,
-              // eslint-disable-next-line @typescript-eslint/camelcase
-              client_id: clientID
-            })
+            logout({ returnTo: `http://localhost:3000${router.pathname}` })
           }
           type='button'
         >

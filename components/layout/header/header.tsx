@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Logo from './logo';
@@ -14,13 +14,7 @@ const Container = styled.header`
   border-bottom: 1px solid;
 `;
 
-
 const Header: React.FC = () => {
-  useEffect(() => {
-    console.log('mounted');
-  
-    return (): void => console.log('unmounted');
-  }, []);
   return (
     <Container>
       <Logo />

@@ -35,7 +35,8 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
     }
   `;
 
-  /*  useEffect(() => {
+  /*
+  useEffect(() => {
     const theme = sessionStorage.getItem('theme');
 
     if (theme && theme !== statesLayout.theme) {
@@ -44,7 +45,8 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
         theme
       });
     }
-  }); */
+  });
+  */
 
   return (
     <Container>

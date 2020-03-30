@@ -5,6 +5,18 @@ export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
   action
 ): StatesAuth0 => {
   switch (action.type) {
+    case 'setAuth0':
+      return {
+        ...states,
+        auth0: action.payload
+      };
+
+    case 'setUser':
+      return {
+        ...states,
+        user: action.payload
+      };
+
     case 'setIsAuthenticated':
       return {
         ...states,
@@ -15,12 +27,6 @@ export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
       return {
         ...states,
         loading: action.value
-      };
-
-    case 'setPopupOpen':
-      return {
-        ...states,
-        popupOpen: action.value
       };
   }
 };

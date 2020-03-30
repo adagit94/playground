@@ -8,18 +8,10 @@ import $ from 'jquery';
 
 import Profile from './profile';
 
-import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
+import auth0Config from '../../../auth0-config.json';
 import { Colors } from '../../../types/layout';
 import { reducerAuth0 } from '../../../reducers/auth0';
 import { initAuth0 } from '../../../inits/auth0';
-
-let auth0: Auth0Client;
-let user: any;
-
-const configAuth0 = {
-  domain: 'dev-vjh7k4cm.eu.auth0.com',
-  client_id: 'TC2CpHMYRPlkL7nQtVHgeHvO1Hqqab4n'
-};
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -73,13 +65,13 @@ const Account: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
   const router = useRouter();
 
-  const { isAuthenticated, loading } = statesAuth0;
+  const { auth0, user, isAuthenticated, loading } = statesAuth0;
 
   const Avatar = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    background-image: url(${isAuthenticated && !loading && user.picture});
+    background-image: url(${user && user.picture});
   `;
 
   const Slider = styled.div`
@@ -145,17 +137,15 @@ const Account: React.FC = () => {
     };
 
     const initAuth0 = async (): Promise<void> => {
-      auth0 = await createAuth0Client({
-        domain: 'dev-vjh7k4cm.eu.auth0.com',
-        client_id: 'TC2CpHMYRPlkL7nQtVHgeHvO1Hqqab4n',
-        redirect_uri: window.location.origin
-      });
+      const auth0 = await createAuth0Client(auth0Config);
+
+      dispatchAuth0({ type: 'setAuth0', payload: auth0 });
 
       if (
         window.location.search.includes('code=') &&
         window.location.search.includes('state=')
       ) {
-        const { appState } = await auth0.handleRedirectCallback();
+        const appState = await auth0.handleRedirectCallback();
 
         onRedirectCallback(appState);
       }
@@ -163,7 +153,11 @@ const Account: React.FC = () => {
 
       dispatchAuth0({ type: 'setIsAuthenticated', value: isAuthenticated });
 
-      if (isAuthenticated) user = await auth0.getUser();
+      if (isAuthenticated) {
+        const user = await auth0.getUser();
+
+        dispatchAuth0({ type: 'setUser', payload: user });
+      }
 
       dispatchAuth0({ type: 'setLoading', value: false });
     };
@@ -171,6 +165,7 @@ const Account: React.FC = () => {
     initAuth0().catch(err => console.log(err));
   }, []);
 
+  console.log(auth0);
   return (
     <Container>
       {loading && LoadingIndicator}
@@ -195,8 +190,8 @@ const Account: React.FC = () => {
       {isAuthenticated && !loading && (
         <Slider style={{ display: 'none' }} id='slider'>
           <Profile
-            clientID={configAuth0.client_id}
-            name={user.name}
+            clientID={auth0Config.client_id}
+            name={user && user.name}
             logout={(): void => auth0.logout()}
           />
         </Slider>
