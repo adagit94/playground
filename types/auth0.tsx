@@ -12,3 +12,8 @@ export type ActionsAuth0 =
   | { type: 'setUser'; payload: any }
   | { type: 'setIsAuthenticated'; value: boolean }
   | { type: 'setLoading'; value: boolean };
+
+export type PropsProfile = {
+  name: string;
+  logout: Function;
+};

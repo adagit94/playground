@@ -5,12 +5,16 @@ import Header from './header/header';
 import Main from './main';
 
 import { reducerLayout } from '../../reducers/layout';
+import { reducerUser } from '../../reducers/user';
 import { initLayout } from '../../inits/layout';
+import { initUser } from '../../inits/user';
 import { PropsLayout, Colors } from '../../types/layout';
 import { ContextDispatchLayout } from '../../contexts/layout';
+import { ContextDispatchUser } from '../../contexts/user';
 
 const Layout: React.FC<PropsLayout> = ({ content }) => {
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
+  const [statesUser, dispatchUser] = useReducer(reducerUser, initUser);
 
   const theme = statesLayout.theme;
   const colors: Colors = {
@@ -51,10 +55,12 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   return (
     <Container>
       <ThemeProvider theme={colors}>
-        <ContextDispatchLayout.Provider value={dispatchLayout}>
-          <Header />
-        </ContextDispatchLayout.Provider>
-        <Main content={content} />
+        <ContextDispatchUser.Provider value={dispatchUser}>
+          <ContextDispatchLayout.Provider value={dispatchLayout}>
+            <Header />
+          </ContextDispatchLayout.Provider>
+          <Main content={content} />
+        </ContextDispatchUser.Provider>
       </ThemeProvider>
     </Container>
   );

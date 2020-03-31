@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 import React from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { PropsProfile } from '../../../types/layout';
+import { PropsProfile } from '../../../types/auth0';
 
 const Container = styled.div`
   display: flex;
@@ -58,9 +59,7 @@ const Button = styled.button`
   }
 `;
 
-const Profile: React.FC<PropsProfile> = ({ clientID, name, logout }) => {
-  const router = useRouter();
-
+const Profile: React.FC<PropsProfile> = ({ name, logout }) => {
   return (
     <Container>
       <Row>{name}</Row>
@@ -75,12 +74,7 @@ const Profile: React.FC<PropsProfile> = ({ clientID, name, logout }) => {
         </Link>
       </Row>
       <Row>
-        <Button
-          onClick={(): void =>
-            logout({ returnTo: `http://localhost:3000${router.pathname}` })
-          }
-          type='button'
-        >
+        <Button onClick={logout} type='button'>
           Log out
         </Button>
       </Row>
