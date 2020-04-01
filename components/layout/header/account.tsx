@@ -152,14 +152,14 @@ const Account: React.FC = () => {
       if (isAuthenticated) {
         const user = await auth0.getUser();
 
-        dispatchUser({ type: 'initializeUser', username: user.name });
         dispatchAuth0({ type: 'setUser', payload: user });
+        dispatchUser({ type: 'initializeUser', username: user.name });
       }
       dispatchAuth0({ type: 'setLoading', value: false });
     };
 
     initAuth0().catch(err => console.log(err));
-  }, [dispatchUser]);
+  }, []);
 
   return (
     <Container>
