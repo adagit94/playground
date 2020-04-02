@@ -9,10 +9,21 @@ import $ from 'jquery';
 import Profile from './profile';
 
 import auth0Config from '../../../auth0-config.json';
+import { users } from '../../../firebase/collections';
 import { Colors } from '../../../types/layout';
 import { reducerAuth0 } from '../../../reducers/auth0';
 import { initAuth0 } from '../../../inits/auth0';
 import { ContextDispatchUser } from '../../../contexts/user';
+
+const testFire = (): void => {
+  users
+    .doc('user1')
+    .set({
+      username: 'userX'
+    })
+    .then(() => console.log('data uploaded'))
+    .catch(err => console.error(err));
+};
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -168,13 +179,13 @@ const Account: React.FC = () => {
       {!loading && (
         <Button
           onClick={
-            isAuthenticated
-              ? toggleSlider
-              : async (): Promise<void> => {
+            isAuthenticated ? toggleSlider : testFire
+            /*async (): Promise<void> => {
                   await auth0.loginWithRedirect({
                     redirect_uri: redirectURL
                   });
                 }
+                */
           }
           type='button'
         >
