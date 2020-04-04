@@ -8,9 +8,14 @@ import { reducerLayout } from '../../reducers/layout';
 import { reducerUser } from '../../reducers/user';
 import { initLayout } from '../../inits/layout';
 import { initUser } from '../../inits/user';
-import { PropsLayout, Colors } from '../../types/layout';
-import { ContextDispatchLayout } from '../../contexts/layout';
-import { ContextDispatchUser } from '../../contexts/user';
+import { Dispatches, PropsLayout, Colors } from '../../types/layout';
+import { ContextDispatches } from '../../contexts/layout';
+import { ContextUser } from '../../contexts/user';
+
+const dispatches: Dispatches = {
+  layout: undefined,
+  user: undefined
+};
 
 const Layout: React.FC<PropsLayout> = ({ content }) => {
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
@@ -39,7 +44,6 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
     }
   `;
 
-  /*
   useEffect(() => {
     const theme = sessionStorage.getItem('theme');
 
@@ -50,17 +54,21 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
       });
     }
   });
-  */
+
+  useEffect(() => {
+    dispatches.layout = dispatchLayout;
+    dispatches.user = dispatchUser;
+  }, []);
 
   return (
     <Container>
       <ThemeProvider theme={colors}>
-        <ContextDispatchUser.Provider value={dispatchUser}>
-          <ContextDispatchLayout.Provider value={dispatchLayout}>
+        <ContextUser.Provider value={statesUser}>
+          <ContextDispatches.Provider value={dispatches}>
             <Header />
-          </ContextDispatchLayout.Provider>
+          </ContextDispatches.Provider>
           <Main content={content} />
-        </ContextDispatchUser.Provider>
+        </ContextUser.Provider>
       </ThemeProvider>
     </Container>
   );

@@ -5,12 +5,8 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
   action
 ): StatesUser => {
   switch (action.type) {
-    case 'initializeUser':
-      return {
-        username: action.username,
-        wins: 0,
-        gatheredPoints: 0
-      };
+    case 'setUser':
+      return { ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');

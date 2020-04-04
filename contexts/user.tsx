@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { ActionsUser } from '../types/user';
+import { StatesUser } from '../types/user';
 
-export const ContextDispatchUser = React.createContext<
-  React.Dispatch<ActionsUser>
->(null);
+export const ContextUser = React.createContext<StatesUser>(null);
 
-ContextDispatchUser.displayName = 'ContextDispatchUser';
+ContextUser.displayName = 'ContextUser';

@@ -3,7 +3,7 @@ import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
 import { Colors } from '../../../types/layout';
-import { ContextDispatchLayout } from '../../../contexts/layout';
+import { ContextDispatches } from '../../../contexts/layout';
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const ThemeButton: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
-  const dispatch = useContext(ContextDispatchLayout);
+  const dispatch = useContext(ContextDispatches);
 
   const toggleTheme = (): void => {
     $('#theme-button').animate(

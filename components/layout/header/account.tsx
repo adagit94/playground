@@ -3,27 +3,23 @@
 import Router, { useRouter } from 'next/router';
 import React, { useContext, useReducer, useEffect } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import $ from 'jquery';
 
 import Profile from './profile';
 
+import firebaseConfig from '../../../firebase-config.json';
 import auth0Config from '../../../auth0-config.json';
-import { users } from '../../../firebase/collections';
 import { Colors } from '../../../types/layout';
+import { StatesUser } from '../../../types/user';
 import { reducerAuth0 } from '../../../reducers/auth0';
 import { initAuth0 } from '../../../inits/auth0';
-import { ContextDispatchUser } from '../../../contexts/user';
+import { ContextDispatches } from '../../../contexts/layout';
+import { ContextUser } from '../../../contexts/user';
 
-const testFire = (): void => {
-  users
-    .doc('user1')
-    .set({
-      username: 'userX'
-    })
-    .then(() => console.log('data uploaded'))
-    .catch(err => console.error(err));
-};
+let firebaseApp;
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -74,13 +70,19 @@ const LoadingContainer = styled.div`
 
 const Account: React.FC = () => {
   const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initAuth0);
-  const dispatchUser = useContext(ContextDispatchUser);
+  const statesUser = useContext(ContextUser);
+  const dispatches = useContext(ContextDispatches);
   const colors: Colors = useContext(ThemeContext);
   const router = useRouter();
 
   const { auth0, user, isAuthenticated, loading } = statesAuth0;
 
   const redirectURL = `http://localhost:3000${router.pathname}`;
+  const initUser = (): StatesUser => ({
+    username: user.name,
+    wins: 0,
+    gatheredPoints: 0
+  });
 
   const Avatar = styled.div`
     width: 50px;
@@ -156,6 +158,7 @@ const Account: React.FC = () => {
 
         Router.push(window.location.pathname);
       }
+
       const isAuthenticated = await auth0.isAuthenticated();
 
       dispatchAuth0({ type: 'setIsAuthenticated', value: isAuthenticated });
@@ -164,13 +167,58 @@ const Account: React.FC = () => {
         const user = await auth0.getUser();
 
         dispatchAuth0({ type: 'setUser', payload: user });
-        dispatchUser({ type: 'initializeUser', username: user.name });
       }
+
       dispatchAuth0({ type: 'setLoading', value: false });
     };
 
-    initAuth0().catch(err => console.log(err));
+    initAuth0().catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    const initFirestore = async (): Promise<void> => {
+      if (user && !statesUser.username) {
+        if (!firebaseApp) firebaseApp = firebase.initializeApp(firebaseConfig);
+
+        const users = firebase.firestore().collection('users');
+
+        const getUser = async (
+          id
+        ): Promise<firebase.firestore.DocumentData | void> => {
+          let userData: firebase.firestore.DocumentData;
+
+          userData = await users
+            .doc(id)
+            .get()
+            .then(data => data.data())
+            .catch(err => console.error(err));
+
+          return userData;
+        };
+
+        const setUser = (id): void => {
+          users
+            .doc(id)
+            .set(initUser())
+            .then(() => console.log('data uploaded'))
+            .catch(err => console.error(err));
+        };
+        let userData;
+        await getUser('userX').then(data => {
+          userData = data;
+        }); // user.sub
+        console.log(userData);
+        //if (!userFirestore) setUser();
+
+        dispatches.user({
+          type: 'setUser',
+          payload: initUser()
+        });
+      }
+    };
+
+    initFirestore();
+  });
 
   return (
     <Container>
@@ -179,13 +227,13 @@ const Account: React.FC = () => {
       {!loading && (
         <Button
           onClick={
-            isAuthenticated ? toggleSlider : testFire
-            /*async (): Promise<void> => {
+            isAuthenticated
+              ? toggleSlider
+              : async (): Promise<void> => {
                   await auth0.loginWithRedirect({
                     redirect_uri: redirectURL
                   });
                 }
-                */
           }
           type='button'
         >
@@ -193,16 +241,16 @@ const Account: React.FC = () => {
         </Button>
       )}
 
-      {isAuthenticated && !loading && (
+      {!loading && isAuthenticated && (
         <Slider style={{ display: 'none' }} id='slider'>
           <Profile
             name={user && user.name}
-            logout={(): void =>
+            logout={(): void => {
               auth0.logout({
                 returnTo: redirectURL,
                 client_id: auth0Config.client_id
-              })
-            }
+              });
+            }}
           />
         </Slider>
       )}
