@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
 
-import { ContextDispatches } from '../../../contexts/games/floating-point';
+import { ContextDispatchesFP } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonOptions)`
   margin-left: 10px;
@@ -14,7 +14,7 @@ const Button = styled(ButtonOptions)`
 `;
 
 const Reset: React.FC = () => {
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   return (
     <>

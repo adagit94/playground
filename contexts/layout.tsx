@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { StatesLayout, Dispatches } from '../types/layout';
+import { StatesLayout, DispatchesLayout } from '../types/layout';
 
 export const ContextLayout = React.createContext<StatesLayout>(null);
-export const ContextDispatches = React.createContext<Dispatches>(null);
+export const ContextDispatchesLayout = React.createContext<DispatchesLayout>(
+  null
+);
 
 ContextLayout.displayName = 'ContextLayout';
-ContextDispatches.displayName = 'ContextDispatches';
+ContextDispatchesLayout.displayName = 'ContextDispatchesLayout';

@@ -6,12 +6,12 @@ import { InputOptionsCommon } from '../../styled-components/inputs';
 
 import {
   ContextParams,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const Speed: React.FC = () => {
   const states = useContext(ContextParams);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const speed = states.speed;
   const isDefined = typeof speed === 'number';

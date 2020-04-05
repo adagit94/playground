@@ -6,12 +6,12 @@ import { InputOptionsCommon } from '../../styled-components/inputs';
 
 import {
   ContextParams,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const Dimensions: React.FC = () => {
   const states = useContext(ContextParams);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const dimensions = states.dimensions;
   const isDefined = typeof dimensions === 'number';

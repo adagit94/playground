@@ -11,4 +11,4 @@ const Main: React.FC<PropsLayout> = ({ content }) => {
   return <Container>{content}</Container>;
 };
 
-export default Main;
+export default React.memo(Main);

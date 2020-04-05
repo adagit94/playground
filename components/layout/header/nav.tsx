@@ -69,4 +69,4 @@ const Nav: React.FC = () => {
   );
 };
 
-export default Nav;
+export default React.memo(Nav);

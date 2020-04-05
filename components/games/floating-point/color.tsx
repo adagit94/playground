@@ -4,10 +4,10 @@ import styled, { ThemeContext } from 'styled-components';
 import { ContainerOption } from '../../styled-components/containers';
 
 import { Colors } from '../../../types/layout';
-import { PropsOptions } from '../../../types/games/floating-point';
+import { PropsOptionsPlayer } from '../../../types/games/floating-point';
 import {
   ContextParams,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const ContainerInput = styled.div`
@@ -44,10 +44,10 @@ const Input = styled.input`
   }
 `;
 
-const Color: React.FC<PropsOptions> = ({ player }) => {
+const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const states = useContext(ContextParams);
   const colors: Colors = useContext(ThemeContext);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   return (
     <ContainerOption>

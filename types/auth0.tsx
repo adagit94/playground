@@ -14,6 +14,5 @@ export type ActionsAuth0 =
   | { type: 'setLoading'; value: boolean };
 
 export type PropsProfile = {
-  name: string;
   logout: Function;
 };

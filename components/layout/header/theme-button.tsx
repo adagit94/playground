@@ -3,7 +3,7 @@ import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
 import { Colors } from '../../../types/layout';
-import { ContextDispatches } from '../../../contexts/layout';
+import { ContextDispatchesLayout } from '../../../contexts/layout';
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const ThemeButton: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
-  const dispatch = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesLayout);
 
   const toggleTheme = (): void => {
     $('#theme-button').animate(
@@ -27,7 +27,7 @@ const ThemeButton: React.FC = () => {
           'theme',
           colors.theme === 'dark' ? 'light' : 'dark'
         );
-        dispatch({ type: 'changeTheme' });
+        dispatches.layout({ type: 'changeTheme' });
       }
     );
   };
@@ -56,4 +56,4 @@ const ThemeButton: React.FC = () => {
   );
 };
 
-export default ThemeButton;
+export default React.memo(ThemeButton);

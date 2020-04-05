@@ -6,7 +6,9 @@ export type StatesUser =
     }
   | firebase.firestore.DocumentData;
 
-export type ActionsUser = {
-  type: 'setUser';
-  payload: StatesUser | firebase.firestore.DocumentData;
-};
+export type ActionsUser =
+  | {
+      type: 'setUser';
+      payload: StatesUser | firebase.firestore.DocumentData;
+    }
+  | { type: 'addPoint' };

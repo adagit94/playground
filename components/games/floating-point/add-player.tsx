@@ -6,7 +6,7 @@ import { ButtonOptions } from '../../styled-components/buttons';
 import { PropsButtons } from '../../../types/games/floating-point';
 import {
   ContextGame,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonOptions)`
@@ -17,7 +17,7 @@ const Button = styled(ButtonOptions)`
 
 const AddPlayer: React.FC<PropsButtons> = ({ pos }) => {
   const states = useContext(ContextGame);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const player = states.players.length === 2 ? 'P3' : 'P4';
 

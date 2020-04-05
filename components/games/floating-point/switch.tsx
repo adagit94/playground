@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 import {
   ContextGame,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const Switch: React.FC = () => {
   const statesGame = useContext(ContextGame);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const state = statesGame.state;
 

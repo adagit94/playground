@@ -5,11 +5,11 @@ import { ContainerOption } from '../../styled-components/containers';
 
 import {
   ContextParams,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 import {
-  PropsOptions,
+  PropsOptionsPlayer,
   StatesPlayers
 } from '../../../types/games/floating-point';
 
@@ -23,9 +23,9 @@ const ContainerIcons = styled.div`
   width: 100px;
 `;
 
-const Icons: React.FC<PropsOptions> = ({ player }) => {
+const Icons: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const states = useContext(ContextParams);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const {
     iconsOthers,

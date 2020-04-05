@@ -2,6 +2,7 @@ type PlayersPlayer = {
   top: number;
   left: number;
   score: number;
+  profile: boolean;
 };
 
 type ParamsPlayer = {
@@ -56,6 +57,11 @@ export type ControlKeys4P = ControlKeys3P & {
 export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
 
 export type PropsOptions = {
+  state: string;
+  player: string;
+};
+
+export type PropsOptionsPlayer = {
   player: string;
 };
 
@@ -121,6 +127,7 @@ export type ActionsPlayers =
       left?: number;
     }
   | { type: 'addScore'; player: string }
+  | { type: 'withProfile'; value: boolean; player: string }
   | ChangePlayer;
 
 export type ActionsParams =
@@ -142,7 +149,7 @@ export type ActionsParams =
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 
-export type Dispatches = {
+export type DispatchesFP = {
   game: React.Dispatch<ActionsGame>;
   players: React.Dispatch<ActionsPlayers>;
   params: React.Dispatch<ActionsParams>;

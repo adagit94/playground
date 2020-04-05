@@ -6,20 +6,25 @@ import Main from './main';
 
 import { reducerLayout } from '../../reducers/layout';
 import { reducerUser } from '../../reducers/user';
+import { reducerAuth0 } from '../../reducers/auth0';
 import { initLayout } from '../../inits/layout';
 import { initUser } from '../../inits/user';
-import { Dispatches, PropsLayout, Colors } from '../../types/layout';
-import { ContextDispatches } from '../../contexts/layout';
+import { initAuth0 } from '../../inits/auth0';
+import { DispatchesLayout, PropsLayout, Colors } from '../../types/layout';
+import { ContextDispatchesLayout } from '../../contexts/layout';
 import { ContextUser } from '../../contexts/user';
+import { ContextAuth0 } from '../../contexts/auth0';
 
-const dispatches: Dispatches = {
+const dispatchesLayout: DispatchesLayout = {
   layout: undefined,
-  user: undefined
+  user: undefined,
+  auth0: undefined
 };
 
 const Layout: React.FC<PropsLayout> = ({ content }) => {
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
   const [statesUser, dispatchUser] = useReducer(reducerUser, initUser);
+  const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initAuth0);
 
   const theme = statesLayout.theme;
   const colors: Colors = {
@@ -56,19 +61,22 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   });
 
   useEffect(() => {
-    dispatches.layout = dispatchLayout;
-    dispatches.user = dispatchUser;
+    dispatchesLayout.layout = dispatchLayout;
+    dispatchesLayout.user = dispatchUser;
+    dispatchesLayout.auth0 = dispatchAuth0;
   }, []);
 
   return (
     <Container>
       <ThemeProvider theme={colors}>
-        <ContextUser.Provider value={statesUser}>
-          <ContextDispatches.Provider value={dispatches}>
-            <Header />
-          </ContextDispatches.Provider>
-          <Main content={content} />
-        </ContextUser.Provider>
+        <ContextDispatchesLayout.Provider value={dispatchesLayout}>
+          <ContextUser.Provider value={statesUser}>
+            <ContextAuth0.Provider value={statesAuth0}>
+              <Header />
+              <Main content={content} />
+            </ContextAuth0.Provider>
+          </ContextUser.Provider>
+        </ContextDispatchesLayout.Provider>
       </ThemeProvider>
     </Container>
   );

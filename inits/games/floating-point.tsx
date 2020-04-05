@@ -18,22 +18,26 @@ export const initPlayers: StatesPlayers = {
   P1: {
     top: undefined,
     left: undefined,
-    score: undefined
+    score: undefined,
+    profile: false
   },
   P2: {
     top: undefined,
     left: undefined,
-    score: undefined
+    score: undefined,
+    profile: false
   },
   P3: {
     top: undefined,
     left: undefined,
-    score: undefined
+    score: undefined,
+    profile: false
   },
   P4: {
     top: undefined,
     left: undefined,
-    score: undefined
+    score: undefined,
+    profile: false
   }
 };
 

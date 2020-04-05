@@ -140,6 +140,15 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           throw new Error('Unspecified / Wrong operation');
       }
 
+    case 'withProfile':
+      return {
+        ...states,
+        [action.player]: {
+          ...states[action.player],
+          profile: action.value
+        }
+      };
+
     default:
       throw new Error('Unspecified / Wrong action');
   }

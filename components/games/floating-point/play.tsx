@@ -6,7 +6,7 @@ import { ButtonOptions } from '../../styled-components/buttons';
 import {
   ContextGame,
   ContextParams,
-  ContextDispatches
+  ContextDispatchesFP
 } from '../../../contexts/games/floating-point';
 
 const Button = styled(ButtonOptions)`
@@ -20,7 +20,7 @@ const Button = styled(ButtonOptions)`
 const Play: React.FC = () => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
-  const dispatches = useContext(ContextDispatches);
+  const dispatches = useContext(ContextDispatchesFP);
 
   const state = statesGame.state;
 

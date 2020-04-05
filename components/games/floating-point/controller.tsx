@@ -1,9 +1,13 @@
-import React, { useReducer, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
+import { ContextDispatchesLayout } from '../../../contexts/layout';
+import { ContextUser } from '../../../contexts/user';
 import * as Reducers from '../../../reducers/games/floating-point';
 import * as Inits from '../../../inits/games/floating-point';
 import * as Contexts from '../../../contexts/games/floating-point';
@@ -12,7 +16,7 @@ import {
   ControlKeys2P,
   ControlKeys3P,
   ControlKeys4P,
-  Dispatches
+  DispatchesFP
 } from '../../../types/games/floating-point';
 
 let controlKeys: ControlKeys;
@@ -159,7 +163,7 @@ const cancelKey = (e: KeyboardEvent): void => {
   }
 };
 
-const dispatches: Dispatches = {
+const dispatchesFP: DispatchesFP = {
   game: undefined,
   players: undefined,
   params: undefined,
@@ -173,6 +177,7 @@ const Container = styled.div`
 `;
 
 const Controller: React.FC = () => {
+  const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
     Inits.initGame
@@ -188,7 +193,7 @@ const Controller: React.FC = () => {
     Inits.initParams
   );
 
-  const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
+  const dispatches = useContext(ContextDispatchesLayout);
 
   const { players, state, width, height } = statesGame;
   const { dimensions, speed } = statesParams;
@@ -363,18 +368,6 @@ const Controller: React.FC = () => {
   };
 
   useEffect(() => {
-    refHandleMove.current = handleMove;
-    refRecalculate.current = recalculate;
-  });
-
-  useEffect(() => {
-    dispatches.game = dispatchGame;
-    dispatches.players = dispatchPlayers;
-    dispatches.params = dispatchParams;
-    dispatches.fp = dispatchFP;
-  }, []);
-
-  useEffect(() => {
     const changeDimensions = (): void => {
       dispatchGame({
         type: 'changeDimensions',
@@ -405,6 +398,8 @@ const Controller: React.FC = () => {
           playerLeft + dimensions >= fPLeft &&
           playerLeft <= fPLeft + dimensions
         ) {
+          dispatches.user({ type: 'addPoint' });
+
           dispatchPlayers({
             type: 'addScore',
             player
@@ -462,6 +457,18 @@ const Controller: React.FC = () => {
     };
   });
 
+  useEffect(() => {
+    refHandleMove.current = handleMove;
+    refRecalculate.current = recalculate;
+  });
+
+  useEffect(() => {
+    dispatchesFP.game = dispatchGame;
+    dispatchesFP.players = dispatchPlayers;
+    dispatchesFP.params = dispatchParams;
+    dispatchesFP.fp = dispatchFP;
+  }, []);
+
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
@@ -469,9 +476,9 @@ const Controller: React.FC = () => {
           <Contexts.ContextParams.Provider value={statesParams}>
             <Contexts.ContextFP.Provider value={statesFP}>
               <Monitor />
-              <Contexts.ContextDispatches.Provider value={dispatches}>
+              <Contexts.ContextDispatchesFP.Provider value={dispatchesFP}>
                 <ControlPanel />
-              </Contexts.ContextDispatches.Provider>
+              </Contexts.ContextDispatchesFP.Provider>
             </Contexts.ContextFP.Provider>
           </Contexts.ContextParams.Provider>
         </Contexts.ContextPlayers.Provider>
@@ -480,6 +487,6 @@ const Controller: React.FC = () => {
   );
 };
 
-export default Controller;
+export default React.memo(Controller);
 
 //console.log(statesGame.state); border: 1px solid red;

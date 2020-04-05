@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import Router, { useRouter } from 'next/router';
-import React, { useContext, useReducer, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -14,10 +14,9 @@ import firebaseConfig from '../../../firebase-config.json';
 import auth0Config from '../../../auth0-config.json';
 import { Colors } from '../../../types/layout';
 import { StatesUser } from '../../../types/user';
-import { reducerAuth0 } from '../../../reducers/auth0';
-import { initAuth0 } from '../../../inits/auth0';
-import { ContextDispatches } from '../../../contexts/layout';
+import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextUser } from '../../../contexts/user';
+import { ContextAuth0 } from '../../../contexts/auth0';
 
 let firebaseApp;
 
@@ -69,11 +68,11 @@ const LoadingContainer = styled.div`
 `;
 
 const Account: React.FC = () => {
-  const [statesAuth0, dispatchAuth0] = useReducer(reducerAuth0, initAuth0);
-  const statesUser = useContext(ContextUser);
-  const dispatches = useContext(ContextDispatches);
-  const colors: Colors = useContext(ThemeContext);
   const router = useRouter();
+  const colors: Colors = useContext(ThemeContext);
+  const statesUser = useContext(ContextUser);
+  const statesAuth0 = useContext(ContextAuth0);
+  const dispatches = useContext(ContextDispatchesLayout);
 
   const { auth0, user, isAuthenticated, loading } = statesAuth0;
 
@@ -148,7 +147,7 @@ const Account: React.FC = () => {
     const initAuth0 = async (): Promise<void> => {
       const auth0 = await createAuth0Client(auth0Config);
 
-      dispatchAuth0({ type: 'setAuth0', payload: auth0 });
+      dispatches.auth0({ type: 'setAuth0', payload: auth0 });
 
       if (
         window.location.search.includes('code=') &&
@@ -161,20 +160,21 @@ const Account: React.FC = () => {
 
       const isAuthenticated = await auth0.isAuthenticated();
 
-      dispatchAuth0({ type: 'setIsAuthenticated', value: isAuthenticated });
+      dispatches.auth0({ type: 'setIsAuthenticated', value: isAuthenticated });
 
       if (isAuthenticated) {
         const user = await auth0.getUser();
 
-        dispatchAuth0({ type: 'setUser', payload: user });
+        dispatches.auth0({ type: 'setUser', payload: user });
       }
 
-      dispatchAuth0({ type: 'setLoading', value: false });
+      dispatches.auth0({ type: 'setLoading', value: false });
     };
 
     initAuth0().catch(err => console.error(err));
   }, []);
 
+  console.log(statesAuth0.user);
   useEffect(() => {
     const initFirestore = async (): Promise<void> => {
       if (user && !statesUser.username) {
@@ -182,44 +182,31 @@ const Account: React.FC = () => {
 
         const users = firebase.firestore().collection('users');
 
-        const getUser = async (
-          id
-        ): Promise<firebase.firestore.DocumentData | void> => {
-          let userData: firebase.firestore.DocumentData;
+        const userData = await users
+          .doc(user.email)
+          .get()
+          .then(data => data.data())
+          .catch(err => console.error(err));
 
-          userData = await users
-            .doc(id)
-            .get()
-            .then(data => data.data())
-            .catch(err => console.error(err));
-
-          return userData;
-        };
-
-        const setUser = (id): void => {
+        if (!userData) {
           users
-            .doc(id)
+            .doc(user.email)
             .set(initUser())
             .then(() => console.log('data uploaded'))
             .catch(err => console.error(err));
-        };
-        let userData;
-        await getUser('userX').then(data => {
-          userData = data;
-        }); // user.sub
-        console.log(userData);
-        //if (!userFirestore) setUser();
+        }
 
         dispatches.user({
           type: 'setUser',
-          payload: initUser()
+          payload: userData || initUser()
         });
       }
     };
 
-    initFirestore();
+    initFirestore().catch(err => console.error(err));
   });
 
+  console.log(statesUser);
   return (
     <Container>
       {loading && LoadingIndicator}
@@ -244,7 +231,6 @@ const Account: React.FC = () => {
       {!loading && isAuthenticated && (
         <Slider style={{ display: 'none' }} id='slider'>
           <Profile
-            name={user && user.name}
             logout={(): void => {
               auth0.logout({
                 returnTo: redirectURL,
@@ -258,4 +244,4 @@ const Account: React.FC = () => {
   );
 };
 
-export default Account;
+export default React.memo(Account);

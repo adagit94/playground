@@ -59,7 +59,7 @@ const Button = styled.button`
   }
 `;
 
-const Profile: React.FC<PropsProfile> = ({ name, logout }) => {
+const Profile: React.FC<PropsProfile> = ({ logout }) => {
   return (
     <Container>
       <Row>{name}</Row>
@@ -82,4 +82,4 @@ const Profile: React.FC<PropsProfile> = ({ name, logout }) => {
   );
 };
 
-export default Profile;
+export default React.memo(Profile);
