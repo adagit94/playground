@@ -8,8 +8,9 @@ import {
 import { Defaults } from '../../defaults/games/floating-point';
 
 export const initGame: StatesGame = {
-  players: [true, true, 'left', 'right'],
   state: 'conf', // off / conf / running / paused
+  players: [true, true, 'left', 'right'],
+  profile: undefined,
   width: undefined,
   height: undefined
 };
@@ -18,26 +19,22 @@ export const initPlayers: StatesPlayers = {
   P1: {
     top: undefined,
     left: undefined,
-    score: undefined,
-    profile: false
+    score: undefined
   },
   P2: {
     top: undefined,
     left: undefined,
-    score: undefined,
-    profile: false
+    score: undefined
   },
   P3: {
     top: undefined,
     left: undefined,
-    score: undefined,
-    profile: false
+    score: undefined
   },
   P4: {
     top: undefined,
     left: undefined,
-    score: undefined,
-    profile: false
+    score: undefined
   }
 };
 

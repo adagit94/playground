@@ -9,6 +9,6 @@ export type StatesUser =
 export type ActionsUser =
   | {
       type: 'setUser';
-      payload: StatesUser | firebase.firestore.DocumentData;
+      payload: StatesUser;
     }
   | { type: 'addPoint' };

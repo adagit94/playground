@@ -2,7 +2,6 @@ type PlayersPlayer = {
   top: number;
   left: number;
   score: number;
-  profile: boolean;
 };
 
 type ParamsPlayer = {
@@ -74,6 +73,7 @@ export type StatesGame = {
   state: string;
   width: number;
   height: number;
+  profile: string;
 };
 
 export type StatesPlayers = {
@@ -109,7 +109,8 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'changePlayers'; operation: string; pos: string };
+  | { type: 'changePlayers'; operation: string; pos: string }
+  | { type: 'changeProfile'; player: string };
 
 export type ActionsPlayers =
   | {
@@ -127,7 +128,6 @@ export type ActionsPlayers =
       left?: number;
     }
   | { type: 'addScore'; player: string }
-  | { type: 'withProfile'; value: boolean; player: string }
   | ChangePlayer;
 
 export type ActionsParams =

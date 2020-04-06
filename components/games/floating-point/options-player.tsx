@@ -28,12 +28,18 @@ const Container = styled.div`
   margin: 5px;
 `;
 
-const Info = styled.div`
+const ContainerInfo = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  height: 75px;
+`;
+
+const Info = styled.div`
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50px;
 `;
 
 const ButtonLoadProfile = styled.button`
@@ -64,13 +70,36 @@ const ButtonLoadProfile = styled.button`
 `;
 
 const Divider = styled(DividerVertical)`
-  background-color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
 `;
 
 const Overlap = styled(OverlapDisabled)`
   background-color: ${(props): string =>
     props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
 `;
+
+const Avatar: React.FC<{ bg: string }> = ({ bg }): JSX.Element => {
+  const ContainerAvatar = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  `;
+
+  const Avatar = styled.div`
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    background-image: url(${bg});
+  `;
+
+  return (
+    <ContainerAvatar>
+      <Avatar />
+    </ContainerAvatar>
+  );
+};
 
 const Options: React.FC<PropsOptions> = ({ state, player }): JSX.Element => {
   return (
@@ -90,31 +119,25 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesAuth0 = useContext(ContextAuth0);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const state = statesGame.state;
+  const { state, profile } = statesGame;
+  const score = statesPlayers[player].score;
   const username = statesUser.username;
   const user = statesAuth0.user;
-  const { score, profile } = statesPlayers[player];
 
-  const Avatar = styled.div`
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    background-image: url(${user && user.picture});
-  `;
+  const withProfile = profile === player;
 
   return (
     <Container>
-      <Info>
-        <h3>{player}</h3>
-        <div>
-          {profile && username}
+      <ContainerInfo>
+        <Info>{player}</Info>
+        <Info>
+          {withProfile && username}
 
-          {!profile && (
+          {user && !profile && (
             <ButtonLoadProfile
               onClick={(): void => {
-                dispatches.players({
-                  type: 'withProfile',
-                  value: true,
+                dispatches.game({
+                  type: 'changeProfile',
                   player
                 });
               }}
@@ -123,10 +146,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
               Load Profile
             </ButtonLoadProfile>
           )}
-        </div>
-      </Info>
-      <Info>{(state === 'running' || state === 'paused') && score}</Info>
-      {profile ? <Avatar /> : <Options player={player} state={state} />}
+        </Info>
+        <Info>{(state === 'running' || state === 'paused') && score}</Info>
+      </ContainerInfo>
+      {withProfile && <Avatar bg={user.picture} />}
+      {!withProfile && <Options player={player} state={state} />}
     </Container>
   );
 };

@@ -145,36 +145,40 @@ const Account: React.FC = () => {
 
   useEffect(() => {
     const initAuth0 = async (): Promise<void> => {
-      const auth0 = await createAuth0Client(auth0Config);
+      if (!auth0) {
+        const auth0 = await createAuth0Client(auth0Config);
 
-      dispatches.auth0({ type: 'setAuth0', payload: auth0 });
+        dispatches.auth0({ type: 'setAuth0', payload: auth0 });
 
-      if (
-        window.location.search.includes('code=') &&
-        window.location.search.includes('state=')
-      ) {
-        await auth0.handleRedirectCallback();
+        if (
+          window.location.search.includes('code=') &&
+          window.location.search.includes('state=')
+        ) {
+          await auth0.handleRedirectCallback();
 
-        Router.push(window.location.pathname);
+          Router.push(window.location.pathname);
+        }
+
+        const isAuthenticated = await auth0.isAuthenticated();
+
+        dispatches.auth0({
+          type: 'setIsAuthenticated',
+          value: isAuthenticated
+        });
+
+        if (isAuthenticated) {
+          const user = await auth0.getUser();
+
+          dispatches.auth0({ type: 'setUser', payload: user });
+        }
+
+        dispatches.auth0({ type: 'setLoading', value: false });
       }
-
-      const isAuthenticated = await auth0.isAuthenticated();
-
-      dispatches.auth0({ type: 'setIsAuthenticated', value: isAuthenticated });
-
-      if (isAuthenticated) {
-        const user = await auth0.getUser();
-
-        dispatches.auth0({ type: 'setUser', payload: user });
-      }
-
-      dispatches.auth0({ type: 'setLoading', value: false });
     };
 
     initAuth0().catch(err => console.error(err));
   }, []);
 
-  console.log(statesAuth0.user);
   useEffect(() => {
     const initFirestore = async (): Promise<void> => {
       if (user && !statesUser.username) {

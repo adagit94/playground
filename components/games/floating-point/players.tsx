@@ -7,6 +7,7 @@ import {
   ContextPlayers,
   ContextParams
 } from '../../../contexts/games/floating-point';
+import { ContextAuth0 } from '../../../contexts/auth0';
 
 const icons: Icons = {
   ball1: {
@@ -32,10 +33,13 @@ const icons: Icons = {
 };
 
 const Players: React.FC = () => {
+  const statesAuth0 = useContext(ContextAuth0);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
 
+  const profile = statesGame.profile;
+  const profilePicture = statesAuth0.user.picture;
   const playersCount = statesGame.players.length;
   const {
     P1: { top: topP1, left: leftP1 },
@@ -56,6 +60,7 @@ const Players: React.FC = () => {
     left: ${leftP1}px;
     width: ${dimensions}px;
     height: ${dimensions}px;
+    background-image: url(${profile === 'P1' && profilePicture});
 
     svg path {
       fill: ${colorP1};
@@ -64,9 +69,11 @@ const Players: React.FC = () => {
 
   points.push(
     <IconP1 key='IconP1'>
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP1].viewBox}>
-        <path d={icons[iconP1].path} />
-      </svg>
+      {profile !== 'P1' && (
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP1].viewBox}>
+          <path d={icons[iconP1].path} />
+        </svg>
+      )}
     </IconP1>
   );
 
@@ -76,6 +83,7 @@ const Players: React.FC = () => {
     left: ${leftP2}px;
     width: ${dimensions}px;
     height: ${dimensions}px;
+    background-image: url(${profile === 'P2' && profilePicture});
 
     svg path {
       fill: ${colorP2};
@@ -84,9 +92,11 @@ const Players: React.FC = () => {
 
   points.push(
     <IconP2 key='IconP2'>
-      <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP2].viewBox}>
-        <path d={icons[iconP2].path} />
-      </svg>
+      {profile !== 'P2' && (
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP2].viewBox}>
+          <path d={icons[iconP2].path} />
+        </svg>
+      )}
     </IconP2>
   );
 
@@ -100,6 +110,7 @@ const Players: React.FC = () => {
       left: ${leftP3}px;
       width: ${dimensions}px;
       height: ${dimensions}px;
+      background-image: url(${profile === 'P3' && profilePicture});
 
       svg path {
         fill: ${colorP3};
@@ -108,9 +119,14 @@ const Players: React.FC = () => {
 
     points.push(
       <IconP3 key='IconP3'>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP3].viewBox}>
-          <path d={icons[iconP3].path} />
-        </svg>
+        {profile !== 'P3' && (
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox={icons[iconP3].viewBox}
+          >
+            <path d={icons[iconP3].path} />
+          </svg>
+        )}
       </IconP3>
     );
   }
@@ -125,6 +141,7 @@ const Players: React.FC = () => {
       left: ${leftP4}px;
       width: ${dimensions}px;
       height: ${dimensions}px;
+      background-image: url(${profile === 'P4' && profilePicture});
 
       svg path {
         fill: ${colorP4};
@@ -133,9 +150,14 @@ const Players: React.FC = () => {
 
     points.push(
       <IconP4 key='IconP4'>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox={icons[iconP4].viewBox}>
-          <path d={icons[iconP4].path} />
-        </svg>
+        {profile !== 'P4' && (
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox={icons[iconP4].viewBox}
+          >
+            <path d={icons[iconP4].path} />
+          </svg>
+        )}
       </IconP4>
     );
   }

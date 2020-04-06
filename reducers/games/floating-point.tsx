@@ -21,11 +21,15 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
     case 'changeState': // off / conf / running / paused
       return {
         ...states,
+        state: action.state,
         players:
           action.state === 'off' || action.state === 'conf'
             ? initGame.players
             : states.players,
-        state: action.state
+        profile:
+          action.state === 'off' || action.state === 'conf'
+            ? initGame.profile
+            : states.profile
       };
 
     case 'changeDimensions':
@@ -33,6 +37,12 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         ...states,
         width: action.width,
         height: action.height
+      };
+
+    case 'changeProfile':
+      return {
+        ...states,
+        profile: action.player
       };
 
     case 'changePlayers':
@@ -139,15 +149,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         default:
           throw new Error('Unspecified / Wrong operation');
       }
-
-    case 'withProfile':
-      return {
-        ...states,
-        [action.player]: {
-          ...states[action.player],
-          profile: action.value
-        }
-      };
 
     default:
       throw new Error('Unspecified / Wrong action');

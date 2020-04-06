@@ -368,6 +368,18 @@ const Controller: React.FC = () => {
   };
 
   useEffect(() => {
+    refHandleMove.current = handleMove;
+    refRecalculate.current = recalculate;
+  });
+
+  useEffect(() => {
+    dispatchesFP.game = dispatchGame;
+    dispatchesFP.players = dispatchPlayers;
+    dispatchesFP.params = dispatchParams;
+    dispatchesFP.fp = dispatchFP;
+  }, []);
+
+  useEffect(() => {
     const changeDimensions = (): void => {
       dispatchGame({
         type: 'changeDimensions',
@@ -456,18 +468,6 @@ const Controller: React.FC = () => {
       }
     };
   });
-
-  useEffect(() => {
-    refHandleMove.current = handleMove;
-    refRecalculate.current = recalculate;
-  });
-
-  useEffect(() => {
-    dispatchesFP.game = dispatchGame;
-    dispatchesFP.players = dispatchPlayers;
-    dispatchesFP.params = dispatchParams;
-    dispatchesFP.fp = dispatchFP;
-  }, []);
 
   return (
     <Container>
