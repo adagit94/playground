@@ -32,3 +32,4 @@ export const InputOptionsCommon = styled.input`
     margin-top: -10px;
   }
 `;
+

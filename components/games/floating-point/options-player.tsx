@@ -9,13 +9,14 @@ import { OverlapDisabled } from '../../styled-components/overlaps';
 import { ContainerOptions } from '../../styled-components/containers';
 
 import { ContextUser } from '../../../contexts/user';
-import { ContextAuth0 } from '../../../contexts/auth0';
+import { ContextFirebase } from '../../../contexts/firebase';
 import {
   ContextGame,
   ContextPlayers
 } from '../../../contexts/games/floating-point';
 
 import {
+  PropsAvatar,
   PropsOptionsPlayer,
   PropsOptions
 } from '../../../types/games/floating-point';
@@ -78,13 +79,14 @@ const Overlap = styled(OverlapDisabled)`
     props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
 `;
 
-const Avatar: React.FC<{ bg: string }> = ({ bg }): JSX.Element => {
+const Avatar: React.FC<PropsAvatar> = ({ bg, state }): JSX.Element => {
   const ContainerAvatar = styled.div`
+    flex: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    position: relative;
   `;
 
   const Avatar = styled.div`
@@ -97,6 +99,7 @@ const Avatar: React.FC<{ bg: string }> = ({ bg }): JSX.Element => {
   return (
     <ContainerAvatar>
       <Avatar />
+      {state !== 'conf' && <Overlap />}
     </ContainerAvatar>
   );
 };
@@ -116,13 +119,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesUser = useContext(ContextUser);
-  const statesAuth0 = useContext(ContextAuth0);
+  const StatesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesFP);
 
   const { state, profile } = statesGame;
   const score = statesPlayers[player].score;
   const username = statesUser.username;
-  const user = statesAuth0.user;
+  const user = StatesFirebase.user;
 
   const withProfile = profile === player;
 
@@ -133,7 +136,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         <Info>
           {withProfile && username}
 
-          {user && !profile && (
+          {user && !profile && state === 'conf' && (
             <ButtonLoadProfile
               onClick={(): void => {
                 dispatches.game({
@@ -149,7 +152,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         </Info>
         <Info>{(state === 'running' || state === 'paused') && score}</Info>
       </ContainerInfo>
-      {withProfile && <Avatar bg={user.picture} />}
+      {withProfile && <Avatar bg={user.picture} state={state} />}
       {!withProfile && <Options player={player} state={state} />}
     </Container>
   );

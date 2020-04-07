@@ -9,7 +9,7 @@ import { ContextGame } from '../../../contexts/games/floating-point';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  height: 35%;
+  height: 45%;
   border-top: 1px solid;
 `;
 

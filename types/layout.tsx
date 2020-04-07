@@ -1,5 +1,5 @@
 import { ActionsUser } from './user';
-import { ActionsAuth0 } from './auth0';
+import { ActionsFirebase } from './firebase';
 
 export type StatesLayout = {
   theme: string;
@@ -14,7 +14,7 @@ export type PropsLayout = {
 export type DispatchesLayout = {
   layout: React.Dispatch<ActionsLayout>;
   user: React.Dispatch<ActionsUser>;
-  auth0: React.Dispatch<ActionsAuth0>;
+  firebase: React.Dispatch<ActionsFirebase>;
 };
 
 export type Colors = {

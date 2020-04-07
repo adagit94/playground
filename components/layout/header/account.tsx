@@ -3,22 +3,16 @@
 import Router, { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import createAuth0Client from '@auth0/auth0-spa-js';
 import $ from 'jquery';
 
+import LogIn from './log-in';
 import Profile from './profile';
 
-import firebaseConfig from '../../../firebase-config.json';
-import auth0Config from '../../../auth0-config.json';
 import { Colors } from '../../../types/layout';
 import { StatesUser } from '../../../types/user';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextUser } from '../../../contexts/user';
-import { ContextAuth0 } from '../../../contexts/auth0';
-
-let firebaseApp;
+import { ContextFirebase } from '../../../contexts/firebase';
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');
@@ -71,10 +65,10 @@ const Account: React.FC = () => {
   const router = useRouter();
   const colors: Colors = useContext(ThemeContext);
   const statesUser = useContext(ContextUser);
-  const statesAuth0 = useContext(ContextAuth0);
+  const StatesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesLayout);
 
-  const { auth0, user, isAuthenticated, loading } = statesAuth0;
+  const { user, isAuthenticated, loading } = StatesFirebase;
 
   const redirectURL = `http://localhost:3000${router.pathname}`;
   const initUser = (): StatesUser => ({
@@ -88,16 +82,6 @@ const Account: React.FC = () => {
     height: 50px;
     border-radius: 100%;
     background-image: url(${user && user.picture});
-  `;
-
-  const Slider = styled.div`
-    position: absolute;
-    top: 75px;
-    right: 0;
-    width: 150px;
-    height: 150px;
-    z-index: 1;
-    background-color: ${(props): string => props.theme.inverted};
   `;
 
   const pulsing = keyframes`
@@ -143,8 +127,19 @@ const Account: React.FC = () => {
     </LoadingContainer>
   );
 
+  const Slider = styled.div`
+    position: absolute;
+    top: 75px;
+    right: 0;
+    width: ${isAuthenticated ? 150 : 300}px;
+    height: 150px;
+    z-index: 1;
+    background-color: ${(props): string => props.theme.inverted};
+  `;
+
+  /*
   useEffect(() => {
-    const initAuth0 = async (): Promise<void> => {
+    const initFirebase = async (): Promise<void> => {
       if (!auth0) {
         const auth0 = await createAuth0Client(auth0Config);
 
@@ -176,39 +171,9 @@ const Account: React.FC = () => {
       }
     };
 
-    initAuth0().catch(err => console.error(err));
+    initFirebase().catch(err => console.error(err));
   }, []);
-
-  useEffect(() => {
-    const initFirestore = async (): Promise<void> => {
-      if (user && !statesUser.username) {
-        if (!firebaseApp) firebaseApp = firebase.initializeApp(firebaseConfig);
-
-        const users = firebase.firestore().collection('users');
-
-        const userData = await users
-          .doc(user.email)
-          .get()
-          .then(data => data.data())
-          .catch(err => console.error(err));
-
-        if (!userData) {
-          users
-            .doc(user.email)
-            .set(initUser())
-            .then(() => console.log('data uploaded'))
-            .catch(err => console.error(err));
-        }
-
-        dispatches.user({
-          type: 'setUser',
-          payload: userData || initUser()
-        });
-      }
-    };
-
-    initFirestore().catch(err => console.error(err));
-  });
+  */
 
   console.log(statesUser);
   return (
@@ -216,34 +181,16 @@ const Account: React.FC = () => {
       {loading && LoadingIndicator}
 
       {!loading && (
-        <Button
-          onClick={
-            isAuthenticated
-              ? toggleSlider
-              : async (): Promise<void> => {
-                  await auth0.loginWithRedirect({
-                    redirect_uri: redirectURL
-                  });
-                }
-          }
-          type='button'
-        >
+        <Button onClick={toggleSlider} type='button'>
           {isAuthenticated ? <Avatar /> : 'Log in'}
         </Button>
       )}
 
-      {!loading && isAuthenticated && (
-        <Slider style={{ display: 'none' }} id='slider'>
-          <Profile
-            logout={(): void => {
-              auth0.logout({
-                returnTo: redirectURL,
-                client_id: auth0Config.client_id
-              });
-            }}
-          />
-        </Slider>
-      )}
+      <Slider style={{ display: 'none' }} id='slider'>
+        {isAuthenticated && <Profile logout={(): void => null} />}
+
+        {!isAuthenticated && <LogIn />}
+      </Slider>
     </Container>
   );
 };

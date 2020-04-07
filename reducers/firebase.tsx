@@ -1,16 +1,11 @@
-import { StatesAuth0, ActionsAuth0 } from '../types/auth0';
+import { initFirebase } from '../inits/firebase';
+import { StatesFirebase, ActionsFirebase } from '../types/firebase';
 
-export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
+export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
   states,
   action
-): StatesAuth0 => {
+): StatesFirebase => {
   switch (action.type) {
-    case 'setAuth0':
-      return {
-        ...states,
-        auth0: action.payload
-      };
-
     case 'setUser':
       return {
         ...states,
@@ -27,6 +22,11 @@ export const reducerAuth0: React.Reducer<StatesAuth0, ActionsAuth0> = (
       return {
         ...states,
         loading: action.value
+      };
+
+    case 'reset':
+      return {
+        ...initFirebase
       };
   }
 };

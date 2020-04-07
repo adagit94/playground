@@ -55,6 +55,11 @@ export type ControlKeys4P = ControlKeys3P & {
 
 export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
 
+export type PropsAvatar = {
+  state: string;
+  bg: string;
+};
+
 export type PropsOptions = {
   state: string;
   player: string;
