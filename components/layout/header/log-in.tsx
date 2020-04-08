@@ -20,11 +20,8 @@ const Label = styled.label`
 `;
 
 const LogIn: React.FC = (): JSX.Element => {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-
-  console.log(email);
-  console.log(password);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <Form

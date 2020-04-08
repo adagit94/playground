@@ -11,8 +11,8 @@ import {
 import { createUser } from '../firebase/auth';
 
 const CreateAccount: React.FC = (): JSX.Element => {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <FormContainerPage>

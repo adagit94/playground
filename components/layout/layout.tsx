@@ -99,7 +99,7 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   var uid = user.uid;
   var providerData = user.providerData;
   */
-
+  //console.log(statesFirebase.user);
   return (
     <Container>
       <ThemeProvider theme={colors}>
