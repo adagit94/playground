@@ -1,5 +1,5 @@
-import { initFirebase } from '../inits/firebase';
 import { StatesFirebase, ActionsFirebase } from '../types/firebase';
+import { initFirebase } from '../inits/firebase';
 
 export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
   states,
@@ -9,7 +9,8 @@ export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
     case 'setUser':
       return {
         ...states,
-        user: action.payload
+        user: action.payload,
+        isAuthenticated: true
       };
 
     case 'setIsAuthenticated':

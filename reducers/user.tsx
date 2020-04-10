@@ -1,4 +1,5 @@
 import { StatesUser, ActionsUser } from '../types/user';
+import { initUser } from '../inits/user';
 
 export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
   states,
@@ -12,6 +13,11 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
       return {
         ...states,
         gatheredPoints: states.gatheredPoints + 1
+      };
+
+    case 'reset':
+      return {
+        ...initUser
       };
 
     default:

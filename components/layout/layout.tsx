@@ -1,3 +1,6 @@
+import * as firebase from 'firebase/app';
+import 'firebase/firebase-auth';
+
 import { useRouter } from 'next/router';
 import React, { useReducer, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
@@ -83,13 +86,15 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
 
     const loggedOut = (): void => {
       dispatchFirebase({ type: 'reset' });
+      dispatchUser({ type: 'reset' });
     };
 
     if (!firebaseApp) firebaseApp = initFirebaseApp();
 
     initAuthObserver(loggedIn, loggedOut);
   }, []);
-
+  console.log(statesFirebase.user);
+  //console.log(statesUser);
   /*
   var displayName = user.displayName;
   var email = user.email;

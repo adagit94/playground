@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import { FormButton } from '../../styled-components/forms';
 
-import { PropsProfile } from '../../../types/firebase';
+import { logout } from '../../../firebase/auth';
+import { ContextDispatchesLayout } from '../../../contexts/layout';
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +34,14 @@ const Row = styled.div`
   }
 `;
 
-const Profile: React.FC<PropsProfile> = ({ logout }) => {
+const Profile: React.FC = (): JSX.Element => {
+  const dispatches = useContext(ContextDispatchesLayout);
+
+  const handleLogout = (): void => {
+    dispatches.firebase({ type: 'reset' });
+    dispatches.user({ type: 'reset' });
+  };
+
   return (
     <Container>
       <Row>{name}</Row>
@@ -48,7 +56,12 @@ const Profile: React.FC<PropsProfile> = ({ logout }) => {
         </Link>
       </Row>
       <Row>
-        <FormButton onClick={logout} type='button'>
+        <FormButton
+          onClick={(): void => {
+            logout(handleLogout);
+          }}
+          type='button'
+        >
           Log out
         </FormButton>
       </Row>

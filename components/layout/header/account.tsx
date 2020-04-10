@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import Router, { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 import $ from 'jquery';
 
@@ -132,7 +132,7 @@ const Account: React.FC = () => {
     top: 75px;
     right: 0;
     width: ${isAuthenticated ? 150 : 300}px;
-    height: 150px;
+    height: ${isAuthenticated ? 150 : 300}px;
     z-index: 1;
     background-color: ${(props): string => props.theme.inverted};
   `;
@@ -175,7 +175,7 @@ const Account: React.FC = () => {
   }, []);
   */
 
-  console.log(statesUser);
+  console.log(StatesFirebase.user);
   return (
     <Container>
       {loading && LoadingIndicator}
@@ -187,7 +187,7 @@ const Account: React.FC = () => {
       )}
 
       <Slider style={{ display: 'none' }} id='slider'>
-        {isAuthenticated && <Profile logout={(): void => null} />}
+        {isAuthenticated && <Profile />}
 
         {!isAuthenticated && <LogIn />}
       </Slider>

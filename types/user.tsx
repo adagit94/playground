@@ -11,4 +11,5 @@ export type ActionsUser =
       type: 'setUser';
       payload: StatesUser;
     }
-  | { type: 'addPoint' };
+  | { type: 'addPoint' }
+  | { type: 'reset' };

@@ -3,9 +3,16 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 import { LinkStandard } from '../../styled-components/links';
-import { FormInput, FormButton, FormRow } from '../../styled-components/forms';
+import { DividerHorizontal } from '../../styled-components/dividers';
+import {
+  FormInput,
+  FormButton,
+  FormRow,
+  FormSocialProvider
+} from '../../styled-components/forms';
 
-import { loginEmail } from '../../../firebase/auth';
+import { loginEmail, loginProvider } from '../../../firebase/auth';
+import { ContextDispatchesLayout } from '../../../contexts/layout';
 
 const Form = styled.form`
   width: 100%;
@@ -13,13 +20,35 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  padding: 5px;
 `;
 
 const Label = styled.label`
   width: 75px;
 `;
 
+const SocialProviderFb = styled(FormSocialProvider)`
+  background-color: #3b5897;
+
+  &:hover {
+    background-color: #334d84;
+  }
+`;
+
+const SocialProviderGoogle = styled(FormSocialProvider)`
+  background-color: #c93e22;
+
+  &:hover {
+    background-color: #b3371e;
+  }
+`;
+
+const Divider = styled(DividerHorizontal)`
+  background-color: ${(props): string => props.theme.background};
+`;
+
 const LogIn: React.FC = (): JSX.Element => {
+  const dispatches = useContext(ContextDispatchesLayout);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,6 +58,29 @@ const LogIn: React.FC = (): JSX.Element => {
         loginEmail(email, password);
       }}
     >
+      <FormRow>
+        <SocialProviderFb
+          onClick={(): void => {
+            loginProvider('fb');
+          }}
+          type='button'
+        >
+          <img src='/icons/fb.svg' alt='facebook icon' />
+          Log in with Facebook
+        </SocialProviderFb>
+      </FormRow>
+      <FormRow>
+        <SocialProviderGoogle
+          onClick={(): void => {
+            loginProvider('google');
+          }}
+          type='button'
+        >
+          <img src='/icons/google.svg' alt='google icon' />
+          Log in with Google
+        </SocialProviderGoogle>
+      </FormRow>
+      <Divider />
       <FormRow>
         <Label htmlFor='email'>Email: </Label>
         <FormInput
@@ -54,9 +106,7 @@ const LogIn: React.FC = (): JSX.Element => {
         />
       </FormRow>
       <FormRow>
-        <FormButton onClick={loginEmail} type='submit'>
-          Log in
-        </FormButton>
+        <FormButton type='submit'>Log in</FormButton>
       </FormRow>
       <FormRow>
         <Link href='/reset-password' passHref>
@@ -70,4 +120,4 @@ const LogIn: React.FC = (): JSX.Element => {
   );
 };
 
-export default LogIn;
+export default React.memo(LogIn);
