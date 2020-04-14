@@ -1,6 +1,3 @@
-import * as firebase from 'firebase/app';
-import 'firebase/firebase-auth';
-
 import { useRouter } from 'next/router';
 import React, { useReducer, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
@@ -20,8 +17,6 @@ import { DispatchesLayout, PropsLayout, Colors } from '../../types/layout';
 import { ContextDispatchesLayout } from '../../contexts/layout';
 import { ContextUser } from '../../contexts/user';
 import { ContextFirebase } from '../../contexts/firebase';
-
-let firebaseApp;
 
 const dispatchesLayout: DispatchesLayout = {
   layout: undefined,
@@ -89,10 +84,11 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
       dispatchUser({ type: 'reset' });
     };
 
-    if (!firebaseApp) firebaseApp = initFirebaseApp();
+    initFirebaseApp();
 
     initAuthObserver(loggedIn, loggedOut);
   }, []);
+  //console.log();
   console.log(statesFirebase.user);
   //console.log(statesUser);
   /*

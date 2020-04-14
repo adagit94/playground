@@ -1,6 +1,8 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
 
+import { ValidatorReturn } from '../types/firebase';
+
 export const initAuthObserver = (
   loggedIn: Function,
   loggedOut: Function
@@ -10,7 +12,6 @@ export const initAuthObserver = (
       if (user) {
         loggedIn(user);
       } else {
-        console.log(1);
         loggedOut();
       }
     },
@@ -72,4 +73,17 @@ export const logout = async (): Promise<void> => {
     .signOut()
     .catch(err => console.error(err));
 };
-//var credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+export const validator = (password: string): ValidatorReturn => {
+  let count: boolean;
+  let upper: boolean;
+  let num: boolean;
+  let special: boolean;
+
+  if (password.length > 7) count = true;
+  if (/[A-Z]/.test(password)) upper = true;
+  if (/\d/.test(password)) num = true;
+  if (/\W/.test(password)) special = true;
+
+  return { count, upper, num, special };
+};

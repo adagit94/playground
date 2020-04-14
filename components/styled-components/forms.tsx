@@ -15,6 +15,7 @@ export const FormInput = styled.input`
   transition-property: box-shadow;
   transition-duration: 0.1s;
   transition-timing-function: linear;
+
   :focus {
     box-shadow: 0 0 0 2px;
     outline: none;
@@ -61,6 +62,7 @@ export const FormContainerPage = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  position: relative;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
 `;

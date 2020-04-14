@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
 import { FormButton } from '../../styled-components/forms';
 
 import { logout } from '../../../firebase/auth';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 
 const Container = styled.div`
   display: flex;
@@ -35,13 +34,6 @@ const Row = styled.div`
 `;
 
 const Profile: React.FC = (): JSX.Element => {
-  const dispatches = useContext(ContextDispatchesLayout);
-
-  const handleLogout = (): void => {
-    dispatches.firebase({ type: 'reset' });
-    dispatches.user({ type: 'reset' });
-  };
-
   return (
     <Container>
       <Row>{name}</Row>
@@ -58,7 +50,7 @@ const Profile: React.FC = (): JSX.Element => {
       <Row>
         <FormButton
           onClick={(): void => {
-            logout(handleLogout);
+            logout();
           }}
           type='button'
         >

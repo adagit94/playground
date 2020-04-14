@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 import {
   FormInput,
@@ -8,16 +9,54 @@ import {
   FormRowPage
 } from '../components/styled-components/forms';
 
-import { createUser } from '../firebase/auth';
+import { createUser, validator } from '../firebase/auth';
+
+const ValidationWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 150px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid;
+  border-radius: 5px;
+`;
 
 const CreateAccount: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { count, upper, num, special } = validator(password);
+
+  /*  useEffect(() => {
+    if (
+      isValid === false &&
+      count === true &&
+      upper === true &&
+      num === true &&
+      special === true
+    ) {
+      setIsValid(true);
+    }
+  });
+  */
+
   return (
     <FormContainerPage>
+      <ValidationWindow>
+        Password must contain at least:
+        <ul>
+          <li>8 characters</li>
+          <li>One uppercase letter</li>
+          <li>One number</li>
+          <li>One special character</li>
+        </ul>
+      </ValidationWindow>
       <FormPage
-        onSubmit={(): void => {
+        onSubmit={(e): void => {
+          e.preventDefault();
           createUser(email, password);
         }}
       >

@@ -13,3 +13,10 @@ export type ActionsFirebase =
 export type PropsProfile = {
   logout: Function;
 };
+
+export type ValidatorReturn = {
+  count: boolean;
+  upper: boolean;
+  num: boolean;
+  special: boolean;
+};

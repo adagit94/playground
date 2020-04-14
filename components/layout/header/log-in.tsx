@@ -54,7 +54,8 @@ const LogIn: React.FC = (): JSX.Element => {
 
   return (
     <Form
-      onSubmit={(): void => {
+      onSubmit={(e): void => {
+        e.preventDefault();
         loginEmail(email, password);
       }}
     >
