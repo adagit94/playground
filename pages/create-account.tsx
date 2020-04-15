@@ -11,24 +11,56 @@ import {
 
 import { createUser, validator } from '../firebase/auth';
 
-const ValidationWindow = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 150px;
-  width: 100px;
-  height: 100px;
-  border: 2px solid;
-  border-radius: 5px;
-`;
-
 const CreateAccount: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [markedInvalid, setMarkedInvalid] = useState(false);
 
-  const { count, upper, num, special } = validator(password);
+  const { isValid, equalPasswords, count, upper, num, special } = validator(
+    password,
+    passwordConfirm
+  );
+
+  const ValidationWindow = styled.div`
+    visibility: ${password ? 'visible' : 'hidden'};
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 2px solid;
+    border-radius: 5px;
+
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+  `;
+
+  const Count = styled.li`
+    color: ${count === true ? '#00ff00' : '#ff0000'};
+  `;
+
+  const Upper = styled.li`
+    color: ${upper === true ? '#00ff00' : '#ff0000'};
+  `;
+
+  const Num = styled.li`
+    color: ${num === true ? '#00ff00' : '#ff0000'};
+  `;
+
+  const Special = styled.li`
+    color: ${special === true ? '#00ff00' : '#ff0000'};
+  `;
+
+  const LabelPassword = styled.label`
+    color: ${markedInvalid && !isValid && '#ff0000'};
+  `;
+
+  const LabelPasswordConfirm = styled.label`
+    color: ${markedInvalid && !equalPasswords && '#ff0000'};
+  `;
 
   /*  useEffect(() => {
     if (
@@ -48,16 +80,21 @@ const CreateAccount: React.FC = (): JSX.Element => {
       <ValidationWindow>
         Password must contain at least:
         <ul>
-          <li>8 characters</li>
-          <li>One uppercase letter</li>
-          <li>One number</li>
-          <li>One special character</li>
+          <Count>8 - 30 characters</Count>
+          <Upper>One uppercase letter</Upper>
+          <Num>One number</Num>
+          <Special>One special character</Special>
         </ul>
       </ValidationWindow>
       <FormPage
         onSubmit={(e): void => {
           e.preventDefault();
-          createUser(email, password);
+
+          if (isValid && equalPasswords) {
+            createUser(email, password);
+          } else {
+            setMarkedInvalid(true);
+          }
         }}
       >
         <FormRowPage>
@@ -69,28 +106,32 @@ const CreateAccount: React.FC = (): JSX.Element => {
             type='email'
             name='email'
             id='email'
-            required
           />
         </FormRowPage>
         <FormRowPage>
-          <label htmlFor='password'>Password: </label>
+          <LabelPassword htmlFor='password'>Password: </LabelPassword>
           <FormInput
             onChange={(e): void => {
               setPassword(e.target.value);
             }}
+            value={password}
             type='password'
             name='password'
             id='password'
-            required
           />
         </FormRowPage>
         <FormRowPage>
-          <label htmlFor='password-confirm'>Confirm password: </label>
+          <LabelPasswordConfirm htmlFor='password-confirm'>
+            Confirm password:
+          </LabelPasswordConfirm>
           <FormInput
+            onChange={(e): void => {
+              setPasswordConfirm(e.target.value);
+            }}
+            value={passwordConfirm}
             type='password'
             name='password-confirm'
             id='password-confirm'
-            required
           />
         </FormRowPage>
         <FormRowPage>
