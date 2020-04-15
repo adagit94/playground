@@ -74,16 +74,25 @@ export const logout = async (): Promise<void> => {
     .catch(err => console.error(err));
 };
 
-export const validator = (password: string): ValidatorReturn => {
-  let count: boolean;
-  let upper: boolean;
-  let num: boolean;
-  let special: boolean;
+export const validator = (
+  password: string,
+  passwordConfirm: string
+): ValidatorReturn => {
+  let isValid = false;
+  let equalPasswords = false;
+  let count = false;
+  let upper = false;
+  let num = false;
+  let special = false;
 
-  if (password.length > 7) count = true;
+  if (password.length > 7 && password.length < 31) count = true;
   if (/[A-Z]/.test(password)) upper = true;
   if (/\d/.test(password)) num = true;
   if (/\W/.test(password)) special = true;
 
-  return { count, upper, num, special };
+  if (password === passwordConfirm) equalPasswords = true;
+
+  if (count && upper && num && special) isValid = true;
+
+  return { isValid, equalPasswords, count, upper, num, special };
 };

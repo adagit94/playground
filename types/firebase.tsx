@@ -15,6 +15,8 @@ export type PropsProfile = {
 };
 
 export type ValidatorReturn = {
+  isValid: boolean;
+  equalPasswords: boolean;
   count: boolean;
   upper: boolean;
   num: boolean;

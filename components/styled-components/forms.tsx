@@ -50,21 +50,20 @@ export const FormButton = styled.button`
   }
 `;
 
+export const FormContainerPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
+`;
+
 export const FormPage = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-`;
-
-export const FormContainerPage = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
 `;
 
 export const FormRowPage = styled.div`
