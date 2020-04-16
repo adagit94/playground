@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
   FormInput,
   FormButton,
-  FormPage,
   FormContainerPage,
-  FormRowPage
+  FormContainer,
+  FormRow,
+  FormContainerWindow,
+  FormWindowValidation,
+  FormWindowError
 } from '../components/styled-components/forms';
 
 import { createUser, validator } from '../firebase/auth';
@@ -22,20 +25,8 @@ const CreateAccount: React.FC = (): JSX.Element => {
     passwordConfirm
   );
 
-  const ValidationWindow = styled.div`
+  const ValidationWindow = styled(FormWindowValidation)`
     visibility: ${password ? 'visible' : 'hidden'};
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 2px solid;
-    border-radius: 5px;
-
-    ul {
-      padding: 0;
-      margin: 0;
-    }
   `;
 
   const Count = styled.li`
@@ -62,31 +53,20 @@ const CreateAccount: React.FC = (): JSX.Element => {
     color: ${markedInvalid && !equalPasswords && '#ff0000'};
   `;
 
-  /*  useEffect(() => {
-    if (
-      isValid === false &&
-      count === true &&
-      upper === true &&
-      num === true &&
-      special === true
-    ) {
-      setIsValid(true);
-    }
-  });
-  */
-
   return (
     <FormContainerPage>
-      <ValidationWindow>
-        Password must contain at least:
-        <ul>
-          <Count>8 - 30 characters</Count>
-          <Upper>One uppercase letter</Upper>
-          <Num>One number</Num>
-          <Special>One special character</Special>
-        </ul>
-      </ValidationWindow>
-      <FormPage
+      <FormContainerWindow>
+        <ValidationWindow>
+          Password must contain at least:
+          <ul>
+            <Count>8 characters</Count>
+            <Upper>One uppercase letter</Upper>
+            <Num>One number</Num>
+            <Special>One special character</Special>
+          </ul>
+        </ValidationWindow>
+      </FormContainerWindow>
+      <FormContainer
         onSubmit={(e): void => {
           e.preventDefault();
 
@@ -97,30 +77,34 @@ const CreateAccount: React.FC = (): JSX.Element => {
           }
         }}
       >
-        <FormRowPage>
+        <FormRow>
           <label htmlFor='email'>Email: </label>
           <FormInput
             onChange={(e): void => {
               setEmail(e.target.value);
             }}
-            type='email'
+            value={email}
             name='email'
             id='email'
+            type='email'
+            required
           />
-        </FormRowPage>
-        <FormRowPage>
+        </FormRow>
+        <FormRow>
           <LabelPassword htmlFor='password'>Password: </LabelPassword>
           <FormInput
             onChange={(e): void => {
               setPassword(e.target.value);
             }}
             value={password}
-            type='password'
             name='password'
             id='password'
+            type='password'
+            minLength='8'
+            required
           />
-        </FormRowPage>
-        <FormRowPage>
+        </FormRow>
+        <FormRow>
           <LabelPasswordConfirm htmlFor='password-confirm'>
             Confirm password:
           </LabelPasswordConfirm>
@@ -129,15 +113,20 @@ const CreateAccount: React.FC = (): JSX.Element => {
               setPasswordConfirm(e.target.value);
             }}
             value={passwordConfirm}
-            type='password'
             name='password-confirm'
             id='password-confirm'
+            type='password'
+            minLength='8'
+            required
           />
-        </FormRowPage>
-        <FormRowPage>
+        </FormRow>
+        <FormRow>
           <FormButton type='submit'>Create account</FormButton>
-        </FormRowPage>
-      </FormPage>
+        </FormRow>
+      </FormContainer>
+      <FormContainerWindow>
+        <FormWindowError id='errWindow' />
+      </FormContainerWindow>
     </FormContainerPage>
   );
 };

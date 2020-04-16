@@ -7,8 +7,8 @@ import { DividerHorizontal } from '../../styled-components/dividers';
 import {
   FormInput,
   FormButton,
-  FormRow,
-  FormSocialProvider
+  FormSocialProvider,
+  FormWindowError
 } from '../../styled-components/forms';
 
 import { loginEmail, loginProvider } from '../../../firebase/auth';
@@ -21,6 +21,13 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: space-around;
   padding: 5px;
+`;
+
+const FormRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: ${(props): string => props.theme.background};
 `;
 
 const Label = styled.label`
@@ -56,6 +63,7 @@ const LogIn: React.FC = (): JSX.Element => {
     <Form
       onSubmit={(e): void => {
         e.preventDefault();
+
         loginEmail(email, password);
       }}
     >
@@ -82,6 +90,7 @@ const LogIn: React.FC = (): JSX.Element => {
         </SocialProviderGoogle>
       </FormRow>
       <Divider />
+      <FormWindowError id='errWindow' />
       <FormRow>
         <Label htmlFor='email'>Email: </Label>
         <FormInput

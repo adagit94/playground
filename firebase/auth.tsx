@@ -1,7 +1,15 @@
+import ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
 
 import { ValidatorReturn } from '../types/firebase';
+
+const handleError = (err): void => {
+  const el = document.querySelector('#errWindow');
+  const msg = err.message;
+
+  ReactDOM.render(msg, el);
+};
 
 export const initAuthObserver = (
   loggedIn: Function,
@@ -26,7 +34,14 @@ export const createUser = async (
   await firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
-    .catch(err => console.error(err));
+    .then(credential => {
+      history.back();
+
+      credential.user
+        .sendEmailVerification({ url: 'localhost:3000' })
+        .catch(err => console.error(err));
+    })
+    .catch(err => handleError(err));
 };
 
 export const loginEmail = async (
@@ -36,7 +51,7 @@ export const loginEmail = async (
   await firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .catch(err => console.error(err));
+    .catch(err => handleError(err));
 };
 
 export const loginProvider = async (
@@ -85,7 +100,7 @@ export const validator = (
   let num = false;
   let special = false;
 
-  if (password.length > 7 && password.length < 31) count = true;
+  if (password.length > 7) count = true;
   if (/[A-Z]/.test(password)) upper = true;
   if (/\d/.test(password)) num = true;
   if (/\W/.test(password)) special = true;

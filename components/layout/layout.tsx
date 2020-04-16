@@ -77,6 +77,7 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   useEffect(() => {
     const loggedIn = (user): void => {
       dispatchFirebase({ type: 'setUser', payload: user });
+      //dispatchFirebase({ type: 'setLoading', value: false });
     };
 
     const loggedOut = (): void => {

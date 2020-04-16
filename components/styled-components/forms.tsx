@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 
-export const FormRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  color: ${(props): string => props.theme.background};
-`;
-
 export const FormInput = styled.input`
   border: 2px solid;
   border-radius: 5px;
@@ -50,30 +43,6 @@ export const FormButton = styled.button`
   }
 `;
 
-export const FormContainerPage = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
-`;
-
-export const FormPage = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-export const FormRowPage = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 5px 0;
-  color: ${(props): string => props.theme.background};
-`;
-
 export const FormSocialProvider = styled.button`
   display: flex;
   flex-direction: row;
@@ -98,4 +67,53 @@ export const FormSocialProvider = styled.button`
     height: 15px;
     margin-right: 5px;
   }
+`;
+
+export const FormContainerPage = styled.div`
+  height: 100%;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
+`;
+
+export const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+`;
+
+export const FormRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0;
+  color: ${(props): string => props.theme.background};
+`;
+
+export const FormContainerWindow = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25%;
+`;
+
+export const FormWindowValidation = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid;
+  border-radius: 5px;
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+`;
+
+export const FormWindowError = styled.div`
+  text-align: center;
+  color: #ff0000;
 `;

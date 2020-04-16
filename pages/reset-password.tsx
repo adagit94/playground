@@ -4,13 +4,13 @@ import {
   FormInput,
   FormButton,
   FormPage,
-  FormContainerPage,
+  FormContainer,
   FormRowPage
 } from '../components/styled-components/forms';
 
 const ResetPassword: React.FC = (): JSX.Element => {
   return (
-    <FormContainerPage>
+    <FormContainer>
       <FormPage>
         <FormRowPage>
           <label htmlFor='email'>Email: </label>
@@ -20,7 +20,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
           <FormButton type='button'>Reset</FormButton>
         </FormRowPage>
       </FormPage>
-    </FormContainerPage>
+    </FormContainer>
   );
 };
 
