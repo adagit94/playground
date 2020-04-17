@@ -1,25 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import {
   FormInput,
   FormButton,
-  FormPage,
   FormContainer,
-  FormRowPage
+  Form,
+  FormRow
 } from '../components/styled-components/forms';
 
+import { resetPassword } from '../firebase/auth';
+
+const FormFullHeight = styled(Form)`
+  height: 100%;
+`;
+
 const ResetPassword: React.FC = (): JSX.Element => {
+  const [email, setEmail] = useState('');
+
   return (
     <FormContainer>
-      <FormPage>
-        <FormRowPage>
+      <FormFullHeight
+        onSubmit={(e): void => {
+          e.preventDefault();
+
+          resetPassword(email);
+        }}
+      >
+        <FormRow>
           <label htmlFor='email'>Email: </label>
-          <FormInput type='email' name='email' id='email' required />
-        </FormRowPage>
-        <FormRowPage>
-          <FormButton type='button'>Reset</FormButton>
-        </FormRowPage>
-      </FormPage>
+          <FormInput
+            onChange={(e): void => {
+              setEmail(e.target.value);
+            }}
+            value={email}
+            type='email'
+            name='email'
+            id='email'
+            required
+          />
+        </FormRow>
+        <FormRow>
+          <FormButton type='submit'>Reset</FormButton>
+        </FormRow>
+      </FormFullHeight>
     </FormContainer>
   );
 };

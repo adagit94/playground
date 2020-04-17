@@ -69,13 +69,13 @@ export const FormSocialProvider = styled.button`
   }
 `;
 
-export const FormContainerPage = styled.div`
+export const FormContainer = styled.div`
   height: 100%;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
 `;
 
-export const FormContainer = styled.form`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;

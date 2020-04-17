@@ -75,33 +75,10 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   }, []);
 
   useEffect(() => {
-    const loggedIn = (user): void => {
-      dispatchFirebase({ type: 'setUser', payload: user });
-      //dispatchFirebase({ type: 'setLoading', value: false });
-    };
-
-    const loggedOut = (): void => {
-      dispatchFirebase({ type: 'reset' });
-      dispatchUser({ type: 'reset' });
-    };
-
     initFirebaseApp();
-
-    initAuthObserver(loggedIn, loggedOut);
   }, []);
-  //console.log();
-  console.log(statesFirebase.user);
+
   //console.log(statesUser);
-  /*
-  var displayName = user.displayName;
-  var email = user.email;
-  var emailVerified = user.emailVerified;
-  var photoURL = user.photoURL;
-  var isAnonymous = user.isAnonymous;
-  var uid = user.uid;
-  var providerData = user.providerData;
-  */
-  //console.log(statesFirebase.user);
   return (
     <Container>
       <ThemeProvider theme={colors}>

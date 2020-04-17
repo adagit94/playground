@@ -4,27 +4,25 @@ import 'firebase/firebase-auth';
 
 import { ValidatorReturn } from '../types/firebase';
 
-const handleError = (err): void => {
-  const el = document.querySelector('#errWindow');
+const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
   const msg = err.message;
 
-  ReactDOM.render(msg, el);
+  if (out === 'alert') {
+    alert(msg);
+  } else if (out === 'el') {
+    const el = document.querySelector('#errWindow');
+
+    ReactDOM.render(msg, el);
+  }
 };
 
-export const initAuthObserver = (
-  loggedIn: Function,
-  loggedOut: Function
-): void => {
-  firebase.auth().onAuthStateChanged(
-    user => {
-      if (user) {
-        loggedIn(user);
-      } else {
-        loggedOut();
-      }
-    },
-    err => console.error(err)
-  );
+export const logout = async (clearUser?: Function): Promise<void> => {
+  await firebase
+    .auth()
+    .signOut()
+    .catch(err => console.error(err));
+
+  if (clearUser !== undefined) clearUser();
 };
 
 export const createUser = async (
@@ -35,27 +33,37 @@ export const createUser = async (
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then(credential => {
+      credential.user.sendEmailVerification().catch(err => console.error(err));
+      logout();
       history.back();
-
-      credential.user
-        .sendEmailVerification({ url: 'localhost:3000' })
-        .catch(err => console.error(err));
     })
-    .catch(err => handleError(err));
+    .catch(err => handleError(err, 'el'));
 };
 
 export const loginEmail = async (
   email: string,
-  password: string
+  password: string,
+  initUser: Function
 ): Promise<void> => {
   await firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .catch(err => handleError(err));
+    .then(credential => {
+      const user = credential.user;
+
+      if (user.emailVerified) {
+        initUser(user);
+      } else {
+        logout();
+        alert('Please, verify your email before log in.');
+      }
+    })
+    .catch(err => handleError(err, 'alert'));
 };
 
 export const loginProvider = async (
-  service: 'fb' | 'google'
+  service: 'fb' | 'google',
+  initUser: Function
 ): Promise<void> => {
   let provider;
 
@@ -79,13 +87,15 @@ export const loginProvider = async (
   await firebase
     .auth()
     .getRedirectResult()
+    .then(credential => initUser(credential.user))
     .catch(err => console.error(err));
 };
 
-export const logout = async (): Promise<void> => {
+export const resetPassword = async (email): Promise<void> => {
   await firebase
     .auth()
-    .signOut()
+    .sendPasswordResetEmail(email)
+    .then(() => history.back())
     .catch(err => console.error(err));
 };
 

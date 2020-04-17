@@ -85,8 +85,6 @@ const Account: React.FC = () => {
     background-color: ${(props): string => props.theme.inverted};
   `;
 
-  console.log(StatesFirebase.user);
-  console.log(loading);
   return (
     <Container>
       {loading ? (

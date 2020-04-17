@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {
   FormInput,
   FormButton,
-  FormContainerPage,
   FormContainer,
+  Form,
   FormRow,
   FormContainerWindow,
   FormWindowValidation,
@@ -54,7 +54,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
   `;
 
   return (
-    <FormContainerPage>
+    <FormContainer>
       <FormContainerWindow>
         <ValidationWindow>
           Password must contain at least:
@@ -66,7 +66,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           </ul>
         </ValidationWindow>
       </FormContainerWindow>
-      <FormContainer
+      <Form
         onSubmit={(e): void => {
           e.preventDefault();
 
@@ -123,11 +123,11 @@ const CreateAccount: React.FC = (): JSX.Element => {
         <FormRow>
           <FormButton type='submit'>Create account</FormButton>
         </FormRow>
-      </FormContainer>
+      </Form>
       <FormContainerWindow>
         <FormWindowError id='errWindow' />
       </FormContainerWindow>
-    </FormContainerPage>
+    </FormContainer>
   );
 };
 

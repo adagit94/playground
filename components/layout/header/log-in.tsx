@@ -7,8 +7,7 @@ import { DividerHorizontal } from '../../styled-components/dividers';
 import {
   FormInput,
   FormButton,
-  FormSocialProvider,
-  FormWindowError
+  FormSocialProvider
 } from '../../styled-components/forms';
 
 import { loginEmail, loginProvider } from '../../../firebase/auth';
@@ -59,18 +58,22 @@ const LogIn: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const initUser = (user): void => {
+    dispatches.firebase({ type: 'setUser', payload: user });
+  };
+
   return (
     <Form
       onSubmit={(e): void => {
         e.preventDefault();
 
-        loginEmail(email, password);
+        loginEmail(email, password, initUser);
       }}
     >
       <FormRow>
         <SocialProviderFb
           onClick={(): void => {
-            loginProvider('fb');
+            loginProvider('fb', initUser);
           }}
           type='button'
         >
@@ -81,7 +84,7 @@ const LogIn: React.FC = (): JSX.Element => {
       <FormRow>
         <SocialProviderGoogle
           onClick={(): void => {
-            loginProvider('google');
+            loginProvider('google', initUser);
           }}
           type='button'
         >
@@ -90,7 +93,6 @@ const LogIn: React.FC = (): JSX.Element => {
         </SocialProviderGoogle>
       </FormRow>
       <Divider />
-      <FormWindowError id='errWindow' />
       <FormRow>
         <Label htmlFor='email'>Email: </Label>
         <FormInput
