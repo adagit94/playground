@@ -8,7 +8,7 @@ export type StatesUser =
 
 export type ActionsUser =
   | {
-      type: 'setUser';
+      type: 'initUser';
       payload: StatesUser;
     }
   | { type: 'addPoint' }

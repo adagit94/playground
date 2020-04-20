@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useLayoutEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import Header from './header/header';
@@ -75,10 +75,21 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   }, []);
 
   useEffect(() => {
+    const initUser = (user): void => {
+      dispatchFirebase({ type: 'initUser', payload: user });
+    };
+
+    const clearUser = (): void => {
+      dispatchFirebase({ type: 'reset' });
+      dispatchUser({ type: 'reset' });
+    };
+
     initFirebaseApp();
+    initAuthObserver(initUser, clearUser);
   }, []);
 
-  //console.log(statesUser);
+  console.log(statesFirebase.loading);
+
   return (
     <Container>
       <ThemeProvider theme={colors}>

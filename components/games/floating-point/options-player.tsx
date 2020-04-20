@@ -119,13 +119,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesUser = useContext(ContextUser);
-  const StatesFirebase = useContext(ContextFirebase);
+  const statesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesFP);
 
   const { state, profile } = statesGame;
   const score = statesPlayers[player].score;
   const username = statesUser.username;
-  const user = StatesFirebase.user;
+  const user = statesFirebase.user;
 
   const withProfile = profile === player;
 
@@ -152,8 +152,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         </Info>
         <Info>{(state === 'running' || state === 'paused') && score}</Info>
       </ContainerInfo>
-      {withProfile && <Avatar bg={user.picture} state={state} />}
-      {!withProfile && <Options player={player} state={state} />}
+      {withProfile ? (
+        <Avatar bg={user.picture} state={state} />
+      ) : (
+        <Options player={player} state={state} />
+      )}
     </Container>
   );
 };

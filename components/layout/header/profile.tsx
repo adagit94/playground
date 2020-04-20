@@ -8,6 +8,7 @@ import { FormButton } from '../../styled-components/forms';
 
 import { logout } from '../../../firebase/auth';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
+import { ContextFirebase } from '../../../contexts/firebase';
 
 const Container = styled.div`
   display: flex;
@@ -35,12 +36,11 @@ const Row = styled.div`
 `;
 
 const Profile: React.FC = (): JSX.Element => {
-  const dispatches = useContext(ContextDispatchesLayout);
+  const statesFirebase = useContext(ContextFirebase);
 
-  const clearUser = (): void => {
-    dispatches.firebase({ type: 'reset' });
-    dispatches.user({ type: 'reset' });
-  };
+  const { user } = statesFirebase;
+
+  const name = user.displayName || user.email;
 
   return (
     <Container>
@@ -58,7 +58,7 @@ const Profile: React.FC = (): JSX.Element => {
       <Row>
         <FormButton
           onClick={(): void => {
-            logout(clearUser);
+            logout();
           }}
           type='button'
         >

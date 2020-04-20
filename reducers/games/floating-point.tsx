@@ -164,6 +164,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
       return initParams;
 
     case 'handleIcon':
+      console.log(action.operation);
       switch (action.operation) {
         case 'add':
           return {
@@ -192,7 +193,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             ...states,
             iconsOthers: [
               ...states.iconsOthers.filter(el => {
-                return el !== states[action.player].shape;
+                return el !== states[action.player].icon;
               }),
               action.icon
             ],
@@ -273,7 +274,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             return {
               ...states,
               iconsOthers: states.iconsOthers.filter(el => {
-                return el !== states[action.player].shape;
+                return el !== states[action.player].icon;
               }),
               colorsOthers: states.colorsOthers.filter(el => {
                 return el !== states[action.player].color;
@@ -285,7 +286,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
             return {
               ...states,
               iconsOthers: states.iconsOthers.filter(el => {
-                return el !== states[action.player].shape;
+                return el !== states[action.player].icon;
               }),
               colorsOthers: states.colorsOthers.filter(el => {
                 return el !== states[action.player].color;

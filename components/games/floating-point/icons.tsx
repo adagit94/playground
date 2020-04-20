@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
+import { InputOptionsLabel } from '../../styled-components/inputs';
 
 import {
   ContextParams,
@@ -38,7 +39,7 @@ const Icons: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const unclickableBall3 = iconsOthers.includes('ball3') && icon !== 'ball3';
   const unclickableBall4 = iconsOthers.includes('ball4') && icon !== 'ball4';
 
-  const Label = styled.label`
+  const Label = styled(InputOptionsLabel)`
     color: ${icon === null && '#f00'};
   `;
 

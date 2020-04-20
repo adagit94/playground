@@ -5,7 +5,7 @@ export type StatesFirebase = {
 };
 
 export type ActionsFirebase =
-  | { type: 'setUser'; payload: any }
+  | { type: 'initUser'; payload: any }
   | { type: 'setIsAuthenticated'; value: boolean }
   | { type: 'setLoading'; value: boolean }
   | { type: 'reset' };

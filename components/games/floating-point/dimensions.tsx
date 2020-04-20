@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
-import { InputOptionsCommon } from '../../styled-components/inputs';
+import {
+  InputOptionsCommon,
+  InputOptionsLabel,
+  InputOptionsValue
+} from '../../styled-components/inputs';
 
 import {
   ContextParams,
@@ -16,7 +20,7 @@ const Dimensions: React.FC = () => {
   const dimensions = states.dimensions;
   const isDefined = typeof dimensions === 'number';
 
-  const Label = styled.label`
+  const Label = styled(InputOptionsLabel)`
     color: ${dimensions === null && '#f00'};
   `;
 
@@ -37,7 +41,7 @@ const Dimensions: React.FC = () => {
         step='5'
         id='dimensions'
       />
-      <div>{isDefined && `${dimensions}px`}</div>
+      <InputOptionsValue>{isDefined && `${dimensions}px`}</InputOptionsValue>
     </ContainerOption>
   );
 };

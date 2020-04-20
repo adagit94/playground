@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
+import { InputOptionsLabel } from '../../styled-components/inputs';
 
 import { Colors } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point';
@@ -51,7 +52,7 @@ const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
 
   return (
     <ContainerOption>
-      <label htmlFor='color'>Color:</label>
+      <InputOptionsLabel htmlFor='color'>Color:</InputOptionsLabel>
       <ContainerInput>
         <WrapperInput>
           <Input

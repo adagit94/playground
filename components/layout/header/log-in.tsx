@@ -58,8 +58,8 @@ const LogIn: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const initUser = (user): void => {
-    dispatches.firebase({ type: 'setUser', payload: user });
+  const handleLoading = (value): void => {
+    dispatches.firebase({ type: 'setLoading', value });
   };
 
   return (
@@ -67,13 +67,13 @@ const LogIn: React.FC = (): JSX.Element => {
       onSubmit={(e): void => {
         e.preventDefault();
 
-        loginEmail(email, password, initUser);
+        loginEmail(email, password, handleLoading);
       }}
     >
       <FormRow>
         <SocialProviderFb
           onClick={(): void => {
-            loginProvider('fb', initUser);
+            loginProvider('fb', handleLoading);
           }}
           type='button'
         >
@@ -84,7 +84,7 @@ const LogIn: React.FC = (): JSX.Element => {
       <FormRow>
         <SocialProviderGoogle
           onClick={(): void => {
-            loginProvider('google', initUser);
+            loginProvider('google', handleLoading);
           }}
           type='button'
         >

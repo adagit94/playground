@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const FormInput = styled.input`
   border: 2px solid;
+  padding: 2.5px;
   border-radius: 5px;
-  background: transparent;
+  background: ${(props): string => props.theme.inverted};
   color: ${(props): string => props.theme.background};
   transition-property: box-shadow;
   transition-duration: 0.1s;

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext, keyframes } from 'styled-components';
 import $ from 'jquery';
 
 import LogIn from './log-in';
 import Profile from './profile';
-import { LoadingIndicator } from '../../../components/styled-components/loading-indicator';
 
+import { Colors } from '../../../types/layout';
 import { StatesUser } from '../../../types/user';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextUser } from '../../../contexts/user';
@@ -53,15 +52,24 @@ const Button = styled.button`
   }
 `;
 
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 25px;
+  height: 12.5px;
+`;
+
 const Account: React.FC = () => {
-  const router = useRouter();
+  const colors: Colors = useContext(ThemeContext);
   const statesUser = useContext(ContextUser);
-  const StatesFirebase = useContext(ContextFirebase);
+  const statesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesLayout);
 
-  const { user, isAuthenticated, loading } = StatesFirebase;
+  const { user, isAuthenticated, loading } = statesFirebase;
 
-  const redirectURL = `http://localhost:3000${router.pathname}`;
+  const avatar = user && user.photoURL;
+  const avatarPlaceholder = `icons/account-${colors.theme}.svg`;
+
   const initUser = (): StatesUser => ({
     username: user.name,
     wins: 0,
@@ -72,7 +80,7 @@ const Account: React.FC = () => {
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    background-image: url(${user && user.picture});
+    background-image: url(${avatar ? avatar : avatarPlaceholder});
   `;
 
   const Slider = styled.div`
@@ -84,6 +92,49 @@ const Account: React.FC = () => {
     z-index: 1;
     background-color: ${(props): string => props.theme.inverted};
   `;
+
+  const pulsing = keyframes`
+    0% {
+      background-color: unset;
+    } 
+
+    50% {
+      background-color: ${colors.background};
+    }
+
+    100% {
+      background-color: unset;    
+    }
+  `;
+
+  const LoadingFragment1 = styled.div`
+    flex: auto;
+    animation-name: ${pulsing};
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  `;
+
+  const LoadingFragment2 = styled(LoadingFragment1)`
+    animation-delay: 0.2s;
+  `;
+
+  const LoadingFragment3 = styled(LoadingFragment1)`
+    animation-delay: 0.4s;
+  `;
+
+  const LoadingFragment4 = styled(LoadingFragment1)`
+    animation-delay: 0.6s;
+  `;
+
+  const LoadingIndicator = (
+    <LoadingContainer>
+      <LoadingFragment1 />
+      <LoadingFragment2 />
+      <LoadingFragment3 />
+      <LoadingFragment4 />
+    </LoadingContainer>
+  );
 
   return (
     <Container>

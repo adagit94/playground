@@ -16,13 +16,31 @@ const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
   }
 };
 
-export const logout = async (clearUser?: Function): Promise<void> => {
+export const logout = async (): Promise<void> => {
   await firebase
     .auth()
     .signOut()
     .catch(err => console.error(err));
+};
 
-  if (clearUser !== undefined) clearUser();
+export const initAuthObserver = (
+  initUser: Function,
+  clearUser: Function
+): void => {
+  firebase.auth().onAuthStateChanged(
+    user => {
+      if (user) {
+        if (user.emailVerified) {
+          initUser(user);
+        } else {
+          logout();
+        }
+      } else {
+        clearUser();
+      }
+    },
+    err => console.error(err)
+  );
 };
 
 export const createUser = async (
@@ -34,7 +52,6 @@ export const createUser = async (
     .createUserWithEmailAndPassword(email, password)
     .then(credential => {
       credential.user.sendEmailVerification().catch(err => console.error(err));
-      logout();
       history.back();
     })
     .catch(err => handleError(err, 'el'));
@@ -43,28 +60,30 @@ export const createUser = async (
 export const loginEmail = async (
   email: string,
   password: string,
-  initUser: Function
+  handleLoading: Function
 ): Promise<void> => {
+  handleLoading(true);
+
   await firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then(credential => {
-      const user = credential.user;
-
-      if (user.emailVerified) {
-        initUser(user);
-      } else {
-        logout();
+      if (!credential.user.emailVerified) {
         alert('Please, verify your email before log in.');
       }
     })
-    .catch(err => handleError(err, 'alert'));
+    .catch(err => {
+      handleLoading(false);
+      handleError(err, 'alert');
+    });
 };
 
 export const loginProvider = async (
   service: 'fb' | 'google',
-  initUser: Function
+  handleLoading: Function
 ): Promise<void> => {
+  handleLoading(true);
+
   let provider;
 
   switch (service) {
@@ -87,7 +106,6 @@ export const loginProvider = async (
   await firebase
     .auth()
     .getRedirectResult()
-    .then(credential => initUser(credential.user))
     .catch(err => console.error(err));
 };
 

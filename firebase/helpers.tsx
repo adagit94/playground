@@ -10,7 +10,7 @@ export const getUser = (user): firebase.firestore.DocumentData => {
   return userData;
 };
 
-export const setUser = (user, fields): void => {
+export const initUser = (user, fields): void => {
   users
     .doc(user)
     .set(fields)

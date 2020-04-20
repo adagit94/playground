@@ -6,7 +6,7 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
   action
 ): StatesUser => {
   switch (action.type) {
-    case 'setUser':
+    case 'initUser':
       return { ...action.payload };
 
     case 'addPoint':

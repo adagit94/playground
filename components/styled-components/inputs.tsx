@@ -33,3 +33,18 @@ export const InputOptionsCommon = styled.input`
   }
 `;
 
+export const InputOptionsLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+`;
+
+export const InputOptionsValue = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+`;

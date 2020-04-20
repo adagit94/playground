@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
-import { InputOptionsCommon } from '../../styled-components/inputs';
+import {
+  InputOptionsCommon,
+  InputOptionsLabel,
+  InputOptionsValue
+} from '../../styled-components/inputs';
 
 import {
   ContextParams,
@@ -16,7 +20,7 @@ const Speed: React.FC = () => {
   const speed = states.speed;
   const isDefined = typeof speed === 'number';
 
-  const Label = styled.label`
+  const Label = styled(InputOptionsLabel)`
     color: ${speed === null && '#f00'};
   `;
 
@@ -37,7 +41,7 @@ const Speed: React.FC = () => {
         step='2'
         id='speed'
       />
-      <div>{isDefined && `${speed}x`}</div>
+      <InputOptionsValue>{isDefined && `${speed}x`}</InputOptionsValue>
     </ContainerOption>
   );
 };

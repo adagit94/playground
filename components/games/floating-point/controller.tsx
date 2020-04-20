@@ -177,7 +177,6 @@ const Container = styled.div`
 `;
 
 const Controller: React.FC = () => {
-  const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
     Inits.initGame
@@ -192,6 +191,8 @@ const Controller: React.FC = () => {
     Reducers.reducerParams,
     Inits.initParams
   );
+
+  const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
 
   const dispatches = useContext(ContextDispatchesLayout);
 
@@ -410,7 +411,7 @@ const Controller: React.FC = () => {
           playerLeft + dimensions >= fPLeft &&
           playerLeft <= fPLeft + dimensions
         ) {
-          dispatches.user({ type: 'addPoint' });
+          //dispatches.user({ type: 'addPoint' });
 
           dispatchPlayers({
             type: 'addScore',
@@ -468,7 +469,7 @@ const Controller: React.FC = () => {
       }
     };
   });
-
+  console.log(statesGame.players);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
