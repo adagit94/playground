@@ -164,7 +164,6 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
       return initParams;
 
     case 'handleIcon':
-      console.log(action.operation);
       switch (action.operation) {
         case 'add':
           return {

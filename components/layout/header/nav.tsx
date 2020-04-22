@@ -59,11 +59,6 @@ const Nav: React.FC = () => {
             <a>Playground</a>
           </Link>
         </li>
-        <li>
-          <Link href='/stats'>
-            <a>Stats</a>
-          </Link>
-        </li>
       </ul>
     </Container>
   );

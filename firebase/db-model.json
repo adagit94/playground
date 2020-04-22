@@ -1,0 +1,12 @@
+{
+  "games": {
+    "floatingPoint": {
+      "adam": "abc"
+    }
+  },
+  "users": {
+    "uid": {
+      "lastPlayed": "123"
+    }
+  }
+}

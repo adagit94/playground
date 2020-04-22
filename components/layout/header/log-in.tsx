@@ -7,7 +7,9 @@ import { DividerHorizontal } from '../../styled-components/dividers';
 import {
   FormInput,
   FormButton,
-  FormSocialProvider
+  FormSocialProvider,
+  FormRowHorizontal,
+  FormLabel
 } from '../../styled-components/forms';
 
 import { loginEmail, loginProvider } from '../../../firebase/auth';
@@ -20,17 +22,6 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: space-around;
   padding: 5px;
-`;
-
-const FormRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  color: ${(props): string => props.theme.background};
-`;
-
-const Label = styled.label`
-  width: 75px;
 `;
 
 const SocialProviderFb = styled(FormSocialProvider)`
@@ -70,7 +61,7 @@ const LogIn: React.FC = (): JSX.Element => {
         loginEmail(email, password, handleLoading);
       }}
     >
-      <FormRow>
+      <FormRowHorizontal>
         <SocialProviderFb
           onClick={(): void => {
             loginProvider('fb', handleLoading);
@@ -80,8 +71,8 @@ const LogIn: React.FC = (): JSX.Element => {
           <img src='/icons/fb.svg' alt='facebook icon' />
           Log in with Facebook
         </SocialProviderFb>
-      </FormRow>
-      <FormRow>
+      </FormRowHorizontal>
+      <FormRowHorizontal>
         <SocialProviderGoogle
           onClick={(): void => {
             loginProvider('google', handleLoading);
@@ -91,10 +82,10 @@ const LogIn: React.FC = (): JSX.Element => {
           <img src='/icons/google.svg' alt='google icon' />
           Log in with Google
         </SocialProviderGoogle>
-      </FormRow>
+      </FormRowHorizontal>
       <Divider />
-      <FormRow>
-        <Label htmlFor='email'>Email: </Label>
+      <FormRowHorizontal>
+        <FormLabel htmlFor='email'>Email: </FormLabel>
         <FormInput
           onChange={(e): void => {
             setEmail(e.target.value);
@@ -104,9 +95,9 @@ const LogIn: React.FC = (): JSX.Element => {
           id='email'
           required
         />
-      </FormRow>
-      <FormRow>
-        <Label htmlFor='password'>Password: </Label>
+      </FormRowHorizontal>
+      <FormRowHorizontal>
+        <FormLabel htmlFor='password'>Password: </FormLabel>
         <FormInput
           onChange={(e): void => {
             setPassword(e.target.value);
@@ -116,18 +107,18 @@ const LogIn: React.FC = (): JSX.Element => {
           id='password'
           required
         />
-      </FormRow>
-      <FormRow>
+      </FormRowHorizontal>
+      <FormRowHorizontal>
         <FormButton type='submit'>Log in</FormButton>
-      </FormRow>
-      <FormRow>
+      </FormRowHorizontal>
+      <FormRowHorizontal>
         <Link href='/reset-password' passHref>
           <LinkStandard>Reset password</LinkStandard>
         </Link>
         <Link href='/create-account' passHref>
           <LinkStandard>Create account</LinkStandard>
         </Link>
-      </FormRow>
+      </FormRowHorizontal>
     </Form>
   );
 };

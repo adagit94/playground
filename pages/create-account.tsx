@@ -6,7 +6,7 @@ import {
   FormButton,
   FormContainer,
   Form,
-  FormRow,
+  FormRowVertical,
   FormContainerWindow,
   FormWindowValidation,
   FormWindowError
@@ -77,7 +77,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           }
         }}
       >
-        <FormRow>
+        <FormRowVertical>
           <label htmlFor='email'>Email: </label>
           <FormInput
             onChange={(e): void => {
@@ -89,8 +89,8 @@ const CreateAccount: React.FC = (): JSX.Element => {
             type='email'
             required
           />
-        </FormRow>
-        <FormRow>
+        </FormRowVertical>
+        <FormRowVertical>
           <LabelPassword htmlFor='password'>Password: </LabelPassword>
           <FormInput
             onChange={(e): void => {
@@ -103,8 +103,8 @@ const CreateAccount: React.FC = (): JSX.Element => {
             minLength='8'
             required
           />
-        </FormRow>
-        <FormRow>
+        </FormRowVertical>
+        <FormRowVertical>
           <LabelPasswordConfirm htmlFor='password-confirm'>
             Confirm password:
           </LabelPasswordConfirm>
@@ -119,10 +119,10 @@ const CreateAccount: React.FC = (): JSX.Element => {
             minLength='8'
             required
           />
-        </FormRow>
-        <FormRow>
+        </FormRowVertical>
+        <FormRowVertical>
           <FormButton type='submit'>Create account</FormButton>
-        </FormRow>
+        </FormRowVertical>
       </Form>
       <FormContainerWindow>
         <FormWindowError id='errWindow' />

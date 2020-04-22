@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { Icons } from '../../../types/games/floating-point';
@@ -33,13 +33,13 @@ const icons: Icons = {
 };
 
 const Players: React.FC = () => {
-  const StatesFirebase = useContext(ContextFirebase);
+  const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
 
   const profile = statesGame.profile;
-  const user = StatesFirebase.user;
+  const user = statesFirebase.user;
   const playersCount = statesGame.players.length;
   const {
     P1: { top: topP1, left: leftP1 },
@@ -61,7 +61,8 @@ const Players: React.FC = () => {
     width: ${dimensions}px;
     height: ${dimensions}px;
     border-radius: ${profile === 'P1' && '100%'};
-    background-image: url(${profile === 'P1' && user.picture});
+    background-image: url(${profile === 'P1' && user.photoURL});
+    background-size: contain;
 
     svg path {
       fill: ${colorP1};
@@ -85,7 +86,8 @@ const Players: React.FC = () => {
     width: ${dimensions}px;
     height: ${dimensions}px;
     border-radius: ${profile === 'P2' && '100%'};
-    background-image: url(${profile === 'P2' && user.picture});
+    background-image: url(${profile === 'P2' && user.photoURL});
+    background-size: contain;
 
     svg path {
       fill: ${colorP2};
@@ -113,7 +115,8 @@ const Players: React.FC = () => {
       width: ${dimensions}px;
       height: ${dimensions}px;
       border-radius: ${profile === 'P3' && '100%'};
-      background-image: url(${profile === 'P3' && user.picture});
+      background-image: url(${profile === 'P3' && user.photoURL});
+      background-size: contain;
 
       svg path {
         fill: ${colorP3};
@@ -145,7 +148,8 @@ const Players: React.FC = () => {
       width: ${dimensions}px;
       height: ${dimensions}px;
       border-radius: ${profile === 'P4' && '100%'};
-      background-image: url(${profile === 'P4' && user.picture});
+      background-image: url(${profile === 'P4' && user.photoURL});
+      background-size: contain;
 
       svg path {
         fill: ${colorP4};

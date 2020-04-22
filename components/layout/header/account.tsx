@@ -7,9 +7,6 @@ import LogIn from './log-in';
 import Profile from './profile';
 
 import { Colors } from '../../../types/layout';
-import { StatesUser } from '../../../types/user';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
-import { ContextUser } from '../../../contexts/user';
 import { ContextFirebase } from '../../../contexts/firebase';
 
 const toggleSlider = (): void => {
@@ -61,26 +58,19 @@ const LoadingContainer = styled.div`
 
 const Account: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
-  const statesUser = useContext(ContextUser);
   const statesFirebase = useContext(ContextFirebase);
-  const dispatches = useContext(ContextDispatchesLayout);
 
   const { user, isAuthenticated, loading } = statesFirebase;
 
   const avatar = user && user.photoURL;
   const avatarPlaceholder = `icons/account-${colors.theme}.svg`;
 
-  const initUser = (): StatesUser => ({
-    username: user.name,
-    wins: 0,
-    gatheredPoints: 0
-  });
-
   const Avatar = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 100%;
     background-image: url(${avatar ? avatar : avatarPlaceholder});
+    background-size: contain;
   `;
 
   const Slider = styled.div`

@@ -94,6 +94,7 @@ const Avatar: React.FC<PropsAvatar> = ({ bg, state }): JSX.Element => {
     height: 75px;
     border-radius: 100%;
     background-image: url(${bg});
+    background-size: contain;
   `;
 
   return (
@@ -124,7 +125,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
 
   const { state, profile } = statesGame;
   const score = statesPlayers[player].score;
-  const username = statesUser.username;
   const user = statesFirebase.user;
 
   const withProfile = profile === player;
@@ -134,13 +134,20 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
       <ContainerInfo>
         <Info>{player}</Info>
         <Info>
-          {withProfile && username}
+          {withProfile && user.displayName}
 
           {user && !profile && state === 'conf' && (
             <ButtonLoadProfile
               onClick={(): void => {
                 dispatches.game({
                   type: 'changeProfile',
+                  player
+                });
+
+                dispatches.params({
+                  type: 'handleIcon',
+                  operation: 'add',
+                  icon: 'avatar',
                   player
                 });
               }}
@@ -153,7 +160,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         <Info>{(state === 'running' || state === 'paused') && score}</Info>
       </ContainerInfo>
       {withProfile ? (
-        <Avatar bg={user.picture} state={state} />
+        <Avatar bg={user.photoURL} state={state} />
       ) : (
         <Options player={player} state={state} />
       )}

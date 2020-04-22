@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const FormLabel = styled.label`
+  width: 75px;
+`;
+
 export const FormInput = styled.input`
   border: 2px solid;
   padding: 2.5px;
@@ -84,11 +88,18 @@ export const Form = styled.form`
   height: 50%;
 `;
 
-export const FormRow = styled.div`
+export const FormRowVertical = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 5px 0;
+  color: ${(props): string => props.theme.background};
+`;
+
+export const FormRowHorizontal = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   color: ${(props): string => props.theme.background};
 `;
 

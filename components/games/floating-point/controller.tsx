@@ -1,7 +1,5 @@
 import React, { useReducer, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
@@ -332,7 +330,7 @@ const Controller: React.FC = () => {
         }
       }
 
-      if (overlap === true) break;
+      if (overlap === true) continue;
 
       dispatchPlayers({
         type: 'move',
@@ -469,7 +467,8 @@ const Controller: React.FC = () => {
       }
     };
   });
-  console.log(statesGame.players);
+  //console.log(statesGame.height);
+  //console.log(statesPlayers.P1.top + dimensions);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
@@ -489,5 +488,3 @@ const Controller: React.FC = () => {
 };
 
 export default React.memo(Controller);
-
-//console.log(statesGame.state); border: 1px solid red;

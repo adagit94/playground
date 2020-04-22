@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
 
+import { getRecordUser } from './db';
 import { ValidatorReturn } from '../types/firebase';
 
 const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
@@ -28,10 +29,12 @@ export const initAuthObserver = (
   clearUser: Function
 ): void => {
   firebase.auth().onAuthStateChanged(
-    user => {
-      if (user) {
-        if (user.emailVerified) {
-          initUser(user);
+    async userFirebase => {
+      if (userFirebase) {
+        if (userFirebase.emailVerified) {
+          const userDB = await getRecordUser(userFirebase.uid);
+
+          initUser(userFirebase, userDB);
         } else {
           logout();
         }

@@ -6,7 +6,7 @@ import {
   FormButton,
   FormContainer,
   Form,
-  FormRow
+  FormRowVertical
 } from '../components/styled-components/forms';
 
 import { resetPassword } from '../firebase/auth';
@@ -27,7 +27,7 @@ const ResetPassword: React.FC = (): JSX.Element => {
           resetPassword(email);
         }}
       >
-        <FormRow>
+        <FormRowVertical>
           <label htmlFor='email'>Email: </label>
           <FormInput
             onChange={(e): void => {
@@ -39,10 +39,10 @@ const ResetPassword: React.FC = (): JSX.Element => {
             id='email'
             required
           />
-        </FormRow>
-        <FormRow>
+        </FormRowVertical>
+        <FormRowVertical>
           <FormButton type='submit'>Reset</FormButton>
-        </FormRow>
+        </FormRowVertical>
       </FormFullHeight>
     </FormContainer>
   );

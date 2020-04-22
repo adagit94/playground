@@ -1,10 +1,16 @@
-export type StatesUser =
-  | {
-      username: string;
-      wins: number;
-      gatheredPoints: number;
-    }
-  | firebase.firestore.DocumentData;
+type FloatingPoint = {
+  wins: number;
+  gatheredPoints: number;
+};
+
+type Games = {
+  floatingPoint: FloatingPoint;
+};
+
+export type StatesUser = {
+  lastPlayed: string;
+  games: Games;
+};
 
 export type ActionsUser =
   | {

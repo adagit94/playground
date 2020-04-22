@@ -46,7 +46,7 @@ const Profile: React.FC = (): JSX.Element => {
     <Container>
       <Row>{name}</Row>
       <Row>
-        <Link href='/stats'>
+        <Link href='/stats/[uid]' as={`/stats/${user.uid}`}>
           <a>Stats</a>
         </Link>
       </Row>
