@@ -48,6 +48,28 @@ export const FormButton = styled.button`
   }
 `;
 
+export const FormButtonInput = styled.button`
+  padding: 5px;
+  font-weight: bold;
+  border: 2px solid ${(props): string => props.theme.background};
+  border-radius: 5px;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
+  transition-property: color, background-color;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+
+  &:hover {
+    cursor: pointer;
+    color: ${(props): string => props.theme.inverted};
+    background-color: ${(props): string => props.theme.background};
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 export const FormSocialProvider = styled.button`
   display: flex;
   flex-direction: row;

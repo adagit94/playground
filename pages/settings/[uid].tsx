@@ -1,15 +1,17 @@
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  FormRowHorizontal,
+  FormRowVertical,
   FormLabel,
   FormInput,
-  FormButton
+  FormButton,
+  FormButtonInput
 } from '../../components/styled-components/forms';
 
-import { ContextUser } from '../../contexts/user';
+import { ContextFirebase } from '../../contexts/firebase';
+import { updateUser } from '../../firebase/auth';
 
 const Container = styled.div`
   display: flex;
@@ -21,36 +23,65 @@ const Container = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   padding: 10px;
   border-radius: 5px;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
 `;
 
+const InputFile = styled.input`
+  display: none;
+`;
+
 const Settings: React.FC = (): JSX.Element => {
   const router = useRouter();
-  const statesUser = useContext(Context);
+  const statesUser = useContext(ContextFirebase);
+  const [username, setUsername] = useState('');
 
   const { uid } = router.query;
-  const { lastPlayed } = statesUser;
 
-  console.log(router);
+  const handleChanges = (): void => {};
 
   return (
     <Container>
-      <Form>
-        <FormRowHorizontal htmlFor='username'>
+      <Form
+        onSubmit={(e): void => {
+          e.preventDefault();
+
+          updateUser(username, document.querySelector('#avatar').files[0]);
+        }}
+      >
+        <FormRowVertical htmlFor='username'>
           <FormLabel>Username: </FormLabel>
-          <FormInput type='text' name='username' id='username' />
-        </FormRowHorizontal>
-        <FormRowHorizontal>
-          <FormLabel htmlFor='avatar'>Avatar: </FormLabel>
-          <FormInput type='file' name='avatar' id='avatar' />
-        </FormRowHorizontal>
-        <FormRowHorizontal>
-          <FormButton type='submit'>Log in</FormButton>
-        </FormRowHorizontal>
+          <FormInput
+            onChange={(e): void => {
+              setUsername(e.target.value);
+            }}
+            type='text'
+            name='username'
+            id='username'
+          />
+        </FormRowVertical>
+        <FormRowVertical>
+          <InputFile
+            type='file'
+            name='avatar'
+            id='avatar'
+            accept='image/jpeg, image/png, image/svg+xml'
+          />
+          <FormButtonInput
+            onClick={(e): void => {
+              document.querySelector('#avatar').click();
+            }}
+            type='button'
+            id='avatar-button'
+          >
+            Avatar
+          </FormButtonInput>
+        </FormRowVertical>
+        <FormRowVertical>
+          <FormButton type='submit'>Apply changes</FormButton>
+        </FormRowVertical>
       </Form>
     </Container>
   );

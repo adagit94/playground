@@ -90,6 +90,7 @@ const LogIn: React.FC = (): JSX.Element => {
           onChange={(e): void => {
             setEmail(e.target.value);
           }}
+          value={email}
           type='email'
           name='email'
           id='email'
@@ -102,6 +103,7 @@ const LogIn: React.FC = (): JSX.Element => {
           onChange={(e): void => {
             setPassword(e.target.value);
           }}
+          value={password}
           type='password'
           name='password'
           id='password'

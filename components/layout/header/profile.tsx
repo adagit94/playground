@@ -51,7 +51,7 @@ const Profile: React.FC = (): JSX.Element => {
         </Link>
       </Row>
       <Row>
-        <Link href='/settings'>
+        <Link href='/settings/[uid]' as={`/settings/${user.uid}`}>
           <a>Settings</a>
         </Link>
       </Row>

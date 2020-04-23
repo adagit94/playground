@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
+import 'firebase/firebase-storage';
 
 import { getRecordUser } from './db';
 import { ValidatorReturn } from '../types/firebase';
@@ -58,6 +59,48 @@ export const createUser = async (
       history.back();
     })
     .catch(err => handleError(err, 'el'));
+};
+
+export const updateUser = async (username, avatar): Promise<void> => {
+  if (!username && !avatar) {
+    alert('No changes were made');
+
+    return;
+  }
+
+  const user = firebase.auth().currentUser;
+  const updateObj: { displayName?: string; photoURL?: string } = {};
+
+  if (username) updateObj.displayName = username;
+
+  if (avatar) {
+    const storage = firebase.storage();
+    const avatarsUserRef = storage.ref(`images/avatars/${user.uid}`);
+    const newAvatarRef = avatarsUserRef.child(`${avatar.name}`);
+    const currentAvatar = await avatarsUserRef
+      .listAll()
+      .then(result => result.items[0])
+      .catch(err => console.error(err));
+
+    if (currentAvatar) {
+      const currentAvatarRef = avatarsUserRef.child(`${currentAvatar.name}`);
+
+      await currentAvatarRef.delete().catch(err => console.error(err));
+    }
+
+    await newAvatarRef.put(avatar).catch(err => console.error(err));
+
+    await newAvatarRef
+      .getDownloadURL()
+      .then(url => {
+        updateObj.photoURL = url;
+      })
+      .catch(err => console.error(err));
+  }
+
+  user.updateProfile(updateObj).catch(err => {
+    handleError(err, 'alert');
+  });
 };
 
 export const loginEmail = async (
