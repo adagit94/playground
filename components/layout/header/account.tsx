@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React, { useContext } from 'react';
-import styled, { ThemeContext, keyframes } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
 import LogIn from './log-in';
 import Profile from './profile';
+import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import { Colors } from '../../../types/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
@@ -49,13 +50,6 @@ const Button = styled.button`
   }
 `;
 
-const LoadingContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 25px;
-  height: 12.5px;
-`;
-
 const Account: React.FC = () => {
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -83,53 +77,10 @@ const Account: React.FC = () => {
     background-color: ${(props): string => props.theme.inverted};
   `;
 
-  const pulsing = keyframes`
-    0% {
-      background-color: unset;
-    } 
-
-    50% {
-      background-color: ${colors.background};
-    }
-
-    100% {
-      background-color: unset;    
-    }
-  `;
-
-  const LoadingFragment1 = styled.div`
-    flex: auto;
-    animation-name: ${pulsing};
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  `;
-
-  const LoadingFragment2 = styled(LoadingFragment1)`
-    animation-delay: 0.2s;
-  `;
-
-  const LoadingFragment3 = styled(LoadingFragment1)`
-    animation-delay: 0.4s;
-  `;
-
-  const LoadingFragment4 = styled(LoadingFragment1)`
-    animation-delay: 0.6s;
-  `;
-
-  const LoadingIndicator = (
-    <LoadingContainer>
-      <LoadingFragment1 />
-      <LoadingFragment2 />
-      <LoadingFragment3 />
-      <LoadingFragment4 />
-    </LoadingContainer>
-  );
-
   return (
     <Container>
       {loading ? (
-        LoadingIndicator
+        <LoadingIndicator color={colors.background} />
       ) : (
         <Button onClick={toggleSlider} type='button'>
           {isAuthenticated ? <Avatar /> : 'Log in'}

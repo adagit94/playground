@@ -33,6 +33,8 @@ export const initAuthObserver = (
     async userFirebase => {
       if (userFirebase) {
         if (userFirebase.emailVerified) {
+          sessionStorage.setItem('uid', userFirebase.uid);
+
           const userDB = await getRecordUser(userFirebase.uid);
 
           initUser(userFirebase, userDB);
@@ -40,12 +42,16 @@ export const initAuthObserver = (
           logout();
         }
       } else {
+        sessionStorage.removeItem('uid');
+
         clearUser();
       }
     },
     err => console.error(err)
   );
 };
+
+export const getCurrentUser = (): firebase.User => firebase.auth().currentUser;
 
 export const createUser = async (
   email: string,
@@ -56,7 +62,7 @@ export const createUser = async (
     .createUserWithEmailAndPassword(email, password)
     .then(credential => {
       credential.user.sendEmailVerification().catch(err => console.error(err));
-      history.back();
+      window.history.back();
     })
     .catch(err => handleError(err, 'el'));
 };
@@ -68,7 +74,7 @@ export const updateUser = async (username, avatar): Promise<void> => {
     return;
   }
 
-  const user = firebase.auth().currentUser;
+  const user = getCurrentUser();
   const updateObj: { displayName?: string; photoURL?: string } = {};
 
   if (username) updateObj.displayName = username;
@@ -98,9 +104,11 @@ export const updateUser = async (username, avatar): Promise<void> => {
       .catch(err => console.error(err));
   }
 
-  user.updateProfile(updateObj).catch(err => {
+  await user.updateProfile(updateObj).catch(err => {
     handleError(err, 'alert');
   });
+
+  location.reload();
 };
 
 export const loginEmail = async (
@@ -159,7 +167,7 @@ export const resetPassword = async (email): Promise<void> => {
   await firebase
     .auth()
     .sendPasswordResetEmail(email)
-    .then(() => history.back())
+    .then(() => window.history.back())
     .catch(err => console.error(err));
 };
 

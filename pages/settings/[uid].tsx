@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -10,7 +9,6 @@ import {
   FormButtonInput
 } from '../../components/styled-components/forms';
 
-import { ContextFirebase } from '../../contexts/firebase';
 import { updateUser } from '../../firebase/auth';
 
 const Container = styled.div`
@@ -34,13 +32,7 @@ const InputFile = styled.input`
 `;
 
 const Settings: React.FC = (): JSX.Element => {
-  const router = useRouter();
-  const statesUser = useContext(ContextFirebase);
   const [username, setUsername] = useState('');
-
-  const { uid } = router.query;
-
-  const handleChanges = (): void => {};
 
   return (
     <Container>

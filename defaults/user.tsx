@@ -1,7 +1,7 @@
 import { StatesUser } from '../types/user';
 
 export const defaultsUser: StatesUser = {
-  lastPlayed: '',
+  lastPlayed: '-',
   games: {
     floatingPoint: {
       wins: 0,

@@ -33,8 +33,11 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
     initFirebase
   );
 
-  const pathname = router.pathname;
-  const theme = statesLayout.theme;
+  const { pathname, query } = router;
+  const { theme } = statesLayout;
+
+  const { uid: queryUID } = query;
+
   const colors: Colors = {
     theme,
     background: theme === 'dark' ? '#000000' : '#ffffff',
@@ -56,6 +59,14 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
       box-sizing: border-box;
     }
   `;
+
+  if (queryUID) {
+    const sessionUID = sessionStorage.getItem('uid');
+
+    if (queryUID !== sessionUID) {
+      window.location.assign(window.location.origin);
+    }
+  }
 
   useEffect(() => {
     const theme = sessionStorage.getItem('theme');
@@ -88,7 +99,9 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
     initFirebaseApp();
     initAuthObserver(initUser, clearUser);
   }, []);
-  console.log(statesUser);
+
+  //console.log(firebaseApp);
+
   return (
     <Container>
       <ThemeProvider theme={colors}>

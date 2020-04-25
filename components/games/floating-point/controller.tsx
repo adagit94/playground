@@ -174,7 +174,7 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Controller: React.FC = () => {
+const Controller: React.FC = (): JSX.Element => {
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
     Inits.initGame
@@ -212,16 +212,16 @@ const Controller: React.FC = () => {
 
       switch (limit) {
         case 'top':
-          if (playerTop === 0) continue;
+          if (playerTop <= 0) continue;
           break;
         case 'right':
-          if (playerLeft + dimensions === width) continue;
+          if (playerLeft + dimensions >= width) continue;
           break;
         case 'bottom':
-          if (playerTop + dimensions === height) continue;
+          if (playerTop + dimensions >= height) continue;
           break;
         case 'left':
-          if (playerLeft === 0) continue;
+          if (playerLeft <= 0) continue;
           break;
       }
 
@@ -236,8 +236,41 @@ const Controller: React.FC = () => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
-          (playerTop + dimensions === playerOtherTop ||
-            playerTop + dimensions - 1 === playerOtherTop) &&
+          playerTop + dimensions >= playerOtherTop &&
+          playerTop <= playerOtherTop + dimensions &&
+          playerLeft + dimensions >= playerOtherLeft &&
+          playerLeft <= playerOtherLeft + dimensions
+        ) {
+          if (playerTop + dimensions > playerOtherTop) {
+            dispatchPlayers({
+              type: 'move',
+              operation: 'subtract',
+              direction,
+              player
+            });
+
+            dispatchPlayers({
+              type: 'move',
+              operation: 'add',
+              direction,
+              player: playerOther
+            });
+          } else {
+            dispatchPlayers({
+              type: 'move',
+              operation: operation === 'add' ? 'subtract' : 'add',
+              direction,
+              player
+            });
+          }
+
+          overlap = true;
+        }
+
+        /*
+        if (
+          playerTop + dimensions >= playerOtherTop &&
+          playerTop <= playerOtherTop + dimensions &&
           playerLeft + dimensions >= playerOtherLeft &&
           playerLeft <= playerOtherLeft + dimensions
         ) {
@@ -328,6 +361,7 @@ const Controller: React.FC = () => {
 
           overlap = true;
         }
+        */
       }
 
       if (overlap === true) continue;
@@ -467,7 +501,7 @@ const Controller: React.FC = () => {
       }
     };
   });
-  //console.log(statesGame.height);
+
   //console.log(statesPlayers.P1.top + dimensions);
   return (
     <Container>

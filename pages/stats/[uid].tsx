@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
 import { DividerHorizontal } from '../../components/styled-components/dividers';
+import LoadingIndicator from '../../components/styled-components/loading-indicator';
 
+import { Colors } from '../../types/layout';
+import { ContextFirebase } from '../../contexts/firebase';
 import { ContextUser } from '../../contexts/user';
 
 const Container = styled.div`
@@ -22,12 +25,18 @@ const StatsWindow = styled.div`
 `;
 
 const StatsGeneral = styled.div`
+  width: 150px;
+
   ul {
     padding: 0;
     margin: 0;
 
     li {
       list-style: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 `;
@@ -35,17 +44,21 @@ const StatsGeneral = styled.div`
 const StatsGames = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 `;
 
 const StatsGame = styled.div`
+  width: 150px;
+
   ul {
     padding: 0;
     margin: 0;
 
     li {
       list-style: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     }
   }
 `;
@@ -59,8 +72,11 @@ const Divider = styled(DividerHorizontal)`
 `;
 
 const Stats: React.FC = (): JSX.Element => {
+  const colors: Colors = useContext(ThemeContext);
+  const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
 
+  const { user } = statesFirebase;
   const { lastPlayed } = statesUser;
   const { wins, gatheredPoints } = statesUser.games.floatingPoint;
 
@@ -69,7 +85,14 @@ const Stats: React.FC = (): JSX.Element => {
       <StatsWindow>
         <StatsGeneral>
           <ul>
-            <li>Last played: {lastPlayed}</li>
+            <li>
+              <span>Last played:</span>
+              {user ? (
+                lastPlayed
+              ) : (
+                <LoadingIndicator color={colors.background} />
+              )}
+            </li>
           </ul>
         </StatsGeneral>
         <Divider />
@@ -77,8 +100,18 @@ const Stats: React.FC = (): JSX.Element => {
           <StatsGame>
             <HeadingGame>Floating Point</HeadingGame>
             <ul>
-              <li>Wins: {wins}</li>
-              <li>Gathered points: {gatheredPoints}</li>
+              <li>
+                <span>Wins:</span>
+                {user ? wins : <LoadingIndicator color={colors.background} />}
+              </li>
+              <li>
+                <span>Gathered points:</span>
+                {user ? (
+                  gatheredPoints
+                ) : (
+                  <LoadingIndicator color={colors.background} />
+                )}
+              </li>
             </ul>
           </StatsGame>
         </StatsGames>
