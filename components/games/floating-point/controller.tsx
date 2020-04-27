@@ -236,41 +236,8 @@ const Controller: React.FC = (): JSX.Element => {
         const playerOtherTop: number = statesPlayers[playerOther].top;
 
         if (
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions &&
-          playerLeft + dimensions >= playerOtherLeft &&
-          playerLeft <= playerOtherLeft + dimensions
-        ) {
-          if (playerTop + dimensions > playerOtherTop) {
-            dispatchPlayers({
-              type: 'move',
-              operation: 'subtract',
-              direction,
-              player
-            });
-
-            dispatchPlayers({
-              type: 'move',
-              operation: 'add',
-              direction,
-              player: playerOther
-            });
-          } else {
-            dispatchPlayers({
-              type: 'move',
-              operation: operation === 'add' ? 'subtract' : 'add',
-              direction,
-              player
-            });
-          }
-
-          overlap = true;
-        }
-
-        /*
-        if (
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions &&
+          (playerTop + dimensions === playerOtherTop ||
+            playerTop + dimensions - 1 === playerOtherTop) &&
           playerLeft + dimensions >= playerOtherLeft &&
           playerLeft <= playerOtherLeft + dimensions
         ) {
@@ -361,7 +328,6 @@ const Controller: React.FC = (): JSX.Element => {
 
           overlap = true;
         }
-        */
       }
 
       if (overlap === true) continue;
