@@ -6,7 +6,7 @@ import {
   ContextGame,
   ContextParams,
   ContextFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-online';
 
 const Point: React.FC = () => {
   const statesGame = useContext(ContextGame);

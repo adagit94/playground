@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { Icons } from '../../../types/games/floating-point';
+import { Icons } from '../../../types/games/floating-point-offline';
 import {
   ContextGame,
   ContextPlayers,
   ContextParams
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-offline';
 import { ContextFirebase } from '../../../contexts/firebase';
 
 const icons: Icons = {

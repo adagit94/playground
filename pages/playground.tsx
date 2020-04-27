@@ -3,9 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  margin: 10px;
-  font-size: 1.1rem;
-  font-weight: bold;
+  padding: 10px;
 
   ul {
     display: flex;
@@ -16,46 +14,79 @@ const Container = styled.div`
 
     li {
       list-style: none;
-      width: 120px;
-      height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 150px;
+      height: 150px;
+      border-radius: 5px;
+      color: ${(props): string => props.theme.background};
+      background-color: ${(props): string => props.theme.inverted};
 
-      a {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 120%;
-        height: 120%;
-        border: 1px solid;
-        border-radius: 5px;
-        color: ${(props): string => props.theme.background};
-        background-color: ${(props): string => props.theme.inverted};
-        text-decoration: none;
-        transition-property: font-size;
-        transition-duration: 0.1s;
-        transition-timing-function: linear;
-
-        &:hover {
-          cursor: pointer;
-          font-size: 1.3rem;
+      &:hover {
+        h3 {
+          display: none;
         }
 
-        &:focus {
-          outline: none;
+        div {
+          display: block;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
         }
       }
     }
   }
 `;
 
-const Playground: React.FC = () => {
+const Mode = styled.div`
+  display: none;
+  width: 100%;
+  height: 100%;
+
+  a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 20%;
+    border: 1px solid ${(props): string => props.theme.background};
+    border-radius: 5px;
+    color: ${(props): string => props.theme.background};
+    background-color: ${(props): string => props.theme.inverted};
+    text-decoration: none;
+    transition-property: color, background-color;
+    transition-duration: 0.1s;
+    transition-timing-function: linear;
+
+    &:hover {
+      color: ${(props): string => props.theme.inverted};
+      background-color: ${(props): string => props.theme.background};
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
+const Playground: React.FC = (): JSX.Element => {
   return (
     <Container>
       <ul>
         <li>
-          <Link href='/playground/floating-point'>
-            <a>Floating Point</a>
-          </Link>
+          <h3>Floating Point</h3>
+          <Mode>
+            <Link href='/playground/floating-point-offline'>
+              <a>Offline</a>
+            </Link>
+            <Link href='/playground/floating-point-online'>
+              <a>Online</a>
+            </Link>
+          </Mode>
         </li>
       </ul>
     </Container>

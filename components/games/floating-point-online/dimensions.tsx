@@ -11,7 +11,7 @@ import {
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-online';
 
 const Dimensions: React.FC = () => {
   const states = useContext(ContextParams);

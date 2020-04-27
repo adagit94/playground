@@ -5,11 +5,11 @@ import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsLabel } from '../../styled-components/inputs';
 
 import { Colors } from '../../../types/layout';
-import { PropsOptionsPlayer } from '../../../types/games/floating-point';
+import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-online';
 
 const ContainerInput = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {
   ContextGame,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-online';
 
 const Switch: React.FC = () => {
   const statesGame = useContext(ContextGame);

@@ -3,19 +3,20 @@ import styled from 'styled-components';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
+import LoadingIndicator from '../../styled-components/loading-indicator';
 
+import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
-import { ContextUser } from '../../../contexts/user';
-import * as Reducers from '../../../reducers/games/floating-point';
-import * as Inits from '../../../inits/games/floating-point';
-import * as Contexts from '../../../contexts/games/floating-point';
+import * as Reducers from '../../../reducers/games/floating-point-online';
+import * as Inits from '../../../inits/games/floating-point-online';
+import * as Contexts from '../../../contexts/games/floating-point-online';
 import {
   ControlKeys,
   ControlKeys2P,
   ControlKeys3P,
   ControlKeys4P,
   DispatchesFP
-} from '../../../types/games/floating-point';
+} from '../../../types/games/floating-point-online';
 
 let controlKeys: ControlKeys;
 let intervalHandleMove: number;
@@ -164,7 +165,6 @@ const cancelKey = (e: KeyboardEvent): void => {
 const dispatchesFP: DispatchesFP = {
   game: undefined,
   players: undefined,
-  params: undefined,
   fp: undefined
 };
 
@@ -185,22 +185,16 @@ const Controller: React.FC = (): JSX.Element => {
     Inits.initPlayers
   );
 
-  const [statesParams, dispatchParams] = useReducer(
-    Reducers.reducerParams,
-    Inits.initParams
-  );
-
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
 
   const dispatches = useContext(ContextDispatchesLayout);
-
-  const { players, state, width, height } = statesGame;
-  const { dimensions, speed } = statesParams;
-  const { top: fPTop, left: fPLeft } = statesFP;
-  const playersCount = players.length;
-
   const refHandleMove = useRef(null);
   const refRecalculate = useRef(null);
+
+  const { players, state, width, height } = statesGame;
+  const { top: fPTop, left: fPLeft } = statesFP;
+
+  const { dimensions } = Defaults;
 
   const handleMove = (): void => {
     for (const key in controlKeys) {
@@ -228,7 +222,7 @@ const Controller: React.FC = (): JSX.Element => {
       const { operation, direction } = controlKeys[key];
       let overlap: boolean;
 
-      for (let i = 1; i <= playersCount; i++) {
+      for (let i = 1; i <= players; i++) {
         if (player === `P${i}`) continue;
 
         const playerOther = `P${i}`;
@@ -347,7 +341,7 @@ const Controller: React.FC = (): JSX.Element => {
     const newHeight = document.querySelector('#monitor').clientHeight;
     const newWidth = document.querySelector('#monitor').clientWidth;
 
-    for (let i = 1; i <= playersCount; i++) {
+    for (let i = 1; i <= players; i++) {
       const player = `P${i}`;
 
       dispatchPlayers({
@@ -399,7 +393,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      for (let i = 1; i <= playersCount; i++) {
+      for (let i = 1; i <= players; i++) {
         const player = `P${i}`;
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
@@ -430,7 +424,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (state === 'running' && intervalHandleMove === undefined) {
-      switch (playersCount) {
+      switch (players) {
         case 2:
           controlKeys = controlKeys2P;
           break;

@@ -13,14 +13,14 @@ import { ContextFirebase } from '../../../contexts/firebase';
 import {
   ContextGame,
   ContextPlayers
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-offline';
 
 import {
   PropsAvatar,
   PropsOptionsPlayer,
   PropsOptions
-} from '../../../types/games/floating-point';
-import { ContextDispatchesFP } from '../../../contexts/games/floating-point';
+} from '../../../types/games/floating-point-offline';
+import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;

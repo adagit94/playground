@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
 
-import { PropsButtons } from '../../../types/games/floating-point';
+import { PropsButtons } from '../../../types/games/floating-point-offline';
 import {
   ContextGame,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-offline';
 
 const Button = styled(ButtonOptions)`
   svg path {

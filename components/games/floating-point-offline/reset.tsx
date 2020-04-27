@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
 
-import { ContextDispatchesFP } from '../../../contexts/games/floating-point';
+import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
 
 const Button = styled(ButtonOptions)`
   margin-left: 10px;

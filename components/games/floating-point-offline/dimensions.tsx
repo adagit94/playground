@@ -11,39 +11,39 @@ import {
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-offline';
 
-const Speed: React.FC = () => {
+const Dimensions: React.FC = () => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const speed = states.speed;
-  const isDefined = typeof speed === 'number';
+  const dimensions = states.dimensions;
+  const isDefined = typeof dimensions === 'number';
 
   const Label = styled(InputOptionsLabel)`
-    color: ${speed === null && '#f00'};
+    color: ${dimensions === null && '#f00'};
   `;
 
   return (
     <ContainerOption>
-      <Label htmlFor='speed'>Speed:</Label>
+      <Label htmlFor='dimensions'>Dimensions:</Label>
       <InputOptionsCommon
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatches.params({
-            type: 'changeSpeed',
-            speed: Number(e.target.value)
+            type: 'changeDimensions',
+            dimensions: Number(e.target.value)
           })
         }
-        value={isDefined ? String(speed) : ''}
+        value={isDefined ? String(dimensions) : ''}
         type='range'
-        min='1'
-        max='5'
-        step='2'
-        id='speed'
+        min='20'
+        max='30'
+        step='5'
+        id='dimensions'
       />
-      <InputOptionsValue>{isDefined && `${speed}x`}</InputOptionsValue>
+      <InputOptionsValue>{isDefined && `${dimensions}px`}</InputOptionsValue>
     </ContainerOption>
   );
 };
 
-export default React.memo(Speed);
+export default React.memo(Dimensions);

@@ -7,12 +7,12 @@ import { InputOptionsLabel } from '../../styled-components/inputs';
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-online';
 
 import {
   PropsOptionsPlayer,
   StatesPlayers
-} from '../../../types/games/floating-point';
+} from '../../../types/games/floating-point-online';
 
 const ContainerIcons = styled.div`
   display: flex;

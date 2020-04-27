@@ -14,7 +14,7 @@ import { DividerVertical } from '../../styled-components/dividers';
 import { OverlapDisabled } from '../../styled-components/overlaps';
 import { ContainerOptions } from '../../styled-components/containers';
 
-import { ContextGame } from '../../../contexts/games/floating-point';
+import { ContextGame } from '../../../contexts/games/floating-point-online';
 
 const Container = styled.div`
   display: flex;

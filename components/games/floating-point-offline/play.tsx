@@ -7,7 +7,7 @@ import {
   ContextGame,
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point';
+} from '../../../contexts/games/floating-point-offline';
 
 const Button = styled(ButtonOptions)`
   margin-right: 10px;
