@@ -1,53 +1,15 @@
-type PlayersPlayer = {
+export type Player = {
+  username: string;
+  avatar: string;
   top: number;
   left: number;
   score: number;
+  isReady: boolean;
 };
-
-type ChangePlayer = {
-  type: 'changePlayer';
-  operation: string;
-  player: string;
-};
-
-export type Key = {
-  pressed: boolean;
-  operation: string;
-  direction: string;
-  player: string;
-  limit: string;
-};
-
-export type ControlKeys2P = {
-  ArrowUp: Key;
-  ArrowRight: Key;
-  ArrowDown: Key;
-  ArrowLeft: Key;
-  w: Key;
-  d: Key;
-  s: Key;
-  a: Key;
-};
-
-export type ControlKeys3P = ControlKeys2P & {
-  i: Key;
-  l: Key;
-  k: Key;
-  j: Key;
-};
-
-export type ControlKeys4P = ControlKeys3P & {
-  '8': Key;
-  '6': Key;
-  '5': Key;
-  '4': Key;
-};
-
-export type ControlKeys = ControlKeys2P | ControlKeys3P | ControlKeys4P;
 
 export type PropsAvatar = {
-  state: string;
-  bg: string;
+  state?: string;
+  avatar: string;
 };
 
 export type PropsOptions = {
@@ -71,10 +33,7 @@ export type StatesGame = {
 };
 
 export type StatesPlayers = {
-  P1: PlayersPlayer;
-  P2: PlayersPlayer;
-  P3: PlayersPlayer;
-  P4: PlayersPlayer;
+  [key: string]: Player;
 };
 
 export type StatesFP = {
@@ -97,9 +56,7 @@ export type ActionsGame =
 export type ActionsPlayers =
   | {
       type: 'init';
-      player: string;
-      top: number;
-      left: number;
+      payload: StatesPlayers;
     }
   | {
       type: 'move';
@@ -110,7 +67,13 @@ export type ActionsPlayers =
       left?: number;
     }
   | { type: 'addScore'; player: string }
-  | ChangePlayer;
+  | {
+      type: 'changePlayer';
+      operation: string;
+      player: string;
+      payload: Player;
+    }
+  | { type: 'changeReady'; player: string };
 
 export type ActionsFP = { type: 'move'; top: number; left: number };
 

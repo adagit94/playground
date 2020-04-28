@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+
+import { ContextFirebase } from '../contexts/firebase';
 
 const Container = styled.div`
   padding: 10px;
@@ -74,6 +76,8 @@ const Mode = styled.div`
 `;
 
 const Playground: React.FC = (): JSX.Element => {
+  const statesFirebase = useContext(ContextFirebase);
+
   return (
     <Container>
       <ul>
@@ -83,9 +87,11 @@ const Playground: React.FC = (): JSX.Element => {
             <Link href='/playground/floating-point-offline'>
               <a>Offline</a>
             </Link>
-            <Link href='/playground/floating-point-online'>
-              <a>Online</a>
-            </Link>
+            {statesFirebase.user && (
+              <Link href='/playground/floating-point-online'>
+                <a>Online</a>
+              </Link>
+            )}
           </Mode>
         </li>
       </ul>

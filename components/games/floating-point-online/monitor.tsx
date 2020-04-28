@@ -14,11 +14,11 @@ const Container = styled.div`
 const Monitor: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
-  const state = statesGame.state;
+  const { state } = statesGame;
 
   return (
     <Container id='monitor'>
-      {state !== 'off' && state !== 'conf' && (
+      {state !== 'conf' && (
         <>
           <Players />
           <Point />

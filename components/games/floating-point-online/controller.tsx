@@ -3,164 +3,15 @@ import styled from 'styled-components';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
-import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import Defaults from '../../../defaults/games/floating-point-online';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
-import {
-  ControlKeys,
-  ControlKeys2P,
-  ControlKeys3P,
-  ControlKeys4P,
-  DispatchesFP
-} from '../../../types/games/floating-point-online';
-
-let controlKeys: ControlKeys;
-let intervalHandleMove: number;
-
-const controlKeys2P: ControlKeys2P = {
-  ArrowUp: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'top',
-    player: 'P1',
-    limit: 'top'
-  },
-  ArrowRight: {
-    pressed: false,
-    operation: 'add',
-    direction: 'left',
-    player: 'P1',
-    limit: 'right'
-  },
-  ArrowDown: {
-    pressed: false,
-    operation: 'add',
-    direction: 'top',
-    player: 'P1',
-    limit: 'bottom'
-  },
-  ArrowLeft: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'left',
-    player: 'P1',
-    limit: 'left'
-  },
-  w: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'top',
-    player: 'P2',
-    limit: 'top'
-  },
-  d: {
-    pressed: false,
-    operation: 'add',
-    direction: 'left',
-    player: 'P2',
-    limit: 'right'
-  },
-  s: {
-    pressed: false,
-    operation: 'add',
-    direction: 'top',
-    player: 'P2',
-    limit: 'bottom'
-  },
-  a: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'left',
-    player: 'P2',
-    limit: 'left'
-  }
-};
-
-const controlKeys3P: ControlKeys3P = {
-  ...controlKeys2P,
-  i: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'top',
-    player: 'P3',
-    limit: 'top'
-  },
-  l: {
-    pressed: false,
-    operation: 'add',
-    direction: 'left',
-    player: 'P3',
-    limit: 'right'
-  },
-  k: {
-    pressed: false,
-    operation: 'add',
-    direction: 'top',
-    player: 'P3',
-    limit: 'bottom'
-  },
-  j: {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'left',
-    player: 'P3',
-    limit: 'left'
-  }
-};
-
-const controlKeys4P: ControlKeys4P = {
-  ...controlKeys3P,
-  '8': {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'top',
-    player: 'P4',
-    limit: 'top'
-  },
-  '6': {
-    pressed: false,
-    operation: 'add',
-    direction: 'left',
-    player: 'P4',
-    limit: 'right'
-  },
-  '5': {
-    pressed: false,
-    operation: 'add',
-    direction: 'top',
-    player: 'P4',
-    limit: 'bottom'
-  },
-  '4': {
-    pressed: false,
-    operation: 'subtract',
-    direction: 'left',
-    player: 'P4',
-    limit: 'left'
-  }
-};
-
-const registerKey = (e: KeyboardEvent): void => {
-  e.preventDefault();
-
-  const key = e.key;
-
-  if (key in controlKeys && controlKeys[key].pressed !== true) {
-    controlKeys[key].pressed = true;
-  }
-};
-
-const cancelKey = (e: KeyboardEvent): void => {
-  const key = e.key;
-
-  if (key in controlKeys) {
-    controlKeys[key].pressed = false;
-  }
-};
+import { ContextDispatchesLayout } from '../../../contexts/layout';
+import { ContextFirebase } from '../../../contexts/firebase';
+import { DispatchesFP } from '../../../types/games/floating-point-online';
+import { initGameFP, getPlayersFP, addListenersFP } from '../../../firebase/db';
 
 const dispatchesFP: DispatchesFP = {
   game: undefined,
@@ -179,171 +30,195 @@ const Controller: React.FC = (): JSX.Element => {
     Reducers.reducerGame,
     Inits.initGame
   );
-
   const [statesPlayers, dispatchPlayers] = useReducer(
     Reducers.reducerPlayers,
     Inits.initPlayers
   );
-
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
-
+  const statesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesLayout);
   const refHandleMove = useRef(null);
   const refRecalculate = useRef(null);
 
-  const { players, state, width, height } = statesGame;
+  const { user } = statesFirebase;
+  const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
   const { dimensions } = Defaults;
 
-  const handleMove = (): void => {
-    for (const key in controlKeys) {
-      if (controlKeys[key].pressed === false) continue;
+  const handleMove = (key): void => {
+    let operation: string;
+    let direction: string;
+    let limit: string;
 
-      const { player, limit } = controlKeys[key];
-      const playerLeft: number = statesPlayers[player].left;
-      const playerTop: number = statesPlayers[player].top;
+    switch (key) {
+      case 'ArrowUp':
+        operation = 'subtract';
+        direction = 'top';
+        limit = 'top';
+        break;
 
-      switch (limit) {
-        case 'top':
-          if (playerTop <= 0) continue;
-          break;
-        case 'right':
-          if (playerLeft + dimensions >= width) continue;
-          break;
-        case 'bottom':
-          if (playerTop + dimensions >= height) continue;
-          break;
-        case 'left':
-          if (playerLeft <= 0) continue;
-          break;
-      }
+      case 'ArrowRight':
+        operation = 'add';
+        direction = 'left';
+        limit = 'right';
+        break;
 
-      const { operation, direction } = controlKeys[key];
-      let overlap: boolean;
+      case 'ArrowDown':
+        operation = 'add';
+        direction = 'top';
+        limit = 'bottom';
+        break;
 
-      for (let i = 1; i <= players; i++) {
-        if (player === `P${i}`) continue;
-
-        const playerOther = `P${i}`;
-        const playerOtherLeft: number = statesPlayers[playerOther].left;
-        const playerOtherTop: number = statesPlayers[playerOther].top;
-
-        if (
-          (playerTop + dimensions === playerOtherTop ||
-            playerTop + dimensions - 1 === playerOtherTop) &&
-          playerLeft + dimensions >= playerOtherLeft &&
-          playerLeft <= playerOtherLeft + dimensions
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'top',
-            player
-          });
-
-          if (playerTop + dimensions - 1 === playerOtherTop) {
-            dispatchPlayers({
-              type: 'move',
-              operation: 'add',
-              direction: 'top',
-              player: playerOther
-            });
-          }
-
-          overlap = true;
-        } else if (
-          (playerTop === playerOtherTop + dimensions ||
-            playerTop + 1 === playerOtherTop + dimensions) &&
-          playerLeft + dimensions >= playerOtherLeft &&
-          playerLeft <= playerOtherLeft + dimensions
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'top',
-            player
-          });
-
-          if (playerTop + 1 === playerOtherTop + dimensions) {
-            dispatchPlayers({
-              type: 'move',
-              operation: 'subtract',
-              direction: 'top',
-              player: playerOther
-            });
-          }
-
-          overlap = true;
-        } else if (
-          (playerLeft + dimensions === playerOtherLeft ||
-            playerLeft + dimensions - 1 === playerOtherLeft) &&
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'left',
-            player
-          });
-
-          if (playerLeft + dimensions - 1 === playerOtherLeft) {
-            dispatchPlayers({
-              type: 'move',
-              operation: 'add',
-              direction: 'left',
-              player: playerOther
-            });
-          }
-
-          overlap = true;
-        } else if (
-          (playerLeft === playerOtherLeft + dimensions ||
-            playerLeft + 1 === playerOtherLeft + dimensions) &&
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions
-        ) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'left',
-            player
-          });
-
-          if (playerLeft + 1 === playerOtherLeft + dimensions) {
-            dispatchPlayers({
-              type: 'move',
-              operation: 'subtract',
-              direction: 'left',
-              player: playerOther
-            });
-          }
-
-          overlap = true;
-        }
-      }
-
-      if (overlap === true) continue;
-
-      dispatchPlayers({
-        type: 'move',
-        operation,
-        direction,
-        player
-      });
+      case 'ArrowLeft':
+        operation = 'subtract';
+        direction = 'left';
+        limit = 'left';
+        break;
     }
+
+    const playerLocal = user.uid;
+    const playerLocalLeft = statesPlayers[playerLocal].left;
+    const playerLocalTop = statesPlayers[playerLocal].top;
+
+    switch (limit) {
+      case 'top':
+        if (playerLocalTop <= 0) return;
+        break;
+
+      case 'right':
+        if (playerLocalLeft + dimensions >= width) return;
+        break;
+
+      case 'bottom':
+        if (playerLocalTop + dimensions >= height) return;
+        break;
+
+      case 'left':
+        if (playerLocalLeft <= 0) return;
+        break;
+    }
+
+    let overlap: boolean;
+
+    for (const player in statesPlayers) {
+      if (playerLocal === player) return;
+
+      const playerLeft = statesPlayers[player].left;
+      const playerTop = statesPlayers[player].top;
+
+      if (
+        (playerLocalTop + dimensions === playerTop ||
+          playerLocalTop + dimensions - 1 === playerTop) &&
+        playerLocalLeft + dimensions >= playerLeft &&
+        playerLocalLeft <= playerLeft + dimensions
+      ) {
+        dispatchPlayers({
+          type: 'move',
+          operation: 'subtract',
+          direction: 'top',
+          player: playerLocal
+        });
+
+        if (playerTop + dimensions - 1 === playerTop) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction: 'top',
+            player
+          });
+        }
+
+        overlap = true;
+      } else if (
+        (playerLocalTop === playerTop + dimensions ||
+          playerLocalTop + 1 === playerTop + dimensions) &&
+        playerLocalLeft + dimensions >= playerLeft &&
+        playerLocalLeft <= playerLeft + dimensions
+      ) {
+        dispatchPlayers({
+          type: 'move',
+          operation: 'add',
+          direction: 'top',
+          player: playerLocal
+        });
+
+        if (playerTop + 1 === playerTop + dimensions) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction: 'top',
+            player
+          });
+        }
+
+        overlap = true;
+      } else if (
+        (playerLocalLeft + dimensions === playerLeft ||
+          playerLocalLeft + dimensions - 1 === playerLeft) &&
+        playerLocalTop + dimensions >= playerTop &&
+        playerLocalTop <= playerTop + dimensions
+      ) {
+        dispatchPlayers({
+          type: 'move',
+          operation: 'subtract',
+          direction: 'left',
+          player: playerLocal
+        });
+
+        if (playerLeft + dimensions - 1 === playerLeft) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction: 'left',
+            player
+          });
+        }
+
+        overlap = true;
+      } else if (
+        (playerLocalLeft === playerLeft + dimensions ||
+          playerLocalLeft + 1 === playerLeft + dimensions) &&
+        playerLocalTop + dimensions >= playerTop &&
+        playerLocalTop <= playerTop + dimensions
+      ) {
+        dispatchPlayers({
+          type: 'move',
+          operation: 'add',
+          direction: 'left',
+          player: playerLocal
+        });
+
+        if (playerLeft + 1 === playerLeft + dimensions) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction: 'left',
+            player
+          });
+        }
+
+        overlap = true;
+      }
+    }
+
+    if (overlap === true) return;
+
+    dispatchPlayers({
+      type: 'move',
+      operation,
+      direction,
+      player: playerLocal
+    });
   };
 
   const recalculate = (): void => {
-    if (state !== 'running' && state !== 'paused') return;
+    if (state !== 'running') return;
 
     const newHeight = document.querySelector('#monitor').clientHeight;
     const newWidth = document.querySelector('#monitor').clientWidth;
 
-    for (let i = 1; i <= players; i++) {
-      const player = `P${i}`;
-
+    for (const player in statesPlayers) {
       dispatchPlayers({
         type: 'move',
         operation: 'changePos',
@@ -366,35 +241,8 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    dispatchesFP.game = dispatchGame;
-    dispatchesFP.players = dispatchPlayers;
-    dispatchesFP.params = dispatchParams;
-    dispatchesFP.fp = dispatchFP;
-  }, []);
-
-  useEffect(() => {
-    const changeDimensions = (): void => {
-      dispatchGame({
-        type: 'changeDimensions',
-        height: document.querySelector('#monitor').clientHeight,
-        width: document.querySelector('#monitor').clientWidth
-      });
-
-      refRecalculate.current();
-    };
-
-    changeDimensions();
-    window.addEventListener('resize', changeDimensions);
-
-    return (): void => {
-      window.removeEventListener('resize', changeDimensions);
-    };
-  }, []);
-
-  useEffect(() => {
     const matchFloatingPoint = (): void => {
-      for (let i = 1; i <= players; i++) {
-        const player = `P${i}`;
+      for (const player in statesPlayers) {
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
         if (
@@ -423,58 +271,73 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    if (state === 'running' && intervalHandleMove === undefined) {
-      switch (players) {
-        case 2:
-          controlKeys = controlKeys2P;
-          break;
-        case 3:
-          controlKeys = controlKeys3P;
-          break;
-        case 4:
-          controlKeys = controlKeys4P;
-          break;
-      }
+    const registerKey = (e: KeyboardEvent): void => {
+      e.preventDefault();
 
-      intervalHandleMove = window.setInterval(
-        refHandleMove.current,
-        30 - 5 * speed
-      );
+      refHandleMove.current(e.key);
+    };
 
+    if (state === 'running') {
       window.addEventListener('keydown', registerKey);
-      window.addEventListener('keyup', cancelKey);
-    } else if (state !== 'running' && intervalHandleMove !== undefined) {
-      window.clearInterval(intervalHandleMove);
-      intervalHandleMove = undefined;
-
+    } else {
       window.removeEventListener('keydown', registerKey);
-      window.removeEventListener('keyup', cancelKey);
     }
 
     return (): void => {
-      if (intervalHandleMove !== undefined) {
-        window.clearInterval(intervalHandleMove);
-        intervalHandleMove = undefined;
-
-        window.removeEventListener('keydown', registerKey);
-        window.removeEventListener('keyup', cancelKey);
-      }
+      window.removeEventListener('keydown', registerKey);
     };
-  });
+  }, [state]);
+
+  useEffect(() => {
+    dispatchesFP.game = dispatchGame;
+    dispatchesFP.players = dispatchPlayers;
+    dispatchesFP.fp = dispatchFP;
+  }, []);
+
+  useEffect(() => {
+    const changeDimensions = (): void => {
+      dispatchGame({
+        type: 'changeDimensions',
+        height: document.querySelector('#monitor').clientHeight,
+        width: document.querySelector('#monitor').clientWidth
+      });
+
+      refRecalculate.current();
+    };
+
+    changeDimensions();
+    window.addEventListener('resize', changeDimensions);
+
+    return (): void => {
+      window.removeEventListener('resize', changeDimensions);
+    };
+  }, []);
+
+  useEffect(() => {
+    const initGame = async (): Promise<void> => {
+      await initGameFP();
+
+      addListenersFP();
+
+      const players = await getPlayersFP();
+
+      dispatchPlayers({ type: 'init', payload: players });
+    };
+
+    initGame();
+  }, []);
 
   //console.log(statesPlayers.P1.top + dimensions);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
         <Contexts.ContextPlayers.Provider value={statesPlayers}>
-          <Contexts.ContextParams.Provider value={statesParams}>
-            <Contexts.ContextFP.Provider value={statesFP}>
-              <Monitor />
-              <Contexts.ContextDispatchesFP.Provider value={dispatchesFP}>
-                <ControlPanel />
-              </Contexts.ContextDispatchesFP.Provider>
-            </Contexts.ContextFP.Provider>
-          </Contexts.ContextParams.Provider>
+          <Contexts.ContextFP.Provider value={statesFP}>
+            <Monitor />
+            <Contexts.ContextDispatchesFP.Provider value={dispatchesFP}>
+              <ControlPanel />
+            </Contexts.ContextDispatchesFP.Provider>
+          </Contexts.ContextFP.Provider>
         </Contexts.ContextPlayers.Provider>
       </Contexts.ContextGame.Provider>
     </Container>
@@ -482,3 +345,101 @@ const Controller: React.FC = (): JSX.Element => {
 };
 
 export default React.memo(Controller);
+
+/*
+  const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
+    const playersCount = statesGame.players.length;
+    const { dimensions, speed } = statesParams;
+
+    let playable: boolean;
+
+    for (let i = 1; i <= playersCount; i++) {
+      const player = `P${i}`;
+      const icon = statesParams[player].icon;
+
+      if (icon === undefined) {
+        dispatches.params({
+          type: 'handleIcon',
+          operation: 'nullify',
+          player
+        });
+      }
+
+      if (playable !== false && (icon === undefined || icon === null)) {
+        playable = false;
+      }
+    }
+
+    if (dimensions === undefined) {
+      dispatches.params({
+        type: 'changeDimensions',
+        dimensions: null
+      });
+    }
+
+    if (speed === undefined) {
+      dispatches.params({
+        type: 'changeSpeed',
+        speed: null
+      });
+    }
+
+    if (
+      playable !== false &&
+      (dimensions === undefined ||
+        dimensions === null ||
+        speed === undefined ||
+        speed === null)
+    ) {
+      playable = false;
+    }
+
+    if (playable === false) return;
+
+    const height = statesGame.height;
+    const width = statesGame.width;
+
+    for (let i = 1; i <= playersCount; i++) {
+      const player = `P${i}`;
+      let top: number;
+      let left: number;
+
+      switch (player) {
+        case 'P1':
+          top = height / 2 - dimensions / 2;
+          left = 10;
+          break;
+        case 'P2':
+          top = height / 2 - dimensions / 2;
+          left = width - dimensions - 10;
+          break;
+        case 'P3':
+          top = 10;
+          left = width / 2 - dimensions / 2;
+          break;
+        case 'P4':
+          top = height - dimensions - 10;
+          left = width / 2 - dimensions / 2;
+          break;
+      }
+
+      dispatches.players({
+        type: 'init',
+        player,
+        top,
+        left
+      });
+    }
+
+    dispatches.fp({
+      type: 'move',
+      top: height / 2 - dimensions / 2,
+      left: width / 2 - dimensions / 2
+    });
+
+    dispatches.game({
+      type: 'changeState',
+      state: 'running'
+    });
+  };
+*/

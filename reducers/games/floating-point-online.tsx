@@ -4,7 +4,6 @@ import {
   StatesFP,
   ActionsGame,
   ActionsPlayers,
-  ActionsParams,
   ActionsFP
 } from '../../types/games/floating-point-online';
 
@@ -60,12 +59,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
   switch (action.type) {
     case 'init':
       return {
-        ...states,
-        [action.player]: {
-          top: action.top,
-          left: action.left,
-          score: 0
-        }
+        ...action.payload
       };
 
     case 'move':
@@ -116,11 +110,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         case 'add':
           return {
             ...states,
-            [action.player]: {
-              top: undefined,
-              left: undefined,
-              score: undefined
-            }
+            [action.player]: action.payload
           };
 
         case 'remove':
@@ -132,6 +122,12 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
         default:
           throw new Error('Unspecified / Wrong operation');
       }
+
+    case 'setReady':
+      return {
+        ...states,
+        [action.player]: { ...states[action.player], isReady: action.value }
+      };
 
     default:
       throw new Error('Unspecified / Wrong action');

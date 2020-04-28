@@ -4,6 +4,7 @@ import 'firebase/firebase-auth';
 import 'firebase/firebase-storage';
 
 import { getRecordUser } from './db';
+import { getCurrentUser } from './helpers';
 import { ValidatorReturn } from '../types/firebase';
 
 const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
@@ -50,8 +51,6 @@ export const initAuthObserver = (
     err => console.error(err)
   );
 };
-
-export const getCurrentUser = (): firebase.User => firebase.auth().currentUser;
 
 export const createUser = async (
   email: string,

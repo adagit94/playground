@@ -1,19 +1,19 @@
-import { users } from './collections';
+import * as firebase from 'firebase/app';
+import 'firebase/firebase-auth';
 
-export const getUser = (user): firebase.firestore.DocumentData => {
-  const userData = users
-    .doc(user)
-    .get()
-    .then(data => data.data())
-    .catch(err => console.error(err));
+import { Player } from '../types/games/floating-point-online';
 
-  return userData;
-};
+export const getCurrentUser = (): firebase.User => firebase.auth().currentUser;
 
-export const initUser = (user, fields): void => {
-  users
-    .doc(user)
-    .set(fields)
-    .then(() => console.log('data uploaded'))
-    .catch(err => console.error(err));
+export const initPlayer = (user: firebase.User): Player => {
+  const player: Player = {
+    username: user.displayName,
+    avatar: user.photoURL,
+    top: undefined,
+    left: undefined,
+    score: undefined,
+    isReady: false
+  };
+
+  return player;
 };

@@ -1,11 +1,11 @@
 export type StatesFirebase = {
-  user: any;
+  user: firebase.User;
   isAuthenticated: boolean;
   loading: boolean;
 };
 
 export type ActionsFirebase =
-  | { type: 'initUser'; payload: any }
+  | { type: 'initUser'; payload: firebase.User }
   | { type: 'setIsAuthenticated'; value: boolean }
   | { type: 'setLoading'; value: boolean }
   | { type: 'reset' };

@@ -13,12 +13,7 @@ export const initGame: StatesGame = {
   height: undefined
 };
 
-export const initPlayers: StatesPlayers = {
-  P1: undefined,
-  P2: undefined,
-  P3: undefined,
-  P4: undefined
-};
+export const initPlayers: StatesPlayers = {};
 
 export const initFP: StatesFP = {
   top: undefined,

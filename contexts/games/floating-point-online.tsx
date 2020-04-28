@@ -5,7 +5,7 @@ import {
   StatesPlayers,
   StatesFP,
   DispatchesFP
-} from '../../types/games/floating-point-offline';
+} from '../../types/games/floating-point-online';
 
 export const ContextGame = React.createContext<StatesGame>(null);
 export const ContextPlayers = React.createContext<StatesPlayers>(null);

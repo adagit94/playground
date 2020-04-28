@@ -1,22 +1,17 @@
 import React, { useContext } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
+import Defaults from '../../../defaults/games/floating-point-online';
 import { Colors } from '../../../types/layout';
-import {
-  ContextGame,
-  ContextParams,
-  ContextFP
-} from '../../../contexts/games/floating-point-online';
+import { ContextFP } from '../../../contexts/games/floating-point-online';
 
 const Point: React.FC = () => {
-  const statesGame = useContext(ContextGame);
-  const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);
   const colors: Colors = useContext(ThemeContext);
 
-  const state = statesGame.state;
-  const { dimensions, speed } = statesParams;
   const { top, left } = statesFP;
+
+  const { dimensions } = Defaults;
 
   const Point = styled.div`
     display: flex;
@@ -48,10 +43,9 @@ const Point: React.FC = () => {
   const InnerCircle = styled.div`
     border-radius: 100%;
     animation-name: ${waving};
-    animation-duration: ${2 - 2 * (speed / 10)}s;
+    animation-duration: 1s;
     animation-timing-function: ease-in;
     animation-iteration-count: infinite;
-    animation-play-state: ${state === 'paused' ? 'paused' : 'running'};
   `;
 
   return (
