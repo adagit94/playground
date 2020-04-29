@@ -9,11 +9,29 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
     case 'initUser':
       return { ...action.payload };
 
-    case 'addPoint':
-      return {
-        ...states,
-        gatheredPoints: states.gatheredPoints + 1
-      };
+    case 'editGame':
+      switch (action.game) {
+        case 'floatingPoint':
+          switch (action.operation) {
+            case 'addPoint':
+              return {
+                ...states,
+                games: {
+                  ...states.games,
+                  [action.game]: {
+                    ...states.games[action.game],
+                    gatheredPoints: states[action.game].gatheredPoints + 1
+                  }
+                }
+              };
+
+            default:
+              throw new Error('Unspecified / Wrong operation');
+          }
+
+        default:
+          throw new Error('Unspecified / Wrong game');
+      }
 
     case 'reset':
       return {

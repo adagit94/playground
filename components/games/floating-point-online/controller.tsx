@@ -4,14 +4,26 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import Defaults from '../../../defaults/games/floating-point-online';
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
+import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
-import { DispatchesFP } from '../../../types/games/floating-point-online';
-import { initGameFP, getPlayersFP, addListenersFP } from '../../../firebase/db';
+import { ContextUser } from '../../../contexts/user';
+import {
+  DispatchesFP,
+  PathsList,
+  DataList
+} from '../../../types/games/floating-point-online';
+import {
+  initGame,
+  getRecordPlayers,
+  addListeners,
+  updateRecordPlayer,
+  updateRecordFP,
+  updateRecordUser
+} from '../../../firebase/db';
 
 const dispatchesFP: DispatchesFP = {
   game: undefined,
@@ -36,11 +48,12 @@ const Controller: React.FC = (): JSX.Element => {
   );
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
+  const statesUser = useContext(ContextUser);
   const dispatches = useContext(ContextDispatchesLayout);
   const refHandleMove = useRef(null);
   const refRecalculate = useRef(null);
 
-  const { user } = statesFirebase;
+  const { uid } = statesFirebase.user;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
@@ -77,7 +90,7 @@ const Controller: React.FC = (): JSX.Element => {
         break;
     }
 
-    const playerLocal = user.uid;
+    const playerLocal = uid;
     const playerLocalLeft = statesPlayers[playerLocal].left;
     const playerLocalTop = statesPlayers[playerLocal].top;
 
@@ -120,6 +133,8 @@ const Controller: React.FC = (): JSX.Element => {
           player: playerLocal
         });
 
+        updateRecordPlayer(playerLocal, { top: playerLocalTop - 1 });
+
         if (playerTop + dimensions - 1 === playerTop) {
           dispatchPlayers({
             type: 'move',
@@ -127,6 +142,8 @@ const Controller: React.FC = (): JSX.Element => {
             direction: 'top',
             player
           });
+
+          updateRecordPlayer(player, { top: playerTop + 1 });
         }
 
         overlap = true;
@@ -143,6 +160,8 @@ const Controller: React.FC = (): JSX.Element => {
           player: playerLocal
         });
 
+        updateRecordPlayer(playerLocal, { top: playerLocalTop + 1 });
+
         if (playerTop + 1 === playerTop + dimensions) {
           dispatchPlayers({
             type: 'move',
@@ -150,6 +169,8 @@ const Controller: React.FC = (): JSX.Element => {
             direction: 'top',
             player
           });
+
+          updateRecordPlayer(player, { top: playerTop - 1 });
         }
 
         overlap = true;
@@ -166,6 +187,8 @@ const Controller: React.FC = (): JSX.Element => {
           player: playerLocal
         });
 
+        updateRecordPlayer(playerLocal, { left: playerLocalLeft - 1 });
+
         if (playerLeft + dimensions - 1 === playerLeft) {
           dispatchPlayers({
             type: 'move',
@@ -173,6 +196,8 @@ const Controller: React.FC = (): JSX.Element => {
             direction: 'left',
             player
           });
+
+          updateRecordPlayer(player, { left: playerLeft + 1 });
         }
 
         overlap = true;
@@ -189,6 +214,8 @@ const Controller: React.FC = (): JSX.Element => {
           player: playerLocal
         });
 
+        updateRecordPlayer(playerLocal, { left: playerLocalLeft + 1 });
+
         if (playerLeft + 1 === playerLeft + dimensions) {
           dispatchPlayers({
             type: 'move',
@@ -196,6 +223,8 @@ const Controller: React.FC = (): JSX.Element => {
             direction: 'left',
             player
           });
+
+          updateRecordPlayer(player, { left: playerLeft - 1 });
         }
 
         overlap = true;
@@ -210,6 +239,11 @@ const Controller: React.FC = (): JSX.Element => {
       direction,
       player: playerLocal
     });
+
+    updateRecordPlayer(playerLocal, {
+      [direction]:
+        operation === 'add' ? playerLocalLeft + 1 : playerLocalLeft - 1
+    });
   };
 
   const recalculate = (): void => {
@@ -219,25 +253,98 @@ const Controller: React.FC = (): JSX.Element => {
     const newWidth = document.querySelector('#monitor').clientWidth;
 
     for (const player in statesPlayers) {
+      const playerTop =
+        (statesPlayers[player].top / height) * 100 * (newHeight / 100);
+      const playerLeft =
+        (statesPlayers[player].left / width) * 100 * (newWidth / 100);
+
       dispatchPlayers({
         type: 'move',
         operation: 'changePos',
-        top: (statesPlayers[player].top / height) * 100 * (newHeight / 100),
-        left: (statesPlayers[player].left / width) * 100 * (newWidth / 100),
+        top: playerTop,
+        left: playerLeft,
         player
       });
+
+      updateRecordPlayer(player, { top: playerTop, left: playerLeft });
     }
+
+    const fpTop = (fPTop / height) * 100 * (newHeight / 100);
+    const fpLeft = (fPLeft / width) * 100 * (newWidth / 100);
 
     dispatchFP({
       type: 'move',
-      top: (fPTop / height) * 100 * (newHeight / 100),
-      left: (fPLeft / width) * 100 * (newWidth / 100)
+      top: fpTop,
+      left: fpLeft
     });
+
+    updateRecordFP({ top: fpTop, left: fpLeft });
   };
 
   useEffect(() => {
     refHandleMove.current = handleMove;
     refRecalculate.current = recalculate;
+  });
+
+  useEffect(() => {
+    const initGame = (): void => {
+      const players = Object.keys(statesPlayers);
+
+      for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        let playerTop: number;
+        let playerLeft: number;
+
+        switch (i) {
+          case 0:
+            playerTop = height / 2 - dimensions / 2;
+            playerLeft = 10;
+            break;
+
+          case 1:
+            playerTop = height / 2 - dimensions / 2;
+            playerLeft = width - dimensions - 10;
+            break;
+
+          case 2:
+            playerTop = 10;
+            playerLeft = width / 2 - dimensions / 2;
+            break;
+
+          case 3:
+            playerTop = height - dimensions - 10;
+            playerLeft = width / 2 - dimensions / 2;
+            break;
+        }
+
+        dispatchPlayers({
+          type: 'move',
+          operation: 'changePos',
+          player,
+          top: playerTop,
+          left: playerLeft
+        });
+
+        updateRecordPlayer(player, { top: playerTop, left: playerLeft });
+      }
+
+      const fpTop = height / 2 - dimensions / 2;
+      const fpLeft = width / 2 - dimensions / 2;
+
+      dispatchFP({
+        type: 'move',
+        top: fpTop,
+        left: fpLeft
+      });
+
+      updateRecordFP({ top: fpTop, left: fpLeft });
+    };
+
+    if (state === 'init') {
+      initGame();
+
+      dispatchGame({ type: 'changeState', state: 'running' });
+    }
   });
 
   useEffect(() => {
@@ -251,7 +358,16 @@ const Controller: React.FC = (): JSX.Element => {
           playerLeft + dimensions >= fPLeft &&
           playerLeft <= fPLeft + dimensions
         ) {
-          //dispatches.user({ type: 'addPoint' });
+          const fpTop = Math.min(Math.random() * height, height - dimensions);
+          const fpLeft = Math.min(Math.random() * width, width - dimensions);
+
+          if (player === uid) {
+            dispatches.user({
+              type: 'editGame',
+              game: 'floatingPoint',
+              operation: 'addPoint'
+            });
+          }
 
           dispatchPlayers({
             type: 'addScore',
@@ -260,9 +376,26 @@ const Controller: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.min(Math.random() * height, height - dimensions),
-            left: Math.min(Math.random() * width, width - dimensions)
+            top: fpTop,
+            left: fpLeft
           });
+
+          if (player === uid) {
+            updateRecordUser(
+              uid,
+              {
+                gatheredPoints:
+                  statesUser.games.floatingPoint.gatheredPoints + 1
+              },
+              'floatingPoint'
+            );
+          }
+
+          updateRecordPlayer(uid, {
+            score: statesPlayers[player].score + 1
+          });
+
+          updateRecordFP({ top: fpTop, left: fpLeft });
         }
       }
     };
@@ -314,14 +447,21 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    const handleChange = (path: PathsList, data: DataList): void => {
+      switch (path) {
+        case 'game':
+          dispatchGame({ type: 'setData', payload: data });
+      }
+    };
+
     const initGame = async (): Promise<void> => {
-      await initGameFP();
+      await initGame();
 
-      addListenersFP();
-
-      const players = await getPlayersFP();
+      const players = await getRecordPlayers();
 
       dispatchPlayers({ type: 'init', payload: players });
+
+      addListeners(handleChange);
     };
 
     initGame();
@@ -345,101 +485,3 @@ const Controller: React.FC = (): JSX.Element => {
 };
 
 export default React.memo(Controller);
-
-/*
-  const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
-    const playersCount = statesGame.players.length;
-    const { dimensions, speed } = statesParams;
-
-    let playable: boolean;
-
-    for (let i = 1; i <= playersCount; i++) {
-      const player = `P${i}`;
-      const icon = statesParams[player].icon;
-
-      if (icon === undefined) {
-        dispatches.params({
-          type: 'handleIcon',
-          operation: 'nullify',
-          player
-        });
-      }
-
-      if (playable !== false && (icon === undefined || icon === null)) {
-        playable = false;
-      }
-    }
-
-    if (dimensions === undefined) {
-      dispatches.params({
-        type: 'changeDimensions',
-        dimensions: null
-      });
-    }
-
-    if (speed === undefined) {
-      dispatches.params({
-        type: 'changeSpeed',
-        speed: null
-      });
-    }
-
-    if (
-      playable !== false &&
-      (dimensions === undefined ||
-        dimensions === null ||
-        speed === undefined ||
-        speed === null)
-    ) {
-      playable = false;
-    }
-
-    if (playable === false) return;
-
-    const height = statesGame.height;
-    const width = statesGame.width;
-
-    for (let i = 1; i <= playersCount; i++) {
-      const player = `P${i}`;
-      let top: number;
-      let left: number;
-
-      switch (player) {
-        case 'P1':
-          top = height / 2 - dimensions / 2;
-          left = 10;
-          break;
-        case 'P2':
-          top = height / 2 - dimensions / 2;
-          left = width - dimensions - 10;
-          break;
-        case 'P3':
-          top = 10;
-          left = width / 2 - dimensions / 2;
-          break;
-        case 'P4':
-          top = height - dimensions - 10;
-          left = width / 2 - dimensions / 2;
-          break;
-      }
-
-      dispatches.players({
-        type: 'init',
-        player,
-        top,
-        left
-      });
-    }
-
-    dispatches.fp({
-      type: 'move',
-      top: height / 2 - dimensions / 2,
-      left: width / 2 - dimensions / 2
-    });
-
-    dispatches.game({
-      type: 'changeState',
-      state: 'running'
-    });
-  };
-*/

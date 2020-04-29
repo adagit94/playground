@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-const Nav: React.FC = () => {
+const Nav: React.FC = (): JSX.Element => {
   const Container = styled.nav`
     flex: auto;
     margin: 10px 0;

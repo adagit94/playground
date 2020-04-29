@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
+import { updateRecordPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
 import {
   PropsAvatar,
@@ -74,7 +75,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
-  const { state } = statesGame;
+  const { state, players } = statesGame;
   const { username, avatar, score, isReady } = statesPlayers[player];
 
   const ButtonReady = styled.button`
@@ -101,6 +102,20 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
     }
   `;
 
+  useEffect(() => {
+    const initGame = (): void => {
+      if (players < 2) return;
+
+      for (const player in statesPlayers) {
+        if (!statesPlayers[player].isReady) return;
+      }
+
+      dispatches.game({ type: 'changeState', state: 'init' });
+    };
+
+    initGame();
+  });
+
   return (
     <Container>
       <ContainerButtonReady>
@@ -109,7 +124,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
             onClick={(): void => {
               dispatches.players({ type: 'changeReady', player });
 
-              
+              updateRecordPlayer(player, { isReady: !isReady });
             }}
             type='button'
           >

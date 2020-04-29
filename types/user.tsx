@@ -3,6 +3,15 @@ type FloatingPoint = {
   gatheredPoints: number;
 };
 
+type UpdateFloatingPoint = {
+  wins?: number;
+  gatheredPoints?: number;
+};
+
+type UpdateUser = {
+  lastPlayed?: string;
+};
+
 type Games = {
   floatingPoint: FloatingPoint;
 };
@@ -17,5 +26,9 @@ export type ActionsUser =
       type: 'initUser';
       payload: StatesUser;
     }
-  | { type: 'addPoint' }
+  | { type: 'editGame'; game: GamesList; operation: 'addPoint' }
   | { type: 'reset' };
+
+export type UpdatesList = UpdateUser | UpdateFloatingPoint;
+
+export type GamesList = 'floatingPoint';

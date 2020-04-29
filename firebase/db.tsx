@@ -1,32 +1,29 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
-import { StatesUser } from '../types/user';
-import { StatesPlayers } from '../types/games/floating-point-online';
 import { defaultsUser } from '../defaults/user';
 import { initPlayer, getCurrentUser } from './helpers';
-import { initGame, initFP } from '../inits/games/floating-point-online';
+import { initFP } from '../inits/games/floating-point-online';
+import { StatesUser, GamesList, UpdatesList } from '../types/user';
+import {
+  StatesPlayers,
+  UpdatePlayer,
+  StatesFP
+} from '../types/games/floating-point-online';
 
-export const createRecordUser = async (uid, record): Promise<void> => {
-  await firebase
-    .database()
-    .ref(`users/${uid}`)
-    .set(record)
-    .catch(err => console.error(err));
+export const createRecordUser = async (
+  uid: string,
+  record: StatesUser
+): Promise<void> => {
+  const userRef = firebase.database().ref(`users/${uid}`);
+
+  await userRef.set(record).catch(err => console.error(err));
 };
 
-export const createRecordGame = async (game, uid, record): Promise<void> => {
-  await firebase
-    .database()
-    .ref(`games/${game}/${uid}`)
-    .set(record)
-    .catch(err => console.error(err));
-};
+export const getRecordUser = async (uid: string): Promise<StatesUser> => {
+  const userRef = firebase.database().ref(`users/${uid}`);
 
-export const getRecordUser = async (uid): Promise<StatesUser> => {
-  const user = await firebase
-    .database()
-    .ref(`users/${uid}`)
+  const user: StatesUser = await userRef
     .once('value')
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));
@@ -36,7 +33,21 @@ export const getRecordUser = async (uid): Promise<StatesUser> => {
   return user || defaultsUser;
 };
 
-export const initGameFP = async (): Promise<void> => {
+export const updateRecordUser = async (
+  user: string,
+  update: UpdatesList,
+  game?: GamesList
+): Promise<void> => {
+  const userRef = firebase.database().ref(`users/${user}`);
+
+  if (game) {
+    await userRef.child(`games/${game}`).update(update);
+  } else {
+    await userRef.update(update);
+  }
+};
+
+export const initGame = async (): Promise<void> => {
   const user = getCurrentUser();
   const gameRef = firebase.database().ref('games/floatingPoint');
 
@@ -46,19 +57,17 @@ export const initGameFP = async (): Promise<void> => {
     .catch(err => console.error(err));
 
   if (!haveData) {
-    gameRef.child('statesGame').set(initGame);
-    gameRef.child('statesFP').set(initFP);
+    gameRef.child('game').set({ state: 'conf' });
+    gameRef.child('fp').set(initFP);
   }
 
-  gameRef.child(`statesPlayers/${user.uid}`).set(initPlayer(user));
+  gameRef.child(`players/${user.uid}`).set(initPlayer(user));
 };
 
-export const getPlayersFP = async (): Promise<StatesPlayers> => {
-  const playersRef = firebase
-    .database()
-    .ref('games/floatingPoint/statesPlayers');
+export const getRecordPlayers = async (): Promise<StatesPlayers> => {
+  const playersRef = firebase.database().ref('games/floatingPoint/players');
 
-  const players = await playersRef
+  const players: StatesPlayers = await playersRef
     .once('value')
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));
@@ -66,24 +75,43 @@ export const getPlayersFP = async (): Promise<StatesPlayers> => {
   return players;
 };
 
-export const addListenersFP = (/*handleChange: Function*/): void => {
+export const updateRecordPlayer = async (
+  player: string,
+  update: UpdatePlayer
+): Promise<void> => {
+  const playerRef = firebase
+    .database()
+    .ref(`games/floatingPoint/players/${player}`);
+
+  await playerRef.update(update);
+};
+
+export const updateRecordFP = async (update: StatesFP): Promise<void> => {
+  const pointRef = firebase.database().ref('games/floatingPoint/fp');
+
+  await pointRef.update(update);
+};
+
+export const addListeners = (
+  handleChange: 
+): void => {
   const gameRef = firebase.database().ref('games/floatingPoint');
 
-  gameRef.child('statesGame').on('child_changed', snapshot => {
-    //handleChange();
-    console.log('statesGame change');
+  gameRef.child('game').on('child_changed', snapshot => {
+    handleChange('game');
+    console.log('game change');
     console.log(snapshot);
   });
 
-  gameRef.child('statesPlayers').on('child_changed', snapshot => {
-    //handleChange();
-    console.log('statesPlayers change');
+  gameRef.child('players').on('child_changed', snapshot => {
+    handleChange('players');
+    console.log('players change');
     console.log(snapshot);
   });
 
-  gameRef.child('statesFP').on('child_changed', snapshot => {
-    // handleChange();
-    console.log('statesFP change');
+  gameRef.child('fp').on('child_changed', snapshot => {
+    handleChange('fp');
+    console.log('fp change');
     console.log(snapshot);
   });
 };

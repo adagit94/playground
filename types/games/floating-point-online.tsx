@@ -7,6 +7,15 @@ export type Player = {
   isReady: boolean;
 };
 
+export type UpdatePlayer = {
+  username?: string;
+  avatar?: string;
+  top?: number;
+  left?: number;
+  score?: number;
+  isReady?: boolean;
+};
+
 export type PropsAvatar = {
   state?: string;
   avatar: string;
@@ -27,13 +36,12 @@ export type PropsButtons = {
 
 export type StatesGame = {
   state: string;
-  players: number;
   width: number;
   height: number;
 };
 
 export type StatesPlayers = {
-  [key: string]: Player;
+  [uid: string]: Player;
 };
 
 export type StatesFP = {
@@ -51,7 +59,7 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'changePlayers'; operation: string };
+  | { type: 'setData'; payload: StatesGame };
 
 export type ActionsPlayers =
   | {
@@ -82,3 +90,7 @@ export type DispatchesFP = {
   players: React.Dispatch<ActionsPlayers>;
   fp: React.Dispatch<ActionsFP>;
 };
+
+export type PathsList = 'game' | 'players' | 'fp';
+
+export type DataList = StatesGame | StatesPlayers | StatesFP;

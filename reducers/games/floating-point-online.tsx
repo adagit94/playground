@@ -16,7 +16,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   action
 ): StatesGame => {
   switch (action.type) {
-    case 'changeState': // conf / running
+    case 'changeState': // conf / init / running
       return {
         ...states,
         state: action.state
@@ -123,10 +123,13 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           throw new Error('Unspecified / Wrong operation');
       }
 
-    case 'setReady':
+    case 'changeReady':
       return {
         ...states,
-        [action.player]: { ...states[action.player], isReady: action.value }
+        [action.player]: {
+          ...states[action.player],
+          isReady: !states[action.player].isReady
+        }
       };
 
     default:
