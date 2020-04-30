@@ -9,11 +9,13 @@ export const initPlayer = (user: firebase.User): Player => {
   const player: Player = {
     username: user.displayName || user.email,
     avatar: user.photoURL,
-    top: undefined,
-    left: undefined,
-    score: undefined,
+    top: null,
+    left: null,
+    score: null,
     isReady: false
   };
 
   return player;
 };
+
+firebase.app();

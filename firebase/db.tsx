@@ -2,13 +2,14 @@ import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
 import { defaultsUser } from '../defaults/user';
+import { initFirebaseApp } from './init-firebase';
 import { initPlayer, getCurrentUser } from './helpers';
-import { initFP } from '../inits/games/floating-point-online';
 import { StatesUser, GamesList, UpdatesList } from '../types/user';
 import {
   StatesPlayers,
   UpdatePlayer,
-  StatesFP
+  StatesFP,
+  HandleChange
 } from '../types/games/floating-point-online';
 
 export const createRecordUser = async (
@@ -47,8 +48,7 @@ export const updateRecordUser = async (
   }
 };
 
-export const initGame = async (): Promise<void> => {
-  const user = getCurrentUser();
+export const initGameFP = async (): Promise<void> => {
   const gameRef = firebase.database().ref('games/floatingPoint');
 
   const haveData = await gameRef
@@ -57,8 +57,9 @@ export const initGame = async (): Promise<void> => {
     .catch(err => console.error(err));
 
   if (!haveData) {
-    gameRef.child('game').set({ state: 'conf' });
-    gameRef.child('fp').set(initFP);
+    gameRef.child('game').set({ kind: 'game', state: 'conf' });
+    gameRef.child('players').set({ kind: 'players' });
+    gameRef.child('fp').set({ kind: 'fp', top: null, left: null });
   }
 
   gameRef.child(`players/${user.uid}`).set(initPlayer(user));
@@ -92,25 +93,23 @@ export const updateRecordFP = async (update: StatesFP): Promise<void> => {
   await pointRef.update(update);
 };
 
-export const addListeners = (
-  handleChange: 
-): void => {
+export const addListenersFP = (handleChange: HandleChange): void => {
   const gameRef = firebase.database().ref('games/floatingPoint');
 
   gameRef.child('game').on('child_changed', snapshot => {
-    handleChange('game');
+    handleChange(snapshot.val());
     console.log('game change');
     console.log(snapshot);
   });
 
   gameRef.child('players').on('child_changed', snapshot => {
-    handleChange('players');
+    handleChange(snapshot.val());
     console.log('players change');
     console.log(snapshot);
   });
 
   gameRef.child('fp').on('child_changed', snapshot => {
-    handleChange('fp');
+    handleChange(snapshot.val());
     console.log('fp change');
     console.log(snapshot);
   });

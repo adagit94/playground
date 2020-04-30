@@ -9,7 +9,7 @@ import {
 
 import { initGame } from '../../inits/games/floating-point-online';
 
-import { Defaults } from '../../defaults/games/floating-point-online';
+import Defaults from '../../defaults/games/floating-point-online';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   states,
@@ -29,23 +29,8 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         height: action.height
       };
 
-    case 'changePlayers':
-      switch (action.operation) {
-        case 'add':
-          return {
-            ...states,
-            players: states.players + 1
-          };
-
-        case 'remove':
-          return {
-            ...states,
-            players: states.players - 1
-          };
-
-        default:
-          throw new Error('Unspecified / Wrong operation');
-      }
+    case 'setData':
+      return { ...states, ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -123,14 +108,8 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           throw new Error('Unspecified / Wrong operation');
       }
 
-    case 'changeReady':
-      return {
-        ...states,
-        [action.player]: {
-          ...states[action.player],
-          isReady: !states[action.player].isReady
-        }
-      };
+    case 'setData':
+      return { ...states, ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -147,6 +126,9 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
         top: action.top,
         left: action.left
       };
+
+    case 'setData':
+      return { ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');

@@ -13,13 +13,12 @@ import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
 import {
   DispatchesFP,
-  PathsList,
-  DataList
+  HandleChange
 } from '../../../types/games/floating-point-online';
 import {
-  initGame,
+  initGameFP,
   getRecordPlayers,
-  addListeners,
+  addListenersFP,
   updateRecordPlayer,
   updateRecordFP,
   updateRecordUser
@@ -53,7 +52,6 @@ const Controller: React.FC = (): JSX.Element => {
   const refHandleMove = useRef(null);
   const refRecalculate = useRef(null);
 
-  const { uid } = statesFirebase.user;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
@@ -90,7 +88,7 @@ const Controller: React.FC = (): JSX.Element => {
         break;
     }
 
-    const playerLocal = uid;
+    const playerLocal = statesFirebase.user.uid;
     const playerLocalLeft = statesPlayers[playerLocal].left;
     const playerLocalTop = statesPlayers[playerLocal].top;
 
@@ -126,22 +124,26 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft + dimensions >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensions
       ) {
+        /*
         dispatchPlayers({
           type: 'move',
           operation: 'subtract',
           direction: 'top',
           player: playerLocal
         });
+        */
 
         updateRecordPlayer(playerLocal, { top: playerLocalTop - 1 });
 
         if (playerTop + dimensions - 1 === playerTop) {
+          /*
           dispatchPlayers({
             type: 'move',
             operation: 'add',
             direction: 'top',
             player
           });
+          */
 
           updateRecordPlayer(player, { top: playerTop + 1 });
         }
@@ -153,22 +155,26 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft + dimensions >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensions
       ) {
+        /*
         dispatchPlayers({
           type: 'move',
           operation: 'add',
           direction: 'top',
           player: playerLocal
         });
+        */
 
         updateRecordPlayer(playerLocal, { top: playerLocalTop + 1 });
 
         if (playerTop + 1 === playerTop + dimensions) {
+          /*
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
             direction: 'top',
             player
           });
+          */
 
           updateRecordPlayer(player, { top: playerTop - 1 });
         }
@@ -180,22 +186,26 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalTop + dimensions >= playerTop &&
         playerLocalTop <= playerTop + dimensions
       ) {
+        /*
         dispatchPlayers({
           type: 'move',
           operation: 'subtract',
           direction: 'left',
           player: playerLocal
         });
+        */
 
         updateRecordPlayer(playerLocal, { left: playerLocalLeft - 1 });
 
         if (playerLeft + dimensions - 1 === playerLeft) {
+          /*
           dispatchPlayers({
             type: 'move',
             operation: 'add',
             direction: 'left',
             player
           });
+          */
 
           updateRecordPlayer(player, { left: playerLeft + 1 });
         }
@@ -207,22 +217,26 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalTop + dimensions >= playerTop &&
         playerLocalTop <= playerTop + dimensions
       ) {
+        /*
         dispatchPlayers({
           type: 'move',
           operation: 'add',
           direction: 'left',
           player: playerLocal
         });
+        */
 
         updateRecordPlayer(playerLocal, { left: playerLocalLeft + 1 });
 
         if (playerLeft + 1 === playerLeft + dimensions) {
+          /*
           dispatchPlayers({
             type: 'move',
             operation: 'subtract',
             direction: 'left',
             player
           });
+          */
 
           updateRecordPlayer(player, { left: playerLeft - 1 });
         }
@@ -233,12 +247,14 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (overlap === true) return;
 
+    /*
     dispatchPlayers({
       type: 'move',
       operation,
       direction,
       player: playerLocal
     });
+    */
 
     updateRecordPlayer(playerLocal, {
       [direction]:
@@ -258,6 +274,7 @@ const Controller: React.FC = (): JSX.Element => {
       const playerLeft =
         (statesPlayers[player].left / width) * 100 * (newWidth / 100);
 
+      /*
       dispatchPlayers({
         type: 'move',
         operation: 'changePos',
@@ -265,6 +282,7 @@ const Controller: React.FC = (): JSX.Element => {
         left: playerLeft,
         player
       });
+      */
 
       updateRecordPlayer(player, { top: playerTop, left: playerLeft });
     }
@@ -272,11 +290,13 @@ const Controller: React.FC = (): JSX.Element => {
     const fpTop = (fPTop / height) * 100 * (newHeight / 100);
     const fpLeft = (fPLeft / width) * 100 * (newWidth / 100);
 
+    /*
     dispatchFP({
       type: 'move',
       top: fpTop,
       left: fpLeft
     });
+    */
 
     updateRecordFP({ top: fpTop, left: fpLeft });
   };
@@ -317,6 +337,7 @@ const Controller: React.FC = (): JSX.Element => {
             break;
         }
 
+        /*
         dispatchPlayers({
           type: 'move',
           operation: 'changePos',
@@ -324,6 +345,7 @@ const Controller: React.FC = (): JSX.Element => {
           top: playerTop,
           left: playerLeft
         });
+        */
 
         updateRecordPlayer(player, { top: playerTop, left: playerLeft });
       }
@@ -331,11 +353,13 @@ const Controller: React.FC = (): JSX.Element => {
       const fpTop = height / 2 - dimensions / 2;
       const fpLeft = width / 2 - dimensions / 2;
 
+      /*
       dispatchFP({
         type: 'move',
         top: fpTop,
         left: fpLeft
       });
+      */
 
       updateRecordFP({ top: fpTop, left: fpLeft });
     };
@@ -349,6 +373,8 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
+      const playerLocal = statesFirebase.user.uid;
+
       for (const player in statesPlayers) {
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
@@ -361,6 +387,7 @@ const Controller: React.FC = (): JSX.Element => {
           const fpTop = Math.min(Math.random() * height, height - dimensions);
           const fpLeft = Math.min(Math.random() * width, width - dimensions);
 
+          /*
           if (player === uid) {
             dispatches.user({
               type: 'editGame',
@@ -379,10 +406,11 @@ const Controller: React.FC = (): JSX.Element => {
             top: fpTop,
             left: fpLeft
           });
+          */
 
-          if (player === uid) {
+          if (player === playerLocal) {
             updateRecordUser(
-              uid,
+              playerLocal,
               {
                 gatheredPoints:
                   statesUser.games.floatingPoint.gatheredPoints + 1
@@ -391,7 +419,7 @@ const Controller: React.FC = (): JSX.Element => {
             );
           }
 
-          updateRecordPlayer(uid, {
+          updateRecordPlayer(playerLocal, {
             score: statesPlayers[player].score + 1
           });
 
@@ -447,21 +475,30 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const handleChange = (path: PathsList, data: DataList): void => {
-      switch (path) {
+    const handleChange: HandleChange = data => {
+      switch (data.kind) {
         case 'game':
           dispatchGame({ type: 'setData', payload: data });
+          break;
+
+        case 'players':
+          dispatchPlayers({ type: 'setData', payload: data });
+          break;
+
+        case 'fp':
+          dispatchFP({ type: 'setData', payload: data });
+          break;
       }
     };
 
     const initGame = async (): Promise<void> => {
-      await initGame();
+      await initGameFP();
 
       const players = await getRecordPlayers();
 
       dispatchPlayers({ type: 'init', payload: players });
 
-      addListeners(handleChange);
+      addListenersFP(handleChange);
     };
 
     initGame();

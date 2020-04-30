@@ -75,8 +75,18 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
-  const { state, players } = statesGame;
-  const { username, avatar, score, isReady } = statesPlayers[player];
+  const { state } = statesGame;
+
+  let username, avatar, score, isReady;
+
+  if (player) {
+    const playerData = statesPlayers[player];
+
+    username = playerData.username;
+    avatar = playerData.avatar;
+    score = playerData.score;
+    isReady = playerData.isReady;
+  }
 
   const ButtonReady = styled.button`
     padding: 5px;
@@ -104,7 +114,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
 
   useEffect(() => {
     const initGame = (): void => {
-      if (players < 2) return;
+      if (Object.keys(statesPlayers).length < 2) return;
 
       for (const player in statesPlayers) {
         if (!statesPlayers[player].isReady) return;
@@ -122,8 +132,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         {state === 'conf' && (
           <ButtonReady
             onClick={(): void => {
-              dispatches.players({ type: 'changeReady', player });
-
               updateRecordPlayer(player, { isReady: !isReady });
             }}
             type='button'
