@@ -1,18 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import { updateRecordPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
-import {
-  PropsAvatar,
-  PropsOptionsPlayer
-} from '../../../types/games/floating-point-online';
+import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import {
   ContextGame,
-  ContextPlayers,
-  ContextDispatchesFP
+  ContextPlayers
 } from '../../../contexts/games/floating-point-online';
 
 const Container = styled.div`
@@ -44,34 +40,16 @@ const Info = styled.div`
   align-items: center;
 `;
 
-const Avatar: React.FC<PropsAvatar> = ({ avatar }): JSX.Element => {
-  const ContainerAvatar = styled.div`
-    flex: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  `;
-
-  const Avatar = styled.div`
-    width: 75px;
-    height: 75px;
-    border-radius: 100%;
-    background-image: url(${avatar});
-    background-size: contain;
-  `;
-
-  return (
-    <ContainerAvatar>
-      <Avatar />
-    </ContainerAvatar>
-  );
-};
+const ContainerAvatar = styled.div`
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const colors: Colors = useContext(ThemeContext);
-  const dispatches = useContext(ContextDispatchesFP);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
@@ -112,19 +90,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
     }
   `;
 
-  useEffect(() => {
-    const initGame = (): void => {
-      if (Object.keys(statesPlayers).length < 2) return;
-
-      for (const player in statesPlayers) {
-        if (!statesPlayers[player].isReady) return;
-      }
-
-      dispatches.game({ type: 'changeState', state: 'init' });
-    };
-
-    initGame();
-  });
+  const Avatar = styled.div`
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    background-image: url(${avatar});
+    background-size: contain;
+  `;
 
   return (
     <Container>
@@ -144,10 +116,12 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         <Info>{player && username}</Info>
         <Info>{player && state === 'running' && score}</Info>
       </ContainerInfo>
-      {player && <Avatar avatar={avatar} state={state} />}
-      {!player && state === 'conf' && (
-        <LoadingIndicator color={colors.inverted} />
-      )}
+      <ContainerAvatar>
+        {player && <Avatar />}
+        {!player && state === 'conf' && (
+          <LoadingIndicator color={colors.inverted} />
+        )}
+      </ContainerAvatar>
     </Container>
   );
 };

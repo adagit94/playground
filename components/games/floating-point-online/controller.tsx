@@ -8,7 +8,6 @@ import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
 import {
@@ -16,9 +15,8 @@ import {
   HandleChange
 } from '../../../types/games/floating-point-online';
 import {
-  initGameFP,
-  getRecordPlayers,
-  addListenersFP,
+  createRecordGame,
+  createRecordPlayer,
   updateRecordPlayer,
   updateRecordFP,
   updateRecordUser
@@ -48,10 +46,10 @@ const Controller: React.FC = (): JSX.Element => {
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
-  const dispatches = useContext(ContextDispatchesLayout);
   const refHandleMove = useRef(null);
   const refRecalculate = useRef(null);
 
+  const { user } = statesFirebase;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
@@ -113,7 +111,7 @@ const Controller: React.FC = (): JSX.Element => {
     let overlap: boolean;
 
     for (const player in statesPlayers) {
-      if (playerLocal === player) return;
+      if (playerLocal === player) continue;
 
       const playerLeft = statesPlayers[player].left;
       const playerTop = statesPlayers[player].top;
@@ -124,27 +122,9 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft + dimensions >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensions
       ) {
-        /*
-        dispatchPlayers({
-          type: 'move',
-          operation: 'subtract',
-          direction: 'top',
-          player: playerLocal
-        });
-        */
-
         updateRecordPlayer(playerLocal, { top: playerLocalTop - 1 });
 
         if (playerTop + dimensions - 1 === playerTop) {
-          /*
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'top',
-            player
-          });
-          */
-
           updateRecordPlayer(player, { top: playerTop + 1 });
         }
 
@@ -155,27 +135,9 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft + dimensions >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensions
       ) {
-        /*
-        dispatchPlayers({
-          type: 'move',
-          operation: 'add',
-          direction: 'top',
-          player: playerLocal
-        });
-        */
-
         updateRecordPlayer(playerLocal, { top: playerLocalTop + 1 });
 
         if (playerTop + 1 === playerTop + dimensions) {
-          /*
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'top',
-            player
-          });
-          */
-
           updateRecordPlayer(player, { top: playerTop - 1 });
         }
 
@@ -186,27 +148,9 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalTop + dimensions >= playerTop &&
         playerLocalTop <= playerTop + dimensions
       ) {
-        /*
-        dispatchPlayers({
-          type: 'move',
-          operation: 'subtract',
-          direction: 'left',
-          player: playerLocal
-        });
-        */
-
         updateRecordPlayer(playerLocal, { left: playerLocalLeft - 1 });
 
         if (playerLeft + dimensions - 1 === playerLeft) {
-          /*
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'left',
-            player
-          });
-          */
-
           updateRecordPlayer(player, { left: playerLeft + 1 });
         }
 
@@ -217,27 +161,9 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalTop + dimensions >= playerTop &&
         playerLocalTop <= playerTop + dimensions
       ) {
-        /*
-        dispatchPlayers({
-          type: 'move',
-          operation: 'add',
-          direction: 'left',
-          player: playerLocal
-        });
-        */
-
         updateRecordPlayer(playerLocal, { left: playerLocalLeft + 1 });
 
         if (playerLeft + 1 === playerLeft + dimensions) {
-          /*
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'left',
-            player
-          });
-          */
-
           updateRecordPlayer(player, { left: playerLeft - 1 });
         }
 
@@ -246,15 +172,6 @@ const Controller: React.FC = (): JSX.Element => {
     }
 
     if (overlap === true) return;
-
-    /*
-    dispatchPlayers({
-      type: 'move',
-      operation,
-      direction,
-      player: playerLocal
-    });
-    */
 
     updateRecordPlayer(playerLocal, {
       [direction]:
@@ -274,29 +191,11 @@ const Controller: React.FC = (): JSX.Element => {
       const playerLeft =
         (statesPlayers[player].left / width) * 100 * (newWidth / 100);
 
-      /*
-      dispatchPlayers({
-        type: 'move',
-        operation: 'changePos',
-        top: playerTop,
-        left: playerLeft,
-        player
-      });
-      */
-
       updateRecordPlayer(player, { top: playerTop, left: playerLeft });
     }
 
     const fpTop = (fPTop / height) * 100 * (newHeight / 100);
     const fpLeft = (fPLeft / width) * 100 * (newWidth / 100);
-
-    /*
-    dispatchFP({
-      type: 'move',
-      top: fpTop,
-      left: fpLeft
-    });
-    */
 
     updateRecordFP({ top: fpTop, left: fpLeft });
   };
@@ -309,6 +208,12 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const initGame = (): void => {
       const players = Object.keys(statesPlayers);
+
+      if (players.length < 2) return;
+
+      for (const player in statesPlayers) {
+        if (!statesPlayers[player].isReady) return;
+      }
 
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
@@ -337,38 +242,18 @@ const Controller: React.FC = (): JSX.Element => {
             break;
         }
 
-        /*
-        dispatchPlayers({
-          type: 'move',
-          operation: 'changePos',
-          player,
-          top: playerTop,
-          left: playerLeft
-        });
-        */
-
         updateRecordPlayer(player, { top: playerTop, left: playerLeft });
       }
 
       const fpTop = height / 2 - dimensions / 2;
       const fpLeft = width / 2 - dimensions / 2;
 
-      /*
-      dispatchFP({
-        type: 'move',
-        top: fpTop,
-        left: fpLeft
-      });
-      */
-
       updateRecordFP({ top: fpTop, left: fpLeft });
-    };
-
-    if (state === 'init') {
-      initGame();
 
       dispatchGame({ type: 'changeState', state: 'running' });
-    }
+    };
+
+    if (state === 'conf') initGame();
   });
 
   useEffect(() => {
@@ -386,27 +271,6 @@ const Controller: React.FC = (): JSX.Element => {
         ) {
           const fpTop = Math.min(Math.random() * height, height - dimensions);
           const fpLeft = Math.min(Math.random() * width, width - dimensions);
-
-          /*
-          if (player === uid) {
-            dispatches.user({
-              type: 'editGame',
-              game: 'floatingPoint',
-              operation: 'addPoint'
-            });
-          }
-
-          dispatchPlayers({
-            type: 'addScore',
-            player
-          });
-
-          dispatchFP({
-            type: 'move',
-            top: fpTop,
-            left: fpLeft
-          });
-          */
 
           if (player === playerLocal) {
             updateRecordUser(
@@ -475,14 +339,14 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const handleChange: HandleChange = data => {
+    const handleChange: HandleChange = (data, key) => {
       switch (data.kind) {
         case 'game':
           dispatchGame({ type: 'setData', payload: data });
           break;
 
-        case 'players':
-          dispatchPlayers({ type: 'setData', payload: data });
+        case 'player':
+          dispatchPlayers({ type: 'setData', payload: data, uid: key });
           break;
 
         case 'fp':
@@ -492,19 +356,17 @@ const Controller: React.FC = (): JSX.Element => {
     };
 
     const initGame = async (): Promise<void> => {
-      await initGameFP();
-
-      const players = await getRecordPlayers();
-
-      dispatchPlayers({ type: 'init', payload: players });
-
-      addListenersFP(handleChange);
+      await createRecordGame('floatingPoint', handleChange);
+      createRecordPlayer(user);
     };
 
     initGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //console.log(statesPlayers.P1.top + dimensions);
+  console.log(statesGame);
+  console.log(statesPlayers);
+  console.log(statesFP);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

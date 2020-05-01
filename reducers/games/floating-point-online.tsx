@@ -16,7 +16,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   action
 ): StatesGame => {
   switch (action.type) {
-    case 'changeState': // conf / init / running
+    case 'changeState': // conf / running
       return {
         ...states,
         state: action.state
@@ -30,7 +30,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
       };
 
     case 'setData':
-      return { ...states, ...action.payload };
+      return { ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -42,11 +42,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
   action
 ): StatesPlayers => {
   switch (action.type) {
-    case 'init':
-      return {
-        ...action.payload
-      };
-
     case 'move':
       switch (action.operation) {
         case 'add':
@@ -109,7 +104,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       }
 
     case 'setData':
-      return { ...states, ...action.payload };
+      return { ...states, [action.uid]: { ...action.payload } };
 
     default:
       throw new Error('Unspecified / Wrong action');
