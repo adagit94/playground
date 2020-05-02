@@ -47,54 +47,6 @@ export const updateRecordUser = async (
   }
 };
 
-export const createRecordGame = async (
-  game: GamesList,
-  handleChange: HandleChange
-): Promise<void> => {
-  const gameRef = firebase.database().ref(`games/${game}`);
-
-  const haveData = await gameRef
-    .once('value')
-    .then(snapshot => snapshot.hasChildren())
-    .catch(err => console.error(err));
-
-  //console.log(haveData);
-
-  if (!haveData) {
-    switch (game) {
-      case 'floatingPoint':
-        gameRef.child('game').set({ kind: 'game', state: 'conf' });
-        gameRef.child('players').set({});
-        gameRef.child('fp').set({ kind: 'fp', top: 0, left: 0 });
-
-        gameRef.child('game').on('child_changed', snapshot => {
-          console.log('game change');
-          console.log(snapshot);
-          handleChange(snapshot.val());
-        });
-
-        gameRef.child('players').on('child_added', snapshot => {
-          console.log('player added');
-          handleChange(snapshot.val(), snapshot.key);
-        });
-
-        gameRef.child('players').on('child_changed', snapshot => {
-          console.log('players change');
-          console.log(snapshot);
-          handleChange(snapshot.val(), snapshot.key);
-        });
-
-        gameRef.child('fp').on('child_changed', snapshot => {
-          console.log('fp change');
-          console.log(snapshot);
-          handleChange(snapshot.val());
-        });
-
-        break;
-    }
-  }
-};
-
 export const createRecordPlayer = async (
   user: firebase.User
 ): Promise<void> => {
@@ -141,4 +93,59 @@ export const updateRecordFP = async (update: StatesFP): Promise<void> => {
   const pointRef = firebase.database().ref('games/floatingPoint/fp');
 
   await pointRef.update(update);
+};
+
+export const initGame = async (
+  game: GamesList,
+  handleChange: HandleChange
+): Promise<void> => {
+  const gameRef = firebase.database().ref(`games/${game}`);
+
+  const haveData = await gameRef
+    .once('value')
+    .then(snapshot => snapshot.hasChildren())
+    .catch(err => console.error(err));
+
+  //console.log(haveData);
+
+  switch (game) {
+    case 'floatingPoint':
+      if (!haveData) {
+        gameRef.child('game').set({ kind: 'game', state: 'conf' });
+        gameRef.child('players').set({ kind: 'players' });
+        gameRef.child('fp').set({ kind: 'fp', top: 0, left: 0 });
+      }
+
+      gameRef.child('game').on('child_changed', snapshot => {
+        console.log('game change');
+        console.log(snapshot);
+        handleChange(snapshot.val());
+      });
+
+      gameRef.child('players').on('child_added', async snapshot => {
+        console.log('player added');
+        const player = snapshot.val();
+        const playerID = snapshot.key;
+
+        let players = await getRecordPlayers();
+
+        players = { ...players, [playerID]: { ...player } };
+
+        handleChange(players);
+      });
+
+      gameRef.child('players').on('child_changed', snapshot => {
+        console.log('players change');
+        console.log(snapshot);
+        handleChange(snapshot.val(), snapshot.key);
+      });
+
+      gameRef.child('fp').on('child_changed', snapshot => {
+        console.log('fp change');
+        console.log(snapshot);
+        handleChange(snapshot.val());
+      });
+
+      break;
+  }
 };

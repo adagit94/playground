@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -12,6 +12,7 @@ import {
 } from '../../components/styled-components/forms';
 
 import { updateUser } from '../../firebase/auth';
+import { ContextFirebase } from '../../contexts/firebase';
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +35,10 @@ const InputFile = styled.input`
 `;
 
 const Settings: React.FC = (): JSX.Element => {
+  const statesFirebase = useContext(ContextFirebase);
   const [username, setUsername] = useState('');
+
+  const { user } = statesFirebase;
 
   return (
     <Container>
@@ -46,9 +50,9 @@ const Settings: React.FC = (): JSX.Element => {
             '#avatar-input'
           ) as HTMLInputElement;
 
-          const file = (inputFile.files as FileList)[0];
+          const avatar = (inputFile.files as FileList)[0];
 
-          updateUser(username, file);
+          updateUser(user, username, avatar);
         }}
       >
         <FormRowVertical htmlFor='username'>

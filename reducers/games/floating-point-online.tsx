@@ -30,7 +30,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
       };
 
     case 'setData':
-      return { ...action.payload };
+      return { ...states, ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -104,7 +104,10 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       }
 
     case 'setData':
-      return { ...states, [action.uid]: { ...action.payload } };
+      return {
+        ...states,
+        [action.uid]: { ...states[action.uid], ...action.payload }
+      };
 
     default:
       throw new Error('Unspecified / Wrong action');
@@ -123,7 +126,7 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
       };
 
     case 'setData':
-      return { ...action.payload };
+      return { ...states, ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');

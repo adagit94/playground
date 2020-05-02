@@ -100,7 +100,7 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
     initAuthObserver(initUser, clearUser);
   }, []);
 
-  //console.log(firebaseApp);
+  //console.log(statesFirebase.user);
 
   return (
     <Container>

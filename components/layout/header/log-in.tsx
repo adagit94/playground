@@ -14,6 +14,7 @@ import {
 
 import { loginEmail, loginProvider } from '../../../firebase/auth';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
+import { HandleLoading } from '../../../types/firebase';
 
 const Form = styled.form`
   width: 100%;
@@ -49,7 +50,7 @@ const LogIn: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLoading = (value): void => {
+  const handleLoading: HandleLoading = value => {
     dispatches.firebase({ type: 'setLoading', value });
   };
 

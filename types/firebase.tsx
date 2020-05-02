@@ -22,3 +22,5 @@ export type ValidatorReturn = {
   num: boolean;
   special: boolean;
 };
+
+export type HandleLoading = (value: boolean) => void;

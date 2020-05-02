@@ -108,7 +108,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
             }}
             type='button'
           >
-            isReady
+            Ready
           </ButtonReady>
         )}
       </ContainerButtonReady>

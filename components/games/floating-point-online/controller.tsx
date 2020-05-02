@@ -15,7 +15,7 @@ import {
   HandleChange
 } from '../../../types/games/floating-point-online';
 import {
-  createRecordGame,
+  initGame,
   createRecordPlayer,
   updateRecordPlayer,
   updateRecordFP,
@@ -50,6 +50,7 @@ const Controller: React.FC = (): JSX.Element => {
   const refRecalculate = useRef(null);
 
   const { user } = statesFirebase;
+  const { gatheredPoints } = statesUser.games.floatingPoint;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
@@ -259,7 +260,9 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const matchFloatingPoint = (): void => {
       const playerLocal = statesFirebase.user.uid;
-      const { top: playerTop, left: playerLeft } = statesPlayers[playerLocal];
+      const { top: playerTop, left: playerLeft, score } = statesPlayers[
+        playerLocal
+      ];
 
       if (
         playerTop + dimensions >= fPTop &&
@@ -273,13 +276,13 @@ const Controller: React.FC = (): JSX.Element => {
         updateRecordUser(
           playerLocal,
           {
-            gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
+            gatheredPoints: gatheredPoints + 1
           },
           'floatingPoint'
         );
 
         updateRecordPlayer(playerLocal, {
-          score: statesPlayers[playerLocal].score + 1
+          score: score + 1
         });
 
         updateRecordFP({ top: fpTop, left: fpLeft });
@@ -339,23 +342,27 @@ const Controller: React.FC = (): JSX.Element => {
           dispatchGame({ type: 'setData', payload: data });
           break;
 
-        case 'player':
-          dispatchPlayers({ type: 'setData', payload: data, uid: key });
+        case 'players':
+          dispatchPlayers({ type: 'setData', payload: data });
           break;
 
         case 'fp':
           dispatchFP({ type: 'setData', payload: data });
           break;
+
+        case 'player':
+          dispatchPlayers({ type: 'setData', payload: data, uid: key });
+          break;
       }
     };
 
-    const initGame = async (): Promise<void> => {
-      await createRecordGame('floatingPoint', handleChange);
+    const initFP = async (): Promise<void> => {
+      await initGame('floatingPoint', handleChange);
 
       createRecordPlayer(user);
     };
 
-    initGame();
+    initFP();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

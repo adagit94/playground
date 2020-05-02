@@ -23,7 +23,7 @@ const Container = styled.div`
       width: 150px;
       height: 150px;
       border-radius: 5px;
-      color: blue;
+      color: ${(props): string => props.theme.background};
       background-color: ${(props): string => props.theme.inverted};
 
       &:hover {

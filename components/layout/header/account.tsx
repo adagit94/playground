@@ -57,7 +57,7 @@ const Account: React.FC = () => {
   const { user, isAuthenticated, loading } = statesFirebase;
 
   const avatar = user && user.photoURL;
-  const avatarPlaceholder = `http://localhost:3000/icons/account-${colors.theme}.svg`;
+  const avatarPlaceholder = `${window.location.origin}/icons/account-${colors.theme}.svg`;
 
   const Avatar = styled.div`
     width: 50px;

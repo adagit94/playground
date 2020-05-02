@@ -1,4 +1,4 @@
-type DataList = StatesGame | Player | StatesFP;
+type DataList = StatesGame | StatesPlayers | StatesFP | Player;
 
 export type Player = {
   kind?: 'player';
@@ -40,8 +40,8 @@ export type StatesGame = {
 };
 
 export type StatesPlayers = {
-  [uid: string]: Player;
-};
+  kind: 'players';
+} & { [uid: string]: Player };
 
 export type StatesFP = {
   kind?: 'fp';
@@ -77,7 +77,7 @@ export type ActionsPlayers =
       player: string;
       payload: Player;
     }
-  | { type: 'setData'; payload: Player; uid: string };
+  | { type: 'setData'; payload: StatesPlayers | Player; uid?: string };
 
 export type ActionsFP =
   | { type: 'move'; top: number; left: number }

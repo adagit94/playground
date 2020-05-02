@@ -5,7 +5,7 @@ import 'firebase/firebase-storage';
 
 import { getRecordUser } from './db';
 import { getCurrentUser } from './helpers';
-import { ValidatorReturn } from '../types/firebase';
+import { ValidatorReturn, HandleLoading } from '../types/firebase';
 
 const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
   const msg = err.message;
@@ -66,14 +66,17 @@ export const createUser = async (
     .catch(err => handleError(err, 'el'));
 };
 
-export const updateUser = async (username, avatar): Promise<void> => {
+export const updateUser = async (
+  user: firebase.User,
+  username: string,
+  avatar: File
+): Promise<void> => {
   if (!username && !avatar) {
     alert('No changes were made');
 
     return;
   }
 
-  const user = getCurrentUser();
   const updateObj: { displayName?: string; photoURL?: string } = {};
 
   if (username) updateObj.displayName = username;
@@ -113,7 +116,7 @@ export const updateUser = async (username, avatar): Promise<void> => {
 export const loginEmail = async (
   email: string,
   password: string,
-  handleLoading: Function
+  handleLoading: HandleLoading
 ): Promise<void> => {
   handleLoading(true);
 
@@ -133,7 +136,7 @@ export const loginEmail = async (
 
 export const loginProvider = async (
   service: 'fb' | 'google',
-  handleLoading: Function
+  handleLoading: HandleLoading
 ): Promise<void> => {
   handleLoading(true);
 
@@ -162,7 +165,7 @@ export const loginProvider = async (
     .catch(err => console.error(err));
 };
 
-export const resetPassword = async (email): Promise<void> => {
+export const resetPassword = async (email: string): Promise<void> => {
   await firebase
     .auth()
     .sendPasswordResetEmail(email)
