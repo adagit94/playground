@@ -259,36 +259,30 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const matchFloatingPoint = (): void => {
       const playerLocal = statesFirebase.user.uid;
+      const { top: playerTop, left: playerLeft } = statesPlayers[playerLocal];
 
-      for (const player in statesPlayers) {
-        const { top: playerTop, left: playerLeft } = statesPlayers[player];
+      if (
+        playerTop + dimensions >= fPTop &&
+        playerTop <= fPTop + dimensions &&
+        playerLeft + dimensions >= fPLeft &&
+        playerLeft <= fPLeft + dimensions
+      ) {
+        const fpTop = Math.min(Math.random() * height, height - dimensions);
+        const fpLeft = Math.min(Math.random() * width, width - dimensions);
 
-        if (
-          playerTop + dimensions >= fPTop &&
-          playerTop <= fPTop + dimensions &&
-          playerLeft + dimensions >= fPLeft &&
-          playerLeft <= fPLeft + dimensions
-        ) {
-          const fpTop = Math.min(Math.random() * height, height - dimensions);
-          const fpLeft = Math.min(Math.random() * width, width - dimensions);
+        updateRecordUser(
+          playerLocal,
+          {
+            gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
+          },
+          'floatingPoint'
+        );
 
-          if (player === playerLocal) {
-            updateRecordUser(
-              playerLocal,
-              {
-                gatheredPoints:
-                  statesUser.games.floatingPoint.gatheredPoints + 1
-              },
-              'floatingPoint'
-            );
-          }
+        updateRecordPlayer(playerLocal, {
+          score: statesPlayers[playerLocal].score + 1
+        });
 
-          updateRecordPlayer(playerLocal, {
-            score: statesPlayers[player].score + 1
-          });
-
-          updateRecordFP({ top: fpTop, left: fpLeft });
-        }
+        updateRecordFP({ top: fpTop, left: fpLeft });
       }
     };
 
@@ -357,6 +351,7 @@ const Controller: React.FC = (): JSX.Element => {
 
     const initGame = async (): Promise<void> => {
       await createRecordGame('floatingPoint', handleChange);
+
       createRecordPlayer(user);
     };
 

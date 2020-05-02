@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -40,7 +42,13 @@ const Settings: React.FC = (): JSX.Element => {
         onSubmit={(e): void => {
           e.preventDefault();
 
-          updateUser(username, document.querySelector('#avatar').files[0]);
+          const inputFile = document.querySelector(
+            '#avatar-input'
+          ) as HTMLInputElement;
+
+          const file = (inputFile.files as FileList)[0];
+
+          updateUser(username, file);
         }}
       >
         <FormRowVertical htmlFor='username'>
@@ -57,13 +65,15 @@ const Settings: React.FC = (): JSX.Element => {
         <FormRowVertical>
           <InputFile
             type='file'
-            name='avatar'
-            id='avatar'
+            name='avatar-input'
+            id='avatar-input'
             accept='image/jpeg, image/png, image/svg+xml'
           />
           <FormButtonInput
-            onClick={(e): void => {
-              document.querySelector('#avatar').click();
+            onClick={(): void => {
+              (document.querySelector(
+                '#avatar-input'
+              ) as HTMLInputElement).click();
             }}
             type='button'
             id='avatar-button'
