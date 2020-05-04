@@ -178,7 +178,7 @@ export const initGame: InitGame = async (game, handleChange) => {
 
       gameRef.child('players').on('child_changed', snapshot => {
         console.log('players change');
-        console.log(snapshot);
+        console.log(snapshot.val());
         handleChange(snapshot.val(), snapshot.key);
       });
 

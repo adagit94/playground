@@ -106,6 +106,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
     case 'setData':
       switch (action.payload.kind) {
         case 'player':
+          console.log('player update');
           return {
             ...states,
             [action.uid]: { ...states[action.uid], ...action.payload }
