@@ -18,7 +18,7 @@ const Monitor: React.FC = (): JSX.Element => {
 
   return (
     <Container id='monitor'>
-      {state !== 'conf' && (
+      {state === 'running' && (
         <>
           <Players />
           <Point />

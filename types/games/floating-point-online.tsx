@@ -10,15 +10,6 @@ export type Player = {
   isReady: boolean;
 };
 
-export type UpdatePlayer = {
-  username?: string;
-  avatar?: string;
-  top?: number;
-  left?: number;
-  score?: number;
-  isReady?: boolean;
-};
-
 export type PropsOptions = {
   state: string;
   player: string;
@@ -39,8 +30,12 @@ export type StatesGame = {
   height: number;
 };
 
+export type UpdateGameFP = {
+  state?: string;
+};
+
 export type StatesPlayers = {
-  kind: 'players';
+  kind?: 'players';
 } & { [uid: string]: Player };
 
 export type StatesFP = {
@@ -89,4 +84,33 @@ export type DispatchesFP = {
   fp: React.Dispatch<ActionsFP>;
 };
 
-export type HandleChange = (data: DataList, key?: string) => void;
+export type HandleChangeFP = (data: DataList, key?: string) => void;
+
+export type Operations = 'add' | 'subtract';
+
+export type Directions = 'top' | 'left';
+
+export type Limits = 'top' | 'right' | 'bottom' | 'left';
+
+export type Position = { top: number; left: number };
+
+type ActionsList = 'move' | 'changePos' | 'changeReady' | 'addScore';
+
+export type UpdateRecordPlayer = (
+  player: string,
+  action: ActionsList,
+  conf?: {
+    move?: { operation: Operations; direction: Directions };
+    changePos?: Position;
+  }
+) => Promise<void>;
+
+export type GetRecordPlayers = () => Promise<StatesPlayers>;
+
+export type UpdateRecordFP = (update: StatesFP) => Promise<void>;
+
+export type CreateRecordPlayer = (user: firebase.User) => Promise<void>;
+
+type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
+
+export type HandleMove = (key: Keys) => void;

@@ -104,10 +104,21 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       }
 
     case 'setData':
-      return {
-        ...states,
-        [action.uid]: { ...states[action.uid], ...action.payload }
-      };
+      switch (action.payload.kind) {
+        case 'player':
+          return {
+            ...states,
+            [action.uid]: { ...states[action.uid], ...action.payload }
+          };
+
+        case 'players':
+          return {
+            ...action.payload
+          };
+
+        default:
+          throw new Error();
+      }
 
     default:
       throw new Error('Unspecified / Wrong action');

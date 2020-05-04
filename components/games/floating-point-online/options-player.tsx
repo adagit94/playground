@@ -104,7 +104,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         {state === 'conf' && (
           <ButtonReady
             onClick={(): void => {
-              updateRecordPlayer(player, { isReady: !isReady });
+              updateRecordPlayer(player, 'changeReady');
             }}
             type='button'
           >

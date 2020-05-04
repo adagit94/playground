@@ -4,32 +4,41 @@ import 'firebase/firebase-auth';
 import 'firebase/firebase-storage';
 
 import { getRecordUser } from './db';
-import { getCurrentUser } from './helpers';
-import { ValidatorReturn, HandleLoading } from '../types/firebase';
+import {
+  InitAuthObserver,
+  HandleError,
+  CreateUser,
+  UpdateUser,
+  Logout,
+  LoginEmail,
+  LoginProvider,
+  ResetPassword,
+  Validator
+} from '../types/auth';
 
-const handleError = (err, out: 'el' | 'alert' = 'alert'): void => {
+const handleError: HandleError = (err, out) => {
   const msg = err.message;
+  const el = document.querySelector('#errWindow');
 
-  if (out === 'alert') {
-    alert(msg);
-  } else if (out === 'el') {
-    const el = document.querySelector('#errWindow');
+  switch (out) {
+    case 'alert':
+      alert(msg);
+      break;
 
-    ReactDOM.render(msg, el);
+    case 'el':
+      ReactDOM.render(msg, el);
+      break;
   }
 };
 
-export const logout = async (): Promise<void> => {
+export const logout: Logout = async () => {
   await firebase
     .auth()
     .signOut()
     .catch(err => console.error(err));
 };
 
-export const initAuthObserver = (
-  initUser: Function,
-  clearUser: Function
-): void => {
+export const initAuthObserver: InitAuthObserver = (initUser, clearUser) => {
   firebase.auth().onAuthStateChanged(
     async userFirebase => {
       if (userFirebase) {
@@ -52,10 +61,7 @@ export const initAuthObserver = (
   );
 };
 
-export const createUser = async (
-  email: string,
-  password: string
-): Promise<void> => {
+export const createUser: CreateUser = async (email, password) => {
   await firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
@@ -66,11 +72,7 @@ export const createUser = async (
     .catch(err => handleError(err, 'el'));
 };
 
-export const updateUser = async (
-  user: firebase.User,
-  username: string,
-  avatar: File
-): Promise<void> => {
+export const updateUser: UpdateUser = async (user, username, avatar) => {
   if (!username && !avatar) {
     alert('No changes were made');
 
@@ -113,11 +115,11 @@ export const updateUser = async (
   location.reload();
 };
 
-export const loginEmail = async (
-  email: string,
-  password: string,
-  handleLoading: HandleLoading
-): Promise<void> => {
+export const loginEmail: LoginEmail = async (
+  email,
+  password,
+  handleLoading
+) => {
   handleLoading(true);
 
   await firebase
@@ -134,20 +136,17 @@ export const loginEmail = async (
     });
 };
 
-export const loginProvider = async (
-  service: 'fb' | 'google',
-  handleLoading: HandleLoading
-): Promise<void> => {
+export const loginProvider: LoginProvider = async (provider, handleLoading) => {
   handleLoading(true);
 
-  let provider;
+  let providerObj;
 
-  switch (service) {
+  switch (provider) {
     case 'fb':
-      provider = new firebase.auth.FacebookAuthProvider();
+      providerObj = new firebase.auth.FacebookAuthProvider();
       break;
     case 'google':
-      provider = new firebase.auth.GoogleAuthProvider();
+      providerObj = new firebase.auth.GoogleAuthProvider();
       break;
 
     default:
@@ -156,7 +155,7 @@ export const loginProvider = async (
 
   await firebase
     .auth()
-    .signInWithRedirect(provider)
+    .signInWithRedirect(providerObj)
     .catch(err => console.error(err));
 
   await firebase
@@ -165,7 +164,7 @@ export const loginProvider = async (
     .catch(err => console.error(err));
 };
 
-export const resetPassword = async (email: string): Promise<void> => {
+export const resetPassword: ResetPassword = async email => {
   await firebase
     .auth()
     .sendPasswordResetEmail(email)
@@ -173,10 +172,7 @@ export const resetPassword = async (email: string): Promise<void> => {
     .catch(err => console.error(err));
 };
 
-export const validator = (
-  password: string,
-  passwordConfirm: string
-): ValidatorReturn => {
+export const validator: Validator = (password, passwordConfirm) => {
   let isValid = false;
   let equalPasswords = false;
   let count = false;

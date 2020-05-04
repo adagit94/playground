@@ -16,16 +16,18 @@ const Square = styled.div`
   height: 50px;
   border: 1px solid ${(props): string => props.theme.inverted};
   transform: rotateZ(45deg);
-  transition-property: border-color, background-color;
+  transition-property: border-color, background-color, width, height;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   &:hover {
+    transition-delay: 0.1s;
     border-color: ${(props): string => props.theme.background};
     background-color: ${(props): string => props.theme.inverted};
     background-clip: content-box;
 
     #circle {
+      transition-delay: 0.1s;
       width: 25px;
       height: 25px;
       background-color: ${(props): string => props.theme.background};

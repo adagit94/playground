@@ -2,25 +2,29 @@ import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
 import { defaultsUser } from '../defaults/user';
-import { StatesUser, GamesList, UpdatesList } from '../types/user';
+import {
+  StatesUser,
+  CreateRecordUser,
+  GetRecordUser,
+  UpdateRecordUser
+} from '../types/user';
+import { InitGame, UpdateRecordGame } from '../types/games/generics';
 import {
   StatesPlayers,
-  UpdatePlayer,
-  StatesFP,
-  HandleChange,
-  Player
+  Player,
+  CreateRecordPlayer,
+  UpdateRecordPlayer,
+  GetRecordPlayers,
+  UpdateRecordFP
 } from '../types/games/floating-point-online';
 
-export const createRecordUser = async (
-  user: string,
-  record: StatesUser
-): Promise<void> => {
+export const createRecordUser: CreateRecordUser = async (user, record) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   await userRef.set(record).catch(err => console.error(err));
 };
 
-export const getRecordUser = async (user: string): Promise<StatesUser> => {
+export const getRecordUser: GetRecordUser = async user => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   const userRecord: StatesUser = await userRef
@@ -33,23 +37,30 @@ export const getRecordUser = async (user: string): Promise<StatesUser> => {
   return userRecord || defaultsUser;
 };
 
-export const updateRecordUser = async (
-  user: string,
-  update: UpdatesList,
-  game?: GamesList
-): Promise<void> => {
+export const updateRecordUser: UpdateRecordUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
-  if (game) {
-    await userRef.child(`games/${game}`).update(update);
+  if (Array.isArray(update)) {
+    const [game, action] = update;
+
+    await userRef
+      .child(`games/${game}`)
+      .transaction(data => {
+        switch (action) {
+          case 'addPoint':
+            return data[game].gatheredPoints++;
+
+          case 'win':
+            return data[game].wins++;
+        }
+      })
+      .catch(err => console.error(err));
   } else {
-    await userRef.update(update);
+    await userRef.update(update).catch(err => console.error(err));
   }
 };
 
-export const createRecordPlayer = async (
-  user: firebase.User
-): Promise<void> => {
+export const createRecordPlayer: CreateRecordPlayer = async user => {
   const playerRef = firebase
     .database()
     .ref(`games/floatingPoint/players/${user.uid}`);
@@ -64,10 +75,10 @@ export const createRecordPlayer = async (
     isReady: false
   };
 
-  await playerRef.set(player);
+  await playerRef.set(player).catch(err => console.error(err));
 };
 
-export const getRecordPlayers = async (): Promise<StatesPlayers> => {
+export const getRecordPlayers: GetRecordPlayers = async () => {
   const playersRef = firebase.database().ref('games/floatingPoint/players');
 
   const players: StatesPlayers = await playersRef
@@ -78,27 +89,47 @@ export const getRecordPlayers = async (): Promise<StatesPlayers> => {
   return players;
 };
 
-export const updateRecordPlayer = async (
-  player: string,
-  update: UpdatePlayer
-): Promise<void> => {
+export const updateRecordPlayer: UpdateRecordPlayer = async (
+  player,
+  action,
+  conf
+) => {
   const playerRef = firebase
     .database()
     .ref(`games/floatingPoint/players/${player}`);
 
-  await playerRef.update(update);
+  if (action !== 'changePos') {
+    await playerRef
+      .transaction(data => {
+        switch (action) {
+          case 'move':
+            return conf.move.operation === 'add'
+              ? data[conf.move.direction]++
+              : data[conf.move.direction]--;
+
+          case 'changeReady':
+            return !data.isReady;
+
+          case 'addScore':
+            return data.score++;
+        }
+      })
+      .catch(err => console.error(err));
+  } else {
+    await playerRef.update({
+      top: conf.changePos.top,
+      left: conf.changePos.left
+    });
+  }
 };
 
-export const updateRecordFP = async (update: StatesFP): Promise<void> => {
+export const updateRecordFP: UpdateRecordFP = async update => {
   const pointRef = firebase.database().ref('games/floatingPoint/fp');
 
-  await pointRef.update(update);
+  await pointRef.update(update).catch(err => console.error(err));
 };
 
-export const initGame = async (
-  game: GamesList,
-  handleChange: HandleChange
-): Promise<void> => {
+export const initGame: InitGame = async (game, handleChange) => {
   const gameRef = firebase.database().ref(`games/${game}`);
 
   const haveData = await gameRef
@@ -111,9 +142,20 @@ export const initGame = async (
   switch (game) {
     case 'floatingPoint':
       if (!haveData) {
-        gameRef.child('game').set({ kind: 'game', state: 'conf' });
-        gameRef.child('players').set({ kind: 'players' });
-        gameRef.child('fp').set({ kind: 'fp', top: 0, left: 0 });
+        gameRef
+          .child('game')
+          .set({ kind: 'game', state: 'conf', width: 0, height: 0 })
+          .catch(err => console.error(err));
+
+        gameRef
+          .child('players')
+          .set({ kind: 'players' })
+          .catch(err => console.error(err));
+
+        gameRef
+          .child('fp')
+          .set({ kind: 'fp', top: 0, left: 0 })
+          .catch(err => console.error(err));
       }
 
       gameRef.child('game').on('child_changed', snapshot => {
@@ -148,4 +190,10 @@ export const initGame = async (
 
       break;
   }
+};
+
+export const updateRecordGame: UpdateRecordGame = async (game, update) => {
+  const gameRef = firebase.database().ref(`games/${game}`);
+
+  await gameRef.update(update).catch(err => console.error(err));
 };

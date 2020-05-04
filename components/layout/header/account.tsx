@@ -7,7 +7,7 @@ import LogIn from './log-in';
 import Profile from './profile';
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
-import { Colors } from '../../../types/layout';
+import { Colors, PropsAvatar } from '../../../types/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
 
 const toggleSlider = (): void => {
@@ -50,14 +50,9 @@ const Button = styled.button`
   }
 `;
 
-const Account: React.FC = () => {
-  const colors: Colors = useContext(ThemeContext);
-  const statesFirebase = useContext(ContextFirebase);
-
-  const { user, isAuthenticated, loading } = statesFirebase;
-
-  const avatar = user && user.photoURL;
-  const avatarPlaceholder = `${window.location.origin}/icons/account-${colors.theme}.svg`;
+const Avatar = ({ user, theme }: PropsAvatar): JSX.Element => {
+  const avatar = user.photoURL;
+  const avatarPlaceholder = `${window.location.origin}/icons/account-${theme}.svg`;
 
   const Avatar = styled.div`
     width: 50px;
@@ -66,6 +61,15 @@ const Account: React.FC = () => {
     background-image: url(${avatar ? avatar : avatarPlaceholder});
     background-size: contain;
   `;
+
+  return <Avatar />;
+};
+
+const Account: React.FC = () => {
+  const colors: Colors = useContext(ThemeContext);
+  const statesFirebase = useContext(ContextFirebase);
+
+  const { user, isAuthenticated, loading } = statesFirebase;
 
   const Slider = styled.div`
     position: absolute;
@@ -83,7 +87,11 @@ const Account: React.FC = () => {
         <LoadingIndicator color={colors.background} />
       ) : (
         <Button onClick={toggleSlider} type='button'>
-          {isAuthenticated ? <Avatar /> : 'Log in'}
+          {isAuthenticated ? (
+            <Avatar user={user} theme={colors.theme} />
+          ) : (
+            'Log in'
+          )}
         </Button>
       )}
 

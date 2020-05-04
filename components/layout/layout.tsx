@@ -14,6 +14,7 @@ import { initLayout } from '../../inits/layout';
 import { initUser } from '../../inits/user';
 import { initFirebase } from '../../inits/firebase';
 import { DispatchesLayout, PropsLayout, Colors } from '../../types/layout';
+import { InitUser, ClearUser } from '../../types/auth';
 import { ContextDispatchesLayout } from '../../contexts/layout';
 import { ContextUser } from '../../contexts/user';
 import { ContextFirebase } from '../../contexts/firebase';
@@ -86,12 +87,12 @@ const Layout: React.FC<PropsLayout> = ({ content }) => {
   }, []);
 
   useEffect(() => {
-    const initUser = (userFirebase, userDB): void => {
+    const initUser: InitUser = (userFirebase, userDB) => {
       dispatchFirebase({ type: 'initUser', payload: userFirebase });
       dispatchUser({ type: 'initUser', payload: userDB });
     };
 
-    const clearUser = (): void => {
+    const clearUser: ClearUser = () => {
       dispatchFirebase({ type: 'reset' });
       dispatchUser({ type: 'reset' });
     };

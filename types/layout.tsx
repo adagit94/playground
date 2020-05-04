@@ -1,8 +1,10 @@
 import { ActionsUser } from './user';
 import { ActionsFirebase } from './firebase';
 
+type Themes = 'dark' | 'light';
+
 export type StatesLayout = {
-  theme: string;
+  theme: Themes;
 };
 
 export type ActionsLayout = { type: 'changeTheme'; theme?: string };
@@ -18,7 +20,12 @@ export type DispatchesLayout = {
 };
 
 export type Colors = {
-  theme: string;
+  theme: Themes;
   background: string;
   inverted: string;
+};
+
+export type PropsAvatar = {
+  user: firebase.User;
+  theme: Themes;
 };
