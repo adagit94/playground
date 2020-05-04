@@ -104,21 +104,16 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       }
 
     case 'setData':
-      switch (action.payload.kind) {
-        case 'player':
-          console.log('player update');
-          return {
-            ...states,
-            [action.uid]: { ...states[action.uid], ...action.payload }
-          };
-
-        case 'players':
-          return {
-            ...action.payload
-          };
-
-        default:
-          throw new Error();
+      if (action.player) {
+        console.log('player update');
+        return {
+          ...states,
+          [action.player]: { ...states[action.player], ...action.payload }
+        };
+      } else {
+        return {
+          ...action.payload
+        };
       }
 
     default:

@@ -1,7 +1,4 @@
-type DataList = StatesGame | StatesPlayers | StatesFP | Player;
-
 export type Player = {
-  kind?: 'player';
   username: string;
   avatar: string;
   top: number;
@@ -24,7 +21,6 @@ export type PropsButtons = {
 };
 
 export type StatesGame = {
-  kind?: 'game';
   state: string;
   width: number;
   height: number;
@@ -34,12 +30,9 @@ export type UpdateGameFP = {
   state?: string;
 };
 
-export type StatesPlayers = {
-  kind?: 'players';
-} & { [uid: string]: Player };
+export type StatesPlayers = { [uid: string]: Player };
 
 export type StatesFP = {
-  kind?: 'fp';
   top: number;
   left: number;
 };
@@ -54,7 +47,7 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'setData'; payload: StatesGame };
+  | { type: 'setData'; payload: object };
 
 export type ActionsPlayers =
   | {
@@ -72,11 +65,11 @@ export type ActionsPlayers =
       player: string;
       payload: Player;
     }
-  | { type: 'setData'; payload: StatesPlayers | Player; uid?: string };
+  | { type: 'setData'; payload: object; player?: string };
 
 export type ActionsFP =
   | { type: 'move'; top: number; left: number }
-  | { type: 'setData'; payload: StatesFP };
+  | { type: 'setData'; payload: object };
 
 export type DispatchesFP = {
   game: React.Dispatch<ActionsGame>;
@@ -84,7 +77,13 @@ export type DispatchesFP = {
   fp: React.Dispatch<ActionsFP>;
 };
 
-export type HandleChangeFP = (data: DataList, key?: string) => void;
+type StatesList = 'game' | 'players' | 'player' | 'fp';
+
+export type HandleData = (
+  states: StatesList,
+  statesObj: object,
+  key?: string
+) => void;
 
 export type Operations = 'add' | 'subtract';
 

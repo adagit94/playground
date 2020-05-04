@@ -11,7 +11,7 @@ import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import {
   DispatchesFP,
-  HandleChangeFP,
+  HandleData,
   Operations,
   Directions,
   Limits,
@@ -300,28 +300,28 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const handleChange: HandleChangeFP = (data, key) => {
-      switch (data.kind) {
+    const handleData: HandleData = (states, statesObj, key) => {
+      switch (states) {
         case 'game':
-          dispatchGame({ type: 'setData', payload: data });
+          dispatchGame({ type: 'setData', payload: statesObj });
           break;
 
         case 'players':
-          dispatchPlayers({ type: 'setData', payload: data });
-          break;
-
-        case 'fp':
-          dispatchFP({ type: 'setData', payload: data });
+          dispatchPlayers({ type: 'setData', payload: statesObj });
           break;
 
         case 'player':
-          dispatchPlayers({ type: 'setData', payload: data, uid: key });
+          dispatchPlayers({ type: 'setData', payload: statesObj, player: key });
+          break;
+
+        case 'fp':
+          dispatchFP({ type: 'setData', payload: statesObj });
           break;
       }
     };
 
     const initFP = async (): Promise<void> => {
-      await initGame('floatingPoint', handleChange);
+      await initGame('floatingPoint', handleData);
 
       createRecordPlayer(user);
     };
@@ -330,9 +330,9 @@ const Controller: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(statesGame);
+  //console.log(statesGame);
   console.log(statesPlayers);
-  console.log(statesFP);
+  //console.log(statesFP);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

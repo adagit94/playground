@@ -1,10 +1,10 @@
-import { HandleChangeFP, UpdateGameFP } from './floating-point-online';
+import { HandleData, UpdateGameFP } from './floating-point-online';
 
 export type GamesList = 'floatingPoint';
 
 export type InitGame = (
   game: GamesList,
-  handleChange: HandleChangeFP
+  handleData: HandleData
 ) => Promise<void>;
 
 export type UpdateRecordGame = (
