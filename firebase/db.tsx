@@ -60,23 +60,6 @@ export const updateRecordUser: UpdateRecordUser = async (user, update) => {
   }
 };
 
-export const createRecordPlayer: CreateRecordPlayer = async user => {
-  const playerRef = firebase
-    .database()
-    .ref(`games/floatingPoint/players/${user.uid}`);
-
-  const player: Player = {
-    username: user.displayName || user.email,
-    avatar: user.photoURL,
-    top: 0,
-    left: 0,
-    score: 0,
-    isReady: false
-  };
-
-  await playerRef.set(player).catch(err => console.error(err));
-};
-
 export const getRecordPlayers: GetRecordPlayers = async () => {
   const playersRef = firebase.database().ref('games/floatingPoint/players');
 
@@ -86,48 +69,6 @@ export const getRecordPlayers: GetRecordPlayers = async () => {
     .catch(err => console.error(err));
 
   return players;
-};
-
-export const updateRecordPlayer: UpdateRecordPlayer = async (
-  player,
-  action,
-  conf
-) => {
-  const playerRef = firebase
-    .database()
-    .ref(`games/floatingPoint/players/${player}`);
-
-  if (action !== 'changePos') {
-    await playerRef
-      .transaction(data => {
-        switch (action) {
-          case 'move':
-            return conf.move.operation === 'add'
-              ? data[conf.move.direction]++
-              : data[conf.move.direction]--;
-
-          case 'changeReady':
-            return !data.isReady;
-
-          case 'addScore':
-            return data.score++;
-        }
-      })
-      .catch(err => console.error(err));
-  } else {
-    await playerRef
-      .update({
-        top: conf.changePos.top,
-        left: conf.changePos.left
-      })
-      .catch(err => console.error(err));
-  }
-};
-
-export const updateRecordFP: UpdateRecordFP = async update => {
-  const pointRef = firebase.database().ref('games/floatingPoint/fp');
-
-  await pointRef.update(update).catch(err => console.error(err));
 };
 
 export const initGame: InitGame = async (game, handleData) => {
@@ -191,6 +132,65 @@ export const initGame: InitGame = async (game, handleData) => {
 
       break;
   }
+};
+
+export const createRecordPlayer: CreateRecordPlayer = async user => {
+  const playerRef = firebase
+    .database()
+    .ref(`games/floatingPoint/players/${user.uid}`);
+
+  const player: Player = {
+    username: user.displayName || user.email,
+    avatar: user.photoURL,
+    top: 0,
+    left: 0,
+    score: 0,
+    isReady: false
+  };
+
+  await playerRef.set(player).catch(err => console.error(err));
+};
+
+export const updateRecordPlayer: UpdateRecordPlayer = async (
+  player,
+  action,
+  conf
+) => {
+  const playerRef = firebase
+    .database()
+    .ref(`games/floatingPoint/players/${player}`);
+
+  if (action !== 'changePos') {
+    await playerRef
+      .transaction(data => {
+        switch (action) {
+          case 'move':
+            return conf.move.operation === 'add'
+              ? data[conf.move.direction]++
+              : data[conf.move.direction]--;
+
+          case 'changeReady':
+            return !data.isReady;
+
+          case 'addScore':
+            return data.score++;
+        }
+      })
+      .catch(err => console.error(err));
+  } else {
+    await playerRef
+      .update({
+        top: conf.changePos.top,
+        left: conf.changePos.left
+      })
+      .catch(err => console.error(err));
+  }
+};
+
+export const updateRecordFP: UpdateRecordFP = async update => {
+  const pointRef = firebase.database().ref('games/floatingPoint/fp');
+
+  await pointRef.update(update).catch(err => console.error(err));
 };
 
 export const updateRecordGame: UpdateRecordGame = async (game, update) => {

@@ -311,6 +311,7 @@ const Controller: React.FC = (): JSX.Element => {
           break;
 
         case 'player':
+          console.log('player: from controller');
           dispatchPlayers({ type: 'setData', payload: statesObj, player: key });
           break;
 

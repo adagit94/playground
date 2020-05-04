@@ -105,7 +105,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
 
     case 'setData':
       if (action.player) {
-        console.log('player update');
+        console.log('player: from reducer');
         return {
           ...states,
           [action.player]: { ...states[action.player], ...action.payload }
