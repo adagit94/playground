@@ -4,40 +4,40 @@ import 'firebase/firebase-database';
 import { defaultsUser } from '../defaults/user';
 import {
   StatesUser,
-  CreateRecordUser,
-  GetRecordUser,
-  UpdateRecordUser
+  CreateDataUser,
+  GetDataUser,
+  UpdateDataUser
 } from '../types/user';
-import { InitGame, UpdateRecordGame } from '../types/games/generics';
+import { InitGame, UpdateDataGame } from '../types/games/generics';
 import {
   StatesPlayers,
   Player,
-  CreateRecordPlayer,
-  UpdateRecordPlayer,
-  GetRecordPlayers,
-  UpdateRecordFP
+  CreateDataPlayer,
+  UpdateDataPlayer,
+  GetData,
+  UpdateDataFP
 } from '../types/games/floating-point-online';
 
-export const createRecordUser: CreateRecordUser = async (user, record) => {
+export const createDataUser: CreateDataUser = async (user, data) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
-  await userRef.set(record).catch(err => console.error(err));
+  await userRef.set(data).catch(err => console.error(err));
 };
 
-export const getRecordUser: GetRecordUser = async user => {
+export const getDataUser: GetDataUser = async user => {
   const userRef = firebase.database().ref(`users/${user}`);
 
-  const userRecord: StatesUser = await userRef
+  const userData: StatesUser = await userRef
     .once('value')
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));
 
-  if (!userRecord) createRecordUser(user, defaultsUser);
+  if (!userData) createDataUser(user, defaultsUser);
 
-  return userRecord || defaultsUser;
+  return userData || defaultsUser;
 };
 
-export const updateRecordUser: UpdateRecordUser = async (user, update) => {
+export const updateDataUser: UpdateDataUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   if (Array.isArray(update)) {
@@ -60,15 +60,15 @@ export const updateRecordUser: UpdateRecordUser = async (user, update) => {
   }
 };
 
-export const getRecordPlayers: GetRecordPlayers = async () => {
-  const playersRef = firebase.database().ref('games/floatingPoint/players');
+const getData: GetData = async dataSet => {
+  const dataSetRef = firebase.database().ref(`games/floatingPoint/${dataSet}`);
 
-  const players: StatesPlayers = await playersRef
+  const data = await dataSetRef
     .once('value')
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));
 
-  return players;
+  return data;
 };
 
 export const initGame: InitGame = async (game, handleData) => {
@@ -100,41 +100,30 @@ export const initGame: InitGame = async (game, handleData) => {
           .catch(err => console.error(err));
       }
 
-      gameRef.child('game').on('child_changed', data => {
-        console.log('game change');
-        console.log(data.val());
-        handleData('game', data.val());
+      gameRef.child('game').on('value', async () => {
+        const data = await getData('game');
+
+        handleData('game', data);
       });
 
-      gameRef.child('players').on('child_added', async data => {
-        console.log('player added');
-        const player = data.val();
-        const playerID = data.key;
+      gameRef.child('players').on('value', async () => {
+        const data = await getData('players');
+        //console.log(players);
 
-        let players = await getRecordPlayers();
-
-        players = { ...players, [playerID]: { ...player } };
-
-        handleData('players', players);
+        handleData('players', data);
       });
 
-      gameRef.child('players').on('child_changed', data => {
-        console.log('players change');
-        console.log(data.val());
-        handleData('player', data.val(), data.key);
-      });
+      gameRef.child('fp').on('value', async () => {
+        const data = await getData('fp');
 
-      gameRef.child('fp').on('child_changed', data => {
-        console.log('fp change');
-        console.log(data.val());
-        handleData('fp', data.val());
+        handleData('fp', data);
       });
 
       break;
   }
 };
 
-export const createRecordPlayer: CreateRecordPlayer = async user => {
+export const createDataPlayer: CreateDataPlayer = async user => {
   const playerRef = firebase
     .database()
     .ref(`games/floatingPoint/players/${user.uid}`);
@@ -151,7 +140,7 @@ export const createRecordPlayer: CreateRecordPlayer = async user => {
   await playerRef.set(player).catch(err => console.error(err));
 };
 
-export const updateRecordPlayer: UpdateRecordPlayer = async (
+export const updateDataPlayer: UpdateDataPlayer = async (
   player,
   action,
   conf
@@ -166,14 +155,20 @@ export const updateRecordPlayer: UpdateRecordPlayer = async (
         switch (action) {
           case 'move':
             return conf.move.operation === 'add'
-              ? data[conf.move.direction]++
-              : data[conf.move.direction]--;
+              ? {
+                  ...data,
+                  [conf.move.direction]: data[conf.move.direction]++
+                }
+              : {
+                  ...data,
+                  [conf.move.direction]: data[conf.move.direction]--
+                };
 
           case 'changeReady':
-            return !data.isReady;
+            return { ...data, isReady: !data.isReady };
 
           case 'addScore':
-            return data.score++;
+            return { ...data, score: data.score++ };
         }
       })
       .catch(err => console.error(err));
@@ -187,13 +182,13 @@ export const updateRecordPlayer: UpdateRecordPlayer = async (
   }
 };
 
-export const updateRecordFP: UpdateRecordFP = async update => {
+export const updateDataFP: UpdateDataFP = async update => {
   const pointRef = firebase.database().ref('games/floatingPoint/fp');
 
   await pointRef.update(update).catch(err => console.error(err));
 };
 
-export const updateRecordGame: UpdateRecordGame = async (game, update) => {
+export const updateDataGame: UpdateDataGame = async (game, update) => {
   const gameRef = firebase.database().ref(`games/${game}`);
 
   await gameRef.update(update).catch(err => console.error(err));

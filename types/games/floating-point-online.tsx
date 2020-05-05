@@ -47,7 +47,7 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'setData'; payload: object };
+  | { type: 'setData'; payload: any };
 
 export type ActionsPlayers =
   | {
@@ -65,7 +65,7 @@ export type ActionsPlayers =
       player: string;
       payload: Player;
     }
-  | { type: 'setData'; payload: object; player?: string };
+  | { type: 'setData'; payload: any };
 
 export type ActionsFP =
   | { type: 'move'; top: number; left: number }
@@ -77,13 +77,9 @@ export type DispatchesFP = {
   fp: React.Dispatch<ActionsFP>;
 };
 
-type StatesList = 'game' | 'players' | 'player' | 'fp';
+type DataSetsList = 'game' | 'players' | 'fp';
 
-export type HandleData = (
-  states: StatesList,
-  statesObj: object,
-  key?: string
-) => void;
+export type HandleData = (dataSet: DataSetsList, data: any) => void;
 
 export type Operations = 'add' | 'subtract';
 
@@ -95,7 +91,7 @@ export type Position = { top: number; left: number };
 
 type ActionsList = 'move' | 'changePos' | 'changeReady' | 'addScore';
 
-export type UpdateRecordPlayer = (
+export type UpdateDataPlayer = (
   player: string,
   action: ActionsList,
   conf?: {
@@ -104,11 +100,13 @@ export type UpdateRecordPlayer = (
   }
 ) => Promise<void>;
 
-export type GetRecordPlayers = () => Promise<StatesPlayers>;
+export type GetData = (
+  dataSet: DataSetsList
+) => Promise<StatesGame | StatesPlayers | StatesFP>;
 
-export type UpdateRecordFP = (update: StatesFP) => Promise<void>;
+export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
-export type CreateRecordPlayer = (user: firebase.User) => Promise<void>;
+export type CreateDataPlayer = (user: firebase.User) => Promise<void>;
 
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 

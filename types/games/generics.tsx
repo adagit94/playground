@@ -7,7 +7,7 @@ export type InitGame = (
   handleData: HandleData
 ) => Promise<void>;
 
-export type UpdateRecordGame = (
+export type UpdateDataGame = (
   game: GamesList,
   update: UpdateGameFP
 ) => Promise<void>;

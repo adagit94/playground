@@ -3,7 +3,7 @@ import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
-import { updateRecordPlayer } from '../../../firebase/db';
+import { updateDataPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import {
@@ -23,13 +23,13 @@ const ContainerButtonReady = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 75px;
+  height: 50px;
 `;
 
 const ContainerInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75px;
+  height: 50px;
 `;
 
 const Info = styled.div`
@@ -104,7 +104,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         {state === 'conf' && (
           <ButtonReady
             onClick={(): void => {
-              updateRecordPlayer(player, 'changeReady');
+              updateDataPlayer(player, 'changeReady');
             }}
             type='button'
           >

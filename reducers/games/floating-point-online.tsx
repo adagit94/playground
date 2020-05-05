@@ -104,17 +104,9 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       }
 
     case 'setData':
-      if (action.player) {
-        console.log('player: from reducer');
-        return {
-          ...states,
-          [action.player]: { ...states[action.player], ...action.payload }
-        };
-      } else {
-        return {
-          ...action.payload
-        };
-      }
+      return {
+        ...action.payload
+      };
 
     default:
       throw new Error('Unspecified / Wrong action');

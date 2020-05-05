@@ -22,12 +22,12 @@ export type ActionsUser =
   | { type: 'editGame'; game: GamesList; operation: 'addPoint' }
   | { type: 'reset' };
 
-export type CreateRecordUser = (
+export type CreateDataUser = (
   user: string,
-  record: StatesUser
+  data: StatesUser
 ) => Promise<void>;
 
-export type GetRecordUser = (user: string) => Promise<StatesUser>;
+export type GetDataUser = (user: string) => Promise<StatesUser>;
 
 type UpdateUser = {
   lastPlayed?: string;
@@ -35,7 +35,7 @@ type UpdateUser = {
 
 type ActionsList = 'addPoint' | 'win';
 
-export type UpdateRecordUser = (
+export type UpdateDataUser = (
   user: string,
   update: UpdateUser | [GamesList, ActionsList]
 ) => Promise<void>;

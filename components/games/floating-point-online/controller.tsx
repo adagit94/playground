@@ -19,11 +19,11 @@ import {
 } from '../../../types/games/floating-point-online';
 import {
   initGame,
-  createRecordPlayer,
-  updateRecordGame,
-  updateRecordPlayer,
-  updateRecordFP,
-  updateRecordUser
+  createDataPlayer,
+  updateDataGame,
+  updateDataPlayer,
+  updateDataFP,
+  updateDataUser
 } from '../../../firebase/db';
 
 const dispatchesFP: DispatchesFP = {
@@ -125,7 +125,7 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft + dimensions >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensions
       ) {
-        updateRecordPlayer(playerLocal, 'move', {
+        updateDataPlayer(playerLocal, 'move', {
           move: {
             operation: operation === 'add' ? 'subtract' : 'add',
             direction
@@ -138,7 +138,7 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (overlap === true) return;
 
-    updateRecordPlayer(playerLocal, 'move', {
+    updateDataPlayer(playerLocal, 'move', {
       move: {
         operation,
         direction
@@ -158,7 +158,7 @@ const Controller: React.FC = (): JSX.Element => {
       const playerLeft =
         (statesPlayers[player].left / width) * 100 * (newWidth / 100);
 
-      updateRecordPlayer(player, 'changePos', {
+      updateDataPlayer(player, 'changePos', {
         changePos: { top: playerTop, left: playerLeft }
       });
     }
@@ -166,7 +166,7 @@ const Controller: React.FC = (): JSX.Element => {
     const fpTop = (fPTop / height) * 100 * (newHeight / 100);
     const fpLeft = (fPLeft / width) * 100 * (newWidth / 100);
 
-    updateRecordFP({ top: fpTop, left: fpLeft });
+    updateDataFP({ top: fpTop, left: fpLeft });
   };
 
   useEffect(() => {
@@ -216,7 +216,7 @@ const Controller: React.FC = (): JSX.Element => {
             break;
         }
 
-        updateRecordPlayer(player, 'changePos', {
+        updateDataPlayer(player, 'changePos', {
           changePos: { top: playerTop, left: playerLeft }
         });
 
@@ -224,8 +224,8 @@ const Controller: React.FC = (): JSX.Element => {
           const fpTop = height / 2 - dimensions / 2;
           const fpLeft = width / 2 - dimensions / 2;
 
-          updateRecordFP({ top: fpTop, left: fpLeft });
-          updateRecordGame('floatingPoint', { state: 'running' });
+          updateDataFP({ top: fpTop, left: fpLeft });
+          updateDataGame('floatingPoint', { state: 'running' });
         }
       }
     };
@@ -247,9 +247,9 @@ const Controller: React.FC = (): JSX.Element => {
         const fpTop = Math.min(Math.random() * height, height - dimensions);
         const fpLeft = Math.min(Math.random() * width, width - dimensions);
 
-        updateRecordUser(playerLocal, ['floatingPoint', 'addPoint']);
-        updateRecordPlayer(playerLocal, 'addScore');
-        updateRecordFP({ top: fpTop, left: fpLeft });
+        updateDataUser(playerLocal, ['floatingPoint', 'addPoint']);
+        updateDataPlayer(playerLocal, 'addScore');
+        updateDataFP({ top: fpTop, left: fpLeft });
       }
     };
 
@@ -300,23 +300,18 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const handleData: HandleData = (states, statesObj, key) => {
-      switch (states) {
+    const handleData: HandleData = (dataSet, data) => {
+      switch (dataSet) {
         case 'game':
-          dispatchGame({ type: 'setData', payload: statesObj });
+          dispatchGame({ type: 'setData', payload: data });
           break;
 
         case 'players':
-          dispatchPlayers({ type: 'setData', payload: statesObj });
-          break;
-
-        case 'player':
-          console.log('player: from controller');
-          dispatchPlayers({ type: 'setData', payload: statesObj, player: key });
+          dispatchPlayers({ type: 'setData', payload: data });
           break;
 
         case 'fp':
-          dispatchFP({ type: 'setData', payload: statesObj });
+          dispatchFP({ type: 'setData', payload: data });
           break;
       }
     };
@@ -324,7 +319,7 @@ const Controller: React.FC = (): JSX.Element => {
     const initFP = async (): Promise<void> => {
       await initGame('floatingPoint', handleData);
 
-      createRecordPlayer(user);
+      createDataPlayer(user);
     };
 
     initFP();
@@ -332,7 +327,7 @@ const Controller: React.FC = (): JSX.Element => {
   }, []);
 
   //console.log(statesGame);
-  console.log(statesPlayers);
+  //console.log(statesPlayers);
   //console.log(statesFP);
   return (
     <Container>

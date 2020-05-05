@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { FormButton } from '../../styled-components/forms';
 
 import { logout } from '../../../firebase/auth';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
 
 const Container = styled.div`

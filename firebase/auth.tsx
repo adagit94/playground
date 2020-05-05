@@ -3,7 +3,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
 import 'firebase/firebase-storage';
 
-import { getRecordUser } from './db';
+import { getDataUser } from './db';
 import {
   InitAuthObserver,
   HandleError,
@@ -45,7 +45,7 @@ export const initAuthObserver: InitAuthObserver = (initUser, clearUser) => {
         if (userFirebase.emailVerified) {
           sessionStorage.setItem('uid', userFirebase.uid);
 
-          const userDB = await getRecordUser(userFirebase.uid);
+          const userDB = await getDataUser(userFirebase.uid);
 
           initUser(userFirebase, userDB);
         } else {
