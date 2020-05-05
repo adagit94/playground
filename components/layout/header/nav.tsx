@@ -56,7 +56,7 @@ const Nav: React.FC = (): JSX.Element => {
       <ul>
         <li>
           <Link href='/playground'>
-            <a>Playground</a>
+            <a>PPlayground</a>
           </Link>
         </li>
       </ul>
