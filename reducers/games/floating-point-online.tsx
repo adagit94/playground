@@ -31,6 +31,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
   states,
   action
 ): StatesPlayers => {
+  switch (action.type) {
     case 'setData':
       return {
         ...action.payload
@@ -46,12 +47,6 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
   action
 ): StatesFP => {
   switch (action.type) {
-    case 'move':
-      return {
-        top: action.top,
-        left: action.left
-      };
-
     case 'setData':
       return { ...states, ...action.payload };
 
