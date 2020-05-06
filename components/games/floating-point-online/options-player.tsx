@@ -57,7 +57,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   const { state } = statesGame;
   const playerData = player && statesPlayers[player];
-  console.log(playerData);
 
   const ButtonReady = styled.button`
     padding: 5px;
