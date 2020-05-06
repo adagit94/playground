@@ -6,6 +6,7 @@ import ControlPanel from './control-panel';
 
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
+import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import {
@@ -317,8 +318,14 @@ const Controller: React.FC = (): JSX.Element => {
   //console.log(statesFP);
   return (
     <Container>
-      <Monitor />
-      <ControlPanel />
+      <Contexts.ContextGame.Provider value={statesGame}>
+        <Contexts.ContextPlayers.Provider value={statesPlayers}>
+          <Contexts.ContextFP.Provider value={statesFP}>
+            <Monitor />
+            <ControlPanel />
+          </Contexts.ContextFP.Provider>
+        </Contexts.ContextPlayers.Provider>
+      </Contexts.ContextGame.Provider>
     </Container>
   );
 };
