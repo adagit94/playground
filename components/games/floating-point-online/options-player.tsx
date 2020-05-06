@@ -48,23 +48,16 @@ const ContainerAvatar = styled.div`
   align-items: center;
 `;
 
-const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
+const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
+  player
+}): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
   const { state } = statesGame;
-
-  let username, avatar, score, isReady;
-
-  if (player) {
-    const playerData = statesPlayers[player];
-
-    username = playerData.username;
-    avatar = playerData.avatar;
-    score = playerData.score;
-    isReady = playerData.isReady;
-  }
+  const playerData = player && statesPlayers[player];
+  console.log(playerData);
 
   const ButtonReady = styled.button`
     padding: 5px;
@@ -72,9 +65,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
     border: 1px solid ${(props): string => props.theme.inverted};
     border-radius: 5px;
     color: ${(props): string =>
-      isReady ? props.theme.background : props.theme.inverted};
+      player && playerData.isReady
+        ? props.theme.background
+        : props.theme.inverted};
     background-color: ${(props): string =>
-      isReady ? props.theme.inverted : props.theme.background};
+      player && playerData.isReady
+        ? props.theme.inverted
+        : props.theme.background};
     transition-property: color, background-color;
     transition-duration: 0.1s;
     transition-timing-function: linear;
@@ -94,7 +91,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
     width: 75px;
     height: 75px;
     border-radius: 100%;
-    background-image: url(${avatar});
+    background-image: url(${player && playerData.avatar});
     background-size: contain;
   `;
 
@@ -113,8 +110,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         )}
       </ContainerButtonReady>
       <ContainerInfo>
-        <Info>{player && username}</Info>
-        <Info>{player && state === 'running' && score}</Info>
+        <Info>{player && playerData.username}</Info>
+        <Info>{player && state === 'running' && playerData.score}</Info>
       </ContainerInfo>
       <ContainerAvatar>
         {player && <Avatar />}

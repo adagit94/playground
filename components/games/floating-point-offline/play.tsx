@@ -17,22 +17,22 @@ const Button = styled(ButtonOptions)`
   }
 `;
 
-const Play: React.FC = () => {
+const Play: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const state = statesGame.state;
+  const { state } = statesGame;
 
   const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
     const playersCount = statesGame.players.length;
     const { dimensions, speed } = statesParams;
 
-    let playable: boolean;
+    let playable;
 
     for (let i = 1; i <= playersCount; i++) {
       const player = `P${i}`;
-      const icon = statesParams[player].icon;
+      const { icon } = statesParams[player];
 
       if (icon === undefined) {
         dispatches.params({
@@ -73,27 +73,29 @@ const Play: React.FC = () => {
 
     if (playable === false) return;
 
-    const height = statesGame.height;
-    const width = statesGame.width;
+    const { height, width } = statesGame;
 
     for (let i = 1; i <= playersCount; i++) {
       const player = `P${i}`;
-      let top: number;
-      let left: number;
+      let top;
+      let left;
 
       switch (player) {
         case 'P1':
           top = height / 2 - dimensions / 2;
           left = 10;
           break;
+
         case 'P2':
           top = height / 2 - dimensions / 2;
           left = width - dimensions - 10;
           break;
+
         case 'P3':
           top = 10;
           left = width / 2 - dimensions / 2;
           break;
+
         case 'P4':
           top = height - dimensions - 10;
           left = width / 2 - dimensions / 2;

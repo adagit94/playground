@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
 
-import { PropsButtons } from '../../../types/games/floating-point-offline';
+import { PropsButton } from '../../../types/games/floating-point-offline';
 import {
   ContextGame,
   ContextDispatchesFP
@@ -15,11 +15,11 @@ const Button = styled(ButtonOptions)`
   }
 `;
 
-const RemovePlayer: React.FC<PropsButtons> = ({ pos }) => {
-  const states = useContext(ContextGame);
+const RemovePlayer: React.FC<PropsButton> = ({ pos }): JSX.Element => {
+  const statesGame = useContext(ContextGame);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const player = `P${states.players.indexOf(pos) + 1}`;
+  const player = `P${statesGame.players.indexOf(pos) + 1}`;
 
   return (
     <>

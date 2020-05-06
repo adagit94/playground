@@ -46,11 +46,11 @@ const Settings: React.FC = (): JSX.Element => {
         onSubmit={(e): void => {
           e.preventDefault();
 
-          const inputFile = document.querySelector(
+          const fileInput = document.querySelector(
             '#avatar-input'
           ) as HTMLInputElement;
 
-          const avatar = (inputFile.files as FileList)[0];
+          const avatar = (fileInput.files as FileList)[0];
 
           updateUser(user, username, avatar);
         }}

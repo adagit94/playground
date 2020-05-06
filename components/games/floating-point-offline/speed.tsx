@@ -13,12 +13,11 @@ import {
   ContextDispatchesFP
 } from '../../../contexts/games/floating-point-offline';
 
-const Speed: React.FC = () => {
-  const states = useContext(ContextParams);
+const Speed: React.FC = (): JSX.Element => {
+  const statesParams = useContext(ContextParams);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const speed = states.speed;
-  const isDefined = typeof speed === 'number';
+  const { speed } = statesParams;
 
   const Label = styled(InputOptionsLabel)`
     color: ${speed === null && '#f00'};
@@ -34,14 +33,14 @@ const Speed: React.FC = () => {
             speed: Number(e.target.value)
           })
         }
-        value={isDefined ? String(speed) : ''}
+        value={speed ? String(speed) : ''}
         type='range'
         min='1'
         max='5'
         step='2'
         id='speed'
       />
-      <InputOptionsValue>{isDefined && `${speed}x`}</InputOptionsValue>
+      <InputOptionsValue>{speed && `${speed}x`}</InputOptionsValue>
     </ContainerOption>
   );
 };

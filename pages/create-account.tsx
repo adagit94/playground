@@ -20,10 +20,14 @@ const CreateAccount: React.FC = (): JSX.Element => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [markedInvalid, setMarkedInvalid] = useState(false);
 
-  const { isValid, equalPasswords, count, upper, num, special } = validator(
-    password,
-    passwordConfirm
-  );
+  const {
+    validPassword,
+    equalPasswords,
+    count,
+    upper,
+    num,
+    special
+  } = validator(password, passwordConfirm);
 
   const ValidationWindow = styled(FormWindowValidation)`
     visibility: ${password ? 'visible' : 'hidden'};
@@ -46,7 +50,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
   `;
 
   const LabelPassword = styled.label`
-    color: ${markedInvalid && !isValid && '#ff0000'};
+    color: ${markedInvalid && !validPassword && '#ff0000'};
   `;
 
   const LabelPasswordConfirm = styled.label`
@@ -70,7 +74,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
         onSubmit={(e): void => {
           e.preventDefault();
 
-          if (isValid && equalPasswords) {
+          if (validPassword && equalPasswords) {
             createUser(email, password);
           } else {
             setMarkedInvalid(true);

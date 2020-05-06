@@ -8,13 +8,13 @@ import {
   ContextFP
 } from '../../../contexts/games/floating-point-offline';
 
-const Point: React.FC = () => {
+const Point: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);
   const colors: Colors = useContext(ThemeContext);
 
-  const state = statesGame.state;
+  const { state } = statesGame;
   const { dimensions, speed } = statesParams;
   const { top, left } = statesFP;
 

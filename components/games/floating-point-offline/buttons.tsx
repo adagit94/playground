@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { PropsButtons } from '../../../types/games/floating-point-offline';
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -10,9 +12,7 @@ const Container = styled.div`
   padding: 10px;
 `;
 
-const Buttons: React.FC<{ children: Array<JSX.Element> | JSX.Element }> = ({
-  children
-}) => {
+const Buttons: React.FC<PropsButtons> = ({ children }) => {
   return <Container>{children}</Container>;
 };
 

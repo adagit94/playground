@@ -39,7 +39,7 @@ export type LoginProvider = (
 export type ResetPassword = (email: string) => Promise<void>;
 
 type ValidatorReturn = {
-  isValid: boolean;
+  validPassword: boolean;
   equalPasswords: boolean;
   count: boolean;
   upper: boolean;

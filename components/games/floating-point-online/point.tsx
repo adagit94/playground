@@ -5,7 +5,7 @@ import Defaults from '../../../defaults/games/floating-point-online';
 import { Colors } from '../../../types/layout';
 import { ContextFP } from '../../../contexts/games/floating-point-online';
 
-const Point: React.FC = () => {
+const Point: React.FC = (): JSX.Element => {
   const statesFP = useContext(ContextFP);
   const colors: Colors = useContext(ThemeContext);
 

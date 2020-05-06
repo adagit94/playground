@@ -69,9 +69,11 @@ export type PropsOptionsPlayer = {
   player: string;
 };
 
-export type PropsButtons = {
+export type PropsButton = {
   pos: string;
 };
+
+export type PropsButtons = { children: Array<JSX.Element> | JSX.Element };
 
 export type StatesGame = {
   players: Array<boolean | string>;

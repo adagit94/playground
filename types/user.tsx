@@ -1,4 +1,4 @@
-import { GamesList } from './games/generics';
+import { GamesList } from './games/generic';
 
 type FloatingPoint = {
   wins: number;
@@ -8,6 +8,12 @@ type FloatingPoint = {
 type Games = {
   floatingPoint: FloatingPoint;
 };
+
+type UpdateUser = {
+  lastPlayed?: string;
+};
+
+type ActionsList = 'addPoint' | 'win';
 
 export type StatesUser = {
   lastPlayed: string;
@@ -22,20 +28,11 @@ export type ActionsUser =
   | { type: 'editGame'; game: GamesList; operation: 'addPoint' }
   | { type: 'reset' };
 
-export type CreateDataUser = (
-  user: string,
-  data: StatesUser
-) => Promise<void>;
+export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
 
 export type GetDataUser = (user: string) => Promise<StatesUser>;
 
-type UpdateUser = {
-  lastPlayed?: string;
-};
-
-type ActionsList = 'addPoint' | 'win';
-
 export type UpdateDataUser = (
   user: string,
-  update: UpdateUser | [GamesList, ActionsList]
+  update: [GamesList, ActionsList] | UpdateUser
 ) => Promise<void>;

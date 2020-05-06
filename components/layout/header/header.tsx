@@ -14,7 +14,7 @@ const Container = styled.header`
   border-bottom: 1px solid;
 `;
 
-const Header: React.FC = () => {
+const Header: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Logo />

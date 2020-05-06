@@ -67,15 +67,12 @@ const HeadingGame = styled.h3`
   margin: 0;
 `;
 
-const Divider = styled(DividerHorizontal)`
-  background-color: ${(props): string => props.theme.background};
-`;
-
 const Stats: React.FC = (): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
 
+  const { background } = colors;
   const { user } = statesFirebase;
   const { lastPlayed } = statesUser;
   const { wins, gatheredPoints } = statesUser.games.floatingPoint;
@@ -87,29 +84,25 @@ const Stats: React.FC = (): JSX.Element => {
           <ul>
             <li>
               <span>Last played:</span>
-              {user ? (
-                lastPlayed
-              ) : (
-                <LoadingIndicator color={colors.background} />
-              )}
+              {user ? lastPlayed : <LoadingIndicator color={background} />}
             </li>
           </ul>
         </StatsGeneral>
-        <Divider />
+        <DividerHorizontal />
         <StatsGames>
           <StatsGame>
             <HeadingGame>Floating Point</HeadingGame>
             <ul>
               <li>
                 <span>Wins:</span>
-                {user ? wins : <LoadingIndicator color={colors.background} />}
+                {user ? wins : <LoadingIndicator color={background} />}
               </li>
               <li>
                 <span>Gathered points:</span>
                 {user ? (
                   gatheredPoints
                 ) : (
-                  <LoadingIndicator color={colors.background} />
+                  <LoadingIndicator color={background} />
                 )}
               </li>
             </ul>

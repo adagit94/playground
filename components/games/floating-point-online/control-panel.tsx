@@ -12,7 +12,7 @@ const Container = styled.div`
   border-top: 1px solid;
 `;
 
-const ControlPanel: React.FC = () => {
+const ControlPanel: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
 
   const players = Object.keys(statesPlayers);

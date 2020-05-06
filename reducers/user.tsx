@@ -30,7 +30,7 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
           }
 
         default:
-          throw new Error('Unspecified / Wrong game');
+          throw new Error('Unspecified / Wrong game title');
       }
 
     case 'reset':

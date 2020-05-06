@@ -6,17 +6,16 @@ import ControlPanel from './control-panel';
 
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
-import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import {
-  DispatchesFP,
   HandleData,
   Operations,
   Directions,
   Limits,
   HandleMove
 } from '../../../types/games/floating-point-online';
+
 import {
   initGame,
   createDataPlayer,
@@ -25,12 +24,6 @@ import {
   updateDataFP,
   updateDataUser
 } from '../../../firebase/db';
-
-const dispatchesFP: DispatchesFP = {
-  game: undefined,
-  players: undefined,
-  fp: undefined
-};
 
 const Container = styled.div`
   display: flex;
@@ -43,14 +36,16 @@ const Controller: React.FC = (): JSX.Element => {
     Reducers.reducerGame,
     Inits.initGame
   );
+
   const [statesPlayers, dispatchPlayers] = useReducer(
     Reducers.reducerPlayers,
     Inits.initPlayers
   );
+
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
-  const refHandleMove = useRef(null);
-  const refRecalculate = useRef(null);
+  const handleMoveRef = useRef(null);
+  const recalculateRef = useRef(null);
 
   const { user } = statesFirebase;
   const { state, width, height } = statesGame;
@@ -116,8 +111,7 @@ const Controller: React.FC = (): JSX.Element => {
     for (const player in statesPlayers) {
       if (playerLocal === player) continue;
 
-      const playerLeft = statesPlayers[player].left;
-      const playerTop = statesPlayers[player].top;
+      const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
       if (
         playerLocalTop + dimensions >= playerTop &&
@@ -126,10 +120,8 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalLeft <= playerLeft + dimensions
       ) {
         updateDataPlayer(playerLocal, 'move', {
-          move: {
-            operation: operation === 'add' ? 'subtract' : 'add',
-            direction
-          }
+          operation: operation === 'add' ? 'subtract' : 'add',
+          direction
         });
 
         overlap = true;
@@ -139,10 +131,8 @@ const Controller: React.FC = (): JSX.Element => {
     if (overlap === true) return;
 
     updateDataPlayer(playerLocal, 'move', {
-      move: {
-        operation,
-        direction
-      }
+      operation,
+      direction
     });
   };
 
@@ -159,7 +149,8 @@ const Controller: React.FC = (): JSX.Element => {
         (statesPlayers[player].left / width) * 100 * (newWidth / 100);
 
       updateDataPlayer(player, 'changePos', {
-        changePos: { top: playerTop, left: playerLeft }
+        top: playerTop,
+        left: playerLeft
       });
     }
 
@@ -170,8 +161,8 @@ const Controller: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    refHandleMove.current = handleMove;
-    refRecalculate.current = recalculate;
+    handleMoveRef.current = handleMove;
+    recalculateRef.current = recalculate;
   });
 
   useEffect(() => {
@@ -217,7 +208,8 @@ const Controller: React.FC = (): JSX.Element => {
         }
 
         updateDataPlayer(player, 'changePos', {
-          changePos: { top: playerTop, left: playerLeft }
+          top: playerTop,
+          left: playerLeft
         });
 
         if (i === players.length - 1) {
@@ -260,7 +252,7 @@ const Controller: React.FC = (): JSX.Element => {
     const registerKey = (e: KeyboardEvent): void => {
       e.preventDefault();
 
-      refHandleMove.current(e.key);
+      handleMoveRef.current(e.key);
     };
 
     if (state === 'running') {
@@ -275,12 +267,6 @@ const Controller: React.FC = (): JSX.Element => {
   }, [state]);
 
   useEffect(() => {
-    dispatchesFP.game = dispatchGame;
-    dispatchesFP.players = dispatchPlayers;
-    dispatchesFP.fp = dispatchFP;
-  }, []);
-
-  useEffect(() => {
     const changeDimensions = (): void => {
       dispatchGame({
         type: 'changeDimensions',
@@ -288,7 +274,7 @@ const Controller: React.FC = (): JSX.Element => {
         width: document.querySelector('#monitor').clientWidth
       });
 
-      refRecalculate.current();
+      recalculateRef.current();
     };
 
     changeDimensions();
@@ -331,16 +317,8 @@ const Controller: React.FC = (): JSX.Element => {
   //console.log(statesFP);
   return (
     <Container>
-      <Contexts.ContextGame.Provider value={statesGame}>
-        <Contexts.ContextPlayers.Provider value={statesPlayers}>
-          <Contexts.ContextFP.Provider value={statesFP}>
-            <Monitor />
-            <Contexts.ContextDispatchesFP.Provider value={dispatchesFP}>
-              <ControlPanel />
-            </Contexts.ContextDispatchesFP.Provider>
-          </Contexts.ContextFP.Provider>
-        </Contexts.ContextPlayers.Provider>
-      </Contexts.ContextGame.Provider>
+      <Monitor />
+      <ControlPanel />
     </Container>
   );
 };

@@ -1,3 +1,9 @@
+type DataSetsList = 'game' | 'players' | 'fp';
+
+type UpdateActionsList = 'move' | 'changePos' | 'changeReady' | 'addScore';
+
+type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
+
 export type Player = {
   username: string;
   avatar: string;
@@ -14,10 +20,6 @@ export type PropsOptions = {
 
 export type PropsOptionsPlayer = {
   player: string;
-};
-
-export type PropsButtons = {
-  pos: string;
 };
 
 export type StatesGame = {
@@ -39,45 +41,15 @@ export type StatesFP = {
 
 export type ActionsGame =
   | {
-      type: 'changeState';
-      state: string;
-    }
-  | {
       type: 'changeDimensions';
       width: number;
       height: number;
     }
   | { type: 'setData'; payload: any };
 
-export type ActionsPlayers =
-  | {
-      type: 'move';
-      player: string;
-      operation: string;
-      direction?: string;
-      top?: number;
-      left?: number;
-    }
-  | { type: 'addScore'; player: string }
-  | {
-      type: 'changePlayer';
-      operation: string;
-      player: string;
-      payload: Player;
-    }
-  | { type: 'setData'; payload: any };
+export type ActionsPlayers = { type: 'setData'; payload: any };
 
-export type ActionsFP =
-  | { type: 'move'; top: number; left: number }
-  | { type: 'setData'; payload: object };
-
-export type DispatchesFP = {
-  game: React.Dispatch<ActionsGame>;
-  players: React.Dispatch<ActionsPlayers>;
-  fp: React.Dispatch<ActionsFP>;
-};
-
-type DataSetsList = 'game' | 'players' | 'fp';
+export type ActionsFP = { type: 'setData'; payload: object };
 
 export type HandleData = (dataSet: DataSetsList, data: any) => void;
 
@@ -89,15 +61,12 @@ export type Limits = 'top' | 'right' | 'bottom' | 'left';
 
 export type Position = { top: number; left: number };
 
-type ActionsList = 'move' | 'changePos' | 'changeReady' | 'addScore';
+export type Move = { operation: Operations; direction: Directions };
 
 export type UpdateDataPlayer = (
   player: string,
-  action: ActionsList,
-  conf?: {
-    move?: { operation: Operations; direction: Directions };
-    changePos?: Position;
-  }
+  action: UpdateActionsList,
+  conf?: Move | Position
 ) => Promise<void>;
 
 export type GetData = (
@@ -107,7 +76,5 @@ export type GetData = (
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
 export type CreateDataPlayer = (user: firebase.User) => Promise<void>;
-
-type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
 export type HandleMove = (key: Keys) => void;

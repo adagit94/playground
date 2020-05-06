@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 import LogIn from './log-in';
 import Profile from './profile';
+
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import { Colors, PropsAvatar } from '../../../types/layout';
@@ -50,7 +51,7 @@ const Button = styled.button`
   }
 `;
 
-const Avatar = ({ user, theme }: PropsAvatar): JSX.Element => {
+const Avatar: React.FC<PropsAvatar> = ({ user, theme }): JSX.Element => {
   const avatar = user.photoURL;
   const avatarPlaceholder = `${window.location.origin}/icons/account-${theme}.svg`;
 
@@ -65,7 +66,7 @@ const Avatar = ({ user, theme }: PropsAvatar): JSX.Element => {
   return <Avatar />;
 };
 
-const Account: React.FC = () => {
+const Account: React.FC = (): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
 

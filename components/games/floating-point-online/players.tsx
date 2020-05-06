@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextPlayers } from '../../../contexts/games/floating-point-online';
 
-const Players: React.FC = () => {
+const Players: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
 
   const { dimensions } = Defaults;

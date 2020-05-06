@@ -32,15 +32,15 @@ const icons: Icons = {
   }
 };
 
-const Players: React.FC = () => {
+const Players: React.FC = (): JSX.Element => {
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
   const statesParams = useContext(ContextParams);
 
-  const profile = statesGame.profile;
-  const user = statesFirebase.user;
   const playersCount = statesGame.players.length;
+  const { profile } = statesGame;
+  const { user } = statesFirebase;
   const {
     P1: { top: topP1, left: leftP1 },
     P2: { top: topP2, left: leftP2 }

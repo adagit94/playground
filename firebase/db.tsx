@@ -2,21 +2,29 @@ import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
 import { defaultsUser } from '../defaults/user';
+import { InitGame, UpdateDataGame } from '../types/games/generic';
 import {
   StatesUser,
   CreateDataUser,
   GetDataUser,
   UpdateDataUser
 } from '../types/user';
-import { InitGame, UpdateDataGame } from '../types/games/generics';
+
 import {
-  StatesPlayers,
   Player,
   CreateDataPlayer,
   UpdateDataPlayer,
   GetData,
-  UpdateDataFP
+  UpdateDataFP,
+  Move,
+  Position
 } from '../types/games/floating-point-online';
+
+import {
+  initGame as initsGame,
+  initPlayers,
+  initFP
+} from '../inits/games/floating-point-online';
 
 export const createDataUser: CreateDataUser = async (user, data) => {
   const userRef = firebase.database().ref(`users/${user}`);
@@ -86,17 +94,17 @@ export const initGame: InitGame = async (game, handleData) => {
       if (!haveData) {
         gameRef
           .child('game')
-          .set({ state: 'conf', width: 0, height: 0 })
+          .set(initsGame)
           .catch(err => console.error(err));
 
         gameRef
           .child('players')
-          .set({})
+          .set(initPlayers)
           .catch(err => console.error(err));
 
         gameRef
           .child('fp')
-          .set({ top: 0, left: 0 })
+          .set(initFP)
           .catch(err => console.error(err));
       }
 
@@ -128,6 +136,8 @@ export const createDataPlayer: CreateDataPlayer = async user => {
     .database()
     .ref(`games/floatingPoint/players/${user.uid}`);
 
+  //if (!user.photoURL) return alert('You must upload avatar before initialization of game');
+
   const player: Player = {
     username: user.displayName || user.email,
     avatar: user.photoURL,
@@ -154,14 +164,14 @@ export const updateDataPlayer: UpdateDataPlayer = async (
       .transaction(data => {
         switch (action) {
           case 'move':
-            return conf.move.operation === 'add'
+            return (conf as Move).operation === 'add'
               ? {
                   ...data,
-                  [conf.move.direction]: data[conf.move.direction]++
+                  [(conf as Move).direction]: data[(conf as Move).direction]++
                 }
               : {
                   ...data,
-                  [conf.move.direction]: data[conf.move.direction]--
+                  [(conf as Move).direction]: data[(conf as Move).direction]--
                 };
 
           case 'changeReady':
@@ -175,8 +185,8 @@ export const updateDataPlayer: UpdateDataPlayer = async (
   } else {
     await playerRef
       .update({
-        top: conf.changePos.top,
-        left: conf.changePos.left
+        top: (conf as Position).top,
+        left: (conf as Position).left
       })
       .catch(err => console.error(err));
   }

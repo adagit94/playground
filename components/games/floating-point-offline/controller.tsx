@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 import * as Reducers from '../../../reducers/games/floating-point-offline';
 import * as Inits from '../../../inits/games/floating-point-offline';
 import * as Contexts from '../../../contexts/games/floating-point-offline';
+import { ContextDispatchesLayout } from '../../../contexts/layout';
 import {
   ControlKeys,
   ControlKeys2P,
@@ -191,34 +191,35 @@ const Controller: React.FC = (): JSX.Element => {
 
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
 
-  const dispatches = useContext(ContextDispatchesLayout);
-
   const { players, state, width, height } = statesGame;
   const { dimensions, speed } = statesParams;
   const { top: fPTop, left: fPLeft } = statesFP;
   const playersCount = players.length;
 
-  const refHandleMove = useRef(null);
-  const refRecalculate = useRef(null);
+  const handleMoveRef = useRef(null);
+  const recalculateRef = useRef(null);
 
   const handleMove = (): void => {
     for (const key in controlKeys) {
       if (controlKeys[key].pressed === false) continue;
 
       const { player, limit } = controlKeys[key];
-      const playerLeft: number = statesPlayers[player].left;
-      const playerTop: number = statesPlayers[player].top;
+      const playerLeft = statesPlayers[player].left;
+      const playerTop = statesPlayers[player].top;
 
       switch (limit) {
         case 'top':
           if (playerTop <= 0) continue;
           break;
+
         case 'right':
           if (playerLeft + dimensions >= width) continue;
           break;
+
         case 'bottom':
           if (playerTop + dimensions >= height) continue;
           break;
+
         case 'left':
           if (playerLeft <= 0) continue;
           break;
@@ -231,8 +232,8 @@ const Controller: React.FC = (): JSX.Element => {
         if (player === `P${i}`) continue;
 
         const playerOther = `P${i}`;
-        const playerOtherLeft: number = statesPlayers[playerOther].left;
-        const playerOtherTop: number = statesPlayers[playerOther].top;
+        const playerOtherLeft = statesPlayers[playerOther].left;
+        const playerOtherTop = statesPlayers[playerOther].top;
 
         if (
           (playerTop + dimensions === playerOtherTop ||
@@ -366,8 +367,8 @@ const Controller: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    refHandleMove.current = handleMove;
-    refRecalculate.current = recalculate;
+    handleMoveRef.current = handleMove;
+    recalculateRef.current = recalculate;
   });
 
   useEffect(() => {
@@ -385,7 +386,7 @@ const Controller: React.FC = (): JSX.Element => {
         width: document.querySelector('#monitor').clientWidth
       });
 
-      refRecalculate.current();
+      recalculateRef.current();
     };
 
     changeDimensions();
@@ -408,8 +409,6 @@ const Controller: React.FC = (): JSX.Element => {
           playerLeft + dimensions >= fPLeft &&
           playerLeft <= fPLeft + dimensions
         ) {
-          //dispatches.user({ type: 'addPoint' });
-
           dispatchPlayers({
             type: 'addScore',
             player
@@ -433,16 +432,18 @@ const Controller: React.FC = (): JSX.Element => {
         case 2:
           controlKeys = controlKeys2P;
           break;
+
         case 3:
           controlKeys = controlKeys3P;
           break;
+
         case 4:
           controlKeys = controlKeys4P;
           break;
       }
 
       intervalHandleMove = window.setInterval(
-        refHandleMove.current,
+        handleMoveRef.current,
         30 - 5 * speed
       );
 
@@ -467,7 +468,6 @@ const Controller: React.FC = (): JSX.Element => {
     };
   });
 
-  //console.log(statesPlayers.P1.top + dimensions);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

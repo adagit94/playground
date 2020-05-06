@@ -13,12 +13,11 @@ import {
   ContextDispatchesFP
 } from '../../../contexts/games/floating-point-offline';
 
-const Dimensions: React.FC = () => {
+const Dimensions: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const dimensions = states.dimensions;
-  const isDefined = typeof dimensions === 'number';
+  const { dimensions } = states;
 
   const Label = styled(InputOptionsLabel)`
     color: ${dimensions === null && '#f00'};
@@ -34,14 +33,14 @@ const Dimensions: React.FC = () => {
             dimensions: Number(e.target.value)
           })
         }
-        value={isDefined ? String(dimensions) : ''}
+        value={dimensions ? String(dimensions) : ''}
         type='range'
         min='20'
         max='30'
         step='5'
         id='dimensions'
       />
-      <InputOptionsValue>{isDefined && `${dimensions}px`}</InputOptionsValue>
+      <InputOptionsValue>{dimensions && `${dimensions}px`}</InputOptionsValue>
     </ContainerOption>
   );
 };

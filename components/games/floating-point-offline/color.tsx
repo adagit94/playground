@@ -20,7 +20,7 @@ const ContainerInput = styled.div`
   width: 100px;
 `;
 
-const WrapperInput = styled.div`
+const ContainerInputField = styled.div`
   overflow: hidden;
   position: relative;
   height: 25px;
@@ -54,7 +54,7 @@ const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
     <ContainerOption>
       <InputOptionsLabel htmlFor='color'>Color:</InputOptionsLabel>
       <ContainerInput>
-        <WrapperInput>
+        <ContainerInputField>
           <Input
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
               const color = e.target.value;
@@ -74,7 +74,7 @@ const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
             type='color'
             id='color'
           />
-        </WrapperInput>
+        </ContainerInputField>
       </ContainerInput>
     </ContainerOption>
   );

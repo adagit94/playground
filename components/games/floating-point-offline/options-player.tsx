@@ -10,6 +10,7 @@ import { ContainerOptions } from '../../styled-components/containers';
 
 import { ContextUser } from '../../../contexts/user';
 import { ContextFirebase } from '../../../contexts/firebase';
+import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
 import {
   ContextGame,
   ContextPlayers
@@ -20,7 +21,6 @@ import {
   PropsOptionsPlayer,
   PropsOptions
 } from '../../../types/games/floating-point-offline';
-import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;
@@ -70,15 +70,6 @@ const ButtonLoadProfile = styled.button`
   }
 `;
 
-const Divider = styled(DividerVertical)`
-  background-color: ${(props): string => props.theme.inverted};
-`;
-
-const Overlap = styled(OverlapDisabled)`
-  background-color: ${(props): string =>
-    props.theme.theme === 'dark' ? '#ffffff80' : '#00000080'};
-`;
-
 const Avatar: React.FC<PropsAvatar> = ({ bg, state }): JSX.Element => {
   const ContainerAvatar = styled.div`
     flex: auto;
@@ -100,18 +91,18 @@ const Avatar: React.FC<PropsAvatar> = ({ bg, state }): JSX.Element => {
   return (
     <ContainerAvatar>
       <Avatar />
-      {state !== 'conf' && <Overlap />}
+      {state !== 'conf' && <OverlapDisabled />}
     </ContainerAvatar>
   );
 };
 
-const Options: React.FC<PropsOptions> = ({ state, player }): JSX.Element => {
+const Options: React.FC<PropsOptions> = ({ player, state }): JSX.Element => {
   return (
     <ContainerOptions>
       <Icons player={player} />
-      <Divider />
+      <DividerVertical />
       <Color player={player} />
-      {state !== 'conf' && <Overlap />}
+      {state !== 'conf' && <OverlapDisabled />}
     </ContainerOptions>
   );
 };
@@ -119,13 +110,12 @@ const Options: React.FC<PropsOptions> = ({ state, player }): JSX.Element => {
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
-  const statesUser = useContext(ContextUser);
   const statesFirebase = useContext(ContextFirebase);
   const dispatches = useContext(ContextDispatchesFP);
 
   const { state, profile } = statesGame;
-  const score = statesPlayers[player].score;
-  const user = statesFirebase.user;
+  const { score } = statesPlayers[player];
+  const { user } = statesFirebase;
 
   const withProfile = profile === player;
 

@@ -6,11 +6,11 @@ import {
   ContextDispatchesFP
 } from '../../../contexts/games/floating-point-offline';
 
-const Switch: React.FC = () => {
+const Switch: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const state = statesGame.state;
+  const { state } = statesGame;
 
   const Button = styled.button`
     width: 25px;

@@ -41,10 +41,6 @@ const SocialProviderGoogle = styled(FormSocialProvider)`
   }
 `;
 
-const Divider = styled(DividerHorizontal)`
-  background-color: ${(props): string => props.theme.background};
-`;
-
 const LogIn: React.FC = (): JSX.Element => {
   const dispatches = useContext(ContextDispatchesLayout);
   const [email, setEmail] = useState('');
@@ -84,7 +80,7 @@ const LogIn: React.FC = (): JSX.Element => {
           Log in with Google
         </SocialProviderGoogle>
       </FormRowHorizontal>
-      <Divider />
+      <DividerHorizontal />
       <FormRowHorizontal>
         <FormLabel htmlFor='email'>Email: </FormLabel>
         <FormInput

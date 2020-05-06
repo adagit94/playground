@@ -112,7 +112,7 @@ export const updateUser: UpdateUser = async (user, username, avatar) => {
     handleError(err, 'alert');
   });
 
-  location.reload();
+  window.location.reload();
 };
 
 export const loginEmail: LoginEmail = async (
@@ -145,12 +145,10 @@ export const loginProvider: LoginProvider = async (provider, handleLoading) => {
     case 'fb':
       providerObj = new firebase.auth.FacebookAuthProvider();
       break;
+
     case 'google':
       providerObj = new firebase.auth.GoogleAuthProvider();
       break;
-
-    default:
-      throw new Error('Unspecified / Wrong service');
   }
 
   await firebase
@@ -173,7 +171,7 @@ export const resetPassword: ResetPassword = async email => {
 };
 
 export const validator: Validator = (password, passwordConfirm) => {
-  let isValid = false;
+  let validPassword = false;
   let equalPasswords = false;
   let count = false;
   let upper = false;
@@ -187,7 +185,7 @@ export const validator: Validator = (password, passwordConfirm) => {
 
   if (password === passwordConfirm) equalPasswords = true;
 
-  if (count && upper && num && special) isValid = true;
+  if (count && upper && num && special) validPassword = true;
 
-  return { isValid, equalPasswords, count, upper, num, special };
+  return { validPassword, equalPasswords, count, upper, num, special };
 };

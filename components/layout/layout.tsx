@@ -25,7 +25,7 @@ const dispatchesLayout: DispatchesLayout = {
   firebase: undefined
 };
 
-const Layout: React.FC<PropsLayout> = ({ content }) => {
+const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const router = useRouter();
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
   const [statesUser, dispatchUser] = useReducer(reducerUser, initUser);

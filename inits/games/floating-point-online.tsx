@@ -4,17 +4,15 @@ import {
   StatesFP
 } from '../../types/games/floating-point-online';
 
-import Defaults from '../../defaults/games/floating-point-online';
-
 export const initGame: StatesGame = {
   state: 'conf', // conf / running
-  width: undefined,
-  height: undefined
+  width: null,
+  height: null
 };
 
 export const initPlayers: StatesPlayers = {};
 
 export const initFP: StatesFP = {
-  top: undefined,
-  left: undefined
+  top: null,
+  left: null
 };
