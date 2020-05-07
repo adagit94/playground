@@ -2,7 +2,7 @@ import React from 'react';
 
 import Controller from '../../components/games/floating-point-offline/controller';
 
-const FloatingPointOffline: React.FC = () => {
+const FloatingPointOffline: React.FC = (): JSX.Element => {
   return <Controller />;
 };
 

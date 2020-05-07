@@ -9,6 +9,7 @@ import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
+import { ContextUser } from '../../../contexts/user';
 import {
   HandleData,
   Operations,
@@ -45,14 +46,17 @@ const Controller: React.FC = (): JSX.Element => {
 
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
+  const statesUser = useContext(ContextUser);
   const handleMoveRef = useRef(null);
-  const recalculateRef = useRef(null);
 
   const { user } = statesFirebase;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
-
   const { dimensions } = Defaults;
+
+  const { uid: playerLocal } = user;
+  const dimensionsPercHeight = (dimensions / height) * 100;
+  const dimensionsPercWidth = (dimensions / width) * 100;
 
   const handleMove: HandleMove = key => {
     let operation: Operations;
@@ -63,47 +67,44 @@ const Controller: React.FC = (): JSX.Element => {
       case 'ArrowUp':
         operation = 'subtract';
         direction = 'top';
-        limit = 'top';
+        limit = 'topLeft';
         break;
 
       case 'ArrowRight':
         operation = 'add';
         direction = 'left';
-        limit = 'right';
+        limit = 'bottomRight';
         break;
 
       case 'ArrowDown':
         operation = 'add';
         direction = 'top';
-        limit = 'bottom';
+        limit = 'bottomRight';
         break;
 
       case 'ArrowLeft':
         operation = 'subtract';
         direction = 'left';
-        limit = 'left';
+        limit = 'topLeft';
         break;
     }
 
-    const playerLocal = user.uid;
-    const playerLocalLeft = statesPlayers[playerLocal].left;
-    const playerLocalTop = statesPlayers[playerLocal].top;
+    const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
+      playerLocal
+    ];
 
     switch (limit) {
-      case 'top':
-        if (playerLocalTop <= 0) return;
+      case 'topLeft':
+        if (playerLocalTop === 0 || playerLocalLeft === 0) return;
         break;
 
-      case 'right':
-        if (playerLocalLeft + dimensions >= width) return;
-        break;
-
-      case 'bottom':
-        if (playerLocalTop + dimensions >= height) return;
-        break;
-
-      case 'left':
-        if (playerLocalLeft <= 0) return;
+      case 'bottomRight':
+        if (
+          playerLocalTop + dimensionsPercHeight === 100 ||
+          playerLocalLeft + dimensionsPercWidth === 100
+        ) {
+          return;
+        }
         break;
     }
 
@@ -115,15 +116,107 @@ const Controller: React.FC = (): JSX.Element => {
       const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
       if (
-        playerLocalTop + dimensions >= playerTop &&
-        playerLocalTop <= playerTop + dimensions &&
-        playerLocalLeft + dimensions >= playerLeft &&
-        playerLocalLeft <= playerLeft + dimensions
+        playerLocalTop + dimensionsPercHeight === playerTop &&
+        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
+        playerLocalLeft <= playerLeft + dimensionsPercWidth
       ) {
-        updateDataPlayer(playerLocal, 'move', {
-          operation: operation === 'add' ? 'subtract' : 'add',
-          direction
+        const px = (height / 100) * playerLocalTop;
+        const newPos = ((px - 1) / height) * 100;
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          top: newPos
         });
+
+        /*
+        || playerLocalTop + dimensionsHeight - 1 === playerTop
+
+        if (playerLocalTop + dimensionsHeight - 1 === playerTop) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction: 'top',
+            player: playerOther
+          });
+        }
+        */
+
+        overlap = true;
+      } else if (
+        playerLocalTop === playerTop + dimensionsPercHeight &&
+        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
+        playerLocalLeft <= playerLeft + dimensionsPercWidth
+      ) {
+        const px = (height / 100) * playerLocalTop;
+        const newPos = ((px + 1) / height) * 100;
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          top: newPos
+        });
+
+        /*
+        || playerLocalTop + 1 === playerTop + dimensionsHeight
+        
+        if (playerLocalTop + 1 === playerTop + dimensionsHeight) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction: 'top',
+            player: playerOther
+          });
+        }
+        */
+
+        overlap = true;
+      } else if (
+        playerLocalLeft + dimensionsPercWidth === playerLeft &&
+        playerLocalTop + dimensionsPercHeight >= playerTop &&
+        playerLocalTop <= playerTop + dimensionsPercHeight
+      ) {
+        const px = (width / 100) * playerLocalLeft;
+        const newPos = ((px - 1) / width) * 100;
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          left: newPos
+        });
+
+        /*
+        || playerLocalLeft + dimensionsWidth - 1 === playerLeft
+
+        if (playerLocalLeft + dimensionsWidth - 1 === playerLeft) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'add',
+            direction: 'left',
+            player: playerOther
+          });
+        }
+        */
+
+        overlap = true;
+      } else if (
+        playerLocalLeft === playerLeft + dimensionsPercWidth &&
+        playerLocalTop + dimensionsPercHeight >= playerTop &&
+        playerLocalTop <= playerTop + dimensionsPercHeight
+      ) {
+        const px = (width / 100) * playerLocalLeft;
+        const newPos = ((px + 1) / width) * 100;
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          left: newPos
+        });
+
+        /*
+        || playerLocalLeft + 1 === playerLeft + dimensionsWidth
+
+        if (playerLocalLeft + 1 === playerLeft + dimensionsWidth) {
+          dispatchPlayers({
+            type: 'move',
+            operation: 'subtract',
+            direction: 'left',
+            player: playerOther
+          });
+        }
+        */
 
         overlap = true;
       }
@@ -131,39 +224,23 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (overlap === true) return;
 
-    updateDataPlayer(playerLocal, 'move', {
-      operation,
-      direction
+    const dimension = direction === 'left' ? width : height;
+    const playerLocalPos =
+      direction === 'left' ? playerLocalLeft : playerLocalTop;
+
+    let px = (dimension / 100) * playerLocalPos;
+
+    operation === 'add' ? px++ : px--;
+
+    const newPos = (px / dimension) * 100;
+
+    updateDataPlayer('floatingPoint', playerLocal, {
+      [direction]: newPos
     });
-  };
-
-  const recalculate = (): void => {
-    if (state !== 'running') return;
-
-    const newHeight = document.querySelector('#monitor').clientHeight;
-    const newWidth = document.querySelector('#monitor').clientWidth;
-
-    for (const player in statesPlayers) {
-      const playerTop =
-        (statesPlayers[player].top / height) * 100 * (newHeight / 100);
-      const playerLeft =
-        (statesPlayers[player].left / width) * 100 * (newWidth / 100);
-
-      updateDataPlayer(player, 'changePos', {
-        top: playerTop,
-        left: playerLeft
-      });
-    }
-
-    const fpTop = (fPTop / height) * 100 * (newHeight / 100);
-    const fpLeft = (fPLeft / width) * 100 * (newWidth / 100);
-
-    updateDataFP({ top: fpTop, left: fpLeft });
   };
 
   useEffect(() => {
     handleMoveRef.current = handleMove;
-    recalculateRef.current = recalculate;
   });
 
   useEffect(() => {
@@ -176,8 +253,6 @@ const Controller: React.FC = (): JSX.Element => {
         if (!statesPlayers[player].isReady) return;
       }
 
-      const playerLocal = user.uid;
-
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
 
@@ -188,23 +263,23 @@ const Controller: React.FC = (): JSX.Element => {
 
         switch (i) {
           case 0:
-            playerTop = height / 2 - dimensions / 2;
-            playerLeft = 10;
+            playerTop = ((height / 2 - dimensions / 2) / height) * 100;
+            playerLeft = (10 / width) * 100;
             break;
 
           case 1:
-            playerTop = height / 2 - dimensions / 2;
-            playerLeft = width - dimensions - 10;
+            playerTop = ((height / 2 - dimensions / 2) / height) * 100;
+            playerLeft = ((width - dimensions - 10) / width) * 100;
             break;
 
           case 2:
-            playerTop = 10;
-            playerLeft = width / 2 - dimensions / 2;
+            playerTop = (10 / height) * 100;
+            playerLeft = ((width / 2 - dimensions / 2) / width) * 100;
             break;
 
           case 3:
-            playerTop = height - dimensions - 10;
-            playerLeft = width / 2 - dimensions / 2;
+            playerTop = ((height - dimensions - 10) / height) * 100;
+            playerLeft = ((width / 2 - dimensions / 2) / width) * 100;
             break;
         }
 
@@ -214,8 +289,8 @@ const Controller: React.FC = (): JSX.Element => {
         });
 
         if (i === players.length - 1) {
-          const fpTop = height / 2 - dimensions / 2;
-          const fpLeft = width / 2 - dimensions / 2;
+          const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
+          const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', { state: 'running' });
@@ -228,20 +303,36 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      const playerLocal = user.uid;
       const { top: playerTop, left: playerLeft } = statesPlayers[playerLocal];
 
       if (
-        playerTop + dimensions >= fPTop &&
-        playerTop <= fPTop + dimensions &&
-        playerLeft + dimensions >= fPLeft &&
-        playerLeft <= fPLeft + dimensions
+        playerTop + dimensionsPercHeight >= fPTop &&
+        playerTop <= fPTop + dimensionsPercHeight &&
+        playerLeft + dimensionsPercWidth >= fPLeft &&
+        playerLeft <= fPLeft + dimensionsPercWidth
       ) {
-        const fpTop = Math.min(Math.random() * height, height - dimensions);
-        const fpLeft = Math.min(Math.random() * width, width - dimensions);
+        const fpTop = Math.min(
+          ((Math.random() * height) / height) * 100,
+          ((height - dimensions) / height) * 100
+        );
 
-        updateDataUser(playerLocal, ['floatingPoint', 'addPoint']);
-        updateDataPlayer(playerLocal, 'addScore');
+        const fpLeft = Math.min(
+          ((Math.random() * width) / width) * 100,
+          ((width - dimensions) / width) * 100
+        );
+
+        updateDataUser(playerLocal, {
+          games: {
+            floatingPoint: {
+              gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
+            }
+          }
+        });
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          score: statesPlayers[playerLocal].score + 1
+        });
+
         updateDataFP({ top: fpTop, left: fpLeft });
       }
     };
@@ -274,8 +365,6 @@ const Controller: React.FC = (): JSX.Element => {
         height: document.querySelector('#monitor').clientHeight,
         width: document.querySelector('#monitor').clientWidth
       });
-
-      recalculateRef.current();
     };
 
     changeDimensions();
@@ -306,7 +395,14 @@ const Controller: React.FC = (): JSX.Element => {
     const initFP = async (): Promise<void> => {
       await initGame('floatingPoint', handleData);
 
-      createDataPlayer(user);
+      createDataPlayer('floatingPoint', playerLocal, {
+        username: user.displayName || user.email,
+        avatar: user.photoURL,
+        top: 0,
+        left: 0,
+        score: 0,
+        isReady: false
+      });
     };
 
     initFP();

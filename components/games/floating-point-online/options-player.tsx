@@ -6,6 +6,7 @@ import LoadingIndicator from '../../styled-components/loading-indicator';
 import { updateDataPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
+import { ContextFirebase } from '../../../contexts/firebase';
 import {
   ContextGame,
   ContextPlayers
@@ -52,9 +53,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   player
 }): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
+  const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
+  const { user } = statesFirebase;
   const { state } = statesGame;
   const playerData = player && statesPlayers[player];
 
@@ -71,6 +74,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       player && playerData.isReady
         ? props.theme.inverted
         : props.theme.background};
+
+    &:focus {
+      outline: none;
+    }
+  `;
+
+  const ButtonReadyClickable = styled(ButtonReady)`
     transition-property: color, background-color;
     transition-duration: 0.1s;
     transition-timing-function: linear;
@@ -79,10 +89,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       cursor: pointer;
       color: ${(props): string => props.theme.background};
       background-color: ${(props): string => props.theme.inverted};
-    }
-
-    &:focus {
-      outline: none;
     }
   `;
 
@@ -97,16 +103,19 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   return (
     <Container>
       <ContainerButtonReady>
-        {state === 'conf' && (
-          <ButtonReady
-            onClick={(): void => {
-              updateDataPlayer(player, 'changeReady');
-            }}
-            type='button'
-          >
-            Ready
-          </ButtonReady>
-        )}
+        {state === 'conf' &&
+          (user.uid === player ? (
+            <ButtonReadyClickable
+              onClick={(): void => {
+                updateDataPlayer(player, { isReady: !playerData.isReady });
+              }}
+              type='button'
+            >
+              Ready
+            </ButtonReadyClickable>
+          ) : (
+            <ButtonReady type='button'>Ready</ButtonReady>
+          ))}
       </ContainerButtonReady>
       <ContainerInfo>
         <Info>{player && playerData.username}</Info>

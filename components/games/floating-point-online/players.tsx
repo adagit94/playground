@@ -14,8 +14,8 @@ const Players: React.FC = (): JSX.Element => {
   for (const player in statesPlayers) {
     const Icon = styled.div`
       position: absolute;
-      top: ${statesPlayers[player].top}px;
-      left: ${statesPlayers[player].left}px;
+      top: ${statesPlayers[player].top}%;
+      left: ${statesPlayers[player].left}%;
       width: ${dimensions}px;
       height: ${dimensions}px;
       border-radius: 100%;

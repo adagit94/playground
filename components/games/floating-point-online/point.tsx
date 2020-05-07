@@ -19,8 +19,8 @@ const Point: React.FC = (): JSX.Element => {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: ${top}px;
-    left: ${left}px;
+    top: ${top}%;
+    left: ${left}%;
     width: ${dimensions}px;
     height: ${dimensions}px;
     border-radius: 100%;

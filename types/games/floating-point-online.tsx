@@ -1,16 +1,23 @@
 type DataSetsList = 'game' | 'players' | 'fp';
 
-type UpdateActionsList = 'move' | 'changePos' | 'changeReady' | 'addScore';
-
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
-export type Player = {
+export type PlayerFP = {
   username: string;
   avatar: string;
   top: number;
   left: number;
   score: number;
   isReady: boolean;
+};
+
+export type UpdatePlayerFP = {
+  username?: string;
+  avatar?: string;
+  top?: number;
+  left?: number;
+  score?: number;
+  isReady?: boolean;
 };
 
 export type PropsOptions = {
@@ -32,7 +39,7 @@ export type UpdateGameFP = {
   state?: string;
 };
 
-export type StatesPlayers = { [uid: string]: Player };
+export type StatesPlayers = { [uid: string]: PlayerFP };
 
 export type StatesFP = {
   top: number;
@@ -57,24 +64,14 @@ export type Operations = 'add' | 'subtract';
 
 export type Directions = 'top' | 'left';
 
-export type Limits = 'top' | 'right' | 'bottom' | 'left';
+export type Limits = 'topLeft' | 'bottomRight';
 
-export type Position = { top: number; left: number };
+export type Position = { top?: number; left?: number };
 
-export type Move = { operation: Operations; direction: Directions };
-
-export type UpdateDataPlayer = (
-  player: string,
-  action: UpdateActionsList,
-  conf?: Move | Position
-) => Promise<void>;
-
-export type GetData = (
+export type GetDataFP = (
   dataSet: DataSetsList
 ) => Promise<StatesGame | StatesPlayers | StatesFP>;
 
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
-
-export type CreateDataPlayer = (user: firebase.User) => Promise<void>;
 
 export type HandleMove = (key: Keys) => void;
