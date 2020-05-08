@@ -314,7 +314,7 @@ const Controller: React.FC = (): JSX.Element => {
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', { state: 'running' });
         }
-      }
+      } // abc
     };
 
     if (state === 'conf') initGame();
