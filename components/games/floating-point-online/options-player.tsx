@@ -107,7 +107,9 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           (user.uid === player ? (
             <ButtonReadyClickable
               onClick={(): void => {
-                updateDataPlayer(player, { isReady: !playerData.isReady });
+                updateDataPlayer('floatingPoint', player, {
+                  isReady: !playerData.isReady
+                });
               }}
               type='button'
             >

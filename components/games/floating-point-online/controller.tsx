@@ -224,13 +224,32 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (overlap === true) return;
 
-    const dimension = direction === 'left' ? width : height;
-    const playerLocalPos =
-      direction === 'left' ? playerLocalLeft : playerLocalTop;
+    let dimension: number;
+    let playerLocalPos: number;
+
+    switch (direction) {
+      case 'left':
+        dimension = width;
+        playerLocalPos = playerLocalLeft;
+        break;
+
+      case 'top':
+        dimension = height;
+        playerLocalPos = playerLocalTop;
+        break;
+    }
 
     let px = (dimension / 100) * playerLocalPos;
 
-    operation === 'add' ? px++ : px--;
+    switch (operation) {
+      case 'add':
+        px++;
+        break;
+
+      case 'subtract':
+        px--;
+        break;
+    }
 
     const newPos = (px / dimension) * 100;
 
@@ -258,34 +277,34 @@ const Controller: React.FC = (): JSX.Element => {
 
         if (playerLocal !== player) continue;
 
-        let playerTop: number;
-        let playerLeft: number;
+        let playerLocalTop: number;
+        let playerLocalLeft: number;
 
         switch (i) {
           case 0:
-            playerTop = ((height / 2 - dimensions / 2) / height) * 100;
-            playerLeft = (10 / width) * 100;
+            playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
+            playerLocalLeft = (10 / width) * 100;
             break;
 
           case 1:
-            playerTop = ((height / 2 - dimensions / 2) / height) * 100;
-            playerLeft = ((width - dimensions - 10) / width) * 100;
+            playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
+            playerLocalLeft = ((width - dimensions - 10) / width) * 100;
             break;
 
           case 2:
-            playerTop = (10 / height) * 100;
-            playerLeft = ((width / 2 - dimensions / 2) / width) * 100;
+            playerLocalTop = (10 / height) * 100;
+            playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
             break;
 
           case 3:
-            playerTop = ((height - dimensions - 10) / height) * 100;
-            playerLeft = ((width / 2 - dimensions / 2) / width) * 100;
+            playerLocalTop = ((height - dimensions - 10) / height) * 100;
+            playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
             break;
         }
 
-        updateDataPlayer(player, 'changePos', {
-          top: playerTop,
-          left: playerLeft
+        updateDataPlayer('floatingPoint', player, {
+          top: playerLocalTop,
+          left: playerLocalLeft
         });
 
         if (i === players.length - 1) {
@@ -303,13 +322,15 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      const { top: playerTop, left: playerLeft } = statesPlayers[playerLocal];
+      const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
+        playerLocal
+      ];
 
       if (
-        playerTop + dimensionsPercHeight >= fPTop &&
-        playerTop <= fPTop + dimensionsPercHeight &&
-        playerLeft + dimensionsPercWidth >= fPLeft &&
-        playerLeft <= fPLeft + dimensionsPercWidth
+        playerLocalTop + dimensionsPercHeight >= fPTop &&
+        playerLocalTop <= fPTop + dimensionsPercHeight &&
+        playerLocalLeft + dimensionsPercWidth >= fPLeft &&
+        playerLocalLeft <= fPLeft + dimensionsPercWidth
       ) {
         const fpTop = Math.min(
           ((Math.random() * height) / height) * 100,
