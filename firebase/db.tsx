@@ -66,7 +66,7 @@ export const updateDataPlayer: UpdateDataPlayer = async (
   update
 ) => {
   const playerRef = firebase.database().ref(`games/${game}/players/${player}`);
-  console.log('update data player');
+
   await playerRef.update(update).catch(err => console.error(err));
 };
 
