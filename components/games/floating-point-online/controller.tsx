@@ -54,7 +54,7 @@ const Controller: React.FC = (): JSX.Element => {
   const { top: fPTop, left: fPLeft } = statesFP;
   const { dimensions } = Defaults;
 
-  const { uid: playerLocal } = user && user;
+  const playerLocal = user && user.uid;
   const dimensionsPercHeight = (dimensions / height) * 100;
   const dimensionsPercWidth = (dimensions / width) * 100;
 
