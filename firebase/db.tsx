@@ -17,12 +17,6 @@ import {
   UpdateDataUser
 } from '../types/user';
 
-import {
-  initGame as initsGame,
-  initPlayers,
-  initFP
-} from '../inits/games/floating-point-online';
-
 export const createDataUser: CreateDataUser = async (user, data) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
@@ -96,27 +90,17 @@ export const updateDataFP: UpdateDataFP = async update => {
 export const initGame: InitGame = async (game, handleData) => {
   const gameRef = firebase.database().ref(`games/${game}`);
 
-  const haveData = await gameRef
+  const exists = await gameRef
     .once('value')
-    .then(snapshot => snapshot.hasChildren())
+    .then(snapshot => snapshot.exists())
     .catch(err => console.error(err));
 
   switch (game) {
     case 'floatingPoint':
-      if (!haveData) {
+      if (!exists) {
         gameRef
           .child('game')
-          .set(initsGame)
-          .catch(err => console.error(err));
-
-        gameRef
-          .child('players')
-          .set(initPlayers)
-          .catch(err => console.error(err));
-
-        gameRef
-          .child('fp')
-          .set(initFP)
+          .set({ state: 'conf' })
           .catch(err => console.error(err));
       }
 

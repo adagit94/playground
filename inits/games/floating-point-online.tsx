@@ -6,13 +6,13 @@ import {
 
 export const initGame: StatesGame = {
   state: 'conf', // conf / running
-  width: null,
-  height: null
+  width: undefined,
+  height: undefined
 };
 
 export const initPlayers: StatesPlayers = {};
 
 export const initFP: StatesFP = {
-  top: null,
-  left: null
+  top: undefined,
+  left: undefined
 };
