@@ -104,6 +104,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     <Container>
       <ContainerButtonReady>
         {state === 'conf' &&
+          user &&
           (user.uid === player ? (
             <ButtonReadyClickable
               onClick={(): void => {
