@@ -268,10 +268,6 @@ const Controller: React.FC = (): JSX.Element => {
 
       if (players.length < 2) return;
 
-      for (const player in statesPlayers) {
-        if (!statesPlayers[player].isReady) return;
-      }
-
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
 
@@ -317,7 +313,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (state === 'conf') initGame();
+    if (state === 'init') initGame();
   });
 
   useEffect(() => {
@@ -342,6 +338,8 @@ const Controller: React.FC = (): JSX.Element => {
           ((width - dimensions) / width) * 100
         );
 
+        updateDataFP({ top: fpTop, left: fpLeft });
+
         updateDataUser(playerLocal, {
           games: {
             floatingPoint: {
@@ -353,8 +351,6 @@ const Controller: React.FC = (): JSX.Element => {
         updateDataPlayer('floatingPoint', playerLocal, {
           score: statesPlayers[playerLocal].score + 1
         });
-
-        updateDataFP({ top: fpTop, left: fpLeft });
       }
     };
 

@@ -19,7 +19,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <OptionsPlayer player={players[0]} />
+      <OptionsPlayer player={players[0]} admin />
       <OptionsPlayer player={players[2]} />
       <OptionsPlayer player={players[3]} />
       <OptionsPlayer player={players[1]} />

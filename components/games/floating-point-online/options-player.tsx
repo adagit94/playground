@@ -3,7 +3,7 @@ import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
-import { updateDataPlayer } from '../../../firebase/db';
+import { updateDataGame, updateDataPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
@@ -19,12 +19,31 @@ const Container = styled.div`
   margin: 5px;
 `;
 
-const ContainerButtonReady = styled.div`
+const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 50px;
+`;
+
+const ButtonStart = styled.button`
+  padding: 5px;
+  font-weight: bold;
+  border: 1px solid ${(props): string => props.theme.inverted};
+  border-radius: 5px;
+  color: ${(props): string => props.theme.inverted};
+  background-color: ${(props): string => props.theme.background};
+
+  &:hover {
+    cursor: pointer;
+    color: ${(props): string => props.theme.background};
+    background-color: ${(props): string => props.theme.inverted};
+  }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const ContainerInfo = styled.div`
@@ -50,7 +69,8 @@ const ContainerAvatar = styled.div`
 `;
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
-  player
+  player,
+  admin
 }): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -100,11 +120,20 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     background-size: contain;
   `;
 
+  const handleInit = (): void => {
+    for (const player in statesPlayers) {
+      if (!statesPlayers[player].isReady) {
+        updateDataPlayer('floatingPoint', { isReady: 'running' });
+      }
+    }
+
+    updateDataGame('floatingPoint', { state: 'init' });
+  };
+
   return (
     <Container>
-      <ContainerButtonReady>
+      <ContainerButtons>
         {state === 'conf' &&
-          user &&
           (user.uid === player ? (
             <ButtonReadyClickable
               onClick={(): void => {
@@ -119,7 +148,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           ) : (
             <ButtonReady type='button'>Ready</ButtonReady>
           ))}
-      </ContainerButtonReady>
+
+        {admin && state === 'conf' && (
+          <ButtonStart onClick={handleInit} type='button'>
+            Start game
+          </ButtonStart>
+        )}
+      </ContainerButtons>
       <ContainerInfo>
         <Info>{player && playerData.username}</Info>
         <Info>{player && state === 'running' && playerData.score}</Info>

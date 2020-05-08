@@ -5,7 +5,7 @@ import {
 } from '../../types/games/floating-point-online';
 
 export const initGame: StatesGame = {
-  state: 'conf', // conf / running
+  state: 'conf', // conf / init / running
   width: undefined,
   height: undefined
 };

@@ -27,10 +27,11 @@ export type PropsOptions = {
 
 export type PropsOptionsPlayer = {
   player: string;
+  admin?: boolean;
 };
 
 export type StatesGame = {
-  state: string;
+  state: 'conf' | 'init' | 'running';
   width: number;
   height: number;
 };
