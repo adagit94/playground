@@ -223,7 +223,8 @@ const Controller: React.FC = (): JSX.Element => {
     }
 
     if (overlap === true) return;
-
+    console.log('no overlap');
+console.log('no overlap');
     let dimension: number;
     let playerLocalPos: number;
 

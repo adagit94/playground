@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, useContext } from 'react';
+import React, { useReducer, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -7,7 +7,6 @@ import ControlPanel from './control-panel';
 import * as Reducers from '../../../reducers/games/floating-point-offline';
 import * as Inits from '../../../inits/games/floating-point-offline';
 import * as Contexts from '../../../contexts/games/floating-point-offline';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
 import {
   ControlKeys,
   ControlKeys2P,
