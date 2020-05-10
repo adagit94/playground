@@ -82,6 +82,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const { user } = statesFirebase;
   const { state } = statesGame;
   const playerData = player && statesPlayers[player];
+  const uid = uid;
 
   const ButtonReady = styled.button`
     padding: 5px;
@@ -143,7 +144,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     <Container>
       <ContainerButtons>
         {state === 'conf' &&
-          (user && user.uid === player ? (
+          (uid === player ? (
             <ButtonReadyClickable
               onClick={(): void => {
                 updateDataPlayer('floatingPoint', player, {
@@ -158,7 +159,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
             <ButtonReady type='button'>Ready</ButtonReady>
           ))}
 
-        {admin && user.uid === player && state === 'conf' && (
+        {admin && uid === player && state === 'conf' && (
           <ButtonStart onClick={handleInit} type='button'>
             Start game
           </ButtonStart>
