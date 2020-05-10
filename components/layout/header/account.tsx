@@ -84,20 +84,20 @@ const Account: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      {loading ? (
-        <LoadingIndicator color={colors.background} />
-      ) : (
+      {loading && <LoadingIndicator color={colors.background} />}
+
+      {!loading && (
         <Button onClick={toggleSlider} type='button'>
-          {isAuthenticated ? (
-            <Avatar user={user} theme={colors.theme} />
-          ) : (
-            'Log in'
-          )}
+          {isAuthenticated && <Avatar user={user} theme={colors.theme} />}
+
+          {!isAuthenticated && 'Log in'}
         </Button>
       )}
 
       <Slider style={{ display: 'none' }} id='slider'>
-        {isAuthenticated ? <Profile /> : <LogIn />}
+        {isAuthenticated && <Profile />}
+
+        {!isAuthenticated && <LogIn />}
       </Slider>
     </Container>
   );

@@ -203,8 +203,7 @@ const Controller: React.FC = (): JSX.Element => {
       if (controlKeys[key].pressed === false) continue;
 
       const { player, limit } = controlKeys[key];
-      const playerLeft = statesPlayers[player].left;
-      const playerTop = statesPlayers[player].top;
+      const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
       switch (limit) {
         case 'top':
@@ -231,8 +230,9 @@ const Controller: React.FC = (): JSX.Element => {
         if (player === `P${i}`) continue;
 
         const playerOther = `P${i}`;
-        const playerOtherLeft = statesPlayers[playerOther].left;
-        const playerOtherTop = statesPlayers[playerOther].top;
+        const { top: playerOtherTop, left: playerOtherLeft } = statesPlayers[
+          playerOther
+        ];
 
         if (
           (playerTop + dimensions === playerOtherTop ||

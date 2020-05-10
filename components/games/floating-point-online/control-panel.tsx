@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const ControlPanel: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
-  const [initPossible, setInitPossible] = useState<boolean>(null);
+  const [initPossible, setInitPossible] = useState<boolean>(true);
 
   const players = Object.keys(statesPlayers);
 

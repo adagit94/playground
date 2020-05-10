@@ -40,21 +40,23 @@ const OptionsCommon: React.FC = (): JSX.Element => {
   return (
     <Container>
       <Buttons>
-        {state === 'conf' &&
-          (players.includes('left') ? (
-            <RemovePlayer pos='left' />
-          ) : (
-            <AddPlayer pos='left' />
-          ))}
+        {state === 'conf' && players.includes('left') && (
+          <RemovePlayer pos='left' />
+        )}
+
+        {state === 'conf' && !players.includes('left') && (
+          <AddPlayer pos='left' />
+        )}
 
         <Switch />
 
-        {state === 'conf' &&
-          (players.includes('right') ? (
-            <RemovePlayer pos='right' />
-          ) : (
-            <AddPlayer pos='right' />
-          ))}
+        {state === 'conf' && players.includes('right') && (
+          <RemovePlayer pos='right' />
+        )}
+
+        {state === 'conf' && !players.includes('right') && (
+          <AddPlayer pos='right' />
+        )}
       </Buttons>
 
       <ContainerOptions>

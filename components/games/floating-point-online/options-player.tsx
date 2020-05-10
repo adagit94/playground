@@ -24,11 +24,12 @@ const ContainerButtons = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 50px;
+  height: 100px;
 `;
 
 const ButtonStart = styled.button`
   padding: 5px;
+  margin-right: 5px;
   font-weight: bold;
   border: 1px solid ${(props): string => props.theme.inverted};
   border-radius: 5px;
@@ -84,14 +85,12 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const playerData = player && statesPlayers[player];
   const uid = user && user.uid;
 
-  console.log(admin);
-
   const ButtonReady = styled.button`
     padding: 5px;
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
-        (player && playerData.isReady) || initPossible !== false
+        (player && playerData.isReady) || initPossible !== false || !player
           ? props.theme.inverted
           : '#f00'};
     border-radius: 5px;
@@ -145,35 +144,37 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   return (
     <Container>
       <ContainerButtons>
-        {state === 'conf' &&
-          (uid === player ? (
-            <ButtonReadyClickable
-              onClick={(): void => {
-                updateDataPlayer('floatingPoint', player, {
-                  isReady: !playerData.isReady
-                });
-              }}
-              type='button'
-            >
-              Ready
-            </ButtonReadyClickable>
-          ) : (
-            <ButtonReady type='button'>Ready</ButtonReady>
-          ))}
-
-        {admin && uid === player && state === 'conf' && (
+        {state === 'conf' && uid === player && admin && (
           <ButtonStart onClick={handleInit} type='button'>
-            Start game
+            Start
           </ButtonStart>
+        )}
+
+        {state === 'conf' && uid === player && (
+          <ButtonReadyClickable
+            onClick={(): void => {
+              updateDataPlayer('floatingPoint', player, {
+                isReady: !playerData.isReady
+              });
+            }}
+            type='button'
+          >
+            Ready
+          </ButtonReadyClickable>
+        )}
+
+        {state === 'running' && uid !== player && (
+          <ButtonReady type='button'>Ready</ButtonReady>
         )}
       </ContainerButtons>
       <ContainerInfo>
         <Info>{player && playerData.username}</Info>
-        <Info>{player && state === 'running' && playerData.score}</Info>
+        <Info>{state === 'running' && player && playerData.score}</Info>
       </ContainerInfo>
       <ContainerAvatar>
         {player && <Avatar />}
-        {!player && state === 'conf' && (
+
+        {state === 'conf' && !player && (
           <LoadingIndicator color={colors.inverted} />
         )}
       </ContainerAvatar>

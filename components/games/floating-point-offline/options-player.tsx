@@ -149,11 +149,9 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         </Info>
         <Info>{(state === 'running' || state === 'paused') && score}</Info>
       </ContainerInfo>
-      {withProfile ? (
-        <Avatar bg={user.photoURL} state={state} />
-      ) : (
-        <Options player={player} state={state} />
-      )}
+      {withProfile && <Avatar bg={user.photoURL} state={state} />}
+
+      {!withProfile && <Options player={player} state={state} />}
     </Container>
   );
 };
