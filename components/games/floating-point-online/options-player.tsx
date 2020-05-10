@@ -163,7 +163,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           </ButtonReadyClickable>
         )}
 
-        {state === 'running' && uid !== player && (
+        {state === 'conf' && uid !== player && (
           <ButtonReady type='button'>Ready</ButtonReady>
         )}
       </ContainerButtons>
