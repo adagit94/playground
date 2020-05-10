@@ -82,7 +82,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const { user } = statesFirebase;
   const { state } = statesGame;
   const playerData = player && statesPlayers[player];
-  const uid = uid;
+  const uid = user && user.uid;
 
   const ButtonReady = styled.button`
     padding: 5px;
