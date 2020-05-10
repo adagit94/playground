@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const ContainerButtons = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   height: 50px;
@@ -83,6 +83,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const { state } = statesGame;
   const playerData = player && statesPlayers[player];
   const uid = user && user.uid;
+
+  console.log(admin);
 
   const ButtonReady = styled.button`
     padding: 5px;
