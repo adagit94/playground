@@ -27,6 +27,8 @@ export type PropsOptions = {
 
 export type PropsOptionsPlayer = {
   player: string;
+  initPossible: boolean;
+  setInitPossible?: React.Dispatch<React.SetStateAction<boolean>>;
   admin?: boolean;
 };
 

@@ -70,6 +70,8 @@ const ContainerAvatar = styled.div`
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   player,
+  initPossible,
+  setInitPossible,
   admin
 }): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
@@ -84,7 +86,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const ButtonReady = styled.button`
     padding: 5px;
     font-weight: bold;
-    border: 1px solid ${(props): string => props.theme.inverted};
+    border: 1px solid
+      ${(props): string =>
+        playerData.isReady || initPossible !== false
+          ? props.theme.inverted
+          : '#f00'};
     border-radius: 5px;
     color: ${(props): string =>
       player && playerData.isReady
@@ -123,10 +129,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const handleInit = (): void => {
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
-        updateDataPlayer('floatingPoint', { isReady: 'running' });
+        setInitPossible(false);
+
+        return;
       }
     }
 
+    setInitPossible(true);
     updateDataGame('floatingPoint', { state: 'init' });
   };
 
@@ -149,7 +158,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
             <ButtonReady type='button'>Ready</ButtonReady>
           ))}
 
-        {admin && state === 'conf' && (
+        {admin && user.uid === player && state === 'conf' && (
           <ButtonStart onClick={handleInit} type='button'>
             Start game
           </ButtonStart>

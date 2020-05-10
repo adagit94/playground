@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import OptionsPlayer from './options-player';
@@ -14,15 +14,21 @@ const Container = styled.div`
 
 const ControlPanel: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
+  const [initPossible, setInitPossible] = useState<boolean>(null);
 
   const players = Object.keys(statesPlayers);
 
   return (
     <Container>
-      <OptionsPlayer player={players[0]} admin />
-      <OptionsPlayer player={players[2]} />
-      <OptionsPlayer player={players[3]} />
-      <OptionsPlayer player={players[1]} />
+      <OptionsPlayer
+        player={players[0]}
+        initPossible={initPossible}
+        setInitPossible={setInitPossible}
+        admin
+      />
+      <OptionsPlayer player={players[2]} initPossible={initPossible} />
+      <OptionsPlayer player={players[3]} initPossible={initPossible} />
+      <OptionsPlayer player={players[1]} initPossible={initPossible} />
     </Container>
   );
 };
