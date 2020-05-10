@@ -143,7 +143,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     <Container>
       <ContainerButtons>
         {state === 'conf' &&
-          (user.uid === player ? (
+          (user && user.uid === player ? (
             <ButtonReadyClickable
               onClick={(): void => {
                 updateDataPlayer('floatingPoint', player, {
