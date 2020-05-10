@@ -89,7 +89,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
-        playerData.isReady || initPossible !== false
+        (player && playerData.isReady) || initPossible !== false
           ? props.theme.inverted
           : '#f00'};
     border-radius: 5px;
