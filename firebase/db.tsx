@@ -72,20 +72,11 @@ export const updateDataPlayer: UpdateDataPlayer = async (
 
 const getDataFP: GetDataFP = async dataSet => {
   const dataSetRef = firebase.database().ref(`games/floatingPoint/${dataSet}`);
-  let data;
 
-  if (dataSet === 'players') {
-    data = await dataSetRef
-      .orderByChild('timestamp')
-      .once('value')
-      .then(snapshot => snapshot.val())
-      .catch(err => console.error(err));
-  } else {
-    data = await dataSetRef
-      .once('value')
-      .then(snapshot => snapshot.val())
-      .catch(err => console.error(err));
-  }
+  const data = await dataSetRef
+    .once('value')
+    .then(snapshot => snapshot.val())
+    .catch(err => console.error(err));
 
   return data;
 };
@@ -119,11 +110,15 @@ export const initGame: InitGame = async (game, handleData) => {
         handleData('game', data);
       });
 
-      gameRef.child('players').on('value', async () => {
-        const data = await getDataFP('players');
+      gameRef
+        .child('players')
+        .orderByChild('timestamp')
+        .on('value', async snapshot => {
+          console.log(snapshot);
+          const data = await getDataFP('players');
 
-        handleData('players', data);
-      });
+          handleData('players', data);
+        });
 
       gameRef.child('fp').on('value', async () => {
         const data = await getDataFP('fp');
