@@ -110,12 +110,14 @@ export const initGame: InitGame = async (game, handleData) => {
         handleData('game', data);
       });
 
-      gameRef.child('players').on('value', async () => {
-        const data = await getDataFP('players');
-        //console.log(players);
+      gameRef
+        .child('players')
+        .orderByChild('timestamp')
+        .on('value', async () => {
+          const data = await getDataFP('players');
 
-        handleData('players', data);
-      });
+          handleData('players', data);
+        });
 
       gameRef.child('fp').on('value', async () => {
         const data = await getDataFP('fp');
