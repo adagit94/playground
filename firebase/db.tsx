@@ -98,6 +98,7 @@ export const initGame: InitGame = async (game, admin, handleData) => {
   switch (game) {
     case 'floatingPoint':
       gameRef.child('game').on('value', data => {
+        console.log(data.val());
         handleData('game', data.val());
       });
 
