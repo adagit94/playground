@@ -114,7 +114,7 @@ export const initGame: InitGame = async (game, handleData) => {
         .child('players')
         .orderByChild('timestamp')
         .on('value', async snapshot => {
-          console.log(snapshot);
+          console.log(snapshot.val());
           const data = await getDataFP('players');
 
           handleData('players', data);
