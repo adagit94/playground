@@ -145,7 +145,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   return (
     <Container>
       <ContainerButtons>
-        {state === 'conf' && uid === admin && (
+        {state === 'conf' && uid === admin && admin === player && (
           <ButtonStart onClick={handleInit} type='button'>
             Start
           </ButtonStart>
