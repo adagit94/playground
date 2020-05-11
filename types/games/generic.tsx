@@ -1,13 +1,16 @@
 import {
   HandleData,
+  CreateGameFP,
   UpdateGameFP,
   UpdatePlayerFP,
-  PlayerFP
+  PlayerFP as CreatePlayerFP
 } from './floating-point-online';
+
+type CreateGameList = CreateGameFP;
 
 type UpdateGameList = UpdateGameFP;
 
-type CreatePlayerList = PlayerFP;
+type CreatePlayerList = CreatePlayerFP;
 
 type UpdatePlayerList = UpdatePlayerFP;
 
@@ -15,8 +18,13 @@ export type GamesList = 'floatingPoint';
 
 export type InitGame = (
   game: GamesList,
-  admin: string,
+  user: firebase.User,
   handleData: HandleData
+) => Promise<void>;
+
+export type CreateDataGame = (
+  game: GamesList,
+  data: CreateGameList
 ) => Promise<void>;
 
 export type UpdateDataGame = (

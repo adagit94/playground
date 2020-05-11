@@ -5,6 +5,7 @@ import { defaultsUser } from '../defaults/user';
 import { GetDataFP, UpdateDataFP } from '../types/games/floating-point-online';
 import {
   InitGame,
+  CreateDataGame,
   UpdateDataGame,
   CreateDataPlayer,
   UpdateDataPlayer
@@ -40,6 +41,12 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   await userRef.update(update).catch(err => console.error(err));
+};
+
+export const createDataGame: CreateDataGame = async (game, data) => {
+  const gameRef = firebase.database().ref(`games/${game}`);
+
+  await gameRef.set(data).catch(err => console.error(err));
 };
 
 export const updateDataGame: UpdateDataGame = async (game, update) => {
@@ -87,7 +94,8 @@ export const updateDataFP: UpdateDataFP = async update => {
   await pointRef.update(update).catch(err => console.error(err));
 };
 
-export const initGame: InitGame = async (game, admin, handleData) => {
+export const initGame: InitGame = async (game, user, handleData) => {
+  const player = user.uid;
   const gameRef = firebase.database().ref(`games/${game}`);
 
   const exists = await gameRef
@@ -110,11 +118,20 @@ export const initGame: InitGame = async (game, admin, handleData) => {
       });
 
       if (!exists) {
-        gameRef
-          .child('game')
-          .set({ state: 'conf', admin })
-          .catch(err => console.error(err));
+        createDataGame('floatingPoint', {
+          state: 'conf',
+          admin: player
+        });
       }
+
+      createDataPlayer('floatingPoint', player, {
+        username: user.displayName || user.email,
+        avatar: user.photoURL,
+        top: 0,
+        left: 0,
+        score: 0,
+        isReady: false
+      });
 
       break;
   }

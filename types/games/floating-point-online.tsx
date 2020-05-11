@@ -40,6 +40,11 @@ export type StatesGame = {
   height: number;
 };
 
+export type CreateGameFP = {
+  state: 'conf';
+  admin: string;
+};
+
 export type UpdateGameFP = {
   state?: 'conf' | 'init' | 'running';
   admin?: string;

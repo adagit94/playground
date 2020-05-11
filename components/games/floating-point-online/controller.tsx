@@ -20,7 +20,6 @@ import {
 
 import {
   initGame,
-  createDataPlayer,
   updateDataGame,
   updateDataPlayer,
   updateDataFP,
@@ -409,20 +408,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    const initFP = async (): Promise<void> => {
-      await initGame('floatingPoint', playerLocal, handleData);
-
-      createDataPlayer('floatingPoint', playerLocal, {
-        username: user.displayName || user.email,
-        avatar: user.photoURL,
-        top: 0,
-        left: 0,
-        score: 0,
-        isReady: false
-      });
-    };
-
-    initFP();
+    initGame('floatingPoint', user, handleData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
