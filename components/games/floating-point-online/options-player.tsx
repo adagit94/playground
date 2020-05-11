@@ -72,8 +72,7 @@ const ContainerAvatar = styled.div`
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   player,
   initPossible,
-  setInitPossible,
-  admin
+  setInitPossible
 }): JSX.Element => {
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -81,7 +80,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state } = statesGame;
+  const { state, admin } = statesGame;
   const playerData = player && statesPlayers[player];
   const uid = user && user.uid;
 
@@ -90,7 +89,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
-        (player && playerData.isReady) || initPossible !== false || !player
+        (player && playerData.isReady) || initPossible !== false
           ? props.theme.inverted
           : '#f00'};
     border-radius: 5px;
@@ -144,7 +143,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   return (
     <Container>
       <ContainerButtons>
-        {state === 'conf' && uid === player && admin && (
+        {state === 'conf' && player === admin && (
           <ButtonStart onClick={handleInit} type='button'>
             Start
           </ButtonStart>

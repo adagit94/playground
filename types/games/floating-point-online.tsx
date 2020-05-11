@@ -2,6 +2,8 @@ type DataSetsList = 'game' | 'players' | 'fp';
 
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
+type Position = { top: number; left: number };
+
 export type PlayerFP = {
   username: string;
   avatar: string;
@@ -9,7 +11,6 @@ export type PlayerFP = {
   left: number;
   score: number;
   isReady: boolean;
-  timestamp: number;
 };
 
 export type UpdatePlayerFP = {
@@ -30,17 +31,18 @@ export type PropsOptionsPlayer = {
   player: string;
   initPossible: boolean;
   setInitPossible?: React.Dispatch<React.SetStateAction<boolean>>;
-  admin?: boolean;
 };
 
 export type StatesGame = {
   state: 'conf' | 'init' | 'running';
+  admin: string;
   width: number;
   height: number;
 };
 
 export type UpdateGameFP = {
-  state?: string;
+  state?: 'conf' | 'init' | 'running';
+  admin?: string;
 };
 
 export type StatesPlayers = { [uid: string]: PlayerFP };
@@ -60,7 +62,7 @@ export type ActionsGame =
 
 export type ActionsPlayers = { type: 'setData'; payload: any };
 
-export type ActionsFP = { type: 'setData'; payload: object };
+export type ActionsFP = { type: 'setData'; payload: Position };
 
 export type HandleData = (dataSet: DataSetsList, data: any) => void;
 
@@ -69,8 +71,6 @@ export type Operations = 'add' | 'subtract';
 export type Directions = 'top' | 'left';
 
 export type Limits = 'topLeft' | 'bottomRight';
-
-export type Position = { top?: number; left?: number };
 
 export type GetDataFP = (
   dataSet: DataSetsList

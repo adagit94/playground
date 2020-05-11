@@ -15,6 +15,7 @@ export type GamesList = 'floatingPoint';
 
 export type InitGame = (
   game: GamesList,
+  admin: string,
   handleData: HandleData
 ) => Promise<void>;
 

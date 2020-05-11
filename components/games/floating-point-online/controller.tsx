@@ -410,7 +410,7 @@ const Controller: React.FC = (): JSX.Element => {
     };
 
     const initFP = async (): Promise<void> => {
-      await initGame('floatingPoint', handleData);
+      await initGame('floatingPoint', playerLocal, handleData);
 
       createDataPlayer('floatingPoint', playerLocal, {
         username: user.displayName || user.email,
@@ -418,8 +418,7 @@ const Controller: React.FC = (): JSX.Element => {
         top: 0,
         left: 0,
         score: 0,
-        isReady: false,
-        timestamp: Date.now()
+        isReady: false
       });
     };
 

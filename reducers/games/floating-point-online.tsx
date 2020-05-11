@@ -19,7 +19,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
         height: action.height
       };
 
-    case 'setData': // state: conf / running
+    case 'setData':
       return { ...states, ...action.payload };
 
     default:
@@ -48,7 +48,7 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
 ): StatesFP => {
   switch (action.type) {
     case 'setData':
-      return { ...states, ...action.payload };
+      return { ...action.payload };
 
     default:
       throw new Error('Unspecified / Wrong action');

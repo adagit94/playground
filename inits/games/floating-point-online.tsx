@@ -6,6 +6,7 @@ import {
 
 export const initGame: StatesGame = {
   state: 'conf', // conf / init / running
+  admin: undefined,
   width: undefined,
   height: undefined
 };
