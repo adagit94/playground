@@ -311,8 +311,6 @@ const Controller: React.FC = (): JSX.Element => {
     const initGame = (): void => {
       const players = Object.keys(statesPlayers);
 
-      if (players.length < 2) return;
-
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
 

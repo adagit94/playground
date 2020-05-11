@@ -130,6 +130,10 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   `;
 
   const handleInit = (): void => {
+    const players = Object.keys(statesPlayers);
+
+    if (players.length < 2) return;
+
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
         setInitPossible(false);
