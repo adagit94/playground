@@ -122,152 +122,9 @@ const Controller: React.FC = (): JSX.Element => {
         playerLocalTop <= playerTop + dimensionsPercHeight &&
         playerLocalLeft <= playerLeft + dimensionsPercWidth
       ) {
-        let dimension: number;
-        let playerLocalPos: number;
-
-        switch (direction) {
-          case 'left':
-            dimension = width;
-            playerLocalPos = playerLocalLeft;
-            break;
-
-          case 'top':
-            dimension = height;
-            playerLocalPos = playerLocalTop;
-            break;
-        }
-
-        let px = (dimension / 100) * playerLocalPos;
-
-        switch (operation) {
-          case 'add':
-            px--;
-            break;
-
-          case 'subtract':
-            px++;
-            break;
-        }
-
-        const newPos = (px / dimension) * 100;
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          [direction]: newPos
-        });
-
         overlap = true;
       }
     }
-    /*
-      if (
-        playerLocalTop + dimensionsPercHeight === playerTop &&
-        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
-        playerLocalLeft <= playerLeft + dimensionsPercWidth
-      ) {
-        const px = (height / 100) * playerLocalTop;
-        const newPos = ((px - 1) / height) * 100;
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          top: newPos
-        });
-
-        
-        || playerLocalTop + dimensionsHeight - 1 === playerTop
-
-        if (playerLocalTop + dimensionsHeight - 1 === playerTop) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'top',
-            player: playerOther
-          });
-        }
-        
-
-        overlap = true;
-      } else if (
-        playerLocalTop === playerTop + dimensionsPercHeight &&
-        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
-        playerLocalLeft <= playerLeft + dimensionsPercWidth
-      ) {
-        const px = (height / 100) * playerLocalTop;
-        const newPos = ((px + 1) / height) * 100;
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          top: newPos
-        });
-
-        
-        || playerLocalTop + 1 === playerTop + dimensionsHeight
-        
-        if (playerLocalTop + 1 === playerTop + dimensionsHeight) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'top',
-            player: playerOther
-          });
-        }
-        
-
-        overlap = true;
-      } else if (
-        playerLocalLeft + dimensionsPercWidth === playerLeft &&
-        playerLocalTop + dimensionsPercHeight >= playerTop &&
-        playerLocalTop <= playerTop + dimensionsPercHeight
-      ) {
-        const px = (width / 100) * playerLocalLeft;
-        const newPos = ((px - 1) / width) * 100;
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          left: newPos
-        });
-
-        
-        || playerLocalLeft + dimensionsWidth - 1 === playerLeft
-
-        if (playerLocalLeft + dimensionsWidth - 1 === playerLeft) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'add',
-            direction: 'left',
-            player: playerOther
-          });
-        }
-        
-
-        overlap = true;
-      } else if (
-        playerLocalLeft === playerLeft + dimensionsPercWidth &&
-        playerLocalTop + dimensionsPercHeight >= playerTop &&
-        playerLocalTop <= playerTop + dimensionsPercHeight
-      ) {
-        const px = (width / 100) * playerLocalLeft;
-        const newPos = ((px + 1) / width) * 100;
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          left: newPos
-        });
-
-        
-        || playerLocalLeft + 1 === playerLeft + dimensionsWidth
-
-        if (playerLocalLeft + 1 === playerLeft + dimensionsWidth) {
-          dispatchPlayers({
-            type: 'move',
-            operation: 'subtract',
-            direction: 'left',
-            player: playerOther
-          });
-        }
-        
-
-        overlap = true;
-      }
-    }
-     */
-
-    if (overlap === true) return;
 
     let dimension: number;
     let playerLocalPos: number;
@@ -288,11 +145,11 @@ const Controller: React.FC = (): JSX.Element => {
 
     switch (operation) {
       case 'add':
-        px++;
+        px = overlap ? px - 10 : px + 1;
         break;
 
       case 'subtract':
-        px--;
+        px = overlap ? px + 10 : px - 1;
         break;
     }
 
