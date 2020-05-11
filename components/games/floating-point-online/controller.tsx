@@ -426,7 +426,7 @@ const Controller: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //  console.log(statesGame);
+  console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (

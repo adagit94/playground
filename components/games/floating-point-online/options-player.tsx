@@ -139,7 +139,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     setInitPossible(true);
     updateDataGame('floatingPoint', { state: 'init' });
   };
-  console.log(player);
+
   return (
     <Container>
       <ContainerButtons>
