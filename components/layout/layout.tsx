@@ -101,6 +101,8 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     initAuthObserver(initUser, clearUser);
   }, []);
 
+  console.log(statesFirebase.user);
+
   return (
     <Container>
       <ThemeProvider theme={colors}>
