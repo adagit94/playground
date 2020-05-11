@@ -44,7 +44,7 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
 };
 
 export const createDataGame: CreateDataGame = async (game, data) => {
-  const gameRef = firebase.database().ref(`games/${game}`);
+  const gameRef = firebase.database().ref(`games/${game}/game`);
 
   await gameRef.set(data).catch(err => console.error(err));
 };
