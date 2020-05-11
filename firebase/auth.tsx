@@ -42,6 +42,7 @@ export const initAuthObserver: InitAuthObserver = (initUser, clearUser) => {
   firebase.auth().onAuthStateChanged(
     async userFirebase => {
       if (userFirebase) {
+        console.log(1);
         if (userFirebase.emailVerified) {
           sessionStorage.setItem('uid', userFirebase.uid);
 

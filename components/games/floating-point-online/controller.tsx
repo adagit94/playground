@@ -418,7 +418,8 @@ const Controller: React.FC = (): JSX.Element => {
         top: 0,
         left: 0,
         score: 0,
-        isReady: false
+        isReady: false,
+        timestamp: Date.now()
       });
     };
 
@@ -426,9 +427,9 @@ const Controller: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(statesGame);
-  console.log(statesPlayers);
-  console.log(statesFP);
+  //  console.log(statesGame);
+  //console.log(statesPlayers);
+  //console.log(statesFP);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

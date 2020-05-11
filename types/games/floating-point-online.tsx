@@ -9,6 +9,7 @@ export type PlayerFP = {
   left: number;
   score: number;
   isReady: boolean;
+  timestamp: number;
 };
 
 export type UpdatePlayerFP = {
