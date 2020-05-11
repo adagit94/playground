@@ -91,16 +91,16 @@ const Controller: React.FC = (): JSX.Element => {
     const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
       playerLocal
     ];
-
+console.log(playerLocalTop + dimensionsPercHeight);
     switch (limit) {
       case 'topLeft':
-        if (playerLocalTop === 0 || playerLocalLeft === 0) return;
+        if (playerLocalTop <= 0 || playerLocalLeft <= 0) return;
         break;
 
       case 'bottomRight':
         if (
-          playerLocalTop + dimensionsPercHeight === 100 ||
-          playerLocalLeft + dimensionsPercWidth === 100
+          playerLocalTop + dimensionsPercHeight >= 100 ||
+          playerLocalLeft + dimensionsPercWidth >= 100
         ) {
           return;
         }
@@ -115,6 +115,49 @@ const Controller: React.FC = (): JSX.Element => {
       const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
       if (
+        playerLocalTop + dimensionsPercHeight >= playerTop &&
+        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
+        playerLocalTop <= playerTop + dimensionsPercHeight &&
+        playerLocalLeft <= playerLeft + dimensionsPercWidth
+      ) {
+        let dimension: number;
+        let playerLocalPos: number;
+    
+        switch (direction) {
+          case 'left':
+            dimension = width;
+            playerLocalPos = playerLocalLeft;
+            break;
+    
+          case 'top':
+            dimension = height;
+            playerLocalPos = playerLocalTop;
+            break;
+        }
+    
+        let px = (dimension / 100) * playerLocalPos;
+    
+        switch (operation) {
+          case 'add':
+            px--;
+            break;
+    
+          case 'subtract':
+            px++;
+            break;
+        }
+    
+        const newPos = (px / dimension) * 100;
+
+        updateDataPlayer('floatingPoint', playerLocal, {
+          [direction]: newPos
+        });
+
+        overlap = true;
+      }
+
+      /*
+      if (
         playerLocalTop + dimensionsPercHeight === playerTop &&
         playerLocalLeft + dimensionsPercWidth >= playerLeft &&
         playerLocalLeft <= playerLeft + dimensionsPercWidth
@@ -126,7 +169,7 @@ const Controller: React.FC = (): JSX.Element => {
           top: newPos
         });
 
-        /*
+        
         || playerLocalTop + dimensionsHeight - 1 === playerTop
 
         if (playerLocalTop + dimensionsHeight - 1 === playerTop) {
@@ -137,7 +180,7 @@ const Controller: React.FC = (): JSX.Element => {
             player: playerOther
           });
         }
-        */
+        
 
         overlap = true;
       } else if (
@@ -152,7 +195,7 @@ const Controller: React.FC = (): JSX.Element => {
           top: newPos
         });
 
-        /*
+        
         || playerLocalTop + 1 === playerTop + dimensionsHeight
         
         if (playerLocalTop + 1 === playerTop + dimensionsHeight) {
@@ -163,7 +206,7 @@ const Controller: React.FC = (): JSX.Element => {
             player: playerOther
           });
         }
-        */
+        
 
         overlap = true;
       } else if (
@@ -178,7 +221,7 @@ const Controller: React.FC = (): JSX.Element => {
           left: newPos
         });
 
-        /*
+        
         || playerLocalLeft + dimensionsWidth - 1 === playerLeft
 
         if (playerLocalLeft + dimensionsWidth - 1 === playerLeft) {
@@ -189,7 +232,7 @@ const Controller: React.FC = (): JSX.Element => {
             player: playerOther
           });
         }
-        */
+        
 
         overlap = true;
       } else if (
@@ -204,7 +247,7 @@ const Controller: React.FC = (): JSX.Element => {
           left: newPos
         });
 
-        /*
+        
         || playerLocalLeft + 1 === playerLeft + dimensionsWidth
 
         if (playerLocalLeft + 1 === playerLeft + dimensionsWidth) {
@@ -215,11 +258,12 @@ const Controller: React.FC = (): JSX.Element => {
             player: playerOther
           });
         }
-        */
+        
 
         overlap = true;
       }
     }
+     */
 
     if (overlap === true) return;
 
@@ -412,7 +456,7 @@ const Controller: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(statesGame);
+  //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (

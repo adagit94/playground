@@ -24,11 +24,12 @@ const ContainerButtons = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 100px;
+  height: 50px;
 `;
 
 const ButtonStart = styled.button`
-  padding: 5px;
+  height: 100%;
+  width: 75px;
   margin-right: 5px;
   font-weight: bold;
   border: 1px solid ${(props): string => props.theme.inverted};
@@ -85,13 +86,14 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const uid = user && user.uid;
 
   const ButtonReady = styled.button`
-    padding: 5px;
+    height: 100%;
+    width: 75px;
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
-        (playerData && playerData.isReady) || initPossible !== false
-          ? props.theme.inverted
-          : '#f00'};
+        playerData && !playerData.isReady && !initPossible
+          ? '#f00'
+          : props.theme.inverted};
     border-radius: 5px;
     color: ${(props): string =>
       playerData && playerData.isReady
@@ -143,7 +145,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   return (
     <Container>
       <ContainerButtons>
-        {state === 'conf' && player === admin && (
+        {state === 'conf' && uid === admin && (
           <ButtonStart onClick={handleInit} type='button'>
             Start
           </ButtonStart>
