@@ -89,16 +89,16 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
-        (player && playerData.isReady) || initPossible !== false
+        (playerData && playerData.isReady) || initPossible !== false
           ? props.theme.inverted
           : '#f00'};
     border-radius: 5px;
     color: ${(props): string =>
-      player && playerData.isReady
+      playerData && playerData.isReady
         ? props.theme.background
         : props.theme.inverted};
     background-color: ${(props): string =>
-      player && playerData.isReady
+      playerData && playerData.isReady
         ? props.theme.inverted
         : props.theme.background};
 
@@ -123,7 +123,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     width: 75px;
     height: 75px;
     border-radius: 100%;
-    background-image: url(${player && playerData.avatar});
+    background-image: url(${playerData && playerData.avatar});
     background-size: contain;
   `;
 
@@ -167,13 +167,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         )}
       </ContainerButtons>
       <ContainerInfo>
-        <Info>{player && playerData.username}</Info>
-        <Info>{state === 'running' && player && playerData.score}</Info>
+        <Info>{playerData && playerData.username}</Info>
+        <Info>{state === 'running' && playerData && playerData.score}</Info>
       </ContainerInfo>
       <ContainerAvatar>
-        {player && <Avatar />}
+        {playerData && <Avatar />}
 
-        {state === 'conf' && !player && (
+        {state === 'conf' && !playerData && (
           <LoadingIndicator color={colors.inverted} />
         )}
       </ContainerAvatar>
