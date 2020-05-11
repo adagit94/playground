@@ -97,13 +97,6 @@ export const initGame: InitGame = async (game, admin, handleData) => {
 
   switch (game) {
     case 'floatingPoint':
-      if (!exists) {
-        gameRef
-          .child('game')
-          .set({ state: 'conf', admin })
-          .catch(err => console.error(err));
-      }
-
       gameRef.child('game').on('value', data => {
         handleData('game', data.val());
       });
@@ -115,6 +108,13 @@ export const initGame: InitGame = async (game, admin, handleData) => {
       gameRef.child('fp').on('value', data => {
         handleData('fp', data.val());
       });
+
+      if (!exists) {
+        gameRef
+          .child('game')
+          .set({ state: 'conf', admin })
+          .catch(err => console.error(err));
+      }
 
       break;
   }
