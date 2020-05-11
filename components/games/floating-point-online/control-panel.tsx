@@ -20,7 +20,6 @@ const ControlPanel: React.FC = (): JSX.Element => {
 
   const { admin } = statesGame;
   const players = Object.keys(statesPlayers).filter(player => player !== admin);
-  console.log(players);
 
   return (
     <Container>
