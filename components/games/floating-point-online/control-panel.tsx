@@ -16,10 +16,11 @@ const Container = styled.div`
 const ControlPanel: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
-  const [initPossible, setInitPossible] = useState<boolean>(true);
+  const [initPossible, setInitPossible] = useState<boolean>(null);
 
   const { admin } = statesGame;
   const players = Object.keys(statesPlayers).filter(player => player !== admin);
+  console.log(players);
 
   return (
     <Container>
