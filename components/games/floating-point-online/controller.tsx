@@ -91,10 +91,11 @@ const Controller: React.FC = (): JSX.Element => {
     const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
       playerLocal
     ];
-    console.log(playerLocalTop + dimensionsPercHeight);
+
     switch (limit) {
       case 'topLeft':
         if (playerLocalTop <= 0 || playerLocalLeft <= 0) return;
+
         break;
 
       case 'bottomRight':
@@ -104,6 +105,7 @@ const Controller: React.FC = (): JSX.Element => {
         ) {
           return;
         }
+
         break;
     }
 
