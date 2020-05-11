@@ -111,7 +111,7 @@ export const initGame: InitGame = async (game, admin, handleData) => {
       });
 
       if (!exists) {
-        gameRef
+        await gameRef
           .child('game')
           .set({ state: 'conf', admin })
           .catch(err => console.error(err));
