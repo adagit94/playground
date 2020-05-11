@@ -91,7 +91,7 @@ const Controller: React.FC = (): JSX.Element => {
     const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
       playerLocal
     ];
-console.log(playerLocalTop + dimensionsPercHeight);
+    console.log(playerLocalTop + dimensionsPercHeight);
     switch (limit) {
       case 'topLeft':
         if (playerLocalTop <= 0 || playerLocalLeft <= 0) return;
@@ -122,31 +122,31 @@ console.log(playerLocalTop + dimensionsPercHeight);
       ) {
         let dimension: number;
         let playerLocalPos: number;
-    
+
         switch (direction) {
           case 'left':
             dimension = width;
             playerLocalPos = playerLocalLeft;
             break;
-    
+
           case 'top':
             dimension = height;
             playerLocalPos = playerLocalTop;
             break;
         }
-    
+
         let px = (dimension / 100) * playerLocalPos;
-    
+
         switch (operation) {
           case 'add':
             px--;
             break;
-    
+
           case 'subtract':
             px++;
             break;
         }
-    
+
         const newPos = (px / dimension) * 100;
 
         updateDataPlayer('floatingPoint', playerLocal, {
@@ -155,8 +155,8 @@ console.log(playerLocalTop + dimensionsPercHeight);
 
         overlap = true;
       }
-
-      /*
+    }
+    /*
       if (
         playerLocalTop + dimensionsPercHeight === playerTop &&
         playerLocalLeft + dimensionsPercWidth >= playerLeft &&
