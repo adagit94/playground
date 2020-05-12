@@ -302,13 +302,13 @@ const Controller: React.FC = (): JSX.Element => {
       initGame('floatingPoint', user, handleData);
     }
 
-    /*return (): void => {
+    return (): void => {
       updateDataGame('floatingPoint', { state: 'disconnecting' });
 
       setTimeout(() => {
         updateDataGame('floatingPoint', null);
       }, 500);
-    };*/
+    };
   });
 
   //console.log(statesGame);
