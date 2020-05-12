@@ -28,9 +28,7 @@ const ContainerButtons = styled.div`
 `;
 
 const ButtonStart = styled.button`
-  height: 45%;
   padding: 5px;
-  margin-right: 5px;
   font-weight: bold;
   border: 1px solid ${(props): string => props.theme.inverted};
   border-radius: 5px;
@@ -86,7 +84,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const uid = user && user.uid;
 
   const ButtonReady = styled.button`
-    height: 45%;
     padding: 5px;
     font-weight: bold;
     border: 1px solid
