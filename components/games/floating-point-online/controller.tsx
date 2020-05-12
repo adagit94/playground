@@ -305,9 +305,9 @@ const Controller: React.FC = (): JSX.Element => {
     }
 
     return (): void => {
-      updateDataGame('floatingPoint', { state: 'disconnecting' });
+      //updateDataGame('floatingPoint', { state: 'disconnecting' });
 
-      updateDataGame('floatingPoint', null);
+      //updateDataGame('floatingPoint', null);
     };
   });
 
