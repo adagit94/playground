@@ -24,7 +24,7 @@ const ContainerButtons = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 50px;
+  height: 75px;
 `;
 
 const ButtonStart = styled.button`
