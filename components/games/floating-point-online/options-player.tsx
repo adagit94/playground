@@ -21,15 +21,15 @@ const Container = styled.div`
 
 const ContainerButtons = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 50px;
 `;
 
 const ButtonStart = styled.button`
-  height: 100%;
-  width: 50px;
+  height: 50%;
+  padding: 5px;
   margin-right: 5px;
   font-weight: bold;
   border: 1px solid ${(props): string => props.theme.inverted};
@@ -86,8 +86,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const uid = user && user.uid;
 
   const ButtonReady = styled.button`
-    height: 100%;
-    width: 50px;
+    height: 50%;
+    padding: 5px;
     font-weight: bold;
     border: 1px solid
       ${(props): string =>
