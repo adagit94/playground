@@ -101,8 +101,6 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     initAuthObserver(initUser, clearUser);
   }, []);
 
-  console.log(theme);
-
   return (
     <Container>
       <ThemeProvider theme={colors}>
