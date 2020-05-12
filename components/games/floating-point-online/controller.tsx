@@ -22,7 +22,6 @@ import {
   initGame,
   updateDataGame,
   clearDataGame,
-  getDataGame,
   updateDataPlayer,
   updateDataFP,
   updateDataUser
@@ -243,16 +242,8 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const clearData = async (): Promise<void> => {
-      const gameData = await getDataGame('floatingPoint');
-
-      if (gameData) clearDataGame('floatingPoint');
-    };
-
     if (state === 'disconnecting') {
       window.location.assign(`${window.location.origin}/playground`);
-
-      clearData();
     }
   });
 
@@ -313,6 +304,9 @@ const Controller: React.FC = (): JSX.Element => {
     return (): void => {
       if (state !== 'disconnecting') {
         updateDataGame('floatingPoint', { state: 'disconnecting' });
+        clearDataGame('floatingPoint');
+
+        window.location.assign(`${window.location.origin}/playground`);
       }
 
       console.log('unmounted');
