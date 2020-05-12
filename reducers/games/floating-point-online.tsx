@@ -7,8 +7,6 @@ import {
   ActionsFP
 } from '../../types/games/floating-point-online';
 
-import { initGame } from '../../inits/games/floating-point-online';
-
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   states,
   action
@@ -23,9 +21,6 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
 
     case 'setData':
       return { ...states, ...action.payload };
-
-    case 'reset':
-      return { ...initGame };
 
     default:
       throw new Error('Unspecified / Wrong action');
