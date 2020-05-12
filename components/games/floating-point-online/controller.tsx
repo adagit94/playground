@@ -243,6 +243,8 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (state === 'disconnecting') {
       window.location.assign(`${window.location.origin}/playground`);
+
+      dispatchGame({ type: 'reset' });
     }
   });
 
