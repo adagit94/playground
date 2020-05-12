@@ -28,7 +28,7 @@ const ContainerButtons = styled.div`
 `;
 
 const ButtonStart = styled.button`
-  height: 50%;
+  height: 45%;
   padding: 5px;
   margin-right: 5px;
   font-weight: bold;
@@ -55,11 +55,11 @@ const ContainerInfo = styled.div`
 `;
 
 const Info = styled.div`
-  flex: 1 1 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 50%;
 `;
 
 const ContainerAvatar = styled.div`
@@ -86,7 +86,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const uid = user && user.uid;
 
   const ButtonReady = styled.button`
-    height: 50%;
+    height: 45%;
     padding: 5px;
     font-weight: bold;
     border: 1px solid
