@@ -109,23 +109,6 @@ const Controller: React.FC = (): JSX.Element => {
         break;
     }
 
-    let overlap: boolean;
-
-    for (const player in statesPlayers) {
-      if (playerLocal === player) continue;
-
-      const { top: playerTop, left: playerLeft } = statesPlayers[player];
-
-      if (
-        playerLocalTop + dimensionsPercHeight >= playerTop &&
-        playerLocalLeft + dimensionsPercWidth >= playerLeft &&
-        playerLocalTop <= playerTop + dimensionsPercHeight &&
-        playerLocalLeft <= playerLeft + dimensionsPercWidth
-      ) {
-        overlap = true;
-      }
-    }
-
     let dimension: number;
     let playerLocalPos: number;
 
@@ -145,11 +128,11 @@ const Controller: React.FC = (): JSX.Element => {
 
     switch (operation) {
       case 'add':
-        px = overlap ? px - 10 : px + 1;
+        px++;
         break;
 
       case 'subtract':
-        px = overlap ? px + 10 : px - 1;
+        px--;
         break;
     }
 
