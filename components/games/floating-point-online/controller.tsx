@@ -293,6 +293,8 @@ const Controller: React.FC = (): JSX.Element => {
     };
 
     initGame('floatingPoint', user, handleData);
+
+    return (): void => console.log('unmounted');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
