@@ -241,6 +241,12 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
+    if (state === 'disconnecting') {
+      window.location.assign(`${window.location.origin}/playground`);
+    }
+  });
+
+  useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
       e.preventDefault();
 
@@ -294,7 +300,11 @@ const Controller: React.FC = (): JSX.Element => {
 
     initGame('floatingPoint', user, handleData);
 
-    return (): void => console.log('unmounted');
+    return (): void => {
+      updateDataGame('floatingPoint', { state: 'disconnecting' });
+      updateDataGame('floatingPoint', null);
+      console.log('unmounted');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

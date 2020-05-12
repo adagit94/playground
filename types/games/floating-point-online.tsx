@@ -34,7 +34,7 @@ export type PropsOptionsPlayer = {
 };
 
 export type StatesGame = {
-  state: 'conf' | 'init' | 'running';
+  state: 'conf' | 'init' | 'running' | 'disconnecting';
   admin: string;
   width: number;
   height: number;
@@ -46,7 +46,7 @@ export type CreateGameFP = {
 };
 
 export type UpdateGameFP = {
-  state?: 'conf' | 'init' | 'running';
+  state?: 'conf' | 'init' | 'running' | 'disconnecting';
   admin?: string;
 };
 
@@ -63,7 +63,8 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'setData'; payload: any };
+  | { type: 'setData'; payload: any }
+  | { type: 'reset' };
 
 export type ActionsPlayers = { type: 'setData'; payload: any };
 
