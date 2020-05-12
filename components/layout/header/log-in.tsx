@@ -30,6 +30,7 @@ const SocialProviderFb = styled(FormSocialProvider)`
 
   &:hover {
     background-color: #334d84;
+    cursor: not-allowed;
   }
 `;
 
@@ -64,6 +65,7 @@ const LogIn: React.FC = (): JSX.Element => {
             loginProvider('fb', handleLoading);
           }}
           type='button'
+          disabled
         >
           <img src='/icons/fb.svg' alt='facebook icon' />
           Log in with Facebook

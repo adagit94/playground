@@ -117,13 +117,6 @@ export const initGame: InitGame = async (game, user, handleData) => {
         handleData('fp', data.val());
       });
 
-      if (!exists) {
-        createDataGame('floatingPoint', {
-          state: 'conf',
-          admin: player
-        });
-      }
-
       createDataPlayer('floatingPoint', player, {
         username: user.displayName || user.email,
         avatar: user.photoURL,
@@ -132,6 +125,13 @@ export const initGame: InitGame = async (game, user, handleData) => {
         score: 0,
         isReady: false
       });
+
+      if (!exists) {
+        createDataGame('floatingPoint', {
+          state: 'conf',
+          admin: player
+        });
+      }
 
       break;
   }

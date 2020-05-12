@@ -49,7 +49,7 @@ const Controller: React.FC = (): JSX.Element => {
   const handleMoveRef = useRef(null);
 
   const { user } = statesFirebase;
-  const { state, width, height } = statesGame;
+  const { state, admin, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
   const { dimensions } = Defaults;
 
@@ -241,6 +241,12 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
+    if (state === 'disconnecting') {
+      window.location.assign(`${window.location.origin}/playground`);
+    }
+  });
+
+  useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
       e.preventDefault();
 
@@ -292,9 +298,18 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    initGame('floatingPoint', user, handleData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (user && !(playerLocal in statesPlayers)) {
+      initGame('floatingPoint', user, handleData);
+    }
+
+    return (): void => {
+      updateDataGame('floatingPoint', { state: 'disconnecting' });
+
+      setTimeout(() => {
+        updateDataGame('floatingPoint', null);
+      }, 500);
+    };
+  });
 
   //console.log(statesGame);
   //console.log(statesPlayers);
