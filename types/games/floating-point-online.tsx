@@ -1,8 +1,8 @@
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
-type DataSetsList = 'game' | 'players' | 'fp';
+type DataSetsList = 'game' | 'players' | 'fp' | 'all';
 
-type GameStatesList = 'conf' | 'init' | 'running' | 'disconnecting';
+type GameStatesList = 'conf' | 'init' | 'running' | 'disconnection';
 
 export type Player = {
   username: string;

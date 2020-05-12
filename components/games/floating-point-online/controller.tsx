@@ -1,8 +1,10 @@
 import React, { useReducer, useEffect, useRef, useContext } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
+
+import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
@@ -10,6 +12,7 @@ import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
+import { Colors } from '../../../types/layout';
 import {
   HandleData,
   Operations,
@@ -22,6 +25,7 @@ import {
   initGame,
   updateDataGame,
   clearDataGame,
+  getDataGame,
   updateDataPlayer,
   updateDataFP,
   updateDataUser
@@ -31,7 +35,30 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 `;
+
+const DisconnectionWindow = ({ loadingColor }): JSX.Element => {
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.5;
+  `;
+
+  return (
+    <Container>
+      <h1>Disconnected player. Please, wait for reinitialization</h1>
+      <LoadingIndicator color={loadingColor} />
+    </Container>
+  );
+};
 
 const Controller: React.FC = (): JSX.Element => {
   const [statesGame, dispatchGame] = useReducer(
@@ -47,6 +74,7 @@ const Controller: React.FC = (): JSX.Element => {
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
+  const colors: Colors = useContext(ThemeContext);
   const handleMoveRef = useRef(null);
 
   const { user } = statesFirebase;
@@ -241,11 +269,20 @@ const Controller: React.FC = (): JSX.Element => {
     if (state === 'running') matchFloatingPoint();
   });
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (state === 'disconnecting') {
+      const clearGame = async (): Promise<void> => {
+        const data = await getDataGame('floatingPoint');
+
+        if (data) clearDataGame('floatingPoint');
+      };
+
+      //if (window.location.pathname === )
       window.location.assign(`${window.location.origin}/playground`);
+
+      clearGame();
     }
-  });
+  });*/
 
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
@@ -296,25 +333,27 @@ const Controller: React.FC = (): JSX.Element => {
         case 'fp':
           dispatchFP({ type: 'setData', payload: data });
           break;
+
+        case 'all':
+          dispatchGame({ type: 'setData', payload: data.game });
+          dispatchPlayers({ type: 'setData', payload: data.players });
+          dispatchFP({ type: 'setData', payload: data.fp });
+          break;
       }
     };
 
-    initGame('floatingPoint', user, handleData);
+    if (user && !(playerLocal in statesPlayers)) {
+      initGame('floatingPoint', user, handleData);
+    }
+  });
 
+  useEffect(() => {
     return (): void => {
-      if (state !== 'disconnecting') {
-        updateDataGame('floatingPoint', { state: 'disconnecting' });
-        clearDataGame('floatingPoint');
-
-        window.location.assign(`${window.location.origin}/playground`);
-      }
-
-      console.log('unmounted');
+      updateDataGame('floatingPoint', { state: 'disconnection' });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(statesGame);
+  //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (
@@ -327,6 +366,9 @@ const Controller: React.FC = (): JSX.Element => {
           </Contexts.ContextFP.Provider>
         </Contexts.ContextPlayers.Provider>
       </Contexts.ContextGame.Provider>
+      {state === 'disconnection' && (
+        <DisconnectionWindow loadingColor={colors.background} />
+      )}
     </Container>
   );
 };

@@ -50,3 +50,8 @@ export type UpdateDataPlayer = (
   player: string,
   update: UpdatePlayerList
 ) => Promise<void>;
+
+export type GetDataPlayer = (
+  game: GamesList,
+  player: string
+) => Promise<CreatePlayerList | null>;
