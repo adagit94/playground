@@ -21,6 +21,8 @@ import {
 import {
   initGame,
   updateDataGame,
+  clearDataGame,
+  getDataGame,
   updateDataPlayer,
   updateDataFP,
   updateDataUser
@@ -241,8 +243,16 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
+    const clearData = async (): Promise<void> => {
+      const gameData = await getDataGame('floatingPoint');
+
+      if (gameData) clearDataGame('floatingPoint');
+    };
+
     if (state === 'disconnecting') {
       window.location.assign(`${window.location.origin}/playground`);
+
+      clearData();
     }
   });
 
@@ -301,8 +311,10 @@ const Controller: React.FC = (): JSX.Element => {
     initGame('floatingPoint', user, handleData);
 
     return (): void => {
-      updateDataGame('floatingPoint', { state: 'disconnecting' });
-      updateDataGame('floatingPoint', null);
+      if (state !== 'disconnecting') {
+        updateDataGame('floatingPoint', { state: 'disconnecting' });
+      }
+
       console.log('unmounted');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,14 +1,17 @@
 import {
   HandleData,
-  CreateGameFP,
-  UpdateGameFP,
-  UpdatePlayerFP,
-  PlayerFP as CreatePlayerFP
+  DataSet as DataSetFP,
+  CreateGame as CreateGameFP,
+  UpdateGame as UpdateGameFP,
+  UpdatePlayer as UpdatePlayerFP,
+  Player as CreatePlayerFP
 } from './floating-point-online';
 
 type CreateGameList = CreateGameFP;
 
 type UpdateGameList = UpdateGameFP;
+
+type GetGameList = DataSetFP;
 
 type CreatePlayerList = CreatePlayerFP;
 
@@ -31,6 +34,10 @@ export type UpdateDataGame = (
   game: GamesList,
   update: UpdateGameList
 ) => Promise<void>;
+
+export type ClearDataGame = (game: GamesList) => Promise<void>;
+
+export type GetDataGame = (game: GamesList) => Promise<GetGameList>;
 
 export type CreateDataPlayer = (
   game: GamesList,

@@ -1,10 +1,10 @@
-type DataSetsList = 'game' | 'players' | 'fp';
-
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
-type Position = { top: number; left: number };
+type DataSetsList = 'game' | 'players' | 'fp';
 
-export type PlayerFP = {
+type GameStatesList = 'conf' | 'init' | 'running' | 'disconnecting';
+
+export type Player = {
   username: string;
   avatar: string;
   top: number;
@@ -13,7 +13,7 @@ export type PlayerFP = {
   isReady: boolean;
 };
 
-export type UpdatePlayerFP = {
+export type UpdatePlayer = {
   username?: string;
   avatar?: string;
   top?: number;
@@ -34,28 +34,28 @@ export type PropsOptionsPlayer = {
 };
 
 export type StatesGame = {
-  state: 'conf' | 'init' | 'running' | 'disconnecting';
+  state: GameStatesList;
   admin: string;
   width: number;
   height: number;
 };
 
-export type CreateGameFP = {
-  state: 'conf';
-  admin: string;
+export type CreateGame = { state: GameStatesList; admin: string };
+
+export type DataSet = {
+  game: CreateGame;
+  players: StatesPlayers;
+  fp: StatesFP;
 };
 
-export type UpdateGameFP = {
-  state?: 'conf' | 'init' | 'running' | 'disconnecting';
+export type UpdateGame = {
+  state?: GameStatesList;
   admin?: string;
 };
 
-export type StatesPlayers = { [uid: string]: PlayerFP };
+export type StatesPlayers = { [uid: string]: Player };
 
-export type StatesFP = {
-  top: number;
-  left: number;
-};
+export type StatesFP = { top: number; left: number };
 
 export type ActionsGame =
   | {
@@ -68,7 +68,7 @@ export type ActionsGame =
 
 export type ActionsPlayers = { type: 'setData'; payload: any };
 
-export type ActionsFP = { type: 'setData'; payload: Position };
+export type ActionsFP = { type: 'setData'; payload: StatesFP };
 
 export type HandleData = (dataSet: DataSetsList, data: any) => void;
 
@@ -77,10 +77,6 @@ export type Operations = 'add' | 'subtract';
 export type Directions = 'top' | 'left';
 
 export type Limits = 'topLeft' | 'bottomRight';
-
-export type GetDataFP = (
-  dataSet: DataSetsList
-) => Promise<StatesGame | StatesPlayers | StatesFP>;
 
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
