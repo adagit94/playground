@@ -59,7 +59,7 @@ const Controller: React.FC = (): JSX.Element => {
   const playerLocal = user && user.uid;
 
   const { top: playerLocalTop, left: playerLocalLeft } =
-    playerLocal && statesPlayers[playerLocal];
+    statesPlayers[playerLocal];
 
   const handleMove: HandleMove = key => {
     let operation: Operations;
