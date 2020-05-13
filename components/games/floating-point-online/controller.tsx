@@ -49,17 +49,17 @@ const Controller: React.FC = (): JSX.Element => {
   const statesUser = useContext(ContextUser);
   const handleMoveRef = useRef(null);
 
+  const { dimensions } = Defaults;
   const { user } = statesFirebase;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
-  const playerLocal = user && user.uid;
-  const { top: playerLocalTop, left: playerLocalLeft } =
-    playerLocal && statesPlayers[playerLocal];
-
-  const { dimensions } = Defaults;
   const dimensionsPercHeight = (dimensions / height) * 100;
   const dimensionsPercWidth = (dimensions / width) * 100;
+  const playerLocal = user && user.uid;
+
+  const { top: playerLocalTop, left: playerLocalLeft } =
+    playerLocal && statesPlayers[playerLocal];
 
   const handleMove: HandleMove = key => {
     let operation: Operations;
@@ -95,7 +95,6 @@ const Controller: React.FC = (): JSX.Element => {
     switch (limit) {
       case 'topLeft':
         if (playerLocalTop <= 0 || playerLocalLeft <= 0) return;
-
         break;
 
       case 'bottomRight':
@@ -233,7 +232,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (state === 'running') matchFloatingPoint();
+    if (playerLocal && state === 'running') matchFloatingPoint();
   });
 
   useEffect(() => {
