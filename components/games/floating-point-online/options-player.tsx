@@ -148,7 +148,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       <ContainerButtons>
         {state === 'conf' && uid === admin && admin === player && (
           <ButtonStart onClick={handleInit} type='button'>
-            Start abc
+            Start
           </ButtonStart>
         )}
 

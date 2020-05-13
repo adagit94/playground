@@ -39,7 +39,6 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
   switch (action.type) {
     case 'setData':
       return {
-        ...states,
         ...action.payload
       };
 
