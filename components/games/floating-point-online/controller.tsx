@@ -199,7 +199,7 @@ const Controller: React.FC = (): JSX.Element => {
     if (state === 'init') initGame();
   });
 
-  /*useEffect(() => {
+  useEffect(() => {
     const matchFloatingPoint = (): void => {
       const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
         playerLocal
@@ -236,9 +236,10 @@ const Controller: React.FC = (): JSX.Element => {
         });
       }
     };
-    
-    if (playerLocal !== undefined && state === 'running') matchFloatingPoint();
-  });*/
+
+    if (playerLocal in statesPlayers && state === 'running')
+      matchFloatingPoint();
+  });
 
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
@@ -296,7 +297,7 @@ const Controller: React.FC = (): JSX.Element => {
       initGame('floatingPoint', user, handleData);
     }
   });
-  console.log(statesPlayers);
+
   //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
