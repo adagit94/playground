@@ -309,10 +309,9 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (user && !(playerLocal in statesPlayers)) {
-      initGame('floatingPoint', user, handleData);
-    }
-  });
+    initGame('floatingPoint', user, handleData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   console.log(statesGame);
   console.log(statesPlayers);
