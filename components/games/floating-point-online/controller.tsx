@@ -151,7 +151,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const initGame = (): void => {
+    const initFP = (): void => {
       console.log('from initgame');
       const players = Object.keys(statesPlayers);
 
@@ -200,7 +200,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (state === 'init') initGame();
+    if (state === 'init') initFP();
   });
 
   useEffect(() => {
