@@ -204,9 +204,8 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
-        playerLocal
-      ];
+      const { top: playerLocalTop, left: playerLocalLeft } =
+        playerLocal && statesPlayers[playerLocal];
 
       if (
         playerLocalTop + dimensionsPercHeight >= fPTop &&
