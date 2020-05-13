@@ -116,7 +116,6 @@ export const updateDataFP: UpdateDataFP = async update => {
 
 export const initGame: InitGame = async (game, user, handleData) => {
   const player = user.uid;
-  console.log('initgame');
 
   const gameRef = firebase.database().ref(`games/${game}`);
   const playerRef = firebase.database().ref(`games/${game}/players/${player}`);

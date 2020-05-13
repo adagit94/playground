@@ -52,9 +52,12 @@ const Controller: React.FC = (): JSX.Element => {
   const { user } = statesFirebase;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
-  const { dimensions } = Defaults;
 
   const playerLocal = user && user.uid;
+  const { top: playerLocalTop, left: playerLocalLeft } =
+    playerLocal && statesPlayers[playerLocal];
+
+  const { dimensions } = Defaults;
   const dimensionsPercHeight = (dimensions / height) * 100;
   const dimensionsPercWidth = (dimensions / width) * 100;
 
@@ -88,10 +91,6 @@ const Controller: React.FC = (): JSX.Element => {
         limit = 'topLeft';
         break;
     }
-
-    const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
-      playerLocal
-    ];
 
     switch (limit) {
       case 'topLeft':
@@ -202,10 +201,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
-        playerLocal
-      ];
-
       if (
         playerLocalTop + dimensionsPercHeight >= fPTop &&
         playerLocalTop <= fPTop + dimensionsPercHeight &&
