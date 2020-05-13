@@ -187,7 +187,6 @@ const Controller: React.FC = (): JSX.Element => {
           left: playerLocalLeft
         });
 
-        console.log('from initgame');
         if (i === players.length - 1) {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
