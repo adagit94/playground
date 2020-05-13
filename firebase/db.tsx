@@ -115,9 +115,8 @@ export const updateDataFP: UpdateDataFP = async update => {
 };
 
 export const initGame: InitGame = async (game, user, handleData) => {
-  const player = user.uid;
-
   const gameRef = firebase.database().ref(`games/${game}`);
+  const player = user.uid;
 
   if (game === 'floatingPoint') {
     const gameData = await getDataGame('floatingPoint');
@@ -156,7 +155,9 @@ export const initGame: InitGame = async (game, user, handleData) => {
 
       createDataPlayer('floatingPoint', player, newPlayer);
     } else {
-      handleData('all', gameData);
+      await createDataPlayer('floatingPoint', player, playerData);
+      updateDataGame('floatingPoint', { state: 'conf' });
+      //handleData('all', gameData);
     }
   }
 };
