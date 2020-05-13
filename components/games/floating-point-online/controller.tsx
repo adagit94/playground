@@ -58,6 +58,9 @@ const Controller: React.FC = (): JSX.Element => {
   const dimensionsPercWidth = (dimensions / width) * 100;
   const playerLocal = user && user.uid;
 
+  const { top: playerLocalTop, left: playerLocalLeft } =
+    playerLocal in statesPlayers && statesPlayers[playerLocal];
+
   const handleMove: HandleMove = key => {
     let operation: Operations;
     let direction: Directions;
@@ -88,10 +91,6 @@ const Controller: React.FC = (): JSX.Element => {
         limit = 'topLeft';
         break;
     }
-
-    const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
-      playerLocal
-    ];
 
     switch (limit) {
       case 'topLeft':
@@ -201,10 +200,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const matchFloatingPoint = (): void => {
-      const { top: playerLocalTop, left: playerLocalLeft } = statesPlayers[
-        playerLocal
-      ];
-
       if (
         playerLocalTop + dimensionsPercHeight >= fPTop &&
         playerLocalTop <= fPTop + dimensionsPercHeight &&
