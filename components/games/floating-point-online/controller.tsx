@@ -186,8 +186,7 @@ const Controller: React.FC = (): JSX.Element => {
           top: playerLocalTop,
           left: playerLocalLeft
         });
-        console.log(players);
-        console.log(player);
+
         if (i === players.length - 1) {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
@@ -294,9 +293,10 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    initGame('floatingPoint', user, handleData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (user && !statesGame.admin && !(playerLocal in statesPlayers)) {
+      initGame('floatingPoint', user, handleData);
+    }
+  });
 
   //console.log(statesGame);
   //console.log(statesPlayers);
