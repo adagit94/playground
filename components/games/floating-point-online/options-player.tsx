@@ -156,7 +156,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           <ButtonReadyClickable
             onClick={(): void => {
               updateDataPlayer('floatingPoint', player, {
-                isReady: !playerData.isReady
+                isReady: playerData.isReady ? false : true
               });
             }}
             type='button'

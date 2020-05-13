@@ -21,8 +21,6 @@ import {
 import {
   initGame,
   updateDataGame,
-  clearDataGame,
-  getDataGame,
   updateDataPlayer,
   updateDataFP,
   updateDataUser
