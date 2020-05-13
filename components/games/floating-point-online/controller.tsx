@@ -151,8 +151,8 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const initFP = (): void => {
-      console.log('from initgame');
+    const initGame = (): void => {
+
       const players = Object.keys(statesPlayers);
 
       for (let i = 0; i < players.length; i++) {
@@ -196,11 +196,12 @@ const Controller: React.FC = (): JSX.Element => {
 
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', { state: 'running' });
+          console.log('from initgame');
         }
       }
     };
 
-    if (state === 'init') initFP();
+    if (state === 'init') initGame();
   });
 
   useEffect(() => {
