@@ -122,7 +122,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
     const gameData = await getDataGame('floatingPoint');
     const playerData = await getDataPlayer('floatingPoint', player);
 
-    console.log(gameData);
+    //console.log(gameData);
 
     gameRef.child('game').on('value', data => {
       handleData('game', data.val());
@@ -155,8 +155,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
 
       createDataPlayer('floatingPoint', player, newPlayer);
     } else {
-      await createDataPlayer('floatingPoint', player, playerData);
-      updateDataGame('floatingPoint', { state: 'conf' });
+      //handleData('players', playerData);
       //handleData('all', gameData);
     }
   }

@@ -1,21 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 
-const LoadingIndicator = ({
-  color,
-  width,
-  height
-}: {
-  color: string;
-  width?: number;
-  height?: number;
-}): JSX.Element => {
-  const LoadingContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: ${width ? width : 25}px;
-    height: ${height ? height : 12.5}px;
-  `;
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 25px;
+  height: 12.5px;
+`;
 
+const LoadingIndicator = ({ color }: { color: string }): JSX.Element => {
   const pulsing = keyframes`
     0% {
       background-color: unset;

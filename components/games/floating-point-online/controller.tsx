@@ -1,10 +1,8 @@
 import React, { useReducer, useEffect, useRef, useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
-
-import LoadingIndicator from '../../styled-components/loading-indicator';
 
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
@@ -12,7 +10,6 @@ import * as Contexts from '../../../contexts/games/floating-point-online';
 import Defaults from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
-import { Colors } from '../../../types/layout';
 import {
   HandleData,
   Operations,
@@ -38,28 +35,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const DisconnectionWindow = ({ loadingColor }): JSX.Element => {
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.5;
-  `;
-
-  return (
-    <Container>
-      <h1>Disconnected player. Please, wait for reinitialization</h1>
-      <LoadingIndicator color={loadingColor} />
-    </Container>
-  );
-};
-
 const Controller: React.FC = (): JSX.Element => {
   const [statesGame, dispatchGame] = useReducer(
     Reducers.reducerGame,
@@ -74,7 +49,6 @@ const Controller: React.FC = (): JSX.Element => {
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
-  const colors: Colors = useContext(ThemeContext);
   const handleMoveRef = useRef(null);
 
   const { user } = statesFirebase;
@@ -333,12 +307,6 @@ const Controller: React.FC = (): JSX.Element => {
         case 'fp':
           dispatchFP({ type: 'setData', payload: data });
           break;
-
-        case 'all':
-          dispatchGame({ type: 'setData', payload: data.game });
-          dispatchPlayers({ type: 'setData', payload: data.players });
-          dispatchFP({ type: 'setData', payload: data.fp });
-          break;
       }
     };
 
@@ -347,15 +315,9 @@ const Controller: React.FC = (): JSX.Element => {
     }
   });
 
-  useEffect(() => {
-    return (): void => {
-      updateDataGame('floatingPoint', { state: 'disconnection' });
-    };
-  }, []);
-
-  //console.log(statesGame);
-  //console.log(statesPlayers);
-  //console.log(statesFP);
+  console.log(statesGame);
+  console.log(statesPlayers);
+  console.log(statesFP);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>
@@ -366,9 +328,6 @@ const Controller: React.FC = (): JSX.Element => {
           </Contexts.ContextFP.Provider>
         </Contexts.ContextPlayers.Provider>
       </Contexts.ContextGame.Provider>
-      {state === 'disconnection' && (
-        <DisconnectionWindow loadingColor={colors.background} />
-      )}
     </Container>
   );
 };
