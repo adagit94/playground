@@ -152,7 +152,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const initGame = (): void => {
-
       const players = Object.keys(statesPlayers);
 
       for (let i = 0; i < players.length; i++) {
@@ -190,13 +189,13 @@ const Controller: React.FC = (): JSX.Element => {
           left: playerLocalLeft
         });
 
+        console.log('from initgame');
         if (i === players.length - 1) {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', { state: 'running' });
-          console.log('from initgame');
         }
       }
     };
@@ -243,21 +242,6 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (state === 'running') matchFloatingPoint();
   });
-
-  /*useEffect(() => {
-    if (state === 'disconnecting') {
-      const clearGame = async (): Promise<void> => {
-        const data = await getDataGame('floatingPoint');
-
-        if (data) clearDataGame('floatingPoint');
-      };
-
-      //if (window.location.pathname === )
-      window.location.assign(`${window.location.origin}/playground`);
-
-      clearGame();
-    }
-  });*/
 
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
