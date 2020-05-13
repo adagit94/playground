@@ -152,6 +152,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const initGame = (): void => {
+      console.log('from initgame');
       const players = Object.keys(statesPlayers);
 
       for (let i = 0; i < players.length; i++) {
@@ -313,9 +314,9 @@ const Controller: React.FC = (): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(statesGame);
-  console.log(statesPlayers);
-  console.log(statesFP);
+  //console.log(statesGame);
+  //console.log(statesPlayers);
+  //console.log(statesFP);
   return (
     <Container>
       <Contexts.ContextGame.Provider value={statesGame}>

@@ -119,7 +119,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
 
   const gameRef = firebase.database().ref(`games/${game}`);
   const playerRef = firebase.database().ref(`games/${game}/players/${player}`);
-console.log('from init game');
+
   const gameExist = await gameRef
     .once('value')
     .then(data => data.exists())
