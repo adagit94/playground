@@ -115,48 +115,53 @@ export const updateDataFP: UpdateDataFP = async update => {
 };
 
 export const initGame: InitGame = async (game, user, handleData) => {
-  const gameRef = firebase.database().ref(`games/${game}`);
   const player = user.uid;
 
-  if (game === 'floatingPoint') {
-    const gameData = await getDataGame('floatingPoint');
-    const playerData = await getDataPlayer('floatingPoint', player);
+  const gameRef = firebase.database().ref(`games/${game}`);
+  const playerRef = firebase.database().ref(`games/${game}/players/${player}`);
+console.log('from init game');
+  const gameExist = await gameRef
+    .once('value')
+    .then(data => data.exists())
+    .catch(err => console.error(err));
 
-    //console.log(gameData);
+  const playerExist = await playerRef
+    .once('value')
+    .then(data => data.exists())
+    .catch(err => console.error(err));
 
-    gameRef.child('game').on('value', data => {
-      handleData('game', data.val());
-    });
+  switch (game) {
+    case 'floatingPoint':
+      if (!gameExist) {
+        createDataGame('floatingPoint', {
+          state: 'conf',
+          admin: player
+        });
+      }
 
-    gameRef.child('players').on('value', data => {
-      handleData('players', data.val());
-    });
+      if (!playerExist) {
+        createDataPlayer('floatingPoint', player, {
+          username: user.displayName || user.email,
+          avatar: user.photoURL,
+          top: 0,
+          left: 0,
+          score: 0,
+          isReady: false
+        });
+      }
 
-    gameRef.child('fp').on('value', data => {
-      handleData('fp', data.val());
-    });
-
-    if (!gameData) {
-      createDataGame('floatingPoint', {
-        state: 'conf',
-        admin: player
+      gameRef.child('game').on('value', data => {
+        handleData('game', data.val());
       });
-    }
 
-    if (!playerData) {
-      const newPlayer = {
-        username: user.displayName || user.email,
-        avatar: user.photoURL,
-        top: 0,
-        left: 0,
-        score: 0,
-        isReady: false
-      };
+      gameRef.child('players').on('value', data => {
+        handleData('players', data.val());
+      });
 
-      createDataPlayer('floatingPoint', player, newPlayer);
-    } else {
-      //handleData('players', playerData);
-      //handleData('all', gameData);
-    }
+      gameRef.child('fp').on('value', data => {
+        handleData('fp', data.val());
+      });
+
+      break;
   }
 };
