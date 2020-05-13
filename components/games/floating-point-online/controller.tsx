@@ -236,8 +236,9 @@ const Controller: React.FC = (): JSX.Element => {
         });
       }
     };
-
-    if (playerLocal && state === 'running') matchFloatingPoint();
+    console.log(playerLocal);
+    console.log(statesPlayers);
+    if (playerLocal !== undefined && state === 'running') matchFloatingPoint();
   });
 
   useEffect(() => {
