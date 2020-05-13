@@ -149,7 +149,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
           isReady: false
         });
       }
-
+console.log('from init game');
       gameRef.child('game').on('value', data => {
         handleData('game', data.val());
       });
