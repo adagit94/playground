@@ -132,6 +132,18 @@ export const initGame: InitGame = async (game, user, handleData) => {
 
   switch (game) {
     case 'floatingPoint':
+      gameRef.child('game').on('value', data => {
+        handleData('game', data.val());
+      });
+
+      gameRef.child('players').on('value', data => {
+        handleData('players', data.val());
+      });
+
+      gameRef.child('fp').on('value', data => {
+        handleData('fp', data.val());
+      });
+
       if (!gameExist) {
         createDataGame('floatingPoint', {
           state: 'conf',
@@ -149,18 +161,6 @@ export const initGame: InitGame = async (game, user, handleData) => {
           isReady: false
         });
       }
-
-      gameRef.child('game').on('value', data => {
-        handleData('game', data.val());
-      });
-
-      gameRef.child('players').on('value', data => {
-        handleData('players', data.val());
-      });
-
-      gameRef.child('fp').on('value', data => {
-        handleData('fp', data.val());
-      });
 
       break;
   }
