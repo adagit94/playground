@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import OptionsCommon from './options-common';
@@ -46,4 +46,4 @@ const ControlPanel: React.FC = () => {
   );
 };
 
-export default React.memo(ControlPanel);
+export default memo(ControlPanel);

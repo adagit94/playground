@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -50,4 +50,4 @@ const Switch: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Switch);
+export default memo(Switch);

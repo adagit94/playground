@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 
 import { PropsButtons } from '../../../types/games/floating-point-offline';
@@ -16,4 +16,4 @@ const Buttons: React.FC<PropsButtons> = ({ children }) => {
   return <Container>{children}</Container>;
 };
 
-export default React.memo(Buttons);
+export default memo(Buttons);

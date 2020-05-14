@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
 import Defaults from '../../../defaults/games/floating-point-online';
-import { Colors } from '../../../types/layout';
+import { Theming } from '../../../types/layout';
 import { ContextFP } from '../../../contexts/games/floating-point-online';
 
 const Point: React.FC = (): JSX.Element => {
   const statesFP = useContext(ContextFP);
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
 
   const { top, left } = statesFP;
 
@@ -36,7 +36,7 @@ const Point: React.FC = (): JSX.Element => {
     to {
     width: ${dimensions}px;
     height: ${dimensions}px;
-    background-color: ${colors.inverted};
+    background-color: ${theming.inverted};
     }
 `;
 
@@ -55,4 +55,4 @@ const Point: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Point);
+export default memo(Point);

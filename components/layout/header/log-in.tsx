@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState, memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -124,4 +124,4 @@ const LogIn: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(LogIn);
+export default memo(LogIn);

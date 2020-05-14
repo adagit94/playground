@@ -19,7 +19,7 @@ export type DispatchesLayout = {
   firebase: React.Dispatch<ActionsFirebase>;
 };
 
-export type Colors = {
+export type Theming = {
   theme: Themes;
   background: string;
   inverted: string;

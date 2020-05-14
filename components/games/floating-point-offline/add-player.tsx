@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
@@ -53,4 +53,4 @@ const AddPlayer: React.FC<PropsButton> = ({ pos }) => {
   );
 };
 
-export default React.memo(AddPlayer);
+export default memo(AddPlayer);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import Icons from './icons';
@@ -8,7 +8,6 @@ import { DividerVertical } from '../../styled-components/dividers';
 import { OverlapDisabled } from '../../styled-components/overlaps';
 import { ContainerOptions } from '../../styled-components/containers';
 
-import { ContextUser } from '../../../contexts/user';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
 import {
@@ -156,4 +155,4 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
   );
 };
 
-export default React.memo(OptionsPlayer);
+export default memo(OptionsPlayer);

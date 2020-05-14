@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import Header from './header/header';
@@ -13,11 +13,11 @@ import { reducerFirebase } from '../../reducers/firebase';
 import { initLayout } from '../../inits/layout';
 import { initUser } from '../../inits/user';
 import { initFirebase } from '../../inits/firebase';
-import { DispatchesLayout, PropsLayout, Colors } from '../../types/layout';
-import { InitUser, ClearUser } from '../../types/auth';
 import { ContextDispatchesLayout } from '../../contexts/layout';
 import { ContextUser } from '../../contexts/user';
 import { ContextFirebase } from '../../contexts/firebase';
+import { DispatchesLayout, PropsLayout, Theming } from '../../types/layout';
+import { InitUser, ClearUser } from '../../types/auth';
 
 const dispatchesLayout: DispatchesLayout = {
   layout: undefined,
@@ -39,7 +39,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 
   const { uid: queryUID } = query;
 
-  const colors: Colors = {
+  const theming: Theming = {
     theme,
     background: theme === 'dark' ? '#000000' : '#ffffff',
     inverted: theme === 'dark' ? '#ffffff' : '#000000'
@@ -53,8 +53,8 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     right: 0;
     bottom: 0;
     left: 0;
-    color: ${colors.inverted};
-    background-color: ${colors.background};
+    color: ${theming.inverted};
+    background-color: ${theming.background};
 
     * {
       box-sizing: border-box;
@@ -103,7 +103,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 
   return (
     <Container>
-      <ThemeProvider theme={colors}>
+      <ThemeProvider theme={theming}>
         <ContextDispatchesLayout.Provider value={dispatchesLayout}>
           <ContextUser.Provider value={statesUser}>
             <ContextFirebase.Provider value={statesFirebase}>

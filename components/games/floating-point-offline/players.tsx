@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { Icons } from '../../../types/games/floating-point-offline';
@@ -173,4 +173,4 @@ const Players: React.FC = (): JSX.Element => {
   return <>{points}</>;
 };
 
-export default React.memo(Players);
+export default memo(Players);

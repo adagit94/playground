@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
@@ -45,4 +45,4 @@ const Speed: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Speed);
+export default memo(Speed);

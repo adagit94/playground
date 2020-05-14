@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 
 import Logo from './logo';
@@ -25,4 +25,4 @@ const Header: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Header);
+export default memo(Header);

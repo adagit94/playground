@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import styled from 'styled-components';
 
 import { PropsLayout } from '../../types/layout';
@@ -11,4 +11,4 @@ const Main: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   return <Container>{content}</Container>;
 };
 
-export default React.memo(Main);
+export default memo(Main);

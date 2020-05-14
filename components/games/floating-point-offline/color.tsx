@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
 import { InputOptionsLabel } from '../../styled-components/inputs';
 
-import { Colors } from '../../../types/layout';
+import { Theming } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-offline';
 import {
   ContextParams,
@@ -47,7 +47,7 @@ const Input = styled.input`
 
 const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
   const states = useContext(ContextParams);
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatchesFP);
 
   return (
@@ -61,7 +61,7 @@ const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
 
               if (
                 !states.colorsOthers.includes(color) &&
-                colors.background !== color
+                theming.background !== color
               ) {
                 dispatches.params({
                   type: 'changeColor',
@@ -80,4 +80,4 @@ const Color: React.FC<PropsOptionsPlayer> = ({ player }) => {
   );
 };
 
-export default React.memo(Color);
+export default memo(Color);

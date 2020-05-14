@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
-import { Colors } from '../../../types/layout';
+import { Theming } from '../../../types/layout';
 import { ContextDispatchesLayout } from '../../../contexts/layout';
 
 const Container = styled.div`
@@ -15,17 +15,17 @@ const Container = styled.div`
 `;
 
 const ThemeButton: React.FC = (): JSX.Element => {
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatchesLayout);
 
   const toggleTheme = (): void => {
     $('#theme-button').animate(
-      { top: colors.theme === 'dark' ? 0 : '50%' },
+      { top: theming.theme === 'dark' ? 0 : '50%' },
       200,
       (): void => {
         sessionStorage.setItem(
           'theme',
-          colors.theme === 'dark' ? 'light' : 'dark'
+          theming.theme === 'dark' ? 'light' : 'dark'
         );
 
         dispatches.layout({ type: 'changeTheme' });
@@ -35,7 +35,7 @@ const ThemeButton: React.FC = (): JSX.Element => {
 
   const Button = styled.input`
     position: absolute;
-    top: ${colors.theme === 'dark' ? '50%' : 0};
+    top: ${theming.theme === 'dark' ? '50%' : 0};
     width: 100%;
     height: 50%;
     border: none;
@@ -57,4 +57,4 @@ const ThemeButton: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(ThemeButton);
+export default memo(ThemeButton);

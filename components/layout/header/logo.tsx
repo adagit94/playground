@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -108,4 +108,4 @@ const Logo: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Logo);
+export default memo(Logo);

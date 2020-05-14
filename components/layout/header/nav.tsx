@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -64,4 +64,4 @@ const Nav: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Nav);
+export default memo(Nav);

@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 import { WindowStats, WindowStatsItem } from '../../styled-components/windows';
 
-import { Colors } from '../../../types/layout';
-import { FloatingPoint } from '../../../types/user';
+import { Theming } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import {
@@ -95,7 +94,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 }): JSX.Element => {
   const [gameStats, setGameStats] = useState(null);
 
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
@@ -170,6 +169,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const getStats = async (): Promise<void> => {
       const statsArr = [];
       const stats = await getDataUserGame(player, 'floatingPoint');
+      const reg = /^([a-z])[a-z]+(?:([A-Z])[a-z]+)*/;
 
       for (const prop in stats) {
         statsArr.push([prop, stats[prop]]);
@@ -237,11 +237,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         {playerData && <Avatar />}
 
         {state === 'conf' && !playerData && (
-          <LoadingIndicator color={colors.inverted} />
+          <LoadingIndicator color={theming.inverted} />
         )}
       </ContainerAvatar>
     </Container>
   );
 };
 
-export default React.memo(OptionsPlayer);
+export default memo(OptionsPlayer);

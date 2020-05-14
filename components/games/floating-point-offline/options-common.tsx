@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import Dimensions from './dimensions';
@@ -78,4 +78,4 @@ const OptionsCommon: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(OptionsCommon);
+export default memo(OptionsCommon);

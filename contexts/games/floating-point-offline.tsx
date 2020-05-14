@@ -1,4 +1,4 @@
-import React from 'react';
+import { createContext } from 'react';
 
 import {
   StatesGame,
@@ -8,11 +8,11 @@ import {
   DispatchesFP
 } from '../../types/games/floating-point-offline';
 
-export const ContextGame = React.createContext<StatesGame>(null);
-export const ContextPlayers = React.createContext<StatesPlayers>(null);
-export const ContextParams = React.createContext<StatesParams>(null);
-export const ContextFP = React.createContext<StatesFP>(null);
-export const ContextDispatchesFP = React.createContext<DispatchesFP>(null);
+export const ContextGame = createContext<StatesGame>(null);
+export const ContextPlayers = createContext<StatesPlayers>(null);
+export const ContextParams = createContext<StatesParams>(null);
+export const ContextFP = createContext<StatesFP>(null);
+export const ContextDispatchesFP = createContext<DispatchesFP>(null);
 
 ContextGame.displayName = 'ContextGame';
 ContextPlayers.displayName = 'ContextPlayers';

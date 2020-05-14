@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { ContainerOption } from '../../styled-components/containers';
@@ -199,4 +199,4 @@ const Icons: React.FC<PropsOptionsPlayer> = ({ player }): JSX.Element => {
   );
 };
 
-export default React.memo(Icons);
+export default memo(Icons);

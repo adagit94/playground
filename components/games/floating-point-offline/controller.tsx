@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef } from 'react';
+import React, { useReducer, useEffect, useRef, memo } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -485,4 +485,4 @@ const Controller: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Controller);
+export default memo(Controller);

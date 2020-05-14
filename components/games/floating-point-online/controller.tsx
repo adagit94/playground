@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, useContext } from 'react';
+import { useReducer, useEffect, useRef, useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -23,8 +23,7 @@ import {
   updateDataPlayer,
   updateDataFP,
   updateDataUser,
-  initGame,
-  clearGame
+  initGame
 } from '../../../firebase/db';
 
 const Container = styled.div`
@@ -314,4 +313,4 @@ const Controller: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Controller);
+export default memo(Controller);

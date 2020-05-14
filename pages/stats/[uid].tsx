@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../components/styled-components/loading-indicator';
@@ -9,7 +9,7 @@ import {
   WindowStatsItem
 } from '../../components/styled-components/windows';
 
-import { Colors } from '../../types/layout';
+import { Theming } from '../../types/layout';
 import { ContextFirebase } from '../../contexts/firebase';
 import { ContextUser } from '../../contexts/user';
 
@@ -25,11 +25,11 @@ const HeadingGame = styled.h3`
 `;
 
 const Stats: React.FC = (): JSX.Element => {
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
 
-  const { background } = colors;
+  const { background } = theming;
   const { user } = statesFirebase;
   const { lastPlayed } = statesUser;
   const { wins, gatheredPoints } = statesUser.games.floatingPoint;

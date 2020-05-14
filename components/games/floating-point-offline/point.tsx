@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
-import { Colors } from '../../../types/layout';
+import { Theming } from '../../../types/layout';
 import {
   ContextGame,
   ContextParams,
@@ -12,7 +12,7 @@ const Point: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
   const statesParams = useContext(ContextParams);
   const statesFP = useContext(ContextFP);
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
 
   const { state } = statesGame;
   const { dimensions, speed } = statesParams;
@@ -41,7 +41,7 @@ const Point: React.FC = (): JSX.Element => {
     to {
     width: ${dimensions}px;
     height: ${dimensions}px;
-    background-color: ${colors.inverted};
+    background-color: ${theming.inverted};
     }
 `;
 
@@ -61,4 +61,4 @@ const Point: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Point);
+export default memo(Point);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
@@ -53,4 +53,4 @@ const RemovePlayer: React.FC<PropsButton> = ({ pos }): JSX.Element => {
   );
 };
 
-export default React.memo(RemovePlayer);
+export default memo(RemovePlayer);

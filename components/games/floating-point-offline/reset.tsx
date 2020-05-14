@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { ButtonOptions } from '../../styled-components/buttons';
@@ -37,4 +37,4 @@ const Reset: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Reset);
+export default memo(Reset);

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
 import {

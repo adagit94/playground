@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import Players from './players';
@@ -28,4 +28,4 @@ const Monitor: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Monitor);
+export default memo(Monitor);

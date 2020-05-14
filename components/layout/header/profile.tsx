@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -68,4 +68,4 @@ const Profile: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Profile);
+export default memo(Profile);

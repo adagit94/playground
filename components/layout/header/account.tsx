@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { useContext } from 'react';
+import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
@@ -8,7 +8,7 @@ import Profile from './profile';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
 
-import { Colors, PropsAvatar } from '../../../types/layout';
+import { Theming, PropsAvatar } from '../../../types/layout';
 import { ContextFirebase } from '../../../contexts/firebase';
 
 const toggleSlider = (): void => {
@@ -67,7 +67,7 @@ const Avatar: React.FC<PropsAvatar> = ({ user, theme }): JSX.Element => {
 };
 
 const Account: React.FC = (): JSX.Element => {
-  const colors: Colors = useContext(ThemeContext);
+  const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
 
   const { user, isAuthenticated, loading } = statesFirebase;
@@ -84,11 +84,11 @@ const Account: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      {loading && <LoadingIndicator color={colors.background} />}
+      {loading && <LoadingIndicator color={theming.background} />}
 
       {!loading && (
         <Button onClick={toggleSlider} type='button'>
-          {isAuthenticated && <Avatar user={user} theme={colors.theme} />}
+          {isAuthenticated && <Avatar user={user} theme={theming.theme} />}
 
           {!isAuthenticated && 'Log in'}
         </Button>
@@ -103,4 +103,4 @@ const Account: React.FC = (): JSX.Element => {
   );
 };
 
-export default React.memo(Account);
+export default memo(Account);
