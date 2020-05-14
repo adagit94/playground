@@ -9,7 +9,7 @@ import { ContextPlayers } from '../../../contexts/games/floating-point-online';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  height: 45%;
+  height: 30%;
   border-top: 1px solid;
 `;
 
@@ -19,6 +19,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
   const [initPossible, setInitPossible] = useState<boolean>(true);
 
   const { admin } = statesGame;
+
   const players = Object.keys(statesPlayers).filter(player => player !== admin);
 
   return (

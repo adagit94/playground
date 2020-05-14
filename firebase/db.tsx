@@ -4,21 +4,24 @@ import 'firebase/firebase-database';
 import { defaultsUser } from '../defaults/user';
 import { UpdateDataFP } from '../types/games/floating-point-online';
 import {
-  InitGame,
   CreateDataGame,
   UpdateDataGame,
   ClearDataGame,
   GetDataGame,
   CreateDataPlayer,
   UpdateDataPlayer,
-  GetDataPlayer
+  GetDataPlayer,
+  InitGame,
+  ClearGame
 } from '../types/games/generic';
 
 import {
   StatesUser,
   CreateDataUser,
   GetDataUser,
-  UpdateDataUser
+  GetDataUserGame,
+  UpdateDataUser,
+  GameDataList
 } from '../types/user';
 
 export const createDataUser: CreateDataUser = async (user, data) => {
@@ -44,6 +47,17 @@ export const getDataUser: GetDataUser = async user => {
   if (!userData) createDataUser(user, defaultsUser);
 
   return userData || defaultsUser;
+};
+
+export const getDataUserGame: GetDataUserGame = async (user, game) => {
+  const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
+
+  const gameData: GameDataList = await gameRef
+    .once('value')
+    .then(snapshot => snapshot.val())
+    .catch(err => console.error(err));
+
+  return gameData;
 };
 
 export const createDataGame: CreateDataGame = async (game, data) => {
@@ -161,6 +175,19 @@ export const initGame: InitGame = async (game, user, handleData) => {
       gameRef.child('fp').on('value', data => {
         handleData('fp', data.val());
       });
+
+      break;
+  }
+};
+
+export const clearGame: ClearGame = game => {
+  const gameRef = firebase.database().ref(`games/${game}`);
+
+  switch (game) {
+    case 'floatingPoint':
+      gameRef.child('game').off('value');
+      gameRef.child('players').off('value');
+      gameRef.child('fp').off('value');
 
       break;
   }

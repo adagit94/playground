@@ -14,14 +14,16 @@ type UpdateDataUserObj = {
   games?: UpdateDataUserGames;
 };
 
-type FloatingPoint = {
+type Games = {
+  floatingPoint: FloatingPoint;
+};
+
+export type FloatingPoint = {
   wins: number;
   gatheredPoints: number;
 };
 
-type Games = {
-  floatingPoint: FloatingPoint;
-};
+export type GameDataList = FloatingPoint;
 
 export type StatesUser = {
   lastPlayed: string;
@@ -39,6 +41,11 @@ export type ActionsUser =
 export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
 
 export type GetDataUser = (user: string) => Promise<StatesUser>;
+
+export type GetDataUserGame = (
+  user: string,
+  game: GamesList
+) => Promise<GameDataList>;
 
 export type UpdateDataUser = (
   user: string,

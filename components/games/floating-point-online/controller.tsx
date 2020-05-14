@@ -19,11 +19,12 @@ import {
 } from '../../../types/games/floating-point-online';
 
 import {
-  initGame,
   updateDataGame,
   updateDataPlayer,
   updateDataFP,
-  updateDataUser
+  updateDataUser,
+  initGame,
+  clearGame
 } from '../../../firebase/db';
 
 const Container = styled.div`
@@ -90,6 +91,9 @@ const Controller: React.FC = (): JSX.Element => {
         direction = 'left';
         limit = 'topLeft';
         break;
+
+      default:
+        return;
     }
 
     switch (limit) {

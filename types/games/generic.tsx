@@ -19,12 +19,6 @@ type UpdatePlayerList = UpdatePlayerFP;
 
 export type GamesList = 'floatingPoint';
 
-export type InitGame = (
-  game: GamesList,
-  user: firebase.User,
-  handleData: HandleData
-) => Promise<void>;
-
 export type CreateDataGame = (
   game: GamesList,
   data: CreateGameList
@@ -55,3 +49,11 @@ export type GetDataPlayer = (
   game: GamesList,
   player: string
 ) => Promise<CreatePlayerList | null>;
+
+export type InitGame = (
+  game: GamesList,
+  user: firebase.User,
+  handleData: HandleData
+) => Promise<void>;
+
+export type ClearGame = (game: GamesList) => void;

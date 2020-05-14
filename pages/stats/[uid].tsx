@@ -1,8 +1,13 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { DividerHorizontal } from '../../components/styled-components/dividers';
 import LoadingIndicator from '../../components/styled-components/loading-indicator';
+import { DividerHorizontal } from '../../components/styled-components/dividers';
+import {
+  WindowStats,
+  WindowStatsItems,
+  WindowStatsItem
+} from '../../components/styled-components/windows';
 
 import { Colors } from '../../types/layout';
 import { ContextFirebase } from '../../contexts/firebase';
@@ -13,54 +18,6 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   padding: 10px;
-`;
-
-const StatsWindow = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  border-radius: 5px;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
-`;
-
-const StatsGeneral = styled.div`
-  width: 150px;
-
-  ul {
-    padding: 0;
-    margin: 0;
-
-    li {
-      list-style: none;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
-`;
-
-const StatsGames = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const StatsGame = styled.div`
-  width: 150px;
-
-  ul {
-    padding: 0;
-    margin: 0;
-
-    li {
-      list-style: none;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-  }
 `;
 
 const HeadingGame = styled.h3`
@@ -79,36 +36,44 @@ const Stats: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <StatsWindow>
-        <StatsGeneral>
+      <WindowStats>
+        <WindowStatsItem>
           <ul>
             <li>
               <span>Last played:</span>
-              {user ? lastPlayed : <LoadingIndicator color={background} />}
+              <span>
+                {user && lastPlayed}
+
+                {!user && <LoadingIndicator color={background} />}
+              </span>
             </li>
           </ul>
-        </StatsGeneral>
+        </WindowStatsItem>
         <DividerHorizontal />
-        <StatsGames>
-          <StatsGame>
+        <WindowStatsItems>
+          <WindowStatsItem>
             <HeadingGame>Floating Point</HeadingGame>
             <ul>
               <li>
                 <span>Wins:</span>
-                {user ? wins : <LoadingIndicator color={background} />}
+                <span>
+                  {user && wins}
+
+                  {!user && <LoadingIndicator color={background} />}
+                </span>
               </li>
               <li>
                 <span>Gathered points:</span>
-                {user ? (
-                  gatheredPoints
-                ) : (
-                  <LoadingIndicator color={background} />
-                )}
+                <span>
+                  {user && gatheredPoints}
+
+                  {!user && <LoadingIndicator color={background} />}
+                </span>
               </li>
             </ul>
-          </StatsGame>
-        </StatsGames>
-      </StatsWindow>
+          </WindowStatsItem>
+        </WindowStatsItems>
+      </WindowStats>
     </Container>
   );
 };

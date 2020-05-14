@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
+import { WindowStats, WindowStatsItem } from '../../styled-components/windows';
 
-import { updateDataGame, updateDataPlayer } from '../../../firebase/db';
 import { Colors } from '../../../types/layout';
+import { FloatingPoint } from '../../../types/user';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import {
@@ -12,11 +13,30 @@ import {
   ContextPlayers
 } from '../../../contexts/games/floating-point-online';
 
+import {
+  updateDataGame,
+  getDataUserGame,
+  updateDataPlayer
+} from '../../../firebase/db';
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 25%;
+  position: relative;
   margin: 5px;
+
+  &:hover {
+    #stats {
+      visibility: visible;
+    }
+  }
+`;
+
+const ContainerStats = styled.div`
+  position: absolute;
+  left: calc(50% - 75px);
+  visibility: hidden;
 `;
 
 const ContainerButtons = styled.div`
@@ -49,7 +69,7 @@ const ButtonStart = styled.button`
 const ContainerInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 50px;
+  height: 75px;
 `;
 
 const Info = styled.div`
@@ -73,6 +93,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   initPossible,
   setInitPossible
 }): JSX.Element => {
+  const [gameStats, setGameStats] = useState(null);
+
   const colors: Colors = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
@@ -81,6 +103,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const { user } = statesFirebase;
   const { state, admin } = statesGame;
   const playerData = player && statesPlayers[player];
+
   const uid = user && user.uid;
 
   const ButtonReady = styled.button`
@@ -143,16 +166,52 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     updateDataGame('floatingPoint', { state: 'init' });
   };
 
+  useEffect(() => {
+    const getStats = async (): Promise<void> => {
+      const statsArr = [];
+      const stats = await getDataUserGame(player, 'floatingPoint');
+
+      for (const prop in stats) {
+        statsArr.push([prop, stats[prop]]);
+      }
+
+      setGameStats(statsArr);
+    };
+
+    if (player) getStats();
+  }, [player]);
+
   return (
     <Container>
+      <ContainerStats id='stats'>
+        {gameStats && (
+          <WindowStats>
+            <WindowStatsItem>
+              <ul>
+                {gameStats.map(stat => {
+                  const [name, value] = stat;
+
+                  return (
+                    <li key={name}>
+                      <span>{name}</span>
+                      <span>{value}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </WindowStatsItem>
+          </WindowStats>
+        )}
+      </ContainerStats>
+
       <ContainerButtons>
-        {state === 'conf' && uid === admin && admin === player && (
+        {state === 'conf' && playerData && uid === admin && admin === player && (
           <ButtonStart onClick={handleInit} type='button'>
             Start
           </ButtonStart>
         )}
 
-        {state === 'conf' && uid === player && (
+        {state === 'conf' && playerData && uid === player && (
           <ButtonReadyClickable
             onClick={(): void => {
               updateDataPlayer('floatingPoint', player, {
@@ -165,12 +224,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           </ButtonReadyClickable>
         )}
 
-        {state === 'conf' && uid !== player && (
+        {state === 'conf' && playerData && uid !== player && (
           <ButtonReady type='button'>Ready</ButtonReady>
         )}
       </ContainerButtons>
       <ContainerInfo>
         <Info>{playerData && playerData.username}</Info>
+
         <Info>{state === 'running' && playerData && playerData.score}</Info>
       </ContainerInfo>
       <ContainerAvatar>
