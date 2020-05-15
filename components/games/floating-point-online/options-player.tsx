@@ -4,6 +4,7 @@ import styled, { ThemeContext } from 'styled-components';
 import LoadingIndicator from '../../styled-components/loading-indicator';
 import { WindowStats, WindowStatsItem } from '../../styled-components/windows';
 
+import { statReg, statReplacer } from '../../../helpers/regs';
 import { Theming } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
@@ -34,6 +35,7 @@ const Container = styled.div`
 
 const ContainerStats = styled.div`
   position: absolute;
+  top: -75px;
   left: calc(50% - 75px);
   visibility: hidden;
 `;
@@ -169,10 +171,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const getStats = async (): Promise<void> => {
       const statsArr = [];
       const stats = await getDataUserGame(player, 'floatingPoint');
-      const reg = /^([a-z])[a-z]+(?:([A-Z])[a-z]+)*/;
 
-      for (const prop in stats) {
-        statsArr.push([prop, stats[prop]]);
+      for (const stat in stats) {
+        const editedProp = stat.replace(statReg, statReplacer);
+
+        statsArr.push([editedProp, stats[stat]]);
       }
 
       setGameStats(statsArr);
@@ -180,6 +183,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
     if (player) getStats();
   }, [player]);
+
+  console.log(gameStats);
 
   return (
     <Container>

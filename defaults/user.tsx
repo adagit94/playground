@@ -1,6 +1,6 @@
 import { StatesUser } from '../types/user';
 
-export const defaultsUser: StatesUser = {
+export const userDefaults: StatesUser = {
   lastPlayed: '-',
   games: {
     floatingPoint: {

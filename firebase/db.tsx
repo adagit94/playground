@@ -1,7 +1,8 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
-import { defaultsUser } from '../defaults/user';
+import { userDefaults } from '../defaults/user';
+import { initPlayerDefaults } from '../defaults/games/floating-point-online';
 import { UpdateDataFP } from '../types/games/floating-point-online';
 import {
   CreateDataGame,
@@ -44,9 +45,9 @@ export const getDataUser: GetDataUser = async user => {
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));
 
-  if (!userData) createDataUser(user, defaultsUser);
+  if (!userData) createDataUser(user, userDefaults);
 
-  return userData || defaultsUser;
+  return userData || userDefaults;
 };
 
 export const getDataUserGame: GetDataUserGame = async (user, game) => {
@@ -154,14 +155,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
       }
 
       if (!playerExist) {
-        createDataPlayer('floatingPoint', player, {
-          username: user.displayName || user.email,
-          avatar: user.photoURL,
-          top: 0,
-          left: 0,
-          score: 0,
-          isReady: false
-        });
+        createDataPlayer('floatingPoint', player, initPlayerDefaults(user));
       }
 
       gameRef.child('game').on('value', data => {

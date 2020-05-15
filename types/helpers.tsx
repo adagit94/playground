@@ -1,1 +1,7 @@
-export type StatsReplace = (match: string, p1: string, p2: string) => string;
+export type StatReplacer = (
+  match: string,
+  first: string,
+  afterFirst: string,
+  next: string,
+  afterNext: string
+) => string;
