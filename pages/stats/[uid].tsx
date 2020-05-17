@@ -5,20 +5,18 @@ import LoadingIndicator from '../../components/styled-components/loading-indicat
 import { DividerHorizontal } from '../../components/styled-components/dividers';
 import {
   WindowStats,
-  WindowStatsItems,
-  WindowStatsItem
+  WindowStatsUser,
+  WindowStatsGames,
+  WindowStatsGame
 } from '../../components/styled-components/windows';
 
 import { statReg, statReplacer } from '../../helpers/regs';
 import { Theming } from '../../types/layout';
-import { ContextFirebase } from '../../contexts/firebase';
 import { ContextUser } from '../../contexts/user';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 10px;
+  height: 100%;
+  margin: 10px;
 `;
 
 const HeadingGame = styled.h3`
@@ -26,74 +24,103 @@ const HeadingGame = styled.h3`
 `;
 
 const Stats: React.FC = (): JSX.Element => {
-  const [stats, setStats] = useState(null);
+  const [userStats, setUserStats] = useState(null);
+  const [gamesStats, setGamesStats] = useState(null);
 
   const theming: Theming = useContext(ThemeContext);
-  const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
 
   const { background } = theming;
-  const { user } = statesFirebase;
 
   useEffect(() => {
     const initStats = (): void => {
-      const statsArr = [];
+      const userStatsArr: any[] = [];
+      const gamesStatsArr: any[] = [];
 
       for (const stat in statesUser) {
-        if (statesUser[stat] === 'games') {
+        if (stat === 'games') {
           for (const game in statesUser[stat]) {
-            for (const statGame in statesUser[stat][game]) {
-              const editedStat = statGame.replace(statReg, statReplacer);
-            }
-          }
-          const editedStat = stat.replace(statReg, statReplacer);
-        }
+            const editedGame = game.replace(statReg, statReplacer);
+            const gameStatsArr: [string, any[]] = [editedGame, []];
 
-        statsArr.push([editedProp, stats[prop]]);
+            for (const gameStat in statesUser[stat][game]) {
+              const editedGameStat = gameStat.replace(statReg, statReplacer);
+
+              gameStatsArr[1].push([
+                editedGameStat,
+                statesUser[stat][game][gameStat]
+              ]);
+            }
+
+            gamesStatsArr.push(gameStatsArr);
+          }
+        } else {
+          const editedUserStat = stat.replace(statReg, statReplacer);
+
+          userStatsArr.push([editedUserStat, statesUser[stat]]);
+        }
       }
-      setStats(statsArr);
+
+      setUserStats(userStatsArr);
+      setGamesStats(gamesStatsArr);
     };
-  }, [statesUser]);
+
+    if (statesUser && !userStats && !gamesStats) initStats();
+  });
+
+  //console.log(stats);
 
   return (
     <Container>
       <WindowStats>
-        <WindowStatsItem>
-          <ul>
-            <li>
-              <span>Last played:</span>
-              <span>
-                {user && lastPlayed}
+        {!userStats && <LoadingIndicator color={background} />}
 
-                {!user && <LoadingIndicator color={background} />}
-              </span>
-            </li>
-          </ul>
-        </WindowStatsItem>
-        <DividerHorizontal />
-        <WindowStatsItems>
-          <WindowStatsItem>
-            <HeadingGame>Floating Point</HeadingGame>
+        {userStats && (
+          <WindowStatsUser>
             <ul>
-              <li>
-                <span>Wins:</span>
-                <span>
-                  {user && wins}
+              {userStats.map(stat => {
+                const [name, value] = stat;
 
-                  {!user && <LoadingIndicator color={background} />}
-                </span>
-              </li>
-              <li>
-                <span>Gathered points:</span>
-                <span>
-                  {user && gatheredPoints}
-
-                  {!user && <LoadingIndicator color={background} />}
-                </span>
-              </li>
+                return (
+                  <li key={name}>
+                    <span>{name}: </span>
+                    <span>{value}</span>
+                  </li>
+                );
+              })}
             </ul>
-          </WindowStatsItem>
-        </WindowStatsItems>
+          </WindowStatsUser>
+        )}
+
+        <DividerHorizontal />
+
+        {!gamesStats && <LoadingIndicator color={background} />}
+
+        {gamesStats && (
+          <WindowStatsGames>
+            {gamesStats.map(game => {
+              const [name, stats] = game;
+
+              return (
+                <WindowStatsGame key={name}>
+                  <HeadingGame>{name}</HeadingGame>
+                  <ul key={name}>
+                    {stats.map(stat => {
+                      const [name, value] = stat;
+
+                      return (
+                        <li key={name}>
+                          <span>{name}: </span>
+                          <span>{value}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </WindowStatsGame>
+              );
+            })}
+          </WindowStatsGames>
+        )}
       </WindowStats>
     </Container>
   );

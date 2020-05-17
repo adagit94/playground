@@ -17,9 +17,9 @@ import {
 } from '../types/games/generic';
 
 import {
-  StatesUser,
+  InitUserDB,
+  ClearUserDB,
   CreateDataUser,
-  GetDataUser,
   GetDataUserGame,
   UpdateDataUser,
   GameDataList
@@ -37,19 +37,6 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   await userRef.update(update).catch(err => console.error(err));
 };
 
-export const getDataUser: GetDataUser = async user => {
-  const userRef = firebase.database().ref(`users/${user}`);
-
-  const userData: StatesUser = await userRef
-    .once('value')
-    .then(snapshot => snapshot.val())
-    .catch(err => console.error(err));
-
-  if (!userData) createDataUser(user, userDefaults);
-
-  return userData || userDefaults;
-};
-
 export const getDataUserGame: GetDataUserGame = async (user, game) => {
   const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
 
@@ -59,6 +46,27 @@ export const getDataUserGame: GetDataUserGame = async (user, game) => {
     .catch(err => console.error(err));
 
   return gameData;
+};
+
+export const initUserDB: InitUserDB = async (user, handleData) => {
+  const userRef = firebase.database().ref(`users/${user}`);
+
+  const userExists = await userRef
+    .once('value')
+    .then(data => data.exists())
+    .catch(err => console.error(err));
+
+  if (!userExists) createDataUser(user, userDefaults);
+
+  userRef.on('value', data => {
+    handleData(data.val());
+  });
+};
+
+export const clearUserDB: ClearUserDB = user => {
+  const userRef = firebase.database().ref(`users/${user}`);
+
+  userRef.off('value');
 };
 
 export const createDataGame: CreateDataGame = async (game, data) => {

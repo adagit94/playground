@@ -2,12 +2,13 @@ import { useContext, useEffect, useState, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from '../../styled-components/loading-indicator';
-import { WindowStats, WindowStatsItem } from '../../styled-components/windows';
+import { WindowStats, WindowStatsGame } from '../../styled-components/windows';
 
 import { statReg, statReplacer } from '../../../helpers/regs';
 import { Theming } from '../../../types/layout';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
+import { ContextUser } from '../../../contexts/user';
 import {
   ContextGame,
   ContextPlayers
@@ -18,6 +19,7 @@ import {
   getDataUserGame,
   updateDataPlayer
 } from '../../../firebase/db';
+import { FloatingPoint } from '../../../types/user';
 
 const Container = styled.div`
   display: flex;
@@ -98,11 +100,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
+  const statesUser = useContext(ContextUser);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
   const { state, admin } = statesGame;
+  const fpStats = statesUser && statesUser.games.floatingPoint;
   const playerData = player && statesPlayers[player];
 
   const uid = user && user.uid;
@@ -168,30 +172,36 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   };
 
   useEffect(() => {
-    const getStats = async (): Promise<void> => {
-      const statsArr = [];
-      const stats = await getDataUserGame(player, 'floatingPoint');
+    const initStats = async (): Promise<void> => {
+      let stats: FloatingPoint;
+      const statsArr: any[] = [];
+
+      if (uid === player) {
+        stats = fpStats;
+      } else {
+        stats = await getDataUserGame(player, 'floatingPoint');
+      }
 
       for (const stat in stats) {
-        const editedProp = stat.replace(statReg, statReplacer);
+        const editedStat = stat.replace(statReg, statReplacer);
 
-        statsArr.push([editedProp, stats[stat]]);
+        statsArr.push([editedStat, stats[stat]]);
       }
 
       setGameStats(statsArr);
     };
 
-    if (player) getStats();
-  }, [player]);
+    if (state === 'conf' && player) initStats();
+  }, [state, uid, player, fpStats]);
 
-  console.log(gameStats);
+  //console.log(gameStats);
 
   return (
     <Container>
       <ContainerStats id='stats'>
-        {gameStats && (
+        {state === 'conf' && gameStats && (
           <WindowStats>
-            <WindowStatsItem>
+            <WindowStatsGame>
               <ul>
                 {gameStats.map(stat => {
                   const [name, value] = stat;
@@ -204,7 +214,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
                   );
                 })}
               </ul>
-            </WindowStatsItem>
+            </WindowStatsGame>
           </WindowStats>
         )}
       </ContainerStats>

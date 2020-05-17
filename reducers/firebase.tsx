@@ -8,7 +8,6 @@ export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
   switch (action.type) {
     case 'initUser':
       return {
-        ...states,
         user: action.payload,
         isAuthenticated: true,
         loading: false

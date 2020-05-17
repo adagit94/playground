@@ -1,3 +1,4 @@
+import { gamesList } from './lists';
 import { StatReplacer } from '../types/helpers';
 
 export const statReg = /^([a-z])([a-z]+)(?:([A-Z])([a-z]+))?/;
@@ -9,12 +10,12 @@ export const statReplacer: StatReplacer = (
   next,
   afterNext
 ) => {
-  const firstToUpper = first.toUpperCase();
-  const nextToLower = next && next.toLowerCase();
+  let edited = first.toUpperCase() + afterFirst;
 
-  let edited = firstToUpper + afterFirst;
-
-  if (next) edited += ' ' + nextToLower + afterNext;
+  if (next) {
+    edited +=
+      ' ' + (gamesList.includes(match) ? next : next.toLowerCase()) + afterNext;
+  }
 
   return edited;
 };

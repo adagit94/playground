@@ -27,20 +27,27 @@ export type GameDataList = FloatingPoint;
 
 export type StatesUser = {
   lastPlayed: string;
+  timePlayed: number;
   games: Games;
 };
 
 export type ActionsUser =
   | {
-      type: 'initUser';
+      type: 'setData';
       payload: StatesUser;
     }
-  | { type: 'editGame'; game: GamesList; operation: 'addPoint' }
   | { type: 'reset' };
 
-export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
+export type HandleData = (data: StatesUser) => void;
 
-export type GetDataUser = (user: string) => Promise<StatesUser>;
+export type InitUserDB = (
+  user: string,
+  handleData: HandleData
+) => Promise<void>;
+
+export type ClearUserDB = (user: string) => void;
+
+export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
 
 export type GetDataUserGame = (
   user: string,

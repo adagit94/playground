@@ -1,6 +1,6 @@
 import { Player } from '../../types/games/floating-point-online';
 
-const Defaults = {
+export const GenericDefaults = {
   dimensions: 10
 };
 
@@ -14,5 +14,3 @@ export const initPlayerDefaults = (user: firebase.User): Player => {
     isReady: false
   };
 };
-
-export default Defaults;

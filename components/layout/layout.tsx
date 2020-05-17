@@ -7,6 +7,7 @@ import Main from './main';
 
 import { initFirebaseApp } from '../../firebase/init-firebase';
 import { initAuthObserver } from '../../firebase/auth';
+import { initUserDB, clearUserDB } from '../../firebase/db';
 import { reducerLayout } from '../../reducers/layout';
 import { reducerUser } from '../../reducers/user';
 import { reducerFirebase } from '../../reducers/firebase';
@@ -17,7 +18,8 @@ import { ContextDispatchesLayout } from '../../contexts/layout';
 import { ContextUser } from '../../contexts/user';
 import { ContextFirebase } from '../../contexts/firebase';
 import { DispatchesLayout, PropsLayout, Theming } from '../../types/layout';
-import { InitUser, ClearUser } from '../../types/auth';
+import { InitUserFirebase, ClearUserFirebase } from '../../types/auth';
+import { HandleData } from '../../types/user';
 
 const dispatchesLayout: DispatchesLayout = {
   layout: undefined,
@@ -35,9 +37,11 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   );
 
   const { pathname, query } = router;
+  const { user } = statesFirebase;
   const { theme } = statesLayout;
 
   const { uid: queryUID } = query;
+  const uid = user && user.uid;
 
   const theming: Theming = {
     theme,
@@ -87,19 +91,35 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const initUser: InitUser = (userFirebase, userDB) => {
-      dispatchFirebase({ type: 'initUser', payload: userFirebase });
-      dispatchUser({ type: 'initUser', payload: userDB });
+    const initUserFirebase: InitUserFirebase = user => {
+      dispatchFirebase({ type: 'initUser', payload: user });
     };
 
-    const clearUser: ClearUser = () => {
+    const clearUserFirebase: ClearUserFirebase = () => {
       dispatchFirebase({ type: 'reset' });
-      dispatchUser({ type: 'reset' });
     };
 
     initFirebaseApp();
-    initAuthObserver(initUser, clearUser);
+    initAuthObserver(initUserFirebase, clearUserFirebase);
   }, []);
+
+  useEffect(() => {
+    const handleData: HandleData = data => {
+      dispatchUser({ type: 'setData', payload: data });
+    };
+
+    if (uid) initUserDB(uid, handleData);
+
+    /*
+    return (): void => {
+      clearUserDB(uid);
+
+      dispatchUser({ type: 'reset' });
+    };
+    */
+  }, [uid]);
+
+  //console.log(statesFirebase);
 
   return (
     <Container>
@@ -119,4 +139,4 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 };
 
 export default Layout;
-//console.log(statesGame.state); border: 1px solid red;
+// border: 1px solid red;

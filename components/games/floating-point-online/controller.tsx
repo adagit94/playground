@@ -7,7 +7,7 @@ import ControlPanel from './control-panel';
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
-import Defaults from '../../../defaults/games/floating-point-online';
+import { GenericDefaults } from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
 import {
@@ -49,7 +49,7 @@ const Controller: React.FC = (): JSX.Element => {
   const statesUser = useContext(ContextUser);
   const handleMoveRef = useRef(null);
 
-  const { dimensions } = Defaults;
+  const { dimensions } = GenericDefaults;
   const { user } = statesFirebase;
   const { state, width, height } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;

@@ -97,6 +97,10 @@ export const FormSocialProvider = styled.button`
 `;
 
 export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
@@ -145,9 +149,4 @@ export const FormWindowValidation = styled.div`
     padding: 0;
     margin: 0;
   }
-`;
-
-export const FormWindowError = styled.div`
-  text-align: center;
-  color: #ff0000;
 `;

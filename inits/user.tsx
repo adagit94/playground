@@ -1,11 +1,3 @@
 import { StatesUser } from '../types/user';
 
-export const initUser: StatesUser = {
-  lastPlayed: undefined,
-  games: {
-    floatingPoint: {
-      wins: undefined,
-      gatheredPoints: undefined
-    }
-  }
-};
+export const initUser: StatesUser = undefined;

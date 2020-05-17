@@ -1,12 +1,9 @@
-import ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-auth';
 import 'firebase/firebase-storage';
 
-import { getDataUser } from './db';
 import {
   InitAuthObserver,
-  HandleError,
   CreateUser,
   UpdateUser,
   Logout,
@@ -16,21 +13,6 @@ import {
   Validator
 } from '../types/auth';
 
-const handleError: HandleError = (err, out) => {
-  const msg = err.message;
-  const el = document.querySelector('#errWindow');
-
-  switch (out) {
-    case 'alert':
-      alert(msg);
-      break;
-
-    case 'el':
-      ReactDOM.render(msg, el);
-      break;
-  }
-};
-
 export const logout: Logout = async () => {
   await firebase
     .auth()
@@ -38,23 +20,24 @@ export const logout: Logout = async () => {
     .catch(err => console.error(err));
 };
 
-export const initAuthObserver: InitAuthObserver = (initUser, clearUser) => {
+export const initAuthObserver: InitAuthObserver = (
+  initUserFirebase,
+  clearUserFirebase
+) => {
   firebase.auth().onAuthStateChanged(
-    async userFirebase => {
-      if (userFirebase) {
-        if (userFirebase.emailVerified) {
-          sessionStorage.setItem('uid', userFirebase.uid);
+    user => {
+      if (user) {
+        if (user.emailVerified) {
+          sessionStorage.setItem('uid', user.uid);
 
-          const userDB = await getDataUser(userFirebase.uid);
-
-          initUser(userFirebase, userDB);
+          initUserFirebase(user);
         } else {
           logout();
         }
       } else {
         sessionStorage.removeItem('uid');
 
-        clearUser();
+        clearUserFirebase();
       }
     },
     err => console.error(err)
@@ -69,7 +52,7 @@ export const createUser: CreateUser = async (email, password) => {
       credential.user.sendEmailVerification().catch(err => console.error(err));
       window.history.back();
     })
-    .catch(err => handleError(err, 'el'));
+    .catch(err => alert(err));
 };
 
 export const updateUser: UpdateUser = async (user, username, avatar) => {
@@ -108,9 +91,7 @@ export const updateUser: UpdateUser = async (user, username, avatar) => {
       .catch(err => console.error(err));
   }
 
-  await user.updateProfile(updateObj).catch(err => {
-    handleError(err, 'alert');
-  });
+  await user.updateProfile(updateObj).catch(err => alert(err));
 
   window.location.reload();
 };
@@ -132,7 +113,7 @@ export const loginEmail: LoginEmail = async (
     })
     .catch(err => {
       handleLoading(false);
-      handleError(err, 'alert');
+      alert(err);
     });
 };
 

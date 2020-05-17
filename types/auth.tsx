@@ -1,21 +1,16 @@
 import { HandleLoading } from '../types/firebase';
 import { StatesUser } from './user';
 
-export type InitUser = (
-  userFirebase: firebase.User,
-  userDB: StatesUser
-) => void;
+export type InitUserFirebase = (user: firebase.User) => void;
 
-export type ClearUser = () => void;
+export type ClearUserFirebase = () => void;
 
 export type InitAuthObserver = (
-  initUser: InitUser,
-  clearUser: ClearUser
+  initUserFirebase: InitUserFirebase,
+  clearUserFirebase: ClearUserFirebase
 ) => void;
 
 export type Logout = () => Promise<void>;
-
-export type HandleError = (err, out: 'el' | 'alert') => void;
 
 export type CreateUser = (email: string, password: string) => Promise<void>;
 

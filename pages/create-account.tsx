@@ -7,9 +7,7 @@ import {
   FormContainer,
   Form,
   FormRowVertical,
-  FormContainerWindow,
-  FormWindowValidation,
-  FormWindowError
+  FormWindowValidation
 } from '../components/styled-components/forms';
 
 import { createUser, validator } from '../firebase/auth';
@@ -59,17 +57,15 @@ const CreateAccount: React.FC = (): JSX.Element => {
 
   return (
     <FormContainer>
-      <FormContainerWindow>
-        <ValidationWindow>
-          Password must contain at least:
-          <ul>
-            <Count>8 characters</Count>
-            <Upper>One uppercase letter</Upper>
-            <Num>One number</Num>
-            <Special>One special character</Special>
-          </ul>
-        </ValidationWindow>
-      </FormContainerWindow>
+      <ValidationWindow>
+        Password must contain at least:
+        <ul>
+          <Count>8 characters</Count>
+          <Upper>One uppercase letter</Upper>
+          <Num>One number</Num>
+          <Special>One special character</Special>
+        </ul>
+      </ValidationWindow>
       <Form
         onSubmit={(e): void => {
           e.preventDefault();
@@ -128,9 +124,6 @@ const CreateAccount: React.FC = (): JSX.Element => {
           <FormButton type='submit'>Create account</FormButton>
         </FormRowVertical>
       </Form>
-      <FormContainerWindow>
-        <FormWindowError id='errWindow' />
-      </FormContainerWindow>
     </FormContainer>
   );
 };
