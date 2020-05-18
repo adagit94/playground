@@ -341,7 +341,7 @@ const Controller: React.FC = (): JSX.Element => {
   };
 
   const recalculate = (): void => {
-    if (state !== 'running' && state !== 'paused') return;
+    if (state !== 'run' && state !== 'paused') return;
 
     const newHeight = document.querySelector('#monitor').clientHeight;
     const newWidth = document.querySelector('#monitor').clientWidth;
@@ -422,11 +422,11 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (state === 'running') matchFloatingPoint();
+    if (state === 'run') matchFloatingPoint();
   });
 
   useEffect(() => {
-    if (state === 'running' && intervalHandleMove === undefined) {
+    if (state === 'run' && intervalHandleMove === undefined) {
       switch (playersCount) {
         case 2:
           controlKeys = controlKeys2P;
@@ -448,7 +448,7 @@ const Controller: React.FC = (): JSX.Element => {
 
       window.addEventListener('keydown', registerKey);
       window.addEventListener('keyup', cancelKey);
-    } else if (state !== 'running' && intervalHandleMove !== undefined) {
+    } else if (state !== 'run' && intervalHandleMove !== undefined) {
       window.clearInterval(intervalHandleMove);
       intervalHandleMove = undefined;
 

@@ -33,7 +33,7 @@ const Icons: React.FC<PropsOptionsPlayer> = ({ player }): JSX.Element => {
     [player as keyof StatesPlayers]: { icon, color }
   } = states;
 
-  const isDefined = typeof icon === 'string';
+  const isDefined = icon ? true : false;
   const unclickableBall1 = iconsOthers.includes('ball1') && icon !== 'ball1';
   const unclickableBall2 = iconsOthers.includes('ball2') && icon !== 'ball2';
   const unclickableBall3 = iconsOthers.includes('ball3') && icon !== 'ball3';

@@ -31,12 +31,10 @@ export type StatesUser = {
   games: Games;
 };
 
-export type ActionsUser =
-  | {
-      type: 'setData';
-      payload: StatesUser;
-    }
-  | { type: 'reset' };
+export type ActionsUser = {
+  type: 'setData';
+  payload: StatesUser;
+};
 
 export type HandleData = (data: StatesUser) => void;
 
@@ -45,7 +43,7 @@ export type InitUserDB = (
   handleData: HandleData
 ) => Promise<void>;
 
-export type ClearUserDB = (user: string) => void;
+export type RemoveListenerUser = (user: string) => void;
 
 export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
 

@@ -7,7 +7,7 @@ import Main from './main';
 
 import { initFirebaseApp } from '../../firebase/init-firebase';
 import { initAuthObserver } from '../../firebase/auth';
-import { initUserDB, clearUserDB } from '../../firebase/db';
+import { initUserDB, removeListenerUser } from '../../firebase/db';
 import { reducerLayout } from '../../reducers/layout';
 import { reducerUser } from '../../reducers/user';
 import { reducerFirebase } from '../../reducers/firebase';
@@ -112,9 +112,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 
     /*
     return (): void => {
-      clearUserDB(uid);
-
-      dispatchUser({ type: 'reset' });
+      removeListenerUser(uid);
     };
     */
   }, [uid]);

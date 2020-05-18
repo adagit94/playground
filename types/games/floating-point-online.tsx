@@ -2,7 +2,9 @@ type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
 type DataSetsList = 'game' | 'players' | 'fp';
 
-type GameStatesList = 'conf' | 'init' | 'running';
+type GameStatesList = 'conf' | 'init' | 'run' | 'eval';
+
+export type Winner = { name: string; score: number };
 
 export type Player = {
   username: string;
@@ -38,9 +40,15 @@ export type StatesGame = {
   admin: string;
   width: number;
   height: number;
+  timer: number;
+  winner: Winner;
 };
 
-export type CreateGame = { state: GameStatesList; admin: string };
+export type CreateGame = {
+  state: GameStatesList;
+  admin: string;
+  timer: number;
+};
 
 export type DataSet = {
   game: CreateGame;
@@ -51,6 +59,8 @@ export type DataSet = {
 export type UpdateGame = {
   state?: GameStatesList;
   admin?: string;
+  timer?: number;
+  winner?: Winner;
 };
 
 export type StatesPlayers = { [uid: string]: Player };
@@ -63,8 +73,7 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'setData'; payload: any }
-  | { type: 'reset' };
+  | { type: 'setData'; payload: any };
 
 export type ActionsPlayers = { type: 'setData'; payload: any };
 

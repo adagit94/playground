@@ -146,7 +146,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
             </ButtonLoadProfile>
           )}
         </Info>
-        <Info>{(state === 'running' || state === 'paused') && score}</Info>
+        <Info>{(state === 'run' || state === 'paused') && score}</Info>
       </ContainerInfo>
       {withProfile && <Avatar bg={user.photoURL} state={state} />}
 

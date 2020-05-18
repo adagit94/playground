@@ -5,10 +5,12 @@ import {
 } from '../../types/games/floating-point-online';
 
 export const initGame: StatesGame = {
-  state: 'conf', // conf / init / running
+  state: 'conf', // conf / init / running / eval
   admin: undefined,
   width: undefined,
-  height: undefined
+  height: undefined,
+  timer: undefined,
+  winner: undefined
 };
 
 export const initPlayers: StatesPlayers = {};

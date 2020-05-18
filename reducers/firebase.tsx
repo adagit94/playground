@@ -30,5 +30,8 @@ export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
         ...initFirebase,
         loading: false
       };
+
+    default:
+      throw new Error('Unspecified / Wrong action');
   }
 };

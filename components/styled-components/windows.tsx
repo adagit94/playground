@@ -53,3 +53,22 @@ export const WindowStatsGame = styled.div`
     }
   }
 `;
+
+export const WindowEval = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
+  opacity: 0.5;
+`;
+
+export const WindowEvalResults = styled.div`
+  font-size: 1.5rem;
+`;

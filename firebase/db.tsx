@@ -1,9 +1,9 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
-import { userDefaults } from '../defaults/user';
-import { initPlayerDefaults } from '../defaults/games/floating-point-online';
 import { UpdateDataFP } from '../types/games/floating-point-online';
+import { DEFAULTS_USER } from '../defaults/user';
+import { DEFAULTS_GAME_FP } from '../defaults/games/floating-point-online';
 import {
   CreateDataGame,
   UpdateDataGame,
@@ -13,12 +13,12 @@ import {
   UpdateDataPlayer,
   GetDataPlayer,
   InitGame,
-  ClearGame
+  RemoveListenersGame
 } from '../types/games/generic';
 
 import {
   InitUserDB,
-  ClearUserDB,
+  RemoveListenerUser,
   CreateDataUser,
   GetDataUserGame,
   UpdateDataUser,
@@ -56,14 +56,14 @@ export const initUserDB: InitUserDB = async (user, handleData) => {
     .then(data => data.exists())
     .catch(err => console.error(err));
 
-  if (!userExists) createDataUser(user, userDefaults);
+  if (!userExists) createDataUser(user, DEFAULTS_USER);
 
   userRef.on('value', data => {
     handleData(data.val());
   });
 };
 
-export const clearUserDB: ClearUserDB = user => {
+export const removeListenerUser: RemoveListenerUser = user => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   userRef.off('value');
@@ -158,12 +158,17 @@ export const initGame: InitGame = async (game, user, handleData) => {
       if (!gameExist) {
         createDataGame('floatingPoint', {
           state: 'conf',
-          admin: player
+          admin: player,
+          timer: DEFAULTS_GAME_FP.timer
         });
       }
 
       if (!playerExist) {
-        createDataPlayer('floatingPoint', player, initPlayerDefaults(user));
+        createDataPlayer(
+          'floatingPoint',
+          player,
+          DEFAULTS_GAME_FP.initPlayerDefaults(user)
+        );
       }
 
       gameRef.child('game').on('value', data => {
@@ -182,7 +187,7 @@ export const initGame: InitGame = async (game, user, handleData) => {
   }
 };
 
-export const clearGame: ClearGame = game => {
+export const removeListenersGame: RemoveListenersGame = game => {
   const gameRef = firebase.database().ref(`games/${game}`);
 
   switch (game) {

@@ -51,7 +51,7 @@ const Point: React.FC = (): JSX.Element => {
     animation-duration: ${2 - 2 * (speed / 10)}s;
     animation-timing-function: ease-in;
     animation-iteration-count: infinite;
-    animation-play-state: ${state === 'paused' ? 'paused' : 'running'};
+    animation-play-state: ${state === 'paused' ? 'paused' : 'run'};
   `;
 
   return (

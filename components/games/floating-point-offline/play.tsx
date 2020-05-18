@@ -118,7 +118,7 @@ const Play: React.FC = (): JSX.Element => {
 
     dispatches.game({
       type: 'changeState',
-      state: 'running'
+      state: 'run'
     });
   };
 
@@ -131,12 +131,12 @@ const Play: React.FC = (): JSX.Element => {
             : (): void =>
                 dispatches.game({
                   type: 'changeState',
-                  state: state === 'running' ? 'paused' : 'running'
+                  state: state === 'run' ? 'paused' : 'run'
                 })
         }
         type='button'
       >
-        {state === 'running' ? (
+        {state === 'run' ? (
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='5 3 15 15'>
             <path d='M6 19h4V5H6v14zm8-14v14h4V5h-4z' />
           </svg>

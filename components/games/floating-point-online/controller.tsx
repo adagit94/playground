@@ -7,7 +7,7 @@ import ControlPanel from './control-panel';
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
-import { GenericDefaults } from '../../../defaults/games/floating-point-online';
+import { DEFAULTS_GAME_FP } from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
 import {
@@ -15,7 +15,8 @@ import {
   Operations,
   Directions,
   Limits,
-  HandleMove
+  HandleMove,
+  Winner
 } from '../../../types/games/floating-point-online';
 
 import {
@@ -23,7 +24,8 @@ import {
   updateDataPlayer,
   updateDataFP,
   updateDataUser,
-  initGame
+  initGame,
+  removeListenersGame
 } from '../../../firebase/db';
 
 const Container = styled.div`
@@ -49,9 +51,9 @@ const Controller: React.FC = (): JSX.Element => {
   const statesUser = useContext(ContextUser);
   const handleMoveRef = useRef(null);
 
-  const { dimensions } = GenericDefaults;
+  const { dimensions, timer } = DEFAULTS_GAME_FP;
   const { user } = statesFirebase;
-  const { state, width, height } = statesGame;
+  const { state, admin, width, height, winner } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
   const dimensionsPercHeight = (dimensions / height) * 100;
@@ -193,7 +195,7 @@ const Controller: React.FC = (): JSX.Element => {
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
           updateDataFP({ top: fpTop, left: fpLeft });
-          updateDataGame('floatingPoint', { state: 'running' });
+          updateDataGame('floatingPoint', { state: 'run' });
         }
       }
     };
@@ -235,8 +237,58 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (playerLocal in statesPlayers && state === 'running')
-      matchFloatingPoint();
+    if (playerLocal in statesPlayers && state === 'run') matchFloatingPoint();
+  });
+
+  useEffect(() => {
+    const evalGame = (): void => {
+      const players: string[] = [];
+      const scores: number[] = [];
+
+      for (const player in statesPlayers) {
+        players.push(player);
+        scores.push(statesPlayers[player].score);
+      }
+
+      const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
+      const highestScore = sortedScores[0];
+      const highestScoreIndex = scores.indexOf(highestScore);
+      const winnerID = players[highestScoreIndex];
+      const winnerName = statesPlayers[winnerID].username;
+      const winnerData: Winner = { name: winnerName, score: highestScore };
+
+      updateDataGame('floatingPoint', { winner: winnerData });
+      updateDataUser(winnerID, {
+        games: {
+          floatingPoint: {
+            wins: statesUser.games.floatingPoint.wins + 1
+          }
+        }
+      });
+    };
+
+    const resetGame = (): void => {
+      for (const player in statesPlayers) {
+        updateDataPlayer('floatingPoint', player, {
+          score: 0,
+          isReady: false
+        });
+      }
+
+      updateDataGame('floatingPoint', {
+        state: 'conf',
+        timer,
+        winner: null
+      });
+    };
+
+    if (state === 'eval' && playerLocal === admin && !winner) {
+      evalGame();
+
+      setTimeout(() => {
+        resetGame();
+      }, 10000);
+    }
   });
 
   useEffect(() => {
@@ -246,7 +298,7 @@ const Controller: React.FC = (): JSX.Element => {
       handleMoveRef.current(e.key);
     };
 
-    if (state === 'running') {
+    if (state === 'run') {
       window.addEventListener('keydown', registerKey);
     } else {
       window.removeEventListener('keydown', registerKey);
@@ -294,6 +346,11 @@ const Controller: React.FC = (): JSX.Element => {
     if (user && !statesGame.admin && !(playerLocal in statesPlayers)) {
       initGame('floatingPoint', user, handleData);
     }
+    /*
+    return (): void => {
+      removeListenersGame('floatingPoint');
+    };
+    */
   });
 
   //console.log(statesGame);

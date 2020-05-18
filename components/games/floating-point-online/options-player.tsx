@@ -6,6 +6,7 @@ import { WindowStats, WindowStatsGame } from '../../styled-components/windows';
 
 import { statReg, statReplacer } from '../../../helpers/regs';
 import { Theming } from '../../../types/layout';
+import { FloatingPoint } from '../../../types/user';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
@@ -19,12 +20,11 @@ import {
   getDataUserGame,
   updateDataPlayer
 } from '../../../firebase/db';
-import { FloatingPoint } from '../../../types/user';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: 20%;
   position: relative;
   margin: 5px;
 
@@ -246,7 +246,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       <ContainerInfo>
         <Info>{playerData && playerData.username}</Info>
 
-        <Info>{state === 'running' && playerData && playerData.score}</Info>
+        <Info>{state === 'run' && playerData && playerData.score}</Info>
       </ContainerInfo>
       <ContainerAvatar>
         {playerData && <Avatar />}

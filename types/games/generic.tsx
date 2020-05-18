@@ -56,4 +56,4 @@ export type InitGame = (
   handleData: HandleData
 ) => Promise<void>;
 
-export type ClearGame = (game: GamesList) => void;
+export type RemoveListenersGame = (game: GamesList) => void;

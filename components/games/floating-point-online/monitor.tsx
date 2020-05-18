@@ -1,9 +1,13 @@
-import { useContext, memo } from 'react';
-import styled from 'styled-components';
+import { useContext, memo, useEffect } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 
 import Players from './players';
 import Point from './point';
 
+import LoadingIndicator from '../../styled-components/loading-indicator';
+import { WindowEval, WindowEvalResults } from '../../styled-components/windows';
+
+import { Theming } from '../../../types/layout';
 import { ContextGame } from '../../../contexts/games/floating-point-online';
 
 const Container = styled.div`
@@ -12,13 +16,27 @@ const Container = styled.div`
 `;
 
 const Monitor: React.FC = (): JSX.Element => {
+  const theming: Theming = useContext(ThemeContext);
   const statesGame = useContext(ContextGame);
 
-  const { state } = statesGame;
+  const { state, winner } = statesGame;
 
   return (
     <Container id='monitor'>
-      {state === 'running' && (
+      {state === 'eval' && (
+        <WindowEval>
+          {!winner && <LoadingIndicator color={theming.background} />}
+
+          {winner && (
+            <WindowEvalResults>
+              <div>Player: {winner.name}</div>
+              <div>Score: {winner.score}</div>
+            </WindowEvalResults>
+          )}
+        </WindowEval>
+      )}
+
+      {state === 'run' && (
         <>
           <Players />
           <Point />
