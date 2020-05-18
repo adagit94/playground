@@ -107,14 +107,14 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
       dispatchUser({ type: 'setData', payload: data });
     };
 
-    if (user) initUserDB(user, handleData);
+    if (user && !statesUser) initUserDB(user, handleData);
 
     /*
     return (): void => {
       removeListenerUser(uid);
     };
     */
-  }, [uid]);
+  });
 
   //console.log(statesFirebase);
 
