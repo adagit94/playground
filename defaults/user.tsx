@@ -1,12 +1,16 @@
-import { StatesUser } from '../types/user';
+import { InitUserDefaults } from '../types/user';
 
-export const DEFAULTS_USER: StatesUser = {
-  lastPlayed: '-',
-  timePlayed: 0,
-  games: {
-    floatingPoint: {
-      wins: 0,
-      gatheredPoints: 0
+export const initUserDefaults: InitUserDefaults = user => {
+  return {
+    registred: user.metadata.creationTime,
+    lastPlayed: '-',
+    mostPlayed: '-',
+    games: {
+      floatingPoint: {
+        wins: 0,
+        gatheredPoints: 0,
+        timePlayed: 0
+      }
     }
-  }
+  };
 };

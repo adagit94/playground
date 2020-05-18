@@ -7,10 +7,12 @@ import {
 export const initGame: StatesGame = {
   state: 'conf', // conf / init / running / eval
   admin: undefined,
-  width: undefined,
-  height: undefined,
+  winner: undefined,
   timer: undefined,
-  winner: undefined
+  timestampStart: undefined,
+  timestampEnd: undefined,
+  width: undefined,
+  height: undefined
 };
 
 export const initPlayers: StatesPlayers = {};

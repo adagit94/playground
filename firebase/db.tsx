@@ -2,8 +2,12 @@ import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
 import { UpdateDataFP } from '../types/games/floating-point-online';
-import { DEFAULTS_USER } from '../defaults/user';
-import { DEFAULTS_GAME_FP } from '../defaults/games/floating-point-online';
+import { initUserDefaults } from '../defaults/user';
+import {
+  DEFAULTS,
+  initPlayerDefaults
+} from '../defaults/games/floating-point-online';
+
 import {
   CreateDataGame,
   UpdateDataGame,
@@ -49,14 +53,16 @@ export const getDataUserGame: GetDataUserGame = async (user, game) => {
 };
 
 export const initUserDB: InitUserDB = async (user, handleData) => {
-  const userRef = firebase.database().ref(`users/${user}`);
+  const { uid } = user;
+
+  const userRef = firebase.database().ref(`users/${uid}`);
 
   const userExists = await userRef
     .once('value')
     .then(data => data.exists())
     .catch(err => console.error(err));
 
-  if (!userExists) createDataUser(user, DEFAULTS_USER);
+  if (!userExists) createDataUser(uid, initUserDefaults(user));
 
   userRef.on('value', data => {
     handleData(data.val());
@@ -159,16 +165,12 @@ export const initGame: InitGame = async (game, user, handleData) => {
         createDataGame('floatingPoint', {
           state: 'conf',
           admin: player,
-          timer: DEFAULTS_GAME_FP.timer
+          timer: DEFAULTS.timer
         });
       }
 
       if (!playerExist) {
-        createDataPlayer(
-          'floatingPoint',
-          player,
-          DEFAULTS_GAME_FP.initPlayerDefaults(user)
-        );
+        createDataPlayer('floatingPoint', player, initPlayerDefaults(user));
       }
 
       gameRef.child('game').on('value', data => {

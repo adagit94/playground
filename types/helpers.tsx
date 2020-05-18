@@ -1,3 +1,5 @@
+import { Games } from '../types/user';
+
 export type StatReplacer = (
   match: string,
   first: string,
@@ -5,3 +7,5 @@ export type StatReplacer = (
   next: string,
   afterNext: string
 ) => string;
+
+export type CalculateMostPlayed = (user: string, games: Games) => void;

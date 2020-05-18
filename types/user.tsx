@@ -3,6 +3,7 @@ import { GamesList } from './games/generic';
 type UpdateDataUserGamesFP = {
   wins?: number;
   gatheredPoints?: number;
+  timePlayed?: number;
 };
 
 type UpdateDataUserGames = {
@@ -10,24 +11,28 @@ type UpdateDataUserGames = {
 };
 
 type UpdateDataUserObj = {
-  lastPlayed?: string;
+  registred?: string;
+  lastPlayed?: GamesList | '-';
+  mostPlayed?: string;
   games?: UpdateDataUserGames;
 };
 
-type Games = {
+export type Games = {
   floatingPoint: FloatingPoint;
 };
 
 export type FloatingPoint = {
   wins: number;
   gatheredPoints: number;
+  timePlayed: number;
 };
 
 export type GameDataList = FloatingPoint;
 
 export type StatesUser = {
-  lastPlayed: string;
-  timePlayed: number;
+  registred: string;
+  lastPlayed: GamesList | '-';
+  mostPlayed: string;
   games: Games;
 };
 
@@ -39,7 +44,7 @@ export type ActionsUser = {
 export type HandleData = (data: StatesUser) => void;
 
 export type InitUserDB = (
-  user: string,
+  user: firebase.User,
   handleData: HandleData
 ) => Promise<void>;
 
@@ -56,3 +61,5 @@ export type UpdateDataUser = (
   user: string,
   update: UpdateDataUserObj
 ) => Promise<void>;
+
+export type InitUserDefaults = (user: firebase.User) => StatesUser;

@@ -4,7 +4,8 @@ import styled, { ThemeContext } from 'styled-components';
 import LoadingIndicator from '../../styled-components/loading-indicator';
 import { WindowStats, WindowStatsGame } from '../../styled-components/windows';
 
-import { statReg, statReplacer } from '../../../helpers/regs';
+import { statEditReg } from '../../../regs/stats';
+import { statReplacer } from '../../../helpers/stats';
 import { Theming } from '../../../types/layout';
 import { FloatingPoint } from '../../../types/user';
 import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
@@ -183,7 +184,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
 
       for (const stat in stats) {
-        const editedStat = stat.replace(statReg, statReplacer);
+        const editedStat = stat.replace(statEditReg, statReplacer);
 
         statsArr.push([editedStat, stats[stat]]);
       }

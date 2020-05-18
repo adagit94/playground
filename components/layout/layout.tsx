@@ -41,7 +41,6 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const { theme } = statesLayout;
 
   const { uid: queryUID } = query;
-  const uid = user && user.uid;
 
   const theming: Theming = {
     theme,
@@ -108,7 +107,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
       dispatchUser({ type: 'setData', payload: data });
     };
 
-    if (uid) initUserDB(uid, handleData);
+    if (user) initUserDB(user, handleData);
 
     /*
     return (): void => {

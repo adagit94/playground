@@ -1,16 +1,17 @@
-import { Player } from '../../types/games/floating-point-online';
+import { InitPlayerDefaults } from '../../types/games/floating-point-online';
 
-export const DEFAULTS_GAME_FP = {
+export const DEFAULTS = {
   dimensions: 10,
-  timer: 180,
-  initPlayerDefaults: (user: firebase.User): Player => {
-    return {
-      username: user.displayName || user.email,
-      avatar: user.photoURL,
-      top: 0,
-      left: 0,
-      score: 0,
-      isReady: false
-    };
-  }
+  timer: 180
+};
+
+export const initPlayerDefaults: InitPlayerDefaults = user => {
+  return {
+    username: user.displayName || user.email,
+    avatar: user.photoURL,
+    top: 0,
+    left: 0,
+    score: 0,
+    isReady: false
+  };
 };

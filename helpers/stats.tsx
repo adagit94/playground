@@ -1,7 +1,5 @@
 import { gamesList } from './lists';
-import { StatReplacer } from '../types/helpers';
-
-export const statReg = /^([a-z])([a-z]+)(?:([A-Z])([a-z]+))?/;
+import { StatReplacer, CalculateMostPlayed } from '../types/helpers';
 
 export const statReplacer: StatReplacer = (
   match,
@@ -18,4 +16,8 @@ export const statReplacer: StatReplacer = (
   }
 
   return edited;
+};
+
+export const calculateMostPlayed: CalculateMostPlayed = (user, games) => {
+
 };

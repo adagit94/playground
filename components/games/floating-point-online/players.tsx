@@ -1,13 +1,13 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
-import { DEFAULTS_GAME_FP } from '../../../defaults/games/floating-point-online';
+import { DEFAULTS } from '../../../defaults/games/floating-point-online';
 import { ContextPlayers } from '../../../contexts/games/floating-point-online';
 
 const Players: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
 
-  const { dimensions } = DEFAULTS_GAME_FP;
+  const { dimensions } = DEFAULTS;
 
   const points: Array<JSX.Element> = [];
 

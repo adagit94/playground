@@ -1,7 +1,7 @@
 import { useContext, memo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
-import { DEFAULTS_GAME_FP } from '../../../defaults/games/floating-point-online';
+import { DEFAULTS } from '../../../defaults/games/floating-point-online';
 import { Theming } from '../../../types/layout';
 import { ContextFP } from '../../../contexts/games/floating-point-online';
 
@@ -11,7 +11,7 @@ const Point: React.FC = (): JSX.Element => {
 
   const { top, left } = statesFP;
 
-  const { dimensions } = DEFAULTS_GAME_FP;
+  const { dimensions } = DEFAULTS;
 
   const Point = styled.div`
     display: flex;

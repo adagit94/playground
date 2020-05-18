@@ -7,7 +7,7 @@ import ControlPanel from './control-panel';
 import * as Reducers from '../../../reducers/games/floating-point-online';
 import * as Inits from '../../../inits/games/floating-point-online';
 import * as Contexts from '../../../contexts/games/floating-point-online';
-import { DEFAULTS_GAME_FP } from '../../../defaults/games/floating-point-online';
+import { DEFAULTS } from '../../../defaults/games/floating-point-online';
 import { ContextFirebase } from '../../../contexts/firebase';
 import { ContextUser } from '../../../contexts/user';
 import {
@@ -24,6 +24,7 @@ import {
   updateDataPlayer,
   updateDataFP,
   updateDataUser,
+  getDataUserGame,
   initGame,
   removeListenersGame
 } from '../../../firebase/db';
@@ -51,7 +52,7 @@ const Controller: React.FC = (): JSX.Element => {
   const statesUser = useContext(ContextUser);
   const handleMoveRef = useRef(null);
 
-  const { dimensions, timer } = DEFAULTS_GAME_FP;
+  const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
   const { state, admin, width, height, winner } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
@@ -155,7 +156,7 @@ const Controller: React.FC = (): JSX.Element => {
     const initGame = (): void => {
       const players = Object.keys(statesPlayers);
 
-      for (let i = 0; i < players.length; i++) {
+      for (let i = 0, l = players.length; i < l; i++) {
         const player = players[i];
 
         if (playerLocal !== player) continue;
@@ -190,12 +191,19 @@ const Controller: React.FC = (): JSX.Element => {
           left: playerLocalLeft
         });
 
-        if (i === players.length - 1) {
+        updateDataUser(playerLocal, {
+          lastPlayed: 'floatingPoint'
+        });
+
+        if (i === l - 1) {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
           updateDataFP({ top: fpTop, left: fpLeft });
-          updateDataGame('floatingPoint', { state: 'run' });
+          updateDataGame('floatingPoint', {
+            state: 'run',
+            timestampStart: Date.now()
+          });
         }
       }
     };
@@ -241,7 +249,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const evalGame = (): void => {
+    const evalGame = async (): Promise<void> => {
       const players: string[] = [];
       const scores: number[] = [];
 
@@ -253,11 +261,31 @@ const Controller: React.FC = (): JSX.Element => {
       const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
       const highestScore = sortedScores[0];
       const highestScoreIndex = scores.indexOf(highestScore);
+
       const winnerID = players[highestScoreIndex];
       const winnerName = statesPlayers[winnerID].username;
       const winnerData: Winner = { name: winnerName, score: highestScore };
 
-      updateDataGame('floatingPoint', { winner: winnerData });
+      await updateDataGame('floatingPoint', {
+        winner: winnerData,
+        timestampEnd: Date.now()
+      });
+
+      const { timestampStart, timestampEnd } = statesGame;
+
+      // vyresit predbezne odpojeni (prechod na jinou stranku, pryc z webu, nikoliv refresh)
+      for (const player in statesPlayers) {
+        const gameStats = await getDataUserGame(player, 'floatingPoint');
+
+        updateDataUser(player, {
+          games: {
+            floatingPoint: {
+              timePlayed: gameStats.timePlayed + (timestampEnd - timestampStart)
+            }
+          }
+        });
+      }
+
       updateDataUser(winnerID, {
         games: {
           floatingPoint: {
@@ -277,8 +305,8 @@ const Controller: React.FC = (): JSX.Element => {
 
       updateDataGame('floatingPoint', {
         state: 'conf',
-        timer,
-        winner: null
+        winner: null,
+        timer
       });
     };
 

@@ -38,10 +38,12 @@ export type PropsOptionsPlayer = {
 export type StatesGame = {
   state: GameStatesList;
   admin: string;
+  winner: Winner;
+  timer: number;
+  timestampStart: number;
+  timestampEnd: number;
   width: number;
   height: number;
-  timer: number;
-  winner: Winner;
 };
 
 export type CreateGame = {
@@ -59,8 +61,10 @@ export type DataSet = {
 export type UpdateGame = {
   state?: GameStatesList;
   admin?: string;
-  timer?: number;
   winner?: Winner;
+  timer?: number;
+  timestampStart?: number;
+  timestampEnd?: number;
 };
 
 export type StatesPlayers = { [uid: string]: Player };
@@ -90,3 +94,5 @@ export type Limits = 'topLeft' | 'bottomRight';
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
 export type HandleMove = (key: Keys) => void;
+
+export type InitPlayerDefaults = (user: firebase.User) => Player;
