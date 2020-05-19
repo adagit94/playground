@@ -1,4 +1,4 @@
-import { StatesFirebase } from '../types/firebase';
+import { StatesFirebase } from 'types/firebase';
 
 export const initFirebase: StatesFirebase = {
   user: undefined,

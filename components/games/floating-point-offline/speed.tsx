@@ -1,17 +1,17 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
-import { ContainerOption } from '../../styled-components/containers';
+import { ContainerOption } from 'components/styled-components/containers';
 import {
   InputOptionsCommon,
   InputOptionsLabel,
   InputOptionsValue
-} from '../../styled-components/inputs';
+} from 'components/styled-components/inputs';
 
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point-offline';
+} from 'contexts/games/floating-point-offline';
 
 const Speed: React.FC = (): JSX.Element => {
   const statesParams = useContext(ContextParams);

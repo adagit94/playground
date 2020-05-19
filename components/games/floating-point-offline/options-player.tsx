@@ -4,22 +4,22 @@ import styled from 'styled-components';
 import Icons from './icons';
 import Color from './color';
 
-import { DividerVertical } from '../../styled-components/dividers';
-import { OverlapDisabled } from '../../styled-components/overlaps';
-import { ContainerOptions } from '../../styled-components/containers';
+import { DividerVertical } from 'components/styled-components/dividers';
+import { OverlapDisabled } from 'components/styled-components/overlaps';
+import { ContainerOptions } from 'components/styled-components/containers';
 
-import { ContextFirebase } from '../../../contexts/firebase';
-import { ContextDispatchesFP } from '../../../contexts/games/floating-point-offline';
+import { ContextFirebase } from 'contexts/firebase';
+import { ContextDispatchesFP } from 'contexts/games/floating-point-offline';
 import {
   ContextGame,
   ContextPlayers
-} from '../../../contexts/games/floating-point-offline';
+} from 'contexts/games/floating-point-offline';
 
 import {
   PropsAvatar,
   PropsOptionsPlayer,
   PropsOptions
-} from '../../../types/games/floating-point-offline';
+} from 'types/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;

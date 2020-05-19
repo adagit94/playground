@@ -4,10 +4,10 @@ import { useContext, memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { FormButton } from '../../styled-components/forms';
+import { FormButton } from 'components/styled-components/forms';
 
 import { logout } from '../../../firebase/auth';
-import { ContextFirebase } from '../../../contexts/firebase';
+import { ContextFirebase } from 'contexts/firebase';
 
 const Container = styled.div`
   display: flex;

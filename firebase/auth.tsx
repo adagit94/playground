@@ -11,7 +11,7 @@ import {
   LoginProvider,
   ResetPassword,
   Validator
-} from '../types/auth';
+} from 'types/auth';
 
 export const logout: Logout = async () => {
   await firebase

@@ -5,7 +5,7 @@ import {
   ActionsGame,
   ActionsPlayers,
   ActionsFP
-} from '../../types/games/floating-point-online';
+} from 'types/games/floating-point-online';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   states,

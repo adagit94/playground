@@ -2,19 +2,19 @@ import { useContext, useState, memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { LinkStandard } from '../../styled-components/links';
-import { DividerHorizontal } from '../../styled-components/dividers';
+import { LinkStandard } from 'components/styled-components/links';
+import { DividerHorizontal } from 'components/styled-components/dividers';
 import {
   FormInput,
   FormButton,
   FormSocialProvider,
   FormRowHorizontal,
   FormLabel
-} from '../../styled-components/forms';
+} from 'components/styled-components/forms';
 
 import { loginEmail, loginProvider } from '../../../firebase/auth';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
-import { HandleLoading } from '../../../types/firebase';
+import { ContextDispatchesLayout } from 'contexts/layout';
+import { HandleLoading } from 'types/firebase';
 
 const Form = styled.form`
   width: 100%;

@@ -1,5 +1,5 @@
-import { StatesFirebase, ActionsFirebase } from '../types/firebase';
-import { initFirebase } from '../inits/firebase';
+import { StatesFirebase, ActionsFirebase } from 'types/firebase';
+import { initFirebase } from 'inits/firebase';
 
 export const reducerFirebase: React.Reducer<StatesFirebase, ActionsFirebase> = (
   states,

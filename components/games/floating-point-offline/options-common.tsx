@@ -10,11 +10,11 @@ import Reset from './reset';
 import AddPlayer from './add-player';
 import RemovePlayer from './remove-player';
 
-import { DividerVertical } from '../../styled-components/dividers';
-import { OverlapDisabled } from '../../styled-components/overlaps';
-import { ContainerOptions } from '../../styled-components/containers';
+import { DividerVertical } from 'components/styled-components/dividers';
+import { OverlapDisabled } from 'components/styled-components/overlaps';
+import { ContainerOptions } from 'components/styled-components/containers';
 
-import { ContextGame } from '../../../contexts/games/floating-point-offline';
+import { ContextGame } from 'contexts/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;

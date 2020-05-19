@@ -1,9 +1,9 @@
 import { memo, useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-import { updateDataGame } from '../../../firebase/db';
-import { ContextFirebase } from '../../../contexts/firebase';
-import { ContextGame } from '../../../contexts/games/floating-point-online';
+import { updateDataGame } from 'firebase/db';
+import { ContextFirebase } from 'contexts/firebase';
+import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   display: flex;

@@ -7,11 +7,11 @@ import {
   ActionsPlayers,
   ActionsParams,
   ActionsFP
-} from '../../types/games/floating-point-offline';
+} from 'types/games/floating-point-offline';
 
-import { initGame, initParams } from '../../inits/games/floating-point-offline';
+import { initGame, initParams } from 'inits/games/floating-point-offline';
 
-import { Defaults } from '../../defaults/games/floating-point-offline';
+import { Defaults } from 'defaults/games/floating-point-offline';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
   states,

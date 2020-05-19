@@ -6,7 +6,7 @@ import {
   StatesParams,
   StatesFP,
   DispatchesFP
-} from '../../types/games/floating-point-offline';
+} from 'types/games/floating-point-offline';
 
 export const ContextGame = createContext<StatesGame>(null);
 export const ContextPlayers = createContext<StatesPlayers>(null);

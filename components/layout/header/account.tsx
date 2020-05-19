@@ -6,10 +6,10 @@ import $ from 'jquery';
 import LogIn from './log-in';
 import Profile from './profile';
 
-import LoadingIndicator from '../../styled-components/loading-indicator';
+import LoadingIndicator from 'components/styled-components/loading-indicator';
 
-import { Theming, PropsAvatar } from '../../../types/layout';
-import { ContextFirebase } from '../../../contexts/firebase';
+import { Theming, PropsAvatar } from 'types/layout';
+import { ContextFirebase } from 'contexts/firebase';
 
 const toggleSlider = (): void => {
   $('#slider').slideToggle(100, 'linear');

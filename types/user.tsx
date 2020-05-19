@@ -52,6 +52,8 @@ export type RemoveListenerUser = (user: string) => void;
 
 export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
 
+export type GetDataUserGames = (user: string) => Promise<Games>;
+
 export type GetDataUserGame = (
   user: string,
   game: GamesList

@@ -3,9 +3,9 @@ import {
   StatesPlayers,
   StatesParams,
   StatesFP
-} from '../../types/games/floating-point-offline';
+} from 'types/games/floating-point-offline';
 
-import { Defaults } from '../../defaults/games/floating-point-offline';
+import { Defaults } from 'defaults/games/floating-point-offline';
 
 export const initGame: StatesGame = {
   state: 'off', // off / conf / running / paused

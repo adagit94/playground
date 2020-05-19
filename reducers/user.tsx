@@ -1,4 +1,4 @@
-import { StatesUser, ActionsUser } from '../types/user';
+import { StatesUser, ActionsUser } from 'types/user';
 
 export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
   states,

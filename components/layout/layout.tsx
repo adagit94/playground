@@ -5,21 +5,21 @@ import styled, { ThemeProvider } from 'styled-components';
 import Header from './header/header';
 import Main from './main';
 
-import { initFirebaseApp } from '../../firebase/init-firebase';
+import { initFirebaseApp } from 'firebase/init-firebase';
 import { initAuthObserver } from '../../firebase/auth';
-import { initUserDB, removeListenerUser } from '../../firebase/db';
-import { reducerLayout } from '../../reducers/layout';
-import { reducerUser } from '../../reducers/user';
-import { reducerFirebase } from '../../reducers/firebase';
-import { initLayout } from '../../inits/layout';
-import { initUser } from '../../inits/user';
-import { initFirebase } from '../../inits/firebase';
-import { ContextDispatchesLayout } from '../../contexts/layout';
-import { ContextUser } from '../../contexts/user';
-import { ContextFirebase } from '../../contexts/firebase';
-import { DispatchesLayout, PropsLayout, Theming } from '../../types/layout';
-import { InitUserFirebase, ClearUserFirebase } from '../../types/auth';
-import { HandleData } from '../../types/user';
+import { initUserDB, removeListenerUser } from 'firebase/db';
+import { reducerLayout } from 'reducers/layout';
+import { reducerUser } from 'reducers/user';
+import { reducerFirebase } from 'reducers/firebase';
+import { initLayout } from 'inits/layout';
+import { initUser } from 'inits/user';
+import { initFirebase } from 'inits/firebase';
+import { ContextDispatchesLayout } from 'contexts/layout';
+import { ContextUser } from 'contexts/user';
+import { ContextFirebase } from 'contexts/firebase';
+import { DispatchesLayout, PropsLayout, Theming } from 'types/layout';
+import { InitUserFirebase, ClearUserFirebase } from 'types/auth';
+import { HandleData } from 'types/user';
 
 const dispatchesLayout: DispatchesLayout = {
   layout: undefined,

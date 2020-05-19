@@ -8,7 +8,7 @@ import {
   Form,
   FormRowVertical,
   FormWindowValidation
-} from '../components/styled-components/forms';
+} from 'components/styled-components/forms';
 
 import { createUser, validator } from '../firebase/auth';
 

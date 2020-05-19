@@ -1,12 +1,12 @@
 import * as firebase from 'firebase/app';
 import 'firebase/firebase-database';
 
-import { UpdateDataFP } from '../types/games/floating-point-online';
-import { initUserDefaults } from '../defaults/user';
+import { UpdateDataFP } from 'types/games/floating-point-online';
+import { initUserDefaults } from 'defaults/user';
 import {
   DEFAULTS,
   initPlayerDefaults
-} from '../defaults/games/floating-point-online';
+} from 'defaults/games/floating-point-online';
 
 import {
   CreateDataGame,
@@ -18,16 +18,18 @@ import {
   GetDataPlayer,
   InitGame,
   RemoveListenersGame
-} from '../types/games/generic';
+} from 'types/games/generic';
 
 import {
   InitUserDB,
   RemoveListenerUser,
   CreateDataUser,
+  GetDataUserGames,
   GetDataUserGame,
   UpdateDataUser,
-  GameDataList
-} from '../types/user';
+  GameDataList,
+  Games
+} from 'types/user';
 
 export const createDataUser: CreateDataUser = async (user, data) => {
   const userRef = firebase.database().ref(`users/${user}`);
@@ -39,6 +41,28 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   await userRef.update(update).catch(err => console.error(err));
+};
+
+export const getDataUserGame: GetDataUserGame = async (user, game) => {
+  const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
+
+  const gameData: GameDataList = await gameRef
+    .once('value')
+    .then(snapshot => snapshot.val())
+    .catch(err => console.error(err));
+
+  return gameData;
+};
+
+export const getDataUserGames: GetDataUserGames = async user => {
+  const gamesRef = firebase.database().ref(`users/${user}/games`);
+
+  const gamesData: Games = await gamesRef
+    .once('value')
+    .then(snapshot => snapshot.val())
+    .catch(err => console.error(err));
+
+  return gamesData;
 };
 
 export const getDataUserGame: GetDataUserGame = async (user, game) => {

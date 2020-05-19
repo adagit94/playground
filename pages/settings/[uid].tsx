@@ -9,10 +9,10 @@ import {
   FormInput,
   FormButton,
   FormButtonInput
-} from '../../components/styled-components/forms';
+} from 'components/styled-components/forms';
 
 import { updateUser } from '../../firebase/auth';
-import { ContextFirebase } from '../../contexts/firebase';
+import { ContextFirebase } from 'contexts/firebase';
 
 const Container = styled.div`
   display: flex;

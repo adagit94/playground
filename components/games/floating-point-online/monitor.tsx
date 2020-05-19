@@ -4,11 +4,11 @@ import styled, { ThemeContext } from 'styled-components';
 import Players from './players';
 import Point from './point';
 
-import LoadingIndicator from '../../styled-components/loading-indicator';
-import { WindowEval, WindowEvalResults } from '../../styled-components/windows';
+import LoadingIndicator from 'components/styled-components/loading-indicator';
+import { WindowEval, WindowEvalResults } from 'components/styled-components/windows';
 
-import { Theming } from '../../../types/layout';
-import { ContextGame } from '../../../contexts/games/floating-point-online';
+import { Theming } from 'types/layout';
+import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   height: 70%;

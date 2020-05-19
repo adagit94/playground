@@ -1,4 +1,4 @@
-import { InitPlayerDefaults } from '../../types/games/floating-point-online';
+import { InitPlayerDefaults } from 'types/games/floating-point-online';
 
 export const DEFAULTS = {
   dimensions: 10,

@@ -1,13 +1,13 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
-import { ButtonOptions } from '../../styled-components/buttons';
+import { ButtonOptions } from 'components/styled-components/buttons';
 
 import {
   ContextGame,
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point-offline';
+} from 'contexts/games/floating-point-offline';
 
 const Button = styled(ButtonOptions)`
   margin-right: 10px;

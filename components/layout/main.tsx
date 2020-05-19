@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { PropsLayout } from '../../types/layout';
+import { PropsLayout } from 'types/layout';
 
 const Container = styled.main`
   flex: auto;

@@ -1,15 +1,15 @@
 import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { ContainerOption } from '../../styled-components/containers';
-import { InputOptionsLabel } from '../../styled-components/inputs';
+import { ContainerOption } from 'components/styled-components/containers';
+import { InputOptionsLabel } from 'components/styled-components/inputs';
 
-import { Theming } from '../../../types/layout';
-import { PropsOptionsPlayer } from '../../../types/games/floating-point-offline';
+import { Theming } from 'types/layout';
+import { PropsOptionsPlayer } from 'types/games/floating-point-offline';
 import {
   ContextParams,
   ContextDispatchesFP
-} from '../../../contexts/games/floating-point-offline';
+} from 'contexts/games/floating-point-offline';
 
 const ContainerInput = styled.div`
   display: flex;

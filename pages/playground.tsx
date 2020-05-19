@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import { ContextFirebase } from '../contexts/firebase';
+import { ContextFirebase } from 'contexts/firebase';
 
 const Container = styled.div`
   padding: 10px;

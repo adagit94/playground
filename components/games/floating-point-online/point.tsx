@@ -1,9 +1,9 @@
 import { useContext, memo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
-import { DEFAULTS } from '../../../defaults/games/floating-point-online';
-import { Theming } from '../../../types/layout';
-import { ContextFP } from '../../../contexts/games/floating-point-online';
+import { DEFAULTS } from 'defaults/games/floating-point-online';
+import { Theming } from 'types/layout';
+import { ContextFP } from 'contexts/games/floating-point-online';
 
 const Point: React.FC = (): JSX.Element => {
   const statesFP = useContext(ContextFP);

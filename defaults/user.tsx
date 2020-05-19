@@ -1,4 +1,4 @@
-import { InitUserDefaults } from '../types/user';
+import { InitUserDefaults } from 'types/user';
 
 export const initUserDefaults: InitUserDefaults = user => {
   return {

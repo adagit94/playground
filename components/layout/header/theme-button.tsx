@@ -2,8 +2,8 @@ import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';
 
-import { Theming } from '../../../types/layout';
-import { ContextDispatchesLayout } from '../../../contexts/layout';
+import { Theming } from 'types/layout';
+import { ContextDispatchesLayout } from 'contexts/layout';
 
 const Container = styled.div`
   display: flex;

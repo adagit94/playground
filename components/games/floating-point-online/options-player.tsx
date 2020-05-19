@@ -1,26 +1,26 @@
 import { useContext, useEffect, useState, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import LoadingIndicator from '../../styled-components/loading-indicator';
-import { WindowStats, WindowStatsGame } from '../../styled-components/windows';
+import LoadingIndicator from 'components/styled-components/loading-indicator';
+import { WindowStats, WindowStatsGame } from 'components/styled-components/windows';
 
-import { statEditReg } from '../../../regs/stats';
-import { statReplacer } from '../../../helpers/stats';
-import { Theming } from '../../../types/layout';
-import { FloatingPoint } from '../../../types/user';
-import { PropsOptionsPlayer } from '../../../types/games/floating-point-online';
-import { ContextFirebase } from '../../../contexts/firebase';
-import { ContextUser } from '../../../contexts/user';
+import { statEditReg } from 'regs/stats';
+import { statReplacer } from 'helpers/stats';
+import { Theming } from 'types/layout';
+import { FloatingPoint } from 'types/user';
+import { PropsOptionsPlayer } from 'types/games/floating-point-online';
+import { ContextFirebase } from 'contexts/firebase';
+import { ContextUser } from 'contexts/user';
 import {
   ContextGame,
   ContextPlayers
-} from '../../../contexts/games/floating-point-online';
+} from 'contexts/games/floating-point-online';
 
 import {
   updateDataGame,
   getDataUserGame,
   updateDataPlayer
-} from '../../../firebase/db';
+} from 'firebase/db';
 
 const Container = styled.div`
   display: flex;

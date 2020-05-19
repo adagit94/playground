@@ -1,4 +1,4 @@
-import { HandleLoading } from '../types/firebase';
+import { HandleLoading } from 'types/firebase';
 import { StatesUser } from './user';
 
 export type InitUserFirebase = (user: firebase.User) => void;

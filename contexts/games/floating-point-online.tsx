@@ -4,7 +4,7 @@ import {
   StatesGame,
   StatesPlayers,
   StatesFP
-} from '../../types/games/floating-point-online';
+} from 'types/games/floating-point-online';
 
 export const ContextGame = createContext<StatesGame>(null);
 export const ContextPlayers = createContext<StatesPlayers>(null);

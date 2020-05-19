@@ -1,4 +1,4 @@
-import { StatesLayout, ActionsLayout } from '../types/layout';
+import { StatesLayout, ActionsLayout } from 'types/layout';
 
 export const reducerLayout: React.Reducer<StatesLayout, ActionsLayout> = (
   states,

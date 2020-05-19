@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import OptionsPlayer from './options-player';
 import Timer from './timer';
 
-import { ContextGame } from '../../../contexts/games/floating-point-online';
-import { ContextPlayers } from '../../../contexts/games/floating-point-online';
+import { ContextGame } from 'contexts/games/floating-point-online';
+import { ContextPlayers } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   display: flex;

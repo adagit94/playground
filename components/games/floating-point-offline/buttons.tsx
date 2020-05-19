@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
-import { PropsButtons } from '../../../types/games/floating-point-offline';
+import { PropsButtons } from 'types/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;

@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import * as Reducers from '../../../reducers/games/floating-point-offline';
-import * as Inits from '../../../inits/games/floating-point-offline';
-import * as Contexts from '../../../contexts/games/floating-point-offline';
+import * as Reducers from 'reducers/games/floating-point-offline';
+import * as Inits from 'inits/games/floating-point-offline';
+import * as Contexts from 'contexts/games/floating-point-offline';
 import {
   ControlKeys,
   ControlKeys2P,
   ControlKeys3P,
   ControlKeys4P,
   DispatchesFP
-} from '../../../types/games/floating-point-offline';
+} from 'types/games/floating-point-offline';
 
 let controlKeys: ControlKeys;
 let intervalHandleMove: number;

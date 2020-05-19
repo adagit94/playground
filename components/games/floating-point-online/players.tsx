@@ -1,8 +1,8 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
-import { DEFAULTS } from '../../../defaults/games/floating-point-online';
-import { ContextPlayers } from '../../../contexts/games/floating-point-online';
+import { DEFAULTS } from 'defaults/games/floating-point-online';
+import { ContextPlayers } from 'contexts/games/floating-point-online';
 
 const Players: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);

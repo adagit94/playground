@@ -1,5 +1,6 @@
+import { getDataUserGames } from 'firebase/db';
 import { gamesList } from './lists';
-import { StatReplacer, CalculateMostPlayed } from '../types/helpers';
+import { StatReplacer, CalculateMostPlayed } from 'types/helpers';
 
 export const statReplacer: StatReplacer = (
   match,
@@ -18,6 +19,17 @@ export const statReplacer: StatReplacer = (
   return edited;
 };
 
-export const calculateMostPlayed: CalculateMostPlayed = (user, games) => {
+export const calculateMostPlayed: CalculateMostPlayed = async user => {
+  const gamesStats = await getDataUserGames(user);
 
+  const games = Object.keys(gamesStats);
+  const times: number[] = games.map(game => gamesStats[game].timePlayed);
+
+  const sortedTimes = [...times].sort((a, b) => a - b).reverse();
+  const highestTime = sortedTimes[0];
+  const highestTimeindex = times.indexOf(highestTime);
+
+  const mostPlayed = games[highestTimeindex];
+
+  return mostPlayed;
 };

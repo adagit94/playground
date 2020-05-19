@@ -7,7 +7,7 @@ import {
   FormContainer,
   Form,
   FormRowVertical
-} from '../components/styled-components/forms';
+} from 'components/styled-components/forms';
 
 import { resetPassword } from '../firebase/auth';
 

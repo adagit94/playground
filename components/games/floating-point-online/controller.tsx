@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import Monitor from './monitor';
 import ControlPanel from './control-panel';
 
-import * as Reducers from '../../../reducers/games/floating-point-online';
-import * as Inits from '../../../inits/games/floating-point-online';
-import * as Contexts from '../../../contexts/games/floating-point-online';
-import { DEFAULTS } from '../../../defaults/games/floating-point-online';
-import { ContextFirebase } from '../../../contexts/firebase';
-import { ContextUser } from '../../../contexts/user';
+import * as Reducers from 'reducers/games/floating-point-online';
+import * as Inits from 'inits/games/floating-point-online';
+import * as Contexts from 'contexts/games/floating-point-online';
+import { calculateMostPlayed } from 'helpers/stats';
+import { DEFAULTS } from 'defaults/games/floating-point-online';
+import { ContextFirebase } from 'contexts/firebase';
+import { ContextUser } from 'contexts/user';
 import {
   HandleData,
   Operations,
@@ -17,7 +18,7 @@ import {
   Limits,
   HandleMove,
   Winner
-} from '../../../types/games/floating-point-online';
+} from 'types/games/floating-point-online';
 
 import {
   updateDataGame,
@@ -27,7 +28,7 @@ import {
   getDataUserGame,
   initGame,
   removeListenersGame
-} from '../../../firebase/db';
+} from 'firebase/db';
 
 const Container = styled.div`
   display: flex;
@@ -250,13 +251,8 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
-      const players: string[] = [];
-      const scores: number[] = [];
-
-      for (const player in statesPlayers) {
-        players.push(player);
-        scores.push(statesPlayers[player].score);
-      }
+      const players = Object.keys(statesPlayers);
+      const scores = players.map(player => statesPlayers[player].score);
 
       const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
       const highestScore = sortedScores[0];
@@ -272,24 +268,37 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       const { timestampStart, timestampEnd } = statesGame;
+      console.log(timestampEnd);
 
       // vyresit predbezne odpojeni (prechod na jinou stranku, pryc z webu, nikoliv refresh)
+      let wins: number;
+
       for (const player in statesPlayers) {
         const gameStats = await getDataUserGame(player, 'floatingPoint');
 
-        updateDataUser(player, {
+        await updateDataUser(player, {
           games: {
             floatingPoint: {
               timePlayed: gameStats.timePlayed + (timestampEnd - timestampStart)
             }
           }
         });
+
+        const mostPlayed = await calculateMostPlayed(player);
+
+        if (mostPlayed !== 'floatingPoint') {
+          updateDataUser(player, {
+            mostPlayed
+          });
+        }
+
+        if (player === winnerID) wins = gameStats.wins + 1;
       }
 
       updateDataUser(winnerID, {
         games: {
           floatingPoint: {
-            wins: statesUser.games.floatingPoint.wins + 1
+            wins
           }
         }
       });

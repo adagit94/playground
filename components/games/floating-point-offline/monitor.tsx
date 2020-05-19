@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Players from './players';
 import Point from './point';
 
-import { ContextGame } from '../../../contexts/games/floating-point-offline';
+import { ContextGame } from 'contexts/games/floating-point-offline';
 
 const Container = styled.div`
   height: 55%;

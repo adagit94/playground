@@ -1,12 +1,12 @@
 import { useContext, memo } from 'react';
 import styled, { keyframes, ThemeContext } from 'styled-components';
 
-import { Theming } from '../../../types/layout';
+import { Theming } from 'types/layout';
 import {
   ContextGame,
   ContextParams,
   ContextFP
-} from '../../../contexts/games/floating-point-offline';
+} from 'contexts/games/floating-point-offline';
 
 const Point: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);

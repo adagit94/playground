@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import LoadingIndicator from '../../components/styled-components/loading-indicator';
-import { DividerHorizontal } from '../../components/styled-components/dividers';
+import LoadingIndicator from 'components/styled-components/loading-indicator';
+import { DividerHorizontal } from 'components/styled-components/dividers';
 import {
   WindowStats,
   WindowStatsUser,
   WindowStatsGames,
   WindowStatsGame
-} from '../../components/styled-components/windows';
+} from 'components/styled-components/windows';
 
-import { statEditReg } from '../../regs/stats';
-import { statReplacer } from '../../helpers/stats';
-import { Theming } from '../../types/layout';
-import { ContextUser } from '../../contexts/user';
+import { statEditReg } from 'regs/stats';
+import { statReplacer } from 'helpers/stats';
+import { Theming } from 'types/layout';
+import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
   height: 100%;

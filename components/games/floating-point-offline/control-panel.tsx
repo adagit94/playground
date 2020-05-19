@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import OptionsCommon from './options-common';
 import OptionsPlayer from './options-player';
 
-import { ContextGame } from '../../../contexts/games/floating-point-offline';
+import { ContextGame } from 'contexts/games/floating-point-offline';
 
 const Container = styled.div`
   display: flex;
