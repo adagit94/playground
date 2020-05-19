@@ -2,9 +2,13 @@ import { useContext, useEffect, useState, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
-import { WindowStats, WindowStatsGame } from 'components/styled-components/windows';
+import {
+  WindowStats,
+  WindowStatsGame
+} from 'components/styled-components/windows';
 
-import { statEditReg } from 'regs/stats';
+import { updateDataGame, getDataUserGame, updateDataPlayer } from 'firebase/db';
+import { statNameEditReg } from 'regs/stats';
 import { statReplacer } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
@@ -16,18 +20,13 @@ import {
   ContextPlayers
 } from 'contexts/games/floating-point-online';
 
-import {
-  updateDataGame,
-  getDataUserGame,
-  updateDataPlayer
-} from 'firebase/db';
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
   position: relative;
-  margin: 5px;
 
   &:hover {
     #stats {
@@ -38,8 +37,8 @@ const Container = styled.div`
 
 const ContainerStats = styled.div`
   position: absolute;
-  top: -75px;
-  left: calc(50% - 75px);
+  top: -85px;
+  left: calc(50% - 80px);
   visibility: hidden;
 `;
 
@@ -107,7 +106,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   const { user } = statesFirebase;
   const { state, admin } = statesGame;
-  const fpStats = statesUser && statesUser.games.floatingPoint;
+  const userGameStats = statesUser && statesUser.games.floatingPoint;
   const playerData = player && statesPlayers[player];
 
   const uid = user && user.uid;
@@ -158,7 +157,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const handleInit = (): void => {
     const players = Object.keys(statesPlayers);
 
-    if (players.length < 2) return;
+    //if (players.length < 2) return;
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
@@ -173,18 +172,18 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   };
 
   useEffect(() => {
-    const initStats = async (): Promise<void> => {
+    const getStats = async (): Promise<void> => {
       let stats: FloatingPoint;
       const statsArr: any[] = [];
 
       if (uid === player) {
-        stats = fpStats;
+        stats = userGameStats;
       } else {
         stats = await getDataUserGame(player, 'floatingPoint');
       }
 
       for (const stat in stats) {
-        const editedStat = stat.replace(statEditReg, statReplacer);
+        const editedStat = stat.replace(statNameEditReg, statReplacer);
 
         statsArr.push([editedStat, stats[stat]]);
       }
@@ -192,15 +191,19 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       setGameStats(statsArr);
     };
 
-    if (state === 'conf' && player) initStats();
-  }, [state, uid, player, fpStats]);
+    if (state === 'conf' && player) getStats();
+  }, [state, uid, player, userGameStats]);
 
   //console.log(gameStats);
 
   return (
     <Container>
-      <ContainerStats id='stats'>
-        {state === 'conf' && gameStats && (
+      {state === 'conf' && !playerData && (
+        <LoadingIndicator color={theming.inverted} />
+      )}
+
+      {state === 'conf' && gameStats && (
+        <ContainerStats id='stats'>
           <WindowStats>
             <WindowStatsGame>
               <ul>
@@ -217,45 +220,47 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
               </ul>
             </WindowStatsGame>
           </WindowStats>
-        )}
-      </ContainerStats>
+        </ContainerStats>
+      )}
 
-      <ContainerButtons>
-        {state === 'conf' && playerData && uid === admin && admin === player && (
-          <ButtonStart onClick={handleInit} type='button'>
-            Start
-          </ButtonStart>
-        )}
+      {state === 'conf' && playerData && (
+        <ContainerButtons>
+          {uid === admin && admin === player && (
+            <ButtonStart onClick={handleInit} type='button'>
+              Start
+            </ButtonStart>
+          )}
 
-        {state === 'conf' && playerData && uid === player && (
-          <ButtonReadyClickable
-            onClick={(): void => {
-              updateDataPlayer('floatingPoint', player, {
-                isReady: playerData.isReady ? false : true
-              });
-            }}
-            type='button'
-          >
-            Ready
-          </ButtonReadyClickable>
-        )}
+          {uid === player && (
+            <ButtonReadyClickable
+              onClick={(): void => {
+                updateDataPlayer('floatingPoint', player, {
+                  isReady: playerData.isReady ? false : true
+                });
+              }}
+              type='button'
+            >
+              Ready
+            </ButtonReadyClickable>
+          )}
 
-        {state === 'conf' && playerData && uid !== player && (
-          <ButtonReady type='button'>Ready</ButtonReady>
-        )}
-      </ContainerButtons>
-      <ContainerInfo>
-        <Info>{playerData && playerData.username}</Info>
+          {uid !== player && <ButtonReady type='button'>Ready</ButtonReady>}
+        </ContainerButtons>
+      )}
 
-        <Info>{state === 'run' && playerData && playerData.score}</Info>
-      </ContainerInfo>
-      <ContainerAvatar>
-        {playerData && <Avatar />}
+      {playerData && (
+        <ContainerInfo>
+          <Info>{playerData.username}</Info>
 
-        {state === 'conf' && !playerData && (
-          <LoadingIndicator color={theming.inverted} />
-        )}
-      </ContainerAvatar>
+          <Info>{state === 'run' && playerData.score}</Info>
+        </ContainerInfo>
+      )}
+
+      {playerData && (
+        <ContainerAvatar>
+          <Avatar />
+        </ContainerAvatar>
+      )}
     </Container>
   );
 };

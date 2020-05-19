@@ -2,7 +2,7 @@ import { InitPlayerDefaults } from 'types/games/floating-point-online';
 
 export const DEFAULTS = {
   dimensions: 10,
-  timer: 180
+  timer: 30
 };
 
 export const initPlayerDefaults: InitPlayerDefaults = user => {

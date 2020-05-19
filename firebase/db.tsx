@@ -43,17 +43,6 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   await userRef.update(update).catch(err => console.error(err));
 };
 
-export const getDataUserGame: GetDataUserGame = async (user, game) => {
-  const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
-
-  const gameData: GameDataList = await gameRef
-    .once('value')
-    .then(snapshot => snapshot.val())
-    .catch(err => console.error(err));
-
-  return gameData;
-};
-
 export const getDataUserGames: GetDataUserGames = async user => {
   const gamesRef = firebase.database().ref(`users/${user}/games`);
 

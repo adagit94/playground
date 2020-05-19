@@ -5,7 +5,10 @@ import Players from './players';
 import Point from './point';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
-import { WindowEval, WindowEvalResults } from 'components/styled-components/windows';
+import {
+  WindowEval,
+  WindowEvalResults
+} from 'components/styled-components/windows';
 
 import { Theming } from 'types/layout';
 import { ContextGame } from 'contexts/games/floating-point-online';

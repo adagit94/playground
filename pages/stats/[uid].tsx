@@ -10,7 +10,7 @@ import {
   WindowStatsGame
 } from 'components/styled-components/windows';
 
-import { statEditReg } from 'regs/stats';
+import { statNameEditReg } from 'regs/stats';
 import { statReplacer } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { ContextUser } from 'contexts/user';
@@ -41,12 +41,12 @@ const Stats: React.FC = (): JSX.Element => {
       for (const stat in statesUser) {
         if (stat === 'games') {
           for (const game in statesUser[stat]) {
-            const editedGame = game.replace(statEditReg, statReplacer);
+            const editedGame = game.replace(statNameEditReg, statReplacer);
             const gameStatsArr: [string, any[]] = [editedGame, []];
 
             for (const gameStat in statesUser[stat][game]) {
               const editedGameStat = gameStat.replace(
-                statEditReg,
+                statNameEditReg,
                 statReplacer
               );
 
@@ -59,7 +59,7 @@ const Stats: React.FC = (): JSX.Element => {
             gamesStatsArr.push(gameStatsArr);
           }
         } else {
-          const editedUserStat = stat.replace(statEditReg, statReplacer);
+          const editedUserStat = stat.replace(statNameEditReg, statReplacer);
 
           userStatsArr.push([editedUserStat, statesUser[stat]]);
         }

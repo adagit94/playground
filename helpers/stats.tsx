@@ -33,3 +33,31 @@ export const calculateMostPlayed: CalculateMostPlayed = async user => {
 
   return mostPlayed;
 };
+
+
+const { timestampStart, timestampEnd } = statesGame;
+console.log('evalgame timestampend:' + timestampEnd);
+
+// vyresit predbezne odpojeni (prechod na jinou stranku, pryc z webu, nikoliv refresh)
+for (const player in statesPlayers) {
+  const gameStats = await getDataUserGame(player, 'floatingPoint');
+
+  await updateDataUser(player, {
+    games: {
+      floatingPoint: {
+        timePlayed: gameStats.timePlayed + (timestampEnd - timestampStart)
+      }
+    }
+  });
+
+  const mostPlayed = await calculateMostPlayed(player);
+
+  if (mostPlayed !== 'floatingPoint') {
+    updateDataUser(player, {
+      mostPlayed
+    });
+  }
+}
+};
+
+const update

@@ -10,7 +10,9 @@ import { ContextPlayers } from 'contexts/games/floating-point-online';
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   height: 30%;
+  margin: 10px;
   border-top: 1px solid;
 `;
 

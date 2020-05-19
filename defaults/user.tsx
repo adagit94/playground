@@ -1,8 +1,9 @@
+import { statDateEditReg } from 'regs/stats';
 import { InitUserDefaults } from 'types/user';
 
 export const initUserDefaults: InitUserDefaults = user => {
   return {
-    registred: user.metadata.creationTime,
+    registred: statDateEditReg.exec(user.metadata.creationTime)[0],
     lastPlayed: '-',
     mostPlayed: '-',
     games: {

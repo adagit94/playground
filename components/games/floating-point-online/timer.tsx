@@ -1,4 +1,4 @@
-import { memo, useContext, useEffect, useRef } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { updateDataGame } from 'firebase/db';
@@ -7,20 +7,20 @@ import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  width: 20%;
-  padding: 5px;
+  align-items: center;
+  width: 35px;
+  height: 35px;
   border: 1px solid;
   border-radius: 5px;
+  color: ${(props): string => props.theme.background};
+  background-color: ${(props): string => props.theme.inverted};
 `;
-
-let timerInterval: number;
 
 const Timer: React.FC = (): JSX.Element => {
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
-  const handleTimerRef = useRef(null);
 
   const { user } = statesFirebase;
   const { admin, timer } = statesGame;
@@ -29,28 +29,18 @@ const Timer: React.FC = (): JSX.Element => {
 
   const handleTimer = (): void => {
     if (timer === 0) {
-      window.clearInterval(timerInterval);
-
       updateDataGame('floatingPoint', { state: 'eval' });
     } else {
+      console.log(timer);
       updateDataGame('floatingPoint', { timer: timer - 1 });
     }
   };
 
   useEffect(() => {
-    handleTimerRef.current = handleTimer;
-  });
-
-  useEffect(() => {
     if (uid && admin && uid === admin) {
-      timerInterval = window.setInterval(handleTimerRef.current, 1000);
+      window.setTimeout(handleTimer, 1000);
     }
-
-    return (): void => {
-      console.log('timer: unmounted');
-      //window.clearInterval(timerInterval);
-    };
-  }, [uid, admin]);
+  });
 
   return <Container>{timer}</Container>;
 };

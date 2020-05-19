@@ -24,7 +24,7 @@ export const WindowStatsUser = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      width: 150px;
+      width: 160px;
       margin: 0 5px;
     }
   }
@@ -38,7 +38,7 @@ export const WindowStatsGames = styled.div`
 `;
 
 export const WindowStatsGame = styled.div`
-  width: 150px;
+  width: 160px;
   margin: 0 5px;
 
   ul {
