@@ -4,7 +4,7 @@ import {
   CreateGame as CreateGameFP,
   UpdateGame as UpdateGameFP,
   UpdatePlayer as UpdatePlayerFP,
-  Player as CreatePlayerFP
+  CreatePlayer as CreatePlayerFP
 } from './floating-point-online';
 
 type CreateGameList = CreateGameFP;
