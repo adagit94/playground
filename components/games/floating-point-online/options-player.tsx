@@ -9,7 +9,7 @@ import {
 
 import { updateDataGame, getDataUserGame, updateDataPlayer } from 'firebase/db';
 import { statEditReg } from 'regs/stats';
-import { statReplacer } from 'helpers/stats';
+import { statReplacer, convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
 import { PropsOptionsPlayer } from 'types/games/floating-point-online';
@@ -23,7 +23,7 @@ import {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   width: 25%;
   position: relative;
@@ -38,7 +38,7 @@ const Container = styled.div`
 const ContainerStats = styled.div`
   position: absolute;
   top: -85px;
-  left: calc(50% - 80px);
+  left: calc(50% - 100px);
   visibility: hidden;
 `;
 
@@ -179,7 +179,17 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       for (const stat in stats) {
         const editedStat = stat.replace(statEditReg, statReplacer);
 
-        statsArr.push([editedStat, stats[stat]]);
+        if (stat === 'playedTime') {
+          let playedTime: string | number = stats.playedTime;
+
+          if (playedTime > 0) {
+            playedTime = convertPlayedTime(playedTime);
+          }
+
+          statsArr.push([editedStat, playedTime]);
+        } else {
+          statsArr.push([editedStat, stats[stat]]);
+        }
       }
 
       setGameStats(statsArr);

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, Fragment } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
@@ -21,7 +21,7 @@ import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
   height: 100%;
-  margin: 10px;
+  padding: 10px;
 `;
 
 const HeadingGame = styled.h3`
@@ -74,11 +74,13 @@ const Stats: React.FC = (): JSX.Element => {
           );
 
           if (gameStat === 'playedTime') {
-            const convertedPlayedTime = convertPlayedTime(
-              statesUser.games[game][gameStat]
-            );
+            let playedTime = statesUser.games[game][gameStat];
 
-            gameStatsArr[1].push([editedGameStatName, convertedPlayedTime]);
+            if (playedTime > 0) {
+              playedTime = convertPlayedTime(playedTime);
+            }
+
+            gameStatsArr[1].push([editedGameStatName, playedTime]);
           } else {
             gameStatsArr[1].push([
               editedGameStatName,
@@ -111,7 +113,7 @@ const Stats: React.FC = (): JSX.Element => {
                 const [name, value] = stat;
 
                 return (
-                  <>
+                  <Fragment key={name}>
                     <li key={name}>
                       <span>{name}: </span>
                       <span>{value}</span>
@@ -120,7 +122,7 @@ const Stats: React.FC = (): JSX.Element => {
                     {i < arr.length - 1 && (
                       <DividerVertical color='background' />
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
             </ul>
@@ -137,7 +139,7 @@ const Stats: React.FC = (): JSX.Element => {
               const [name, stats] = game;
 
               return (
-                <>
+                <Fragment key={name}>
                   <WindowStatsGame key={name}>
                     <HeadingGame>{name}</HeadingGame>
                     <ul key={name}>
@@ -155,7 +157,7 @@ const Stats: React.FC = (): JSX.Element => {
                   </WindowStatsGame>
 
                   {i < arr.length - 1 && <DividerVertical color='background' />}
-                </>
+                </Fragment>
               );
             })}
           </WindowStatsGames>
