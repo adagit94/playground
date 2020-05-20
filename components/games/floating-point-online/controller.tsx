@@ -27,7 +27,8 @@ import {
   updateDataUser,
   getDataUserGame,
   initGame,
-  removeListenersGame
+  removeListenersGame,
+  updateDataUserGame
 } from 'firebase/db';
 
 const Container = styled.div`
@@ -194,7 +195,7 @@ const Controller: React.FC = (): JSX.Element => {
         });
 
         updateDataUser(playerLocal, {
-          lastPlayed: 'Floating Point'
+          lastPlayed: 'floatingPoint'
         });
 
         if (i === l - 1) {
@@ -233,12 +234,8 @@ const Controller: React.FC = (): JSX.Element => {
 
         updateDataFP({ top: fpTop, left: fpLeft });
 
-        updateDataUser(playerLocal, {
-          games: {
-            floatingPoint: {
-              gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
-            }
-          }
+        updateDataUserGame('floatingPoint', playerLocal, {
+          gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
         });
 
         updateDataPlayer('floatingPoint', playerLocal, {
@@ -270,12 +267,8 @@ const Controller: React.FC = (): JSX.Element => {
 
       const winnerData = await getDataUserGame(winnerID, 'floatingPoint');
 
-      updateDataUser(winnerID, {
-        games: {
-          floatingPoint: {
-            wins: winnerData.wins + 1
-          }
-        }
+      updateDataUserGame('floatingPoint', winnerID, {
+        wins: winnerData.wins + 1
       });
 
       window.setTimeout(() => {
@@ -294,7 +287,7 @@ const Controller: React.FC = (): JSX.Element => {
         updateDataPlayer('floatingPoint', player, {
           top: null,
           left: null,
-          score: 0,
+          score: null,
           isReady: false
         });
       }

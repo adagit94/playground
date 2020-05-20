@@ -15,3 +15,5 @@ export type UpdatePlayedTime = (
   players: string[],
   timestamps: [number, number]
 ) => Promise<void>;
+
+export type ConvertPlayedTime = (playedTime: number) => string;

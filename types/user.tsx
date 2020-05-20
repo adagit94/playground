@@ -6,15 +6,12 @@ type UpdateDataUserGamesFP = {
   playedTime?: number;
 };
 
-type UpdateDataUserGames = {
-  floatingPoint?: UpdateDataUserGamesFP;
-};
+type UpdateGameList = UpdateDataUserGamesFP;
 
 type UpdateDataUserObj = {
   registred?: string;
-  lastPlayed?: '-' | 'Floating Point';
+  lastPlayed?: GamesList | '-';
   mostPlayed?: string;
-  games?: UpdateDataUserGames;
 };
 
 export type Games = {
@@ -64,6 +61,12 @@ export type GetDataUserGame = (
 export type UpdateDataUser = (
   user: string,
   update: UpdateDataUserObj
+) => Promise<void>;
+
+export type UpdateDataUserGame = (
+  game: GamesList,
+  user: string,
+  update: UpdateGameList
 ) => Promise<void>;
 
 export type InitUserDefaults = (user: firebase.User) => StatesUser;

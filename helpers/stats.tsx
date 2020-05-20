@@ -1,8 +1,14 @@
-import { getDataUser, getDataUserGames, updateDataUser } from 'firebase/db';
+import {
+  getDataUser,
+  getDataUserGames,
+  updateDataUser,
+  updateDataUserGame
+} from 'firebase/db';
 import {
   StatReplacer,
   UpdatePlayedTime,
-  CalculateMostPlayed
+  CalculateMostPlayed,
+  ConvertPlayedTime
 } from 'types/helpers';
 
 const gamesList = ['floatingPoint'];
@@ -51,12 +57,8 @@ export const updatePlayedTime: UpdatePlayedTime = async (
     const userData = await getDataUser(player);
     const { mostPlayed: mostPlayedPrev, games } = userData;
 
-    await updateDataUser(player, {
-      games: {
-        [game]: {
-          playedTime: games[game].playedTime + playedTime
-        }
-      }
+    await updateDataUserGame(game, player, {
+      playedTime: games[game].playedTime + playedTime
     });
 
     const mostPlayedNew = await calculateMostPlayed(player);
@@ -67,4 +69,21 @@ export const updatePlayedTime: UpdatePlayedTime = async (
       });
     }
   }
+};
+
+export const convertPlayedTime: ConvertPlayedTime = playedTime => {
+  const seconds = playedTime / 1000;
+  const minutes = seconds / 60;
+  const hours = minutes / 60;
+  const days = hours / 24;
+
+  let timeString = '';
+
+  if (days >= 1) timeString += `${Math.round(days)} Days `;
+  if (hours >= 1) timeString += `${Math.round(hours)} Hours `;
+  if (minutes >= 1) timeString += `${Math.round(minutes)} Minutes `;
+
+  timeString += `${Math.round(seconds)} Seconds`;
+
+  return timeString;
 };

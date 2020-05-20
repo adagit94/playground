@@ -15,7 +15,7 @@ import {
 } from 'components/styled-components/windows';
 
 import { statEditReg, statDateExtractReg } from 'regs/stats';
-import { statReplacer } from 'helpers/stats';
+import { statReplacer, convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { ContextUser } from 'contexts/user';
 
@@ -43,37 +43,51 @@ const Stats: React.FC = (): JSX.Element => {
       const gamesStatsArr: any[] = [];
 
       for (const stat in statesUser) {
-        if (stat === 'games') {
-          for (const game in statesUser[stat]) {
-            const editedStatName = game.replace(statEditReg, statReplacer);
-            const gameStatsArr: [string, any[]] = [editedStatName, []];
+        if (stat === 'games') continue;
 
-            for (const gameStat in statesUser[stat][game]) {
-              const editedStatName = gameStat.replace(
-                statEditReg,
-                statReplacer
-              );
+        const editedStatName = stat.replace(statEditReg, statReplacer);
 
-              gameStatsArr[1].push([
-                editedStatName,
-                statesUser[stat][game][gameStat]
-              ]);
-            }
+        if (stat === 'lastPlayed' || stat === 'mostPlayed') {
+          const editedGameName = statesUser[stat].replace(
+            statEditReg,
+            statReplacer
+          );
 
-            gamesStatsArr.push(gameStatsArr);
-          }
+          userStatsArr.push([editedStatName, editedGameName]);
         } else if (stat === 'registred') {
-          const editedStatName = stat.replace(statEditReg, statReplacer);
-          const extractedStatValue = statDateExtractReg.exec(
-            statesUser[stat]
-          )[0];
+          const extractedDate = statDateExtractReg.exec(statesUser[stat])[0];
 
-          userStatsArr.push([editedStatName, extractedStatValue]);
+          userStatsArr.push([editedStatName, extractedDate]);
         } else {
-          const editedStatName = stat.replace(statEditReg, statReplacer);
-
           userStatsArr.push([editedStatName, statesUser[stat]]);
         }
+      }
+
+      for (const game in statesUser.games) {
+        const editedGameName = game.replace(statEditReg, statReplacer);
+        const gameStatsArr: [string, any[]] = [editedGameName, []];
+
+        for (const gameStat in statesUser.games[game]) {
+          const editedGameStatName = gameStat.replace(
+            statEditReg,
+            statReplacer
+          );
+
+          if (gameStat === 'playedTime') {
+            const convertedPlayedTime = convertPlayedTime(
+              statesUser.games[game][gameStat]
+            );
+
+            gameStatsArr[1].push([editedGameStatName, convertedPlayedTime]);
+          } else {
+            gameStatsArr[1].push([
+              editedGameStatName,
+              statesUser.games[game][gameStat]
+            ]);
+          }
+        }
+
+        gamesStatsArr.push(gameStatsArr);
       }
 
       setUserStats(userStatsArr);

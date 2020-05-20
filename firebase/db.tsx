@@ -28,6 +28,7 @@ import {
   GetDataUserGames,
   GetDataUserGame,
   UpdateDataUser,
+  UpdateDataUserGame,
   GameDataList,
   Games,
   StatesUser
@@ -43,6 +44,16 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   await userRef.update(update).catch(err => console.error(err));
+};
+
+export const updateDataUserGame: UpdateDataUserGame = async (
+  game,
+  user,
+  update
+) => {
+  const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
+
+  await gameRef.update(update).catch(err => console.error(err));
 };
 
 export const getDataUser: GetDataUser = async user => {
