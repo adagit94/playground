@@ -8,7 +8,7 @@ import {
 } from 'components/styled-components/windows';
 
 import { updateDataGame, getDataUserGame, updateDataPlayer } from 'firebase/db';
-import { statNameEditReg } from 'regs/stats';
+import { statEditReg } from 'regs/stats';
 import { statReplacer } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
@@ -46,7 +46,6 @@ const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
   height: 75px;
 `;
 
@@ -72,23 +71,18 @@ const ButtonStart = styled.button`
 const ContainerInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75px;
+  height: 50px;
 `;
 
 const Info = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
   height: 50%;
 `;
 
 const ContainerAvatar = styled.div`
   flex: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
@@ -183,7 +177,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
 
       for (const stat in stats) {
-        const editedStat = stat.replace(statNameEditReg, statReplacer);
+        const editedStat = stat.replace(statEditReg, statReplacer);
 
         statsArr.push([editedStat, stats[stat]]);
       }

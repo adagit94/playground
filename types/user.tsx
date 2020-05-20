@@ -3,7 +3,7 @@ import { GamesList } from './games/generic';
 type UpdateDataUserGamesFP = {
   wins?: number;
   gatheredPoints?: number;
-  timePlayed?: number;
+  playedTime?: number;
 };
 
 type UpdateDataUserGames = {
@@ -12,7 +12,7 @@ type UpdateDataUserGames = {
 
 type UpdateDataUserObj = {
   registred?: string;
-  lastPlayed?: GamesList | '-';
+  lastPlayed?: '-' | 'Floating Point';
   mostPlayed?: string;
   games?: UpdateDataUserGames;
 };
@@ -24,7 +24,7 @@ export type Games = {
 export type FloatingPoint = {
   wins: number;
   gatheredPoints: number;
-  timePlayed: number;
+  playedTime: number;
 };
 
 export type GameDataList = FloatingPoint;
@@ -51,6 +51,8 @@ export type InitUserDB = (
 export type RemoveListenerUser = (user: string) => void;
 
 export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
+
+export type GetDataUser = (user: string) => Promise<StatesUser>;
 
 export type GetDataUserGames = (user: string) => Promise<Games>;
 

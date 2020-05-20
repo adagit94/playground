@@ -1,4 +1,4 @@
-import { useContext, memo, useEffect } from 'react';
+import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import Players from './players';
@@ -14,7 +14,7 @@ import { Theming } from 'types/layout';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
-  height: 70%;
+  height: 60%;
   position: relative;
 `;
 
@@ -26,12 +26,13 @@ const Monitor: React.FC = (): JSX.Element => {
 
   return (
     <Container id='monitor'>
-      {state === 'eval' && (
+      {(state === 'eval' || state === 'reset') && (
         <WindowEval>
           {!winner && <LoadingIndicator color={theming.background} />}
 
           {winner && (
             <WindowEvalResults>
+              <h1>Results</h1>
               <div>Player: {winner.name}</div>
               <div>Score: {winner.score}</div>
             </WindowEvalResults>

@@ -1,3 +1,5 @@
+import { GamesList } from 'types/games/generic';
+
 export type StatReplacer = (
   match: string,
   first: string,
@@ -7,3 +9,9 @@ export type StatReplacer = (
 ) => string;
 
 export type CalculateMostPlayed = (user: string) => Promise<string>;
+
+export type UpdatePlayedTime = (
+  game: GamesList,
+  players: string[],
+  timestamps: [number, number]
+) => Promise<void>;

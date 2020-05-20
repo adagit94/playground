@@ -11,8 +11,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  height: 30%;
-  margin: 10px;
+  height: 40%;
+  padding: 10px;
   border-top: 1px solid;
 `;
 

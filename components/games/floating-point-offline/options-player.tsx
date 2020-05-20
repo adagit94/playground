@@ -99,7 +99,7 @@ const Options: React.FC<PropsOptions> = ({ player, state }): JSX.Element => {
   return (
     <ContainerOptions>
       <Icons player={player} />
-      <DividerVertical />
+      <DividerVertical color='inverted' />
       <Color player={player} />
       {state !== 'conf' && <OverlapDisabled />}
     </ContainerOptions>

@@ -1,17 +1,31 @@
-import { InitPlayerDefaults } from 'types/games/floating-point-online';
+import {
+  Defaults,
+  InitGameDefaults,
+  InitPlayerDefaults,
+  CreateGame,
+  CreatePlayer
+} from 'types/games/floating-point-online';
 
-export const DEFAULTS = {
+export const DEFAULTS: Defaults = {
   dimensions: 10,
-  timer: 30
+  timer: 15
+};
+
+export const initGameDefaults: InitGameDefaults = admin => {
+  const gameDefaults: CreateGame = {
+    admin,
+    timer: DEFAULTS.timer
+  };
+
+  return gameDefaults;
 };
 
 export const initPlayerDefaults: InitPlayerDefaults = user => {
-  return {
+  const playerDefaults: CreatePlayer = {
     username: user.displayName || user.email,
     avatar: user.photoURL,
-    top: 0,
-    left: 0,
-    score: 0,
     isReady: false
   };
+
+  return playerDefaults;
 };

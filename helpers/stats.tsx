@@ -1,6 +1,11 @@
-import { getDataUserGames } from 'firebase/db';
-import { gamesList } from './lists';
-import { StatReplacer, CalculateMostPlayed } from 'types/helpers';
+import { getDataUser, getDataUserGames, updateDataUser } from 'firebase/db';
+import {
+  StatReplacer,
+  UpdatePlayedTime,
+  CalculateMostPlayed
+} from 'types/helpers';
+
+const gamesList = ['floatingPoint'];
 
 export const statReplacer: StatReplacer = (
   match,
@@ -20,44 +25,46 @@ export const statReplacer: StatReplacer = (
 };
 
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
-  const gamesStats = await getDataUserGames(user);
+  const games = await getDataUserGames(user);
 
-  const games = Object.keys(gamesStats);
-  const times: number[] = games.map(game => gamesStats[game].timePlayed);
+  const gamesNames = Object.keys(games);
+  const gamesTimes: number[] = gamesNames.map(game => games[game].playedTime);
 
-  const sortedTimes = [...times].sort((a, b) => a - b).reverse();
-  const highestTime = sortedTimes[0];
-  const highestTimeindex = times.indexOf(highestTime);
+  const sortedGamesTimes = [...gamesTimes].sort((a, b) => a - b).reverse();
+  const highestTime = sortedGamesTimes[0];
+  const highestTimeindex = gamesTimes.indexOf(highestTime);
 
-  const mostPlayed = games[highestTimeindex];
+  const mostPlayed = gamesNames[highestTimeindex];
 
   return mostPlayed;
 };
 
+export const updatePlayedTime: UpdatePlayedTime = async (
+  game,
+  players,
+  timestamps
+) => {
+  const [start, end] = timestamps;
+  const playedTime = end - start;
 
-const { timestampStart, timestampEnd } = statesGame;
-console.log('evalgame timestampend:' + timestampEnd);
+  for (const player of players) {
+    const userData = await getDataUser(player);
+    const { mostPlayed: mostPlayedPrev, games } = userData;
 
-// vyresit predbezne odpojeni (prechod na jinou stranku, pryc z webu, nikoliv refresh)
-for (const player in statesPlayers) {
-  const gameStats = await getDataUserGame(player, 'floatingPoint');
-
-  await updateDataUser(player, {
-    games: {
-      floatingPoint: {
-        timePlayed: gameStats.timePlayed + (timestampEnd - timestampStart)
+    await updateDataUser(player, {
+      games: {
+        [game]: {
+          playedTime: games[game].playedTime + playedTime
+        }
       }
-    }
-  });
-
-  const mostPlayed = await calculateMostPlayed(player);
-
-  if (mostPlayed !== 'floatingPoint') {
-    updateDataUser(player, {
-      mostPlayed
     });
-  }
-}
-};
 
-const update
+    const mostPlayedNew = await calculateMostPlayed(player);
+
+    if (mostPlayedNew === game && mostPlayedPrev !== game) {
+      updateDataUser(player, {
+        mostPlayed: mostPlayedNew
+      });
+    }
+  }
+};

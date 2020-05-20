@@ -61,7 +61,7 @@ const OptionsCommon: React.FC = (): JSX.Element => {
 
       <ContainerOptions>
         <Dimensions />
-        <Divider />
+        <Divider color='inverted' />
         <Speed />
         {state !== 'conf' && <Overlap />}
       </ContainerOptions>

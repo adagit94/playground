@@ -31,7 +31,6 @@ const Timer: React.FC = (): JSX.Element => {
     if (timer === 0) {
       updateDataGame('floatingPoint', { state: 'eval' });
     } else {
-      console.log(timer);
       updateDataGame('floatingPoint', { timer: timer - 1 });
     }
   };

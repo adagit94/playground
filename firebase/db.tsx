@@ -4,7 +4,7 @@ import 'firebase/firebase-database';
 import { UpdateDataFP } from 'types/games/floating-point-online';
 import { initUserDefaults } from 'defaults/user';
 import {
-  DEFAULTS,
+  initGameDefaults,
   initPlayerDefaults
 } from 'defaults/games/floating-point-online';
 
@@ -24,11 +24,13 @@ import {
   InitUserDB,
   RemoveListenerUser,
   CreateDataUser,
+  GetDataUser,
   GetDataUserGames,
   GetDataUserGame,
   UpdateDataUser,
   GameDataList,
-  Games
+  Games,
+  StatesUser
 } from 'types/user';
 
 export const createDataUser: CreateDataUser = async (user, data) => {
@@ -41,6 +43,17 @@ export const updateDataUser: UpdateDataUser = async (user, update) => {
   const userRef = firebase.database().ref(`users/${user}`);
 
   await userRef.update(update).catch(err => console.error(err));
+};
+
+export const getDataUser: GetDataUser = async user => {
+  const userRef = firebase.database().ref(`users/${user}`);
+
+  const userData: StatesUser = await userRef
+    .once('value')
+    .then(snapshot => snapshot.val())
+    .catch(err => console.error(err));
+
+  return userData;
 };
 
 export const getDataUserGames: GetDataUserGames = async user => {
@@ -75,7 +88,11 @@ export const initUserDB: InitUserDB = async (user, handleData) => {
     .then(data => data.exists())
     .catch(err => console.error(err));
 
-  if (!userExists) createDataUser(uid, initUserDefaults(user));
+  if (!userExists) {
+    const userData = initUserDefaults(user);
+
+    createDataUser(uid, userData);
+  }
 
   userRef.on('value', data => {
     handleData(data.val());
@@ -175,15 +192,15 @@ export const initGame: InitGame = async (game, user, handleData) => {
   switch (game) {
     case 'floatingPoint':
       if (!gameExist) {
-        createDataGame('floatingPoint', {
-          state: 'conf',
-          admin: player,
-          timer: DEFAULTS.timer
-        });
+        const gameData = initGameDefaults(player);
+
+        createDataGame('floatingPoint', gameData);
       }
 
       if (!playerExist) {
-        createDataPlayer('floatingPoint', player, initPlayerDefaults(user));
+        const playerData = initPlayerDefaults(user);
+
+        createDataPlayer('floatingPoint', player, playerData);
       }
 
       gameRef.child('game').on('value', data => {

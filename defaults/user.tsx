@@ -1,17 +1,18 @@
-import { statDateEditReg } from 'regs/stats';
-import { InitUserDefaults } from 'types/user';
+import { StatesUser, InitUserDefaults } from 'types/user';
 
 export const initUserDefaults: InitUserDefaults = user => {
-  return {
-    registred: statDateEditReg.exec(user.metadata.creationTime)[0],
+  const userDefaults: StatesUser = {
+    registred: user.metadata.creationTime,
     lastPlayed: '-',
     mostPlayed: '-',
     games: {
       floatingPoint: {
         wins: 0,
         gatheredPoints: 0,
-        timePlayed: 0
+        playedTime: 0
       }
     }
   };
+
+  return userDefaults;
 };

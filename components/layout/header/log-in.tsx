@@ -82,7 +82,7 @@ const LogIn: React.FC = (): JSX.Element => {
           Log in with Google
         </SocialProviderGoogle>
       </FormRowHorizontal>
-      <DividerHorizontal />
+      <DividerHorizontal color='inverted' />
       <FormRowHorizontal>
         <FormLabel htmlFor='email'>Email: </FormLabel>
         <FormInput

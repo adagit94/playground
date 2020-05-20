@@ -2,7 +2,7 @@ type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
 type DataSetsList = 'game' | 'players' | 'fp';
 
-type GameStatesList = 'conf' | 'init' | 'run' | 'eval';
+type GameStatesList = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
 export type Winner = { name: string; score: number };
 
@@ -47,9 +47,14 @@ export type StatesGame = {
 };
 
 export type CreateGame = {
-  state: GameStatesList;
   admin: string;
   timer: number;
+};
+
+export type CreatePlayer = {
+  username: string;
+  avatar: string;
+  isReady: boolean;
 };
 
 export type DataSet = {
@@ -95,4 +100,8 @@ export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
 export type HandleMove = (key: Keys) => void;
 
-export type InitPlayerDefaults = (user: firebase.User) => Player;
+export type Defaults = { dimensions: number; timer: number };
+
+export type InitGameDefaults = (admin: string) => CreateGame;
+
+export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;

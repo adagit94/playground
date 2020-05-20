@@ -7,7 +7,7 @@ import ControlPanel from './control-panel';
 import * as Reducers from 'reducers/games/floating-point-online';
 import * as Inits from 'inits/games/floating-point-online';
 import * as Contexts from 'contexts/games/floating-point-online';
-import { calculateMostPlayed } from 'helpers/stats';
+import { updatePlayedTime } from 'helpers/stats';
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
@@ -189,11 +189,12 @@ const Controller: React.FC = (): JSX.Element => {
 
         updateDataPlayer('floatingPoint', player, {
           top: playerLocalTop,
-          left: playerLocalLeft
+          left: playerLocalLeft,
+          score: 0
         });
 
         updateDataUser(playerLocal, {
-          lastPlayed: 'floatingPoint'
+          lastPlayed: 'Floating Point'
         });
 
         if (i === l - 1) {
@@ -272,15 +273,27 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataUser(winnerID, {
         games: {
           floatingPoint: {
-            wins: winnerData.wins
+            wins: winnerData.wins + 1
           }
         }
       });
+
+      window.setTimeout(() => {
+        updateDataGame('floatingPoint', {
+          state: 'reset'
+        });
+      }, 10000);
     };
 
+    if (state === 'eval' && playerLocal === admin && !winner) evalGame();
+  });
+
+  useEffect(() => {
     const resetGame = (): void => {
       for (const player in statesPlayers) {
         updateDataPlayer('floatingPoint', player, {
+          top: null,
+          left: null,
           score: 0,
           isReady: false
         });
@@ -289,19 +302,21 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
+        timestampStart: null,
+        timestampEnd: null,
         timer
       });
+
+      updateDataFP({ top: null, left: null });
+
+      updatePlayedTime('floatingPoint', Object.keys(statesPlayers), [
+        statesGame.timestampStart,
+        statesGame.timestampEnd
+      ]);
     };
 
-    if (state === 'eval' && playerLocal === admin && !winner) {
-      evalGame();
-
-      setTimeout(() => {
-        resetGame();
-      }, 10000);
-    }
+    if (state === 'reset' && playerLocal === admin) resetGame();
   });
-
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
       e.preventDefault();
@@ -364,7 +379,7 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  console.log(statesGame);
+  //  console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (
