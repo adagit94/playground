@@ -23,7 +23,7 @@ import {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   width: 25%;
   position: relative;
@@ -46,6 +46,7 @@ const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
   height: 75px;
 `;
 
@@ -83,6 +84,10 @@ const Info = styled.div`
 
 const ContainerAvatar = styled.div`
   flex: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
