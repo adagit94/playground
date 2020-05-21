@@ -8,7 +8,7 @@ import {
 
 export const DEFAULTS: Defaults = {
   dimensions: 10,
-  timer: 90
+  timer: 10
 };
 
 export const initGameDefaults: InitGameDefaults = admin => {

@@ -11,6 +11,7 @@ import { updatePlayedTime } from 'helpers/stats';
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
+import { FloatingPoint } from 'types/user';
 import {
   HandleData,
   Operations,
@@ -205,7 +206,7 @@ const Controller: React.FC = (): JSX.Element => {
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', {
             state: 'run',
-            timestamp: Date.now()
+            timestampStart: Date.now()
           });
         }
       }
@@ -261,7 +262,8 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
-        timestamp: null,
+        timestampStart: null,
+        timestampEnd: null,
         timer
       });
 
@@ -275,24 +277,30 @@ const Controller: React.FC = (): JSX.Element => {
         scores.push([player, statesPlayers[player].score]);
       }
 
-      scores.sort((a, b) => a[1] + b[1]); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
-      console.log(scores);
+      scores.sort((a, b) => a[1] + b[1]);
 
-      const winner = scores[0];
-      const winnerResult: Winner = { name: winner[0], score: winner[1] };
+      const [winnerID, winnerScore] = scores[0];
+      const winnerName = statesPlayers[winnerID].username;
+      const winner: Winner = { name: winnerName, score: winnerScore };
 
       updateDataGame('floatingPoint', {
-        winner: winnerResult
+        winner
       });
 
       updatePlayedTime('floatingPoint', Object.keys(statesPlayers), [
-        statesGame.timestamp,
-        Date.now()
+        statesGame.timestampStart,
+        statesGame.timestampEnd
       ]);
 
-      const winnerData = await getDataUserGame(winner[0], 'floatingPoint');
+      let winnerData: FloatingPoint;
 
-      updateDataUserGame('floatingPoint', winner[0], {
+      if (winnerID === playerLocal) {
+        winnerData = statesUser.games.floatingPoint;
+      } else {
+        winnerData = await getDataUserGame(winnerID, 'floatingPoint');
+      }
+
+      updateDataUserGame('floatingPoint', winnerID, {
         wins: winnerData.wins + 1
       });
 

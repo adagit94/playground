@@ -40,7 +40,8 @@ export type StatesGame = {
   admin: string;
   winner: Winner;
   timer: number;
-  timestamp: number;
+  timestampStart: number;
+  timestampEnd: number;
   width: number;
   height: number;
 };
@@ -67,7 +68,7 @@ export type UpdateGame = {
   admin?: string;
   winner?: Winner;
   timer?: number;
-  timestamp?: number;
+  timestampStart?: number;
   timestampEnd?: number;
 };
 

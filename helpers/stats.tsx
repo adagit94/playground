@@ -32,15 +32,15 @@ export const statReplacer: StatReplacer = (
 
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const games = await getDataUserGames(user);
+  const times = [];
 
-  const gamesNames = Object.keys(games);
-  const gamesTimes: number[] = gamesNames.map(game => games[game].playedTime);
+  for (const game in games) {
+    times.push([game, games[game].playedTime]);
+  }
 
-  const sortedGamesTimes = [...gamesTimes].sort((a, b) => a + b);
-  const highestTime = sortedGamesTimes[0];
-  const highestTimeindex = gamesTimes.indexOf(highestTime);
+  times.sort((a, b) => a[1] + b[1]);
 
-  const mostPlayed = gamesNames[highestTimeindex];
+  const mostPlayed = times[0][0];
 
   return mostPlayed;
 };

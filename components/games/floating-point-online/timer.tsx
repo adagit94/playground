@@ -29,7 +29,10 @@ const Timer: React.FC = (): JSX.Element => {
 
   const handleTimer = (): void => {
     if (timer === 0) {
-      updateDataGame('floatingPoint', { state: 'eval' });
+      updateDataGame('floatingPoint', {
+        state: 'eval',
+        timestampEnd: Date.now()
+      });
     } else {
       updateDataGame('floatingPoint', { timer: timer - 1 });
     }
@@ -37,11 +40,7 @@ const Timer: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (uid && admin && uid === admin) {
-      const timeout = window.setTimeout(handleTimer, 1000);
-
-      return (): void => {
-        window.clearTimeout(timeout);
-      };
+      window.setTimeout(handleTimer, 1000);
     }
   });
 
