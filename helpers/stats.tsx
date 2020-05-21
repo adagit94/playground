@@ -36,7 +36,7 @@ export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const gamesNames = Object.keys(games);
   const gamesTimes: number[] = gamesNames.map(game => games[game].playedTime);
 
-  const sortedGamesTimes = [...gamesTimes].sort((a, b) => a - b).reverse();
+  const sortedGamesTimes = [...gamesTimes].sort((a, b) => a + b);
   const highestTime = sortedGamesTimes[0];
   const highestTimeindex = gamesTimes.indexOf(highestTime);
 

@@ -269,18 +269,17 @@ const Controller: React.FC = (): JSX.Element => {
     };
 
     const evalGame = async (): Promise<void> => {
-      const players = Object.keys(statesPlayers);
-      const scores = players.map(player => statesPlayers[player].score);
+      const scores = [];
 
-      const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
-      console.log(sortedScores);
-      console.log([...scores].sort((a, b) => a + b));
-      const highestScore = sortedScores[0];
-      const highestScoreIndex = scores.indexOf(highestScore);
+      for (const player in statesPlayers) {
+        scores.push([player, statesPlayers[player].score]);
+      }
 
-      const winnerID = players[highestScoreIndex];
-      const winnerName = statesPlayers[winnerID].username;
-      const winnerResult: Winner = { name: winnerName, score: highestScore };
+      scores.sort((a, b) => a[1] + b[1]); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
+      console.log(scores);
+
+      const winner = scores[0];
+      const winnerResult: Winner = { name: winner[0], score: winner[1] };
 
       updateDataGame('floatingPoint', {
         winner: winnerResult
@@ -291,9 +290,9 @@ const Controller: React.FC = (): JSX.Element => {
         Date.now()
       ]);
 
-      const winnerData = await getDataUserGame(winnerID, 'floatingPoint');
+      const winnerData = await getDataUserGame(winner[0], 'floatingPoint');
 
-      updateDataUserGame('floatingPoint', winnerID, {
+      updateDataUserGame('floatingPoint', winner[0], {
         wins: winnerData.wins + 1
       });
 

@@ -37,7 +37,11 @@ const Timer: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (uid && admin && uid === admin) {
-      window.setTimeout(handleTimer, 1000);
+      const timeout = window.setTimeout(handleTimer, 1000);
+
+      return (): void => {
+        window.clearTimeout(timeout);
+      };
     }
   });
 
