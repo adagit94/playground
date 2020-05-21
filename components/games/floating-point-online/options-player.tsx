@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState, memo } from 'react';
+import Router from 'next/router';
+import { useContext, useEffect, useState, memo, useRef } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
@@ -7,9 +8,7 @@ import {
   WindowStatsGame
 } from 'components/styled-components/windows';
 
-import { updateDataGame, getDataUserGame, updateDataPlayer } from 'firebase/db';
 import { statEditReg } from 'regs/stats';
-import { statReplacer, convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
 import { PropsOptionsPlayer } from 'types/games/floating-point-online';
@@ -19,6 +18,20 @@ import {
   ContextGame,
   ContextPlayers
 } from 'contexts/games/floating-point-online';
+
+import {
+  updateDataGame,
+  deleteDataGame,
+  getDataUserGame,
+  updateDataPlayer,
+  deleteDataPlayer
+} from 'firebase/db';
+
+import {
+  statReplacer,
+  convertPlayedTime,
+  updatePlayedTime
+} from 'helpers/stats';
 
 const Container = styled.div`
   display: flex;
@@ -105,11 +118,16 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin } = statesGame;
-  const userGameStats = statesUser && statesUser.games.floatingPoint;
-  const playerData = player && statesPlayers[player];
+  const { state, admin, timestampStart } = statesGame;
 
   const uid = user && user.uid;
+  const userGameStats = statesUser && statesUser.games.floatingPoint;
+  const playerData = player && statesPlayers[player];
+  const players = Object.keys(statesPlayers);
+
+  const stateRef = useRef(state);
+  const timestampStartRef = useRef(timestampStart);
+  const playersRef = useRef(players);
 
   const ButtonReady = styled.button`
     padding: 5px;
@@ -155,8 +173,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   `;
 
   const handleInit = (): void => {
-    const players = Object.keys(statesPlayers);
-
     //if (players.length < 2) return;
 
     for (const player in statesPlayers) {
@@ -170,6 +186,62 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     setInitPossible(true);
     updateDataGame('floatingPoint', { state: 'init' });
   };
+
+  useEffect(() => {
+    stateRef.current = state;
+    timestampStartRef.current = timestampStart;
+    playersRef.current = players;
+  });
+
+  useEffect(() => {
+    const handleExit = (url: string): void => {
+      //console.log(1);
+      if (url.includes('floating-point-online')) return;
+
+      if (playersRef.current.length === 1) {
+        deleteDataGame('floatingPoint');
+
+        return;
+      }
+
+      if (stateRef.current === 'run') {
+        if (playersRef.current.length === 2) {
+          updateDataGame('floatingPoint', {
+            state: 'eval',
+            timestampEnd: Date.now()
+          });
+
+          deleteDataPlayer('floatingPoint', player);
+        } else if (playersRef.current.length > 2) {
+          updatePlayedTime(
+            'floatingPoint',
+            [player],
+            [timestampStartRef.current, Date.now()]
+          );
+
+          deleteDataPlayer('floatingPoint', player);
+        }
+      } else {
+        deleteDataPlayer('floatingPoint', player);
+      }
+
+      if (playersRef.current.length >= 2 && admin === player) {
+        updateDataGame('floatingPoint', {
+          admin: playersRef.current.find(player => player !== admin)
+        });
+      }
+    };
+
+    if (uid && player && uid === player) {
+      Router.events.on('beforeHistoryChange', handleExit);
+    }
+
+    return (): void => {
+      if (uid && player && uid === player) {
+        Router.events.off('beforeHistoryChange', handleExit);
+      }
+    };
+  }, [uid, admin, player]);
 
   useEffect(() => {
     const getStats = async (): Promise<void> => {
@@ -201,10 +273,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       setGameStats(statsArr);
     };
 
-    if (state === 'conf' && player) getStats();
-  }, [state, uid, player, userGameStats]);
-
-  //console.log(gameStats);
+    if (state === 'conf' && player && !gameStats) getStats();
+  });
 
   return (
     <Container>

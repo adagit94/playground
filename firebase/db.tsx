@@ -11,10 +11,11 @@ import {
 import {
   CreateDataGame,
   UpdateDataGame,
-  ClearDataGame,
+  DeleteDataGame,
   GetDataGame,
   CreateDataPlayer,
   UpdateDataPlayer,
+  DeleteDataPlayer,
   GetDataPlayer,
   InitGame,
   RemoveListenersGame
@@ -128,7 +129,7 @@ export const updateDataGame: UpdateDataGame = async (game, update) => {
   await gameRef.update(update).catch(err => console.error(err));
 };
 
-export const clearDataGame: ClearDataGame = async game => {
+export const deleteDataGame: DeleteDataGame = async game => {
   const gameRef = firebase.database().ref(`games/${game}`);
 
   await gameRef.remove().catch(err => console.error(err));
@@ -165,6 +166,12 @@ export const updateDataPlayer: UpdateDataPlayer = async (
   const playerRef = firebase.database().ref(`games/${game}/players/${player}`);
 
   await playerRef.update(update).catch(err => console.error(err));
+};
+
+export const deleteDataPlayer: DeleteDataPlayer = async (game, player) => {
+  const playerRef = firebase.database().ref(`games/${game}/players/${player}`);
+
+  await playerRef.remove().catch(err => console.error(err));
 };
 
 export const getDataPlayer: GetDataPlayer = async (game, player) => {

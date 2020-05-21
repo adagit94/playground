@@ -29,7 +29,7 @@ export type UpdateDataGame = (
   update: UpdateGameList
 ) => Promise<void>;
 
-export type ClearDataGame = (game: GamesList) => Promise<void>;
+export type DeleteDataGame = (game: GamesList) => Promise<void>;
 
 export type GetDataGame = (game: GamesList) => Promise<GetGameList>;
 
@@ -43,6 +43,11 @@ export type UpdateDataPlayer = (
   game: GamesList,
   player: string,
   update: UpdatePlayerList
+) => Promise<void>;
+
+export type DeleteDataPlayer = (
+  game: GamesList,
+  player: string
 ) => Promise<void>;
 
 export type GetDataPlayer = (

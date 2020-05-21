@@ -63,6 +63,7 @@ const Controller: React.FC = (): JSX.Element => {
   const dimensionsPercHeight = (dimensions / height) * 100;
   const dimensionsPercWidth = (dimensions / width) * 100;
   const playerLocal = user && user.uid;
+  const players = Object.keys(statesPlayers);
 
   const { top: playerLocalTop, left: playerLocalLeft } =
     playerLocal in statesPlayers && statesPlayers[playerLocal];
@@ -157,8 +158,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const initGame = (): void => {
-      const players = Object.keys(statesPlayers);
-
       for (let i = 0, l = players.length; i < l; i++) {
         const player = players[i];
 
@@ -287,7 +286,7 @@ const Controller: React.FC = (): JSX.Element => {
         winner
       });
 
-      updatePlayedTime('floatingPoint', Object.keys(statesPlayers), [
+      updatePlayedTime('floatingPoint', players, [
         statesGame.timestampStart,
         statesGame.timestampEnd
       ]);
