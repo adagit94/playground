@@ -274,6 +274,7 @@ const Controller: React.FC = (): JSX.Element => {
 
       const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
       console.log(sortedScores);
+      console.log([...scores].sort((a, b) => a + b));
       const highestScore = sortedScores[0];
       const highestScoreIndex = scores.indexOf(highestScore);
 
