@@ -9,8 +9,7 @@ export const initGame: StatesGame = {
   admin: undefined,
   winner: undefined,
   timer: undefined,
-  timestampStart: undefined,
-  timestampEnd: undefined,
+  timestamp: undefined,
   width: undefined,
   height: undefined
 };

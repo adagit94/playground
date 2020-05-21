@@ -26,7 +26,7 @@ const Monitor: React.FC = (): JSX.Element => {
 
   return (
     <Container id='monitor'>
-      {(state === 'eval' || state === 'reset') && (
+      {state === 'eval' && (
         <WindowEval>
           {!winner && <LoadingIndicator color={theming.background} />}
 

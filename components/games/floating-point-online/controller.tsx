@@ -205,7 +205,7 @@ const Controller: React.FC = (): JSX.Element => {
           updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', {
             state: 'run',
-            timestampStart: Date.now()
+            timestamp: Date.now()
           });
         }
       }
@@ -248,40 +248,6 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const evalGame = async (): Promise<void> => {
-      const players = Object.keys(statesPlayers);
-      const scores = players.map(player => statesPlayers[player].score);
-
-      const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
-      const highestScore = sortedScores[0];
-      const highestScoreIndex = scores.indexOf(highestScore);
-
-      const winnerID = players[highestScoreIndex];
-      const winnerName = statesPlayers[winnerID].username;
-      const winnerResult: Winner = { name: winnerName, score: highestScore };
-
-      updateDataGame('floatingPoint', {
-        winner: winnerResult,
-        timestampEnd: Date.now()
-      });
-
-      const winnerData = await getDataUserGame(winnerID, 'floatingPoint');
-
-      updateDataUserGame('floatingPoint', winnerID, {
-        wins: winnerData.wins + 1
-      });
-
-      window.setTimeout(() => {
-        updateDataGame('floatingPoint', {
-          state: 'reset'
-        });
-      }, 10000);
-    };
-
-    if (state === 'eval' && playerLocal === admin && !winner) evalGame();
-  });
-
-  useEffect(() => {
     const resetGame = (): void => {
       for (const player in statesPlayers) {
         updateDataPlayer('floatingPoint', player, {
@@ -295,21 +261,49 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
-        timestampStart: null,
-        timestampEnd: null,
+        timestamp: null,
         timer
       });
 
       updateDataFP({ top: null, left: null });
-
-      updatePlayedTime('floatingPoint', Object.keys(statesPlayers), [
-        statesGame.timestampStart,
-        statesGame.timestampEnd
-      ]);
     };
 
-    if (state === 'reset' && playerLocal === admin) resetGame();
+    const evalGame = async (): Promise<void> => {
+      const players = Object.keys(statesPlayers);
+      const scores = players.map(player => statesPlayers[player].score);
+
+      const sortedScores = [...scores].sort((a, b) => a - b).reverse(); // otestovat vatiantu s [player, score] -> a[1] - b[1], dale namisto - pouzit + pro opacne zarezni, reseni remizy
+      console.log(sortedScores);
+      const highestScore = sortedScores[0];
+      const highestScoreIndex = scores.indexOf(highestScore);
+
+      const winnerID = players[highestScoreIndex];
+      const winnerName = statesPlayers[winnerID].username;
+      const winnerResult: Winner = { name: winnerName, score: highestScore };
+
+      updateDataGame('floatingPoint', {
+        winner: winnerResult
+      });
+
+      updatePlayedTime('floatingPoint', Object.keys(statesPlayers), [
+        statesGame.timestamp,
+        Date.now()
+      ]);
+
+      const winnerData = await getDataUserGame(winnerID, 'floatingPoint');
+
+      updateDataUserGame('floatingPoint', winnerID, {
+        wins: winnerData.wins + 1
+      });
+
+      window.setTimeout(() => {
+        resetGame();
+      }, 10000);
+    };
+
+    if (state === 'eval' && playerLocal === admin && !winner) evalGame();
   });
+
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
       e.preventDefault();

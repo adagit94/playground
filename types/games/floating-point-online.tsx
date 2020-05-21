@@ -2,7 +2,7 @@ type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
 type DataSetsList = 'game' | 'players' | 'fp';
 
-type GameStatesList = 'conf' | 'init' | 'run' | 'eval' | 'reset';
+type GameStatesList = 'conf' | 'init' | 'run' | 'eval';
 
 export type Winner = { name: string; score: number };
 
@@ -40,8 +40,7 @@ export type StatesGame = {
   admin: string;
   winner: Winner;
   timer: number;
-  timestampStart: number;
-  timestampEnd: number;
+  timestamp: number;
   width: number;
   height: number;
 };
@@ -68,7 +67,7 @@ export type UpdateGame = {
   admin?: string;
   winner?: Winner;
   timer?: number;
-  timestampStart?: number;
+  timestamp?: number;
   timestampEnd?: number;
 };
 

@@ -7,8 +7,8 @@ import {
 } from 'types/games/floating-point-online';
 
 export const DEFAULTS: Defaults = {
-  dimensions: 10,
-  timer: 60
+  dimensions: 90,
+  timer: 5
 };
 
 export const initGameDefaults: InitGameDefaults = admin => {
