@@ -50,6 +50,14 @@ const ContainerButtons = styled.div`
   height: 75px;
 `;
 
+const ContainerInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+`;
+
 const ButtonStart = styled.button`
   padding: 5px;
   font-weight: bold;
@@ -69,17 +77,10 @@ const ButtonStart = styled.button`
   }
 `;
 
-const ContainerInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 50px;
-`;
-
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 50%;
 `;
 
 const ContainerAvatar = styled.div`
