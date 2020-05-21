@@ -173,7 +173,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   `;
 
   const handleInit = (): void => {
-    //if (players.length < 2) return;
+    if (players.length < 2) return;
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
