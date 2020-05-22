@@ -53,7 +53,6 @@ const Controller: React.FC = (): JSX.Element => {
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
-  const handleMoveRef = useRef(null);
 
   const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
@@ -67,6 +66,8 @@ const Controller: React.FC = (): JSX.Element => {
 
   const { top: playerLocalTop, left: playerLocalLeft } =
     playerLocal in statesPlayers && statesPlayers[playerLocal];
+
+  const handleMoveRef = useRef(null);
 
   const handleMove: HandleMove = key => {
     let operation: Operations;
@@ -301,10 +302,10 @@ const Controller: React.FC = (): JSX.Element => {
         winner: null,
         timestampStart: null,
         timestampEnd: null,
-        timer: timer
+        timer
       });
 
-      /*for (const player in statesPlayers) {
+      for (const player in statesPlayers) {
         console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
@@ -312,7 +313,7 @@ const Controller: React.FC = (): JSX.Element => {
           score: null,
           isReady: false
         });
-      }*/
+      }
 
       updateDataFP({ top: null, left: null });
     };

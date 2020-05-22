@@ -120,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin, timestampStart } = statesGame;
+  const { state, admin, timerID, timestampStart } = statesGame;
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
@@ -214,12 +214,15 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         if (playersRef.current.length >= 2 && admin === player) {
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
 
         if (stateRef.current === 'run') {
+          window.clearInterval(timerID);
+
+          // vyzkouse prohozeni s delete
           await updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
             Date.now()
@@ -227,7 +230,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
           await deleteDataPlayer('floatingPoint', player);
 
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             state: 'reset'
           });
         } else {
