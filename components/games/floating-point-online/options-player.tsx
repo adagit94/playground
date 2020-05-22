@@ -250,7 +250,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         Router.events.off('beforeHistoryChange', handleExit);
       }
     };
-  }, []);
+  }, [uid, admin, player, timerID]);
 
   useEffect(() => {
     const getStats = async (): Promise<void> => {
