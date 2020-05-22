@@ -5,7 +5,7 @@ import {
 } from 'types/games/floating-point-online';
 
 export const initGame: StatesGame = {
-  state: 'conf', // conf / init / running / eval
+  state: 'conf', // conf / init / running / eval / reset
   admin: undefined,
   winner: undefined,
   timer: undefined,

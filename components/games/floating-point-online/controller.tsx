@@ -248,27 +248,6 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const resetGame = (): void => {
-      for (const player in statesPlayers) {
-        updateDataPlayer('floatingPoint', player, {
-          top: null,
-          left: null,
-          score: null,
-          isReady: false
-        });
-      }
-
-      updateDataGame('floatingPoint', {
-        state: 'conf',
-        winner: null,
-        timestampStart: null,
-        timestampEnd: null,
-        timer
-      });
-
-      updateDataFP({ top: null, left: null });
-    };
-
     const evalGame = async (): Promise<void> => {
       const scores = [];
       console.log(statesPlayers);
@@ -304,13 +283,40 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       window.setTimeout(() => {
-        resetGame();
+        updateDataGame('floatingPoint', {
+          state: 'reset'
+        });
       }, 10000);
     };
 
     if (state === 'eval' && playerLocal === admin && winner === undefined) {
       evalGame();
     }
+  });
+
+  useEffect(() => {
+    const resetGame = (): void => {
+      updateDataGame('floatingPoint', {
+        state: 'conf',
+        winner: null,
+        timestampStart: null,
+        timestampEnd: null,
+        timer
+      });
+
+      for (const player in statesPlayers) {
+        updateDataPlayer('floatingPoint', player, {
+          top: null,
+          left: null,
+          score: null,
+          isReady: false
+        });
+      }
+
+      updateDataFP({ top: null, left: null });
+    };
+
+    if (state === 'reset' && playerLocal === admin) resetGame();
   });
 
   useEffect(() => {

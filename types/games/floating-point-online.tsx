@@ -2,7 +2,7 @@ type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
 type DataSetsList = 'game' | 'players' | 'fp';
 
-type GameStatesList = 'conf' | 'init' | 'run' | 'eval';
+type GameStatesList = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
 export type Winner = { name: string; score: number };
 
