@@ -203,19 +203,23 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   });
 
   useEffect(() => {
-    const handleExit = (url: string): void => {
-      //console.log(1);
-      if (url.includes('floating-point-online')) return;
-
+    const handleDisconnection = async (): Promise<void> => {
       if (playersRef.current.length === 1) {
         deleteDataGame('floatingPoint');
 
         return;
       }
 
+      if (playersRef.current.length >= 2 && admin === player) {
+        console.log('admin change');
+        updateDataGame('floatingPoint', {
+          admin: playersRef.current.find(player => player !== admin)
+        });
+      }
+
       if (stateRef.current === 'run') {
         if (playersRef.current.length === 2) {
-          updateDataGame('floatingPoint', {
+          await updateDataGame('floatingPoint', {
             state: 'eval',
             timestampEnd: Date.now()
           });
@@ -233,13 +237,12 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       } else {
         deleteDataPlayer('floatingPoint', player);
       }
+    };
 
-      if (playersRef.current.length >= 2 && admin === player) {
-        console.log('admin change');
-        updateDataGame('floatingPoint', {
-          admin: playersRef.current.find(player => player !== admin)
-        });
-      }
+    const handleExit = (url: string): void => {
+      if (url.includes('floating-point-online')) return;
+
+      handleDisconnection();
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {

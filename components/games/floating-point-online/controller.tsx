@@ -271,7 +271,7 @@ const Controller: React.FC = (): JSX.Element => {
 
     const evalGame = async (): Promise<void> => {
       const scores = [];
-
+      console.log(statesPlayers);
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
       }
@@ -365,7 +365,11 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (user !== undefined && !(playerLocal in statesPlayers)) {
+    if (
+      user !== undefined &&
+      admin === undefined &&
+      !(playerLocal in statesPlayers)
+    ) {
       //zkontrolovat pocet sputeni initgame
       initGame('floatingPoint', user, handleData);
     }
