@@ -304,7 +304,7 @@ const Controller: React.FC = (): JSX.Element => {
         timer: timer
       });
 
-      for (const player in statesPlayers) {
+      /*for (const player in statesPlayers) {
         console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
@@ -312,7 +312,7 @@ const Controller: React.FC = (): JSX.Element => {
           score: null,
           isReady: false
         });
-      }
+      }*/
 
       updateDataFP({ top: null, left: null });
     };
