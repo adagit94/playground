@@ -301,10 +301,11 @@ const Controller: React.FC = (): JSX.Element => {
         winner: null,
         timestampStart: null,
         timestampEnd: null,
-        timer
+        timer: timer
       });
 
       for (const player in statesPlayers) {
+        console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
           left: null,
