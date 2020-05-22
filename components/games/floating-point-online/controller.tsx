@@ -302,6 +302,7 @@ const Controller: React.FC = (): JSX.Element => {
         winner: null,
         timestampStart: null,
         timestampEnd: null,
+        timerID: null,
         timer
       });
 
