@@ -305,6 +305,7 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       for (const player in statesPlayers) {
+        console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
           left: null,
