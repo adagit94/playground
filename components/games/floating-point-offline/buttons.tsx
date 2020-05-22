@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 
+import { paddingContainer } from 'components/styled-components/_variables';
+
 import { PropsButtons } from 'types/games/floating-point-offline';
 
 const Container = styled.div`
@@ -9,7 +11,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 50px;
-  padding: 10px;
+  padding: ${paddingContainer};
 `;
 
 const Buttons: React.FC<PropsButtons> = ({ children }) => {

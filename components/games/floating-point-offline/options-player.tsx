@@ -7,6 +7,11 @@ import Color from './color';
 import { DividerVertical } from 'components/styled-components/dividers';
 import { OverlapDisabled } from 'components/styled-components/overlaps';
 import { ContainerOptions } from 'components/styled-components/containers';
+import {
+  paddingButton,
+  borderRadiusButton,
+  heightContainerOptionsItem
+} from 'components/styled-components/_variables';
 
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextDispatchesFP } from 'contexts/games/floating-point-offline';
@@ -31,7 +36,7 @@ const Container = styled.div`
 const ContainerInfo = styled.div`
   display: flex;
   flex-direction: column;
-  height: 75px;
+  height: ${heightContainerOptionsItem};
 `;
 
 const Info = styled.div`
@@ -43,12 +48,12 @@ const Info = styled.div`
 `;
 
 const ButtonLoadProfile = styled.button`
-  padding: 5px;
+  padding: ${paddingButton};
   border-top: transparent;
   border-right: 2px solid;
   border-bottom: transparent;
   border-left: 2px solid;
-  border-radius: 5px;
+  border-radius: ${borderRadiusButton};
   color: ${(props): string => props.theme.inverted};
   background-color: ${(props): string => props.theme.background};
   transition-property: color, background-color, border-right-color,
@@ -125,7 +130,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({ player }) => {
         <Info>
           {withProfile && user.displayName}
 
-          {user && !profile && state === 'conf' && (
+          {state === 'conf' && user !== undefined && profile === undefined && (
             <ButtonLoadProfile
               onClick={(): void => {
                 dispatches.game({

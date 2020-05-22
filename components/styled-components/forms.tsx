@@ -1,12 +1,20 @@
 import styled from 'styled-components';
 
+import {
+  paddingButton,
+  paddingFormInput,
+  borderRadiusButton,
+  borderRadiusWindow,
+  borderWidthFormInput
+} from './_variables';
+
 export const FormLabel = styled.label`
   width: 75px;
 `;
 
 export const FormInput = styled.input`
-  border: 2px solid;
-  padding: 2.5px;
+  border: ${borderWidthFormInput} solid;
+  padding: ${paddingFormInput};
   border-radius: 5px;
   background: ${(props): string => props.theme.inverted};
   color: ${(props): string => props.theme.background};
@@ -21,13 +29,13 @@ export const FormInput = styled.input`
 `;
 
 export const FormButton = styled.button`
-  padding: 5px;
+  padding: ${paddingButton};
   font-weight: bold;
   border-top: transparent;
   border-right: 2px solid;
   border-bottom: transparent;
   border-left: 2px solid;
-  border-radius: 5px;
+  border-radius: ${borderRadiusButton};
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
   transition-property: color, background-color, border-right-color,
@@ -49,10 +57,11 @@ export const FormButton = styled.button`
 `;
 
 export const FormButtonInput = styled.button`
-  padding: 5px;
+  padding: ${paddingButton};
   font-weight: bold;
-  border: 2px solid ${(props): string => props.theme.background};
-  border-radius: 5px;
+  border: ${borderWidthFormInput} solid
+    ${(props): string => props.theme.background};
+  border-radius: ${borderRadiusButton};
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
   transition-property: color, background-color;
@@ -76,9 +85,9 @@ export const FormSocialProvider = styled.button`
   justify-content: center;
   align-items: center;
   width: 70%;
-  padding: 2.5px;
+  padding: ${paddingFormInput};
   border: none;
-  border-radius: 5px;
+  border-radius: ${borderRadiusButton};
   color: #ffffff;
 
   &:hover {
@@ -143,7 +152,7 @@ export const FormWindowValidation = styled.div`
   align-items: center;
   padding: 15px;
   border: 2px solid;
-  border-radius: 5px;
+  border-radius: ${borderRadiusWindow};
 
   ul {
     padding: 0;

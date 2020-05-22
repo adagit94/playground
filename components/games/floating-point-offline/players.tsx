@@ -2,12 +2,12 @@ import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import { Icons } from 'types/games/floating-point-offline';
+import { ContextFirebase } from 'contexts/firebase';
 import {
   ContextGame,
   ContextPlayers,
   ContextParams
 } from 'contexts/games/floating-point-offline';
-import { ContextFirebase } from 'contexts/firebase';
 
 const icons: Icons = {
   ball1: {

@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 
+import {
+  paddingContainer,
+  borderRadiusWindow,
+  widthStatsItem,
+  heightStatsItem
+} from './_variables';
+
 export const WindowStats = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 10px;
-  border-radius: 5px;
+  padding: ${paddingContainer};
+  border-radius: ${borderRadiusWindow};
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
 `;
@@ -24,7 +31,8 @@ export const WindowStatsUser = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      width: 200px;
+      height: ${heightStatsItem};
+      width: ${widthStatsItem};
       margin: 0 5px;
     }
   }
@@ -38,7 +46,7 @@ export const WindowStatsGames = styled.div`
 `;
 
 export const WindowStatsGame = styled.div`
-  width: 200px;
+  width: ${widthStatsItem};
   margin: 0 5px;
 
   ul {
@@ -50,6 +58,7 @@ export const WindowStatsGame = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      height: ${heightStatsItem};
     }
   }
 `;

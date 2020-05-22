@@ -28,9 +28,11 @@ const Monitor: React.FC = (): JSX.Element => {
     <Container id='monitor'>
       {state === 'eval' && (
         <WindowEval>
-          {!winner && <LoadingIndicator color={theming.background} />}
+          {winner === undefined && (
+            <LoadingIndicator color={theming.background} />
+          )}
 
-          {winner && (
+          {winner !== undefined && (
             <WindowEvalResults>
               <h1>Results</h1>
               <div>Player: {winner.name}</div>

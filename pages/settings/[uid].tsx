@@ -3,6 +3,7 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 
+import { paddingContainer } from 'components/styled-components/_variables';
 import {
   FormRowVertical,
   FormLabel,
@@ -18,7 +19,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 10px;
+  padding: ${paddingContainer};
 `;
 
 const Form = styled.form`

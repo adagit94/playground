@@ -209,24 +209,24 @@ export const initGame: InitGame = async (game, user, handleData) => {
 
   switch (game) {
     case 'floatingPoint':
-      if (!gameExist) {
-        const gameData = initGameDefaults(player);
-
-        createDataGame('floatingPoint', gameData);
-      }
-
       if (!playerExist) {
         const playerData = initPlayerDefaults(user);
 
         createDataPlayer('floatingPoint', player, playerData);
       }
 
-      gameRef.child('game').on('value', data => {
-        handleData('game', data.val());
-      });
+      if (!gameExist) {
+        const gameData = initGameDefaults(player);
+
+        createDataGame('floatingPoint', gameData);
+      }
 
       gameRef.child('players').on('value', data => {
         handleData('players', data.val());
+      });
+
+      gameRef.child('game').on('value', data => {
+        handleData('game', data.val());
       });
 
       gameRef.child('fp').on('value', data => {

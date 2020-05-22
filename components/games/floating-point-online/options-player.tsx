@@ -4,6 +4,15 @@ import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 import {
+  paddingButton,
+  borderWidthButton,
+  borderRadiusButton,
+  heightContainerOptionsItem,
+  widthStatsItem,
+  heightStatsItem
+} from 'components/styled-components/_variables';
+
+import {
   WindowStats,
   WindowStatsGame
 } from 'components/styled-components/windows';
@@ -48,19 +57,12 @@ const Container = styled.div`
   }
 `;
 
-const ContainerStats = styled.div`
-  position: absolute;
-  top: -85px;
-  left: calc(50% - 100px);
-  visibility: hidden;
-`;
-
 const ContainerButtons = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 75px;
+  height: ${heightContainerOptionsItem};
 `;
 
 const ContainerInfo = styled.div`
@@ -68,14 +70,14 @@ const ContainerInfo = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 50px;
+  height: ${heightContainerOptionsItem};
 `;
 
 const ButtonStart = styled.button`
-  padding: 5px;
+  padding: ${paddingButton};
   font-weight: bold;
-  border: 1px solid ${(props): string => props.theme.inverted};
-  border-radius: 5px;
+  border: ${borderWidthButton} solid ${(props): string => props.theme.inverted};
+  border-radius: ${borderRadiusButton};
   color: ${(props): string => props.theme.inverted};
   background-color: ${(props): string => props.theme.background};
 
@@ -109,7 +111,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   initPossible,
   setInitPossible
 }): JSX.Element => {
-  const [gameStats, setGameStats] = useState(null);
+  const [gameStats, setGameStats] = useState([]);
 
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -120,24 +122,31 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const { user } = statesFirebase;
   const { state, admin, timestampStart } = statesGame;
 
-  const uid = user && user.uid;
-  const userGameStats = statesUser && statesUser.games.floatingPoint;
-  const playerData = player && statesPlayers[player];
+  const uid = user?.uid;
+  const userGameStats = statesUser?.games.floatingPoint;
+  const playerData = player !== undefined && statesPlayers[player];
   const players = Object.keys(statesPlayers);
 
   const stateRef = useRef(state);
   const timestampStartRef = useRef(timestampStart);
   const playersRef = useRef(players);
 
+  const ContainerStats = styled.div`
+    position: absolute;
+    top: calc(-30px - ${gameStats.length} * ${heightStatsItem});
+    left: calc(50% - ${widthStatsItem} / 2);
+    visibility: hidden;
+  `;
+
   const ButtonReady = styled.button`
-    padding: 5px;
+    padding: ${paddingButton};
     font-weight: bold;
-    border: 1px solid
+    border: ${borderWidthButton} solid
       ${(props): string =>
         playerData && !playerData.isReady && !initPossible
           ? '#f00'
           : props.theme.inverted};
-    border-radius: 5px;
+    border-radius: ${borderRadiusButton};
     color: ${(props): string =>
       playerData && playerData.isReady
         ? props.theme.background
@@ -233,12 +242,12 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
     };
 
-    if (uid && player && uid === player) {
+    if (uid !== undefined && player !== undefined && uid === player) {
       Router.events.on('beforeHistoryChange', handleExit);
     }
 
     return (): void => {
-      if (uid && player && uid === player) {
+      if (uid !== undefined && player !== undefined && uid === player) {
         Router.events.off('beforeHistoryChange', handleExit);
       }
     };
@@ -274,16 +283,18 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       setGameStats(statsArr);
     };
 
-    if (state === 'conf' && player && !gameStats) getStats();
+    if (state === 'conf' && player !== undefined && gameStats.length === 0) {
+      getStats();
+    }
   });
 
   return (
     <Container>
-      {state === 'conf' && !playerData && (
+      {state === 'conf' && playerData === undefined && (
         <LoadingIndicator color={theming.inverted} />
       )}
 
-      {state === 'conf' && gameStats && (
+      {state === 'conf' && gameStats.length !== 0 && (
         <ContainerStats id='stats'>
           <WindowStats>
             <WindowStatsGame>
@@ -304,7 +315,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         </ContainerStats>
       )}
 
-      {state === 'conf' && playerData && (
+      {state === 'conf' && playerData !== undefined && (
         <ContainerButtons>
           {uid === admin && admin === player && (
             <ButtonStart onClick={handleInit} type='button'>
@@ -329,7 +340,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         </ContainerButtons>
       )}
 
-      {playerData && (
+      {playerData !== undefined && (
         <ContainerInfo>
           <Info>{playerData.username}</Info>
 
@@ -337,7 +348,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         </ContainerInfo>
       )}
 
-      {playerData && (
+      {playerData !== undefined && (
         <ContainerAvatar>
           <Avatar />
         </ContainerAvatar>

@@ -2,10 +2,15 @@ import { useContext } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import {
+  paddingContainer,
+  borderRadiusLink
+} from 'components/styled-components/_variables';
+
 import { ContextFirebase } from 'contexts/firebase';
 
 const Container = styled.div`
-  padding: 10px;
+  padding: ${paddingContainer};
 
   ul {
     display: flex;
@@ -56,7 +61,7 @@ const Mode = styled.div`
     width: 40%;
     height: 20%;
     border: 1px solid ${(props): string => props.theme.background};
-    border-radius: 5px;
+    border-radius: ${borderRadiusLink};
     color: ${(props): string => props.theme.background};
     background-color: ${(props): string => props.theme.inverted};
     text-decoration: none;

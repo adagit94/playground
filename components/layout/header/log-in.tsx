@@ -2,6 +2,7 @@ import { useContext, useState, memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { paddingButton } from 'components/styled-components/_variables';
 import { LinkStandard } from 'components/styled-components/links';
 import { DividerHorizontal } from 'components/styled-components/dividers';
 import {
@@ -22,7 +23,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 5px;
+  padding: ${paddingButton};
 `;
 
 const SocialProviderFb = styled(FormSocialProvider)`
@@ -43,9 +44,10 @@ const SocialProviderGoogle = styled(FormSocialProvider)`
 `;
 
 const LogIn: React.FC = (): JSX.Element => {
-  const dispatches = useContext(ContextDispatchesLayout);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatches = useContext(ContextDispatchesLayout);
 
   const handleLoading: HandleLoading = value => {
     dispatches.firebase({ type: 'setLoading', value });

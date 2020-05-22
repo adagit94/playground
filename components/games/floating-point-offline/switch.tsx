@@ -1,6 +1,8 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
+import { borderRadiusButton } from 'components/styled-components/_variables';
+
 import {
   ContextGame,
   ContextDispatchesFP
@@ -17,7 +19,7 @@ const Switch: React.FC = (): JSX.Element => {
     height: 35px;
     margin: 0 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: ${borderRadiusButton};
     transform: ${state !== 'off' ? 'rotateX(65deg)' : 'rotateX(25deg)'};
     box-shadow: ${state !== 'off'
       ? '0 30px 0 0 #009900'
@@ -39,10 +41,10 @@ const Switch: React.FC = (): JSX.Element => {
         onClick={(): void => {
           dispatches.game({
             type: 'changeState',
-            state: state !== 'off' ? 'off' : 'conf'
+            state: state === 'off' ? 'conf' : 'off'
           });
 
-          state !== 'off' && dispatches.params({ type: 'reset' });
+          if (state !== 'off') dispatches.params({ type: 'reset' });
         }}
         type='button'
       />

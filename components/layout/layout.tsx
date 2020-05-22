@@ -64,7 +64,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     }
   `;
 
-  if (queryUID) {
+  if (queryUID !== undefined) {
     const sessionUID = sessionStorage.getItem('uid');
 
     if (queryUID !== sessionUID) {
@@ -75,7 +75,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   useEffect(() => {
     const theme = sessionStorage.getItem('theme');
 
-    if (theme && theme !== statesLayout.theme) {
+    if (theme !== null && theme !== statesLayout.theme) {
       dispatchLayout({
         type: 'changeTheme',
         theme
@@ -107,7 +107,9 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
       dispatchUser({ type: 'setData', payload: data });
     };
 
-    if (user && !statesUser) initUserDB(user, handleData);
+    if (user !== undefined && statesUser === undefined) {
+      initUserDB(user, handleData);
+    }
 
     /*
     return (): void => {

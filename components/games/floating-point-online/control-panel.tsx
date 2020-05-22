@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import OptionsPlayer from './options-player';
 import Timer from './timer';
 
+import { paddingContainer } from 'components/styled-components/_variables';
+
 import { ContextGame } from 'contexts/games/floating-point-online';
 import { ContextPlayers } from 'contexts/games/floating-point-online';
 
@@ -12,7 +14,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-around;
   height: 40%;
-  padding: 10px;
+  padding: ${paddingContainer};
   border-top: 1px solid;
 `;
 

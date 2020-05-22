@@ -2,6 +2,8 @@ import { memo } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
+import { borderRadiusLink } from 'components/styled-components/_variables';
+
 const Container = styled.nav`
   flex: auto;
   margin: 10px 0;
@@ -30,7 +32,7 @@ const Container = styled.nav`
         border-right: 2px solid;
         border-bottom-color: transparent;
         border-left: 2px solid;
-        border-radius: 5px;
+        border-radius: ${borderRadiusLink};
         color: ${(props): string => props.theme.inverted};
         text-decoration: none;
         transition-property: color, background-color, border-right-color,

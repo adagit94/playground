@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, Fragment } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
+import { paddingContainer } from 'components/styled-components/_variables';
 import {
   DividerHorizontal,
   DividerVertical
@@ -21,7 +22,7 @@ import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
   height: 100%;
-  padding: 10px;
+  padding: ${paddingContainer};
 `;
 
 const HeadingGame = styled.h3`
@@ -29,8 +30,8 @@ const HeadingGame = styled.h3`
 `;
 
 const Stats: React.FC = (): JSX.Element => {
-  const [userStats, setUserStats] = useState(null);
-  const [gamesStats, setGamesStats] = useState(null);
+  const [userStats, setUserStats] = useState([]);
+  const [gamesStats, setGamesStats] = useState([]);
 
   const theming: Theming = useContext(ThemeContext);
   const statesUser = useContext(ContextUser);
@@ -104,9 +105,9 @@ const Stats: React.FC = (): JSX.Element => {
   return (
     <Container>
       <WindowStats>
-        {!userStats && <LoadingIndicator color={background} />}
+        {userStats.length === 0 && <LoadingIndicator color={background} />}
 
-        {userStats && (
+        {userStats.length !== 0 && (
           <WindowStatsUser>
             <ul>
               {userStats.map((stat, i, arr) => {
@@ -131,9 +132,9 @@ const Stats: React.FC = (): JSX.Element => {
 
         <DividerHorizontal color='background' />
 
-        {!gamesStats && <LoadingIndicator color={background} />}
+        {gamesStats.length === 0 && <LoadingIndicator color={background} />}
 
-        {gamesStats && (
+        {gamesStats.length !== 0 && (
           <WindowStatsGames>
             {gamesStats.map((game, i, arr) => {
               const [name, stats] = game;

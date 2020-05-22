@@ -62,7 +62,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   const dimensionsPercHeight = (dimensions / height) * 100;
   const dimensionsPercWidth = (dimensions / width) * 100;
-  const playerLocal = user && user.uid;
+  const playerLocal = user?.uid;
   const players = Object.keys(statesPlayers);
 
   const { top: playerLocalTop, left: playerLocalLeft } =
@@ -308,7 +308,9 @@ const Controller: React.FC = (): JSX.Element => {
       }, 10000);
     };
 
-    if (state === 'eval' && playerLocal === admin && !winner) evalGame();
+    if (state === 'eval' && playerLocal === admin && winner === undefined) {
+      evalGame();
+    }
   });
 
   useEffect(() => {
@@ -363,7 +365,8 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (user && !statesGame.admin && !(playerLocal in statesPlayers)) {
+    if (user !== undefined && !(playerLocal in statesPlayers)) {
+      //zkontrolovat pocet sputeni initgame
       initGame('floatingPoint', user, handleData);
     }
     /*
