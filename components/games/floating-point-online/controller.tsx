@@ -158,7 +158,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const initGame = (): void => {
+    const initGame = async (): Promise<void> => {
       for (let i = 0, l = players.length; i < l; i++) {
         const player = players[i];
 
@@ -189,7 +189,7 @@ const Controller: React.FC = (): JSX.Element => {
             break;
         }
 
-        updateDataPlayer('floatingPoint', player, {
+        await updateDataPlayer('floatingPoint', player, {
           top: playerLocalTop,
           left: playerLocalLeft,
           score: 0
@@ -203,7 +203,7 @@ const Controller: React.FC = (): JSX.Element => {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
-          updateDataFP({ top: fpTop, left: fpLeft });
+          await updateDataFP({ top: fpTop, left: fpLeft });
           updateDataGame('floatingPoint', {
             state: 'run',
             timestampStart: Date.now()
