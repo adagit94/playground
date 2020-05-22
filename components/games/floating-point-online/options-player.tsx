@@ -230,6 +230,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
           await deleteDataPlayer('floatingPoint', player);
 
+          console.log('before reset');
           await updateDataGame('floatingPoint', {
             state: 'reset'
           });
@@ -240,7 +241,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
-      console.log(timerID);
+      //console.log(timerID);
       Router.events.on('beforeHistoryChange', handleExit);
     }
 
@@ -249,7 +250,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         Router.events.off('beforeHistoryChange', handleExit);
       }
     };
-  }, [uid, admin, player]);
+  }, []);
 
   useEffect(() => {
     const getStats = async (): Promise<void> => {
