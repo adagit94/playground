@@ -295,8 +295,8 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const resetGame = (): void => {
-      updateDataGame('floatingPoint', {
+    const resetGame = async (): Promise<void> => {
+      await updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
         timestampStart: null,
@@ -305,7 +305,6 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       for (const player in statesPlayers) {
-        console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
           left: null,
