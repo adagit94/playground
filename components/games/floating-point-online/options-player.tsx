@@ -208,6 +208,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
       (async (): Promise<void> => {
         if (playersRef.current.length === 1) {
+          window.clearInterval(timerID);
+
           deleteDataGame('floatingPoint');
 
           return;
