@@ -13,6 +13,7 @@ export const DEFAULTS: Defaults = {
 
 export const initGameDefaults: InitGameDefaults = admin => {
   const gameDefaults: CreateGame = {
+    state: 'conf',
     admin,
     timer: DEFAULTS.timer
   };

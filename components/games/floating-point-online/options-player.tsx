@@ -240,6 +240,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
+      console.log(timerID);
       Router.events.on('beforeHistoryChange', handleExit);
     }
 

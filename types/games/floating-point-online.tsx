@@ -48,6 +48,7 @@ export type StatesGame = {
 };
 
 export type CreateGame = {
+  state: 'conf';
   admin: string;
   timer: number;
 };
