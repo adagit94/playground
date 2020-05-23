@@ -317,7 +317,11 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataFP({ top: null, left: null });
     };
 
-    if (state === 'reset' && playerLocal === admin) resetGame();
+    if (state === 'reset' && playerLocal === admin) {
+      setTimeout(() => {
+        resetGame();
+      }, 1000);
+    }
   });
 
   useEffect(() => {

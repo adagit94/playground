@@ -207,7 +207,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       if (url.includes('floating-point-online')) return;
 
       if (stateRef.current !== 'eval') {
-        ((): void => {
+        (async (): Promise<void> => {
           if (playersRef.current.length === 1) {
             deleteDataGame('floatingPoint');
 
@@ -215,26 +215,24 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           }
 
           if (playersRef.current.length >= 2 && admin === player) {
-            updateDataGame('floatingPoint', {
+            await updateDataGame('floatingPoint', {
               admin: playersRef.current.find(player => player !== admin)
             });
           }
 
           switch (stateRef.current) {
             case 'run':
-              updatePlayedTime('floatingPoint', playersRef.current, [
+              await updatePlayedTime('floatingPoint', playersRef.current, [
                 timestampStartRef.current,
                 Date.now()
               ]);
 
-              deleteDataPlayer('floatingPoint', player);
+              await deleteDataPlayer('floatingPoint', player);
 
               console.log('before reset');
-              setTimeout(() => {
-                updateDataGame('floatingPoint', {
-                  state: 'reset'
-                });
-              }, 3000);
+              updateDataGame('floatingPoint', {
+                state: 'reset'
+              });
 
               break;
 
