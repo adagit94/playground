@@ -250,18 +250,18 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
-      const scores = [];
+      let scores = [];
 
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
       }
 
-      scores.sort((a, b) => a[1] + b[1]);
+      scores = scores.sort((a, b) => a[1] + b[1]);
 
       const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
       const winner: Winner = { name: winnerName, score: winnerScore };
-      console.log(scores[0]);
+
       updateDataGame('floatingPoint', {
         winner
       });
@@ -390,6 +390,10 @@ const Controller: React.FC = (): JSX.Element => {
     };
     */
   });
+
+  useEffect(() => {
+    return (): void => console.log('unmounted');
+  }, []);
 
   //console.log(statesGame);
   //console.log(statesPlayers);
