@@ -112,7 +112,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   setInitPossible
 }): JSX.Element => {
   const [gameStats, setGameStats] = useState([]);
-  const [handlingExit, setHandlingExit] = useState(false);
 
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -121,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin, timestampStart } = statesGame;
+  const { state, admin, timestampStart, handlingExit } = statesGame;
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
@@ -207,14 +206,16 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      setHandlingExit(true);
-
       (async (): Promise<void> => {
         if (playersRef.current.length === 1) {
           deleteDataGame('floatingPoint');
 
           return;
         }
+
+        await updateDataGame('floatingPoint', {
+          handlingExit: true
+        });
 
         if (admin === player) {
           updateDataGame('floatingPoint', {
@@ -236,9 +237,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         } else {
           await deleteDataPlayer('floatingPoint', player);
         }
-      })();
 
-      setHandlingExit(false);
+        await updateDataGame('floatingPoint', {
+          handlingExit: false
+        });
+      })();
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
