@@ -23,7 +23,7 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
       return { ...states, ...action.payload };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
 
@@ -38,7 +38,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
       };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
 
@@ -51,6 +51,6 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
       return { ...action.payload };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };

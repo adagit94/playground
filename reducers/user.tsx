@@ -9,6 +9,6 @@ export const reducerUser: React.Reducer<StatesUser, ActionsUser> = (
       return { ...action.payload };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };

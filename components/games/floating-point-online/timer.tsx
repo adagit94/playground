@@ -28,10 +28,11 @@ const Timer: React.FC = (): JSX.Element => {
   const uid = user?.uid;
 
   const timerRef = useRef(timer);
+  const timerIDRef = useRef(timerID);
 
   const handleTimer = (): void => {
     if (timerRef.current === 0) {
-      window.clearInterval(timerID);
+      window.clearInterval(timerIDRef.current);
 
       updateDataGame('floatingPoint', {
         state: 'eval',
@@ -44,6 +45,7 @@ const Timer: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     timerRef.current = timer;
+    timerIDRef.current = timerID;
   });
 
   useEffect(() => {

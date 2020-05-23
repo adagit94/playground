@@ -12,6 +12,6 @@ export const reducerLayout: React.Reducer<StatesLayout, ActionsLayout> = (
       };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };

@@ -60,11 +60,11 @@ export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
           };
 
         default:
-          throw new Error('Unspecified / Wrong operation');
+          return states;
       }
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
 
@@ -114,7 +114,7 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           };
 
         default:
-          throw new Error('Unspecified / Wrong operation');
+          return states;
       }
 
     case 'addScore':
@@ -147,11 +147,11 @@ export const reducerPlayers: React.Reducer<StatesPlayers, ActionsPlayers> = (
           };
 
         default:
-          throw new Error('Unspecified / Wrong operation');
+          return states;
       }
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
 
@@ -212,7 +212,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           };
 
         default:
-          throw new Error('Unspecified / Wrong operation');
+          return states;
       }
 
     case 'changeColor':
@@ -295,11 +295,11 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
           }
 
         default:
-          throw new Error('Unspecified / Wrong operation');
+          return states;
       }
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
 
@@ -315,6 +315,6 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
       };
 
     default:
-      throw new Error('Unspecified / Wrong action');
+      return states;
   }
 };
