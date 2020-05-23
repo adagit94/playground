@@ -59,11 +59,6 @@ const Timer: React.FC = (): JSX.Element => {
 
       updateDataGame('floatingPoint', { timerID });
     }
-
-    return (): void => {
-      console.log('time cleared');
-      window.clearInterval(timerID);
-    };
   });
 
   return <Container>{timer}</Container>;
