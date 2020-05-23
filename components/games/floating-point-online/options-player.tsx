@@ -206,42 +206,42 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      (async (): Promise<void> => {
-        if (playersRef.current.length === 1) {
-          deleteDataGame('floatingPoint');
+      if (playersRef.current.length === 1) {
+        deleteDataGame('floatingPoint');
 
-          return;
-        }
+        return;
+      }
 
-        await updateDataGame('floatingPoint', {
-          handlingExit: true
-        });
+      updateDataGame('floatingPoint', {
+        handlingExit: true
+      });
 
+      setTimeout(() => {
         if (admin === player) {
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
 
         if (stateRef.current === 'run') {
-          await updatePlayedTime('floatingPoint', playersRef.current, [
+          updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
             Date.now()
           ]);
 
-          await deleteDataPlayer('floatingPoint', player);
+          deleteDataPlayer('floatingPoint', player);
 
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             state: 'reset'
           });
         } else {
-          await deleteDataPlayer('floatingPoint', player);
+          deleteDataPlayer('floatingPoint', player);
         }
 
-        await updateDataGame('floatingPoint', {
-          handlingExit: false
+        updateDataGame('floatingPoint', {
+          handlingExit: true
         });
-      })();
+      }, 500);
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
