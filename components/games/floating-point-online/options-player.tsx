@@ -214,11 +214,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         if (stateRef.current === 'run') {
+          deleteDataPlayer('floatingPoint', player);
+
           updateDataGame('floatingPoint', {
             state: 'reset'
           });
-
-          deleteDataPlayer('floatingPoint', player);
 
           updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
