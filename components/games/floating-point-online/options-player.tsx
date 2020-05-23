@@ -120,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin, timestampStart, handlingExit } = statesGame;
+  const { state, admin, timestampStart } = statesGame;
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
@@ -212,36 +212,26 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         return;
       }
 
-      updateDataGame('floatingPoint', {
-        handlingExit: true
-      });
+      if (admin === player) {
+        updateDataGame('floatingPoint', {
+          admin: playersRef.current.find(player => player !== admin)
+        });
+      }
 
-      (async (): Promise<void> => {
-        if (admin === player) {
-          updateDataGame('floatingPoint', {
-            admin: playersRef.current.find(player => player !== admin)
-          });
-        }
+      if (stateRef.current === 'run') {
+        updatePlayedTime('floatingPoint', playersRef.current, [
+          timestampStartRef.current,
+          Date.now()
+        ]);
 
-        if (stateRef.current === 'run') {
-          updatePlayedTime('floatingPoint', playersRef.current, [
-            timestampStartRef.current,
-            Date.now()
-          ]);
+        deleteDataPlayer('floatingPoint', player);
 
-          deleteDataPlayer('floatingPoint', player);
-
-          await updateDataGame('floatingPoint', {
-            state: 'reset'
-          });
-        } else {
-          await deleteDataPlayer('floatingPoint', player);
-        }
-      })();
-
-      updateDataGame('floatingPoint', {
-        handlingExit: false
-      });
+        updateDataGame('floatingPoint', {
+          state: 'reset'
+        });
+      } else {
+        deleteDataPlayer('floatingPoint', player);
+      }
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
@@ -289,14 +279,14 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       getStats();
     }
   });
-  console.log(handlingExit);
+
   return (
     <Container>
-      {((state === 'conf' && playerData === undefined) || handlingExit) && (
+      {state === 'conf' && playerData === undefined && (
         <LoadingIndicator color={theming.inverted} />
       )}
 
-      {playerData !== undefined && !handlingExit && (
+      {playerData !== undefined && (
         <>
           {state === 'conf' && gameStats.length !== 0 && (
             <ContainerStats id='stats'>

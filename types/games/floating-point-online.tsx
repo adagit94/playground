@@ -44,7 +44,6 @@ export type StatesGame = {
   timestampEnd: number;
   width: number;
   height: number;
-  handlingExit: boolean;
 };
 
 export type CreateGame = {
@@ -72,7 +71,6 @@ export type UpdateGame = {
   timer?: number;
   timestampStart?: number;
   timestampEnd?: number;
-  handlingExit?: boolean;
 };
 
 export type StatesPlayers = { [uid: string]: Player };
