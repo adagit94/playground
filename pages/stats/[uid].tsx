@@ -97,7 +97,9 @@ const Stats: React.FC = (): JSX.Element => {
       setGamesStats(gamesStatsArr);
     };
 
-    if (statesUser && !userStats && !gamesStats) initStats();
+    if (statesUser && userStats.length === 0 && gamesStats.length === 0) {
+      initStats();
+    }
   });
 
   //console.log(stats);

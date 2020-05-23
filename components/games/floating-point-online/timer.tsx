@@ -49,6 +49,7 @@ const Timer: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
+    console.log(timerID);
     if (
       timerID === undefined &&
       uid !== undefined &&
