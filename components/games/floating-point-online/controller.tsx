@@ -297,14 +297,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const resetGame = (): void => {
-      updateDataGame('floatingPoint', {
-        state: 'conf',
-        winner: null,
-        timestampStart: null,
-        timestampEnd: null,
-        timer
-      });
-
       for (const player in statesPlayers) {
         updateDataPlayer('floatingPoint', player, {
           top: null,
@@ -313,6 +305,14 @@ const Controller: React.FC = (): JSX.Element => {
           isReady: false
         });
       }
+
+      updateDataGame('floatingPoint', {
+        state: 'conf',
+        winner: null,
+        timestampStart: null,
+        timestampEnd: null,
+        timer
+      });
 
       updateDataFP({ top: null, left: null });
     };

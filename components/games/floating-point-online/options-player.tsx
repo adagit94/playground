@@ -213,12 +213,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           return;
         }
 
-        if (playersRef.current.length >= 2 && admin === player) {
-          updateDataGame('floatingPoint', {
-            admin: playersRef.current.find(player => player !== admin)
-          });
-        }
-
         if (stateRef.current === 'run') {
           await updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
@@ -232,6 +226,12 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           });
         } else {
           deleteDataPlayer('floatingPoint', player);
+        }
+
+        if (admin === player) {
+          updateDataGame('floatingPoint', {
+            admin: playersRef.current.find(player => player !== admin)
+          });
         }
       })();
     };
@@ -284,11 +284,10 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   return (
     <Container>
-      {state === 'conf' && playerData === undefined && (
-        <LoadingIndicator color={theming.inverted} />
-      )}
+      {((state === 'conf' && playerData === undefined) ||
+        state === 'reset') && <LoadingIndicator color={theming.inverted} />}
 
-      {state === 'conf' && playerData && gameStats.length !== 0 && (
+      {state === 'conf' && playerData !== undefined && gameStats.length !== 0 && (
         <ContainerStats id='stats'>
           <WindowStats>
             <WindowStatsGame>
@@ -334,7 +333,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         </ContainerButtons>
       )}
 
-      {playerData !== undefined && (
+      {state !== 'reset' && playerData !== undefined && (
         <ContainerInfo>
           <Info>{playerData.username}</Info>
 
@@ -342,7 +341,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         </ContainerInfo>
       )}
 
-      {playerData !== undefined && (
+      {state !== 'reset' && playerData !== undefined && (
         <ContainerAvatar>
           <Avatar />
         </ContainerAvatar>
