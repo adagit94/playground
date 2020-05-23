@@ -218,18 +218,18 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         });
 
         if (admin === player) {
-          updateDataGame('floatingPoint', {
+          await updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
 
         if (stateRef.current === 'run') {
-          updatePlayedTime('floatingPoint', playersRef.current, [
+          await updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
             Date.now()
           ]);
 
-          deleteDataPlayer('floatingPoint', player);
+          await deleteDataPlayer('floatingPoint', player);
 
           await updateDataGame('floatingPoint', {
             state: 'reset'
