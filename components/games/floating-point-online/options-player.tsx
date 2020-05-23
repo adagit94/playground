@@ -243,7 +243,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
             }
           })();
         }
-      });
+      }, 1000);
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
