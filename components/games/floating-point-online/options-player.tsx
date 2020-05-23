@@ -214,7 +214,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         if (playersRef.current.length >= 2 && admin === player) {
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
@@ -226,18 +226,14 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           ]);
 
           await deleteDataPlayer('floatingPoint', player);
+
+          updateDataGame('floatingPoint', {
+            state: 'reset'
+          });
         } else {
           deleteDataPlayer('floatingPoint', player);
         }
       })();
-
-      if (stateRef.current === 'run') {
-        setTimeout(() => {
-          updateDataGame('floatingPoint', {
-            state: 'reset'
-          });
-        }, 3000);
-      }
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
