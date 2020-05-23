@@ -13,7 +13,7 @@ export const initGame: StatesGame = {
   timestampEnd: undefined,
   width: undefined,
   height: undefined,
-  handlingExit: false
+  handlingExit: undefined
 };
 
 export const initPlayers: StatesPlayers = {};
