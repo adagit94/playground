@@ -298,7 +298,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         <LoadingIndicator color={theming.inverted} />
       )}
 
-      {state === 'conf' && gameStats.length !== 0 && (
+      {state === 'conf' && playerData && gameStats.length !== 0 && (
         <ContainerStats id='stats'>
           <WindowStats>
             <WindowStatsGame>
