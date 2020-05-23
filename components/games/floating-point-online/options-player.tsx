@@ -112,6 +112,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   setInitPossible
 }): JSX.Element => {
   const [gameStats, setGameStats] = useState([]);
+  const [handlingExit, setHandlingExit] = useState(false);
 
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -206,6 +207,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
+      setHandlingExit(true);
+
       ((): void => {
         if (playersRef.current.length === 1) {
           deleteDataGame('floatingPoint');
@@ -213,27 +216,29 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           return;
         }
 
-        if (stateRef.current === 'run') {
-          deleteDataPlayer('floatingPoint', player);
-
-          updateDataGame('floatingPoint', {
-            state: 'reset'
-          });
-
-          updatePlayedTime('floatingPoint', playersRef.current, [
-            timestampStartRef.current,
-            Date.now()
-          ]);
-        } else {
-          deleteDataPlayer('floatingPoint', player);
-        }
-
         if (admin === player) {
           updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
+
+        if (stateRef.current === 'run') {
+          updatePlayedTime('floatingPoint', playersRef.current, [
+            timestampStartRef.current,
+            Date.now()
+          ]);
+
+          deleteDataPlayer('floatingPoint', player);
+
+          updateDataGame('floatingPoint', {
+            state: 'reset'
+          });
+        } else {
+          deleteDataPlayer('floatingPoint', player);
+        }
       })();
+
+      setHandlingExit(false);
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
@@ -284,67 +289,68 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   return (
     <Container>
-      {((state === 'conf' && playerData === undefined) ||
-        state === 'reset') && <LoadingIndicator color={theming.inverted} />}
-
-      {state === 'conf' && playerData !== undefined && gameStats.length !== 0 && (
-        <ContainerStats id='stats'>
-          <WindowStats>
-            <WindowStatsGame>
-              <ul>
-                {gameStats.map(stat => {
-                  const [name, value] = stat;
-
-                  return (
-                    <li key={name}>
-                      <span>{name}</span>
-                      <span>{value}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </WindowStatsGame>
-          </WindowStats>
-        </ContainerStats>
+      {((state === 'conf' && playerData === undefined) || handlingExit) && (
+        <LoadingIndicator color={theming.inverted} />
       )}
 
-      {state === 'conf' && playerData !== undefined && (
-        <ContainerButtons>
-          {uid === admin && admin === player && (
-            <ButtonStart onClick={handleInit} type='button'>
-              Start
-            </ButtonStart>
+      {playerData !== undefined && !handlingExit && (
+        <>
+          {state === 'conf' && gameStats.length !== 0 && (
+            <ContainerStats id='stats'>
+              <WindowStats>
+                <WindowStatsGame>
+                  <ul>
+                    {gameStats.map(stat => {
+                      const [name, value] = stat;
+
+                      return (
+                        <li key={name}>
+                          <span>{name}</span>
+                          <span>{value}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </WindowStatsGame>
+              </WindowStats>
+            </ContainerStats>
           )}
 
-          {uid === player && (
-            <ButtonReadyClickable
-              onClick={(): void => {
-                updateDataPlayer('floatingPoint', player, {
-                  isReady: playerData.isReady ? false : true
-                });
-              }}
-              type='button'
-            >
-              Ready
-            </ButtonReadyClickable>
+          {state === 'conf' && (
+            <ContainerButtons>
+              {uid === admin && admin === player && (
+                <ButtonStart onClick={handleInit} type='button'>
+                  Start
+                </ButtonStart>
+              )}
+
+              {uid === player && (
+                <ButtonReadyClickable
+                  onClick={(): void => {
+                    updateDataPlayer('floatingPoint', player, {
+                      isReady: playerData.isReady ? false : true
+                    });
+                  }}
+                  type='button'
+                >
+                  Ready
+                </ButtonReadyClickable>
+              )}
+
+              {uid !== player && <ButtonReady type='button'>Ready</ButtonReady>}
+            </ContainerButtons>
           )}
 
-          {uid !== player && <ButtonReady type='button'>Ready</ButtonReady>}
-        </ContainerButtons>
-      )}
+          <ContainerInfo>
+            <Info>{playerData.username}</Info>
 
-      {state !== 'reset' && playerData !== undefined && (
-        <ContainerInfo>
-          <Info>{playerData.username}</Info>
+            <Info>{state === 'run' && playerData.score}</Info>
+          </ContainerInfo>
 
-          <Info>{state === 'run' && playerData.score}</Info>
-        </ContainerInfo>
-      )}
-
-      {state !== 'reset' && playerData !== undefined && (
-        <ContainerAvatar>
-          <Avatar />
-        </ContainerAvatar>
+          <ContainerAvatar>
+            <Avatar />
+          </ContainerAvatar>
+        </>
       )}
     </Container>
   );
