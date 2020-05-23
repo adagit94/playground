@@ -216,26 +216,32 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         handlingExit: true
       });
 
-      if (admin === player) {
-        updateDataGame('floatingPoint', {
-          admin: playersRef.current.find(player => player !== admin)
-        });
-      }
+      (async (): Promise<void> => {
+        if (admin === player) {
+          updateDataGame('floatingPoint', {
+            admin: playersRef.current.find(player => player !== admin)
+          });
+        }
 
-      if (stateRef.current === 'run') {
-        updatePlayedTime('floatingPoint', playersRef.current, [
-          timestampStartRef.current,
-          Date.now()
-        ]);
+        if (stateRef.current === 'run') {
+          updatePlayedTime('floatingPoint', playersRef.current, [
+            timestampStartRef.current,
+            Date.now()
+          ]);
 
-        deleteDataPlayer('floatingPoint', player);
+          deleteDataPlayer('floatingPoint', player);
 
-        updateDataGame('floatingPoint', {
-          state: 'reset'
-        });
-      } else {
-        deleteDataPlayer('floatingPoint', player);
-      }
+          await updateDataGame('floatingPoint', {
+            state: 'reset'
+          });
+        } else {
+          await deleteDataPlayer('floatingPoint', player);
+        }
+      })();
+
+      updateDataGame('floatingPoint', {
+        handlingExit: false
+      });
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
