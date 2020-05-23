@@ -209,7 +209,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
       setHandlingExit(true);
 
-      ((): void => {
+      (async (): Promise<void> => {
         if (playersRef.current.length === 1) {
           deleteDataGame('floatingPoint');
 
@@ -230,11 +230,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
           deleteDataPlayer('floatingPoint', player);
 
-          updateDataGame('floatingPoint', {
+          await updateDataGame('floatingPoint', {
             state: 'reset'
           });
         } else {
-          deleteDataPlayer('floatingPoint', player);
+          await deleteDataPlayer('floatingPoint', player);
         }
       })();
 
