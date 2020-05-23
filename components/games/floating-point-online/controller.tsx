@@ -251,11 +251,11 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
       const scores = [];
-
+      console.log(statesPlayers);
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
       }
-
+      console.log(scores);
       scores.sort((a, b) => a[1] + b[1]);
 
       const [winnerID, winnerScore] = scores[0];
@@ -283,9 +283,11 @@ const Controller: React.FC = (): JSX.Element => {
         wins: winnerData.wins + 1
       });
 
-      updateDataGame('floatingPoint', {
-        state: 'reset'
-      });
+      setTimeout(() => {
+        updateDataGame('floatingPoint', {
+          state: 'reset'
+        });
+      }, 10000);
     };
 
     if (state === 'eval' && playerLocal === admin && winner === undefined) {
@@ -318,7 +320,7 @@ const Controller: React.FC = (): JSX.Element => {
     if (state === 'reset' && playerLocal === admin) {
       setTimeout(() => {
         resetGame();
-      }, 3000);
+      }, 1000);
     }
   });
 
