@@ -266,11 +266,6 @@ const Controller: React.FC = (): JSX.Element => {
         winner
       });
 
-      updatePlayedTime('floatingPoint', players, [
-        statesGame.timestampStart,
-        statesGame.timestampEnd
-      ]);
-
       let winnerData: FloatingPoint;
 
       if (winnerID === playerLocal) {
@@ -282,6 +277,11 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataUserGame('floatingPoint', winnerID, {
         wins: winnerData.wins + 1
       });
+
+      updatePlayedTime('floatingPoint', players, [
+        statesGame.timestampStart,
+        statesGame.timestampEnd
+      ]);
 
       setTimeout(() => {
         updateDataGame('floatingPoint', {
