@@ -251,7 +251,7 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
       const scores = [];
-      console.log(statesPlayers);
+
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
       }
@@ -297,7 +297,6 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const resetGame = async (): Promise<void> => {
-      window.clearInterval(timerID);
       await updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
@@ -308,7 +307,6 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       for (const player in statesPlayers) {
-        console.log(player);
         updateDataPlayer('floatingPoint', player, {
           top: null,
           left: null,
@@ -390,8 +388,8 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  console.log(statesGame);
-  console.log(statesPlayers);
+  //console.log(statesGame);
+  //console.log(statesPlayers);
   //console.log(statesFP);
   return (
     <Container>
