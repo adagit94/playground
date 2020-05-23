@@ -292,13 +292,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   console.log(handlingExit);
   return (
     <Container>
-      {((state === 'conf' && playerData === undefined) ||
-        handlingExit === true ||
-        handlingExit === undefined) && (
+      {((state === 'conf' && playerData === undefined) || handlingExit) && (
         <LoadingIndicator color={theming.inverted} />
       )}
 
-      {playerData !== undefined && handlingExit === false && (
+      {playerData !== undefined && !handlingExit && (
         <>
           {state === 'conf' && gameStats.length !== 0 && (
             <ContainerStats id='stats'>
