@@ -317,9 +317,7 @@ const Controller: React.FC = (): JSX.Element => {
 
     if (state === 'reset' && playerLocal === admin) {
       setTimeout(() => {
-        updateDataGame('floatingPoint', {
-          state: 'reset'
-        });
+        resetGame();
       }, 3000);
     }
   });
