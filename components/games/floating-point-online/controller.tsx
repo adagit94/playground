@@ -56,7 +56,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
-  const { state, admin, width, height, winner } = statesGame;
+  const { state, admin, width, height, winner, timerID } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
   const dimensionsPercHeight = (dimensions / height) * 100;
@@ -297,6 +297,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const resetGame = async (): Promise<void> => {
+      window.clearInterval(timerID);
       await updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
