@@ -214,7 +214,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         if (playersRef.current.length >= 2 && admin === player) {
-          await updateDataGame('floatingPoint', {
+          updateDataGame('floatingPoint', {
             admin: playersRef.current.find(player => player !== admin)
           });
         }
