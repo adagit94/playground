@@ -239,7 +239,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         updateDataGame('floatingPoint', {
-          handlingExit: true
+          handlingExit: false
         });
       }, 500);
     };
