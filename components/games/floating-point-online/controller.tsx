@@ -395,7 +395,6 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     return (): void => console.log('unmounted');
   }, []);
-  console.log('a');
   //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
