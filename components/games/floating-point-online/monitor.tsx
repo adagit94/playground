@@ -23,7 +23,7 @@ const Monitor: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
   const { state, winner } = statesGame;
-
+  console.log(state);
   return (
     <Container id='monitor'>
       {state === 'eval' && (

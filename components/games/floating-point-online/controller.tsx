@@ -391,7 +391,7 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  console.log(statesGame);
+  //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (
