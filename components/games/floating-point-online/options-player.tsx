@@ -120,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin, timerID, timestampStart } = statesGame;
+  const { state, admin, timestampStart } = statesGame;
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
@@ -206,42 +206,44 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      (async (): Promise<void> => {
-        if (playersRef.current.length === 1) {
-          deleteDataGame('floatingPoint');
+      setTimeout(() => {
+        if (stateRef.current !== 'eval') {
+          (async (): Promise<void> => {
+            if (playersRef.current.length === 1) {
+              deleteDataGame('floatingPoint');
 
-          return;
+              return;
+            }
+
+            if (playersRef.current.length >= 2 && admin === player) {
+              await updateDataGame('floatingPoint', {
+                admin: playersRef.current.find(player => player !== admin)
+              });
+            }
+
+            switch (stateRef.current) {
+              case 'run':
+                await updatePlayedTime('floatingPoint', playersRef.current, [
+                  timestampStartRef.current,
+                  Date.now()
+                ]);
+
+                await deleteDataPlayer('floatingPoint', player);
+
+                console.log('before reset');
+                await updateDataGame('floatingPoint', {
+                  state: 'reset'
+                });
+
+                break;
+
+              case 'conf':
+                deleteDataPlayer('floatingPoint', player);
+                break;
+            }
+          })();
         }
-
-        if (playersRef.current.length >= 2 && admin === player) {
-          window.clearInterval(timerID);
-
-          await updateDataGame('floatingPoint', {
-            admin: playersRef.current.find(player => player !== admin)
-          });
-        }
-
-        switch (stateRef.current) {
-          case 'run':
-            await updatePlayedTime('floatingPoint', playersRef.current, [
-              timestampStartRef.current,
-              Date.now()
-            ]);
-
-            await deleteDataPlayer('floatingPoint', player);
-
-            console.log('before reset');
-            await updateDataGame('floatingPoint', {
-              state: 'reset'
-            });
-
-            break;
-
-          case 'conf':
-            deleteDataPlayer('floatingPoint', player);
-            break;
-        }
-      })();
+      });
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
@@ -253,7 +255,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         Router.events.off('beforeHistoryChange', handleExit);
       }
     };
-  }, [uid, admin, player, timerID]);
+  }, [uid, admin, player]);
 
   useEffect(() => {
     const getStats = async (): Promise<void> => {

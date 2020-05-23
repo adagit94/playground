@@ -56,7 +56,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
-  const { state, admin, width, height, winner, timerID } = statesGame;
+  const { state, admin, width, height, winner } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
   const dimensionsPercHeight = (dimensions / height) * 100;
@@ -302,7 +302,6 @@ const Controller: React.FC = (): JSX.Element => {
         winner: null,
         timestampStart: null,
         timestampEnd: null,
-        timerID: null,
         timer
       });
 

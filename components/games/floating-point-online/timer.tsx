@@ -23,17 +23,14 @@ const Timer: React.FC = (): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
   const { user } = statesFirebase;
-  const { admin, timer, timerID } = statesGame;
+  const { admin, timer } = statesGame;
 
   const uid = user?.uid;
 
   const timerRef = useRef(timer);
-  const timerIDRef = useRef(timerID);
 
   const handleTimer = (): void => {
     if (timerRef.current === 0) {
-      window.clearInterval(timerIDRef.current);
-
       updateDataGame('floatingPoint', {
         state: 'eval',
         timestampEnd: Date.now()
@@ -45,20 +42,11 @@ const Timer: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     timerRef.current = timer;
-    timerIDRef.current = timerID;
   });
 
   useEffect(() => {
-    console.log(timerID);
-    if (
-      timerID === undefined &&
-      uid !== undefined &&
-      admin !== undefined &&
-      uid === admin
-    ) {
-      const timerID = window.setInterval(handleTimer, 1000);
-
-      updateDataGame('floatingPoint', { timerID });
+    if (uid !== undefined && admin !== undefined && uid === admin) {
+      window.setTimeout(handleTimer, 1000);
     }
   });
 
