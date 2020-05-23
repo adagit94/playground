@@ -206,41 +206,37 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      if (stateRef.current !== 'eval') {
-        (async (): Promise<void> => {
-          if (playersRef.current.length === 1) {
-            deleteDataGame('floatingPoint');
+      (async (): Promise<void> => {
+        if (playersRef.current.length === 1) {
+          deleteDataGame('floatingPoint');
 
-            return;
-          }
+          return;
+        }
 
-          if (playersRef.current.length >= 2 && admin === player) {
-            await updateDataGame('floatingPoint', {
-              admin: playersRef.current.find(player => player !== admin)
-            });
-          }
+        if (playersRef.current.length >= 2 && admin === player) {
+          await updateDataGame('floatingPoint', {
+            admin: playersRef.current.find(player => player !== admin)
+          });
+        }
 
-          switch (stateRef.current) {
-            case 'run':
-              await updatePlayedTime('floatingPoint', playersRef.current, [
-                timestampStartRef.current,
-                Date.now()
-              ]);
+        if (stateRef.current === 'run') {
+          await updatePlayedTime('floatingPoint', playersRef.current, [
+            timestampStartRef.current,
+            Date.now()
+          ]);
 
-              await deleteDataPlayer('floatingPoint', player);
+          await deleteDataPlayer('floatingPoint', player);
+        } else {
+          deleteDataPlayer('floatingPoint', player);
+        }
+      })();
 
-              console.log('before reset');
-              updateDataGame('floatingPoint', {
-                state: 'reset'
-              });
-
-              break;
-
-            case 'conf':
-              deleteDataPlayer('floatingPoint', player);
-              break;
-          }
-        })();
+      if (stateRef.current === 'run') {
+        setTimeout(() => {
+          updateDataGame('floatingPoint', {
+            state: 'reset'
+          });
+        }, 3000);
       }
     };
 

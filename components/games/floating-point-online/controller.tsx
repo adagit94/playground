@@ -283,11 +283,9 @@ const Controller: React.FC = (): JSX.Element => {
         wins: winnerData.wins + 1
       });
 
-      window.setTimeout(() => {
-        updateDataGame('floatingPoint', {
-          state: 'reset'
-        });
-      }, 10000);
+      updateDataGame('floatingPoint', {
+        state: 'reset'
+      });
     };
 
     if (state === 'eval' && playerLocal === admin && winner === undefined) {
@@ -296,15 +294,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const resetGame = async (): Promise<void> => {
-      await updateDataGame('floatingPoint', {
-        state: 'conf',
-        winner: null,
-        timestampStart: null,
-        timestampEnd: null,
-        timer
-      });
-
+    const resetGame = (): void => {
       for (const player in statesPlayers) {
         updateDataPlayer('floatingPoint', player, {
           top: null,
@@ -314,14 +304,18 @@ const Controller: React.FC = (): JSX.Element => {
         });
       }
 
+      updateDataGame('floatingPoint', {
+        state: 'conf',
+        winner: null,
+        timestampStart: null,
+        timestampEnd: null,
+        timer
+      });
+
       updateDataFP({ top: null, left: null });
     };
 
-    if (state === 'reset' && playerLocal === admin) {
-      setTimeout(() => {
-        resetGame();
-      }, 1000);
-    }
+    if (state === 'reset' && playerLocal === admin) resetGame();
   });
 
   useEffect(() => {
