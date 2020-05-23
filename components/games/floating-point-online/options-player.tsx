@@ -230,11 +230,9 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
               await deleteDataPlayer('floatingPoint', player);
 
               console.log('before reset');
-              setTimeout(() => {
-                updateDataGame('floatingPoint', {
-                  state: 'reset'
-                });
-              }, 3000);
+              updateDataGame('floatingPoint', {
+                state: 'reset'
+              });
 
               break;
 
