@@ -206,44 +206,44 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      setTimeout(() => {
-        if (stateRef.current !== 'eval') {
-          (async (): Promise<void> => {
-            if (playersRef.current.length === 1) {
-              deleteDataGame('floatingPoint');
+      if (stateRef.current !== 'eval') {
+        (async (): Promise<void> => {
+          if (playersRef.current.length === 1) {
+            deleteDataGame('floatingPoint');
 
-              return;
-            }
+            return;
+          }
 
-            if (playersRef.current.length >= 2 && admin === player) {
-              await updateDataGame('floatingPoint', {
-                admin: playersRef.current.find(player => player !== admin)
-              });
-            }
+          if (playersRef.current.length >= 2 && admin === player) {
+            await updateDataGame('floatingPoint', {
+              admin: playersRef.current.find(player => player !== admin)
+            });
+          }
 
-            switch (stateRef.current) {
-              case 'run':
-                await updatePlayedTime('floatingPoint', playersRef.current, [
-                  timestampStartRef.current,
-                  Date.now()
-                ]);
+          switch (stateRef.current) {
+            case 'run':
+              await updatePlayedTime('floatingPoint', playersRef.current, [
+                timestampStartRef.current,
+                Date.now()
+              ]);
 
-                await deleteDataPlayer('floatingPoint', player);
+              await deleteDataPlayer('floatingPoint', player);
 
-                console.log('before reset');
-                await updateDataGame('floatingPoint', {
+              console.log('before reset');
+              setTimeout(() => {
+                updateDataGame('floatingPoint', {
                   state: 'reset'
                 });
+              }, 1000);
 
-                break;
+              break;
 
-              case 'conf':
-                deleteDataPlayer('floatingPoint', player);
-                break;
-            }
-          })();
-        }
-      }, 1000);
+            case 'conf':
+              deleteDataPlayer('floatingPoint', player);
+              break;
+          }
+        })();
+      }
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
