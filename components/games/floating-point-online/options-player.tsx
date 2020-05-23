@@ -279,7 +279,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       getStats();
     }
   });
-
+  console.log('rerendered');
   return (
     <Container>
       {state === 'conf' && playerData === undefined && (
