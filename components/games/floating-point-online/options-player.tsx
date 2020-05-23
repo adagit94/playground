@@ -206,6 +206,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
+      window.clearInterval(timerID);
+
       (async (): Promise<void> => {
         if (playersRef.current.length === 1) {
           deleteDataGame('floatingPoint');
@@ -220,9 +222,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
         }
 
         if (stateRef.current === 'run') {
-          window.clearInterval(timerID);
-
-          // vyzkouse prohozeni s delete
           await updatePlayedTime('floatingPoint', playersRef.current, [
             timestampStartRef.current,
             Date.now()
