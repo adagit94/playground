@@ -261,7 +261,7 @@ const Controller: React.FC = (): JSX.Element => {
       const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
       const winner: Winner = { name: winnerName, score: winnerScore };
-      console.log(winnerName);
+      console.log(scores[0]);
       updateDataGame('floatingPoint', {
         winner
       });

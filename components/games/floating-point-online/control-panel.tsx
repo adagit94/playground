@@ -36,7 +36,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
         setInitPossible={setInitPossible}
       />
       <OptionsPlayer player={players[1]} initPossible={initPossible} />
-      {state === 'run' && <Timer />}
+      {/*state === 'run' && <Timer />*/}
       <OptionsPlayer player={players[2]} initPossible={initPossible} />
       <OptionsPlayer player={players[0]} initPossible={initPossible} />
     </Container>
