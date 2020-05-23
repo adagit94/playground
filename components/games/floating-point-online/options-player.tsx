@@ -206,42 +206,40 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const handleExit = (url: string): void => {
       if (url.includes('floating-point-online')) return;
 
-      (async (): Promise<void> => {
-        if (playersRef.current.length === 1) {
-          deleteDataGame('floatingPoint');
+      if (playersRef.current.length === 1) {
+        deleteDataGame('floatingPoint');
 
-          return;
-        }
+        return;
+      }
 
-        await updateDataGame('floatingPoint', {
-          handlingExit: true
+      updateDataGame('floatingPoint', {
+        handlingExit: true
+      });
+
+      if (admin === player) {
+        updateDataGame('floatingPoint', {
+          admin: playersRef.current.find(player => player !== admin)
         });
+      }
 
-        if (admin === player) {
-          updateDataGame('floatingPoint', {
-            admin: playersRef.current.find(player => player !== admin)
-          });
-        }
+      if (stateRef.current === 'run') {
+        updatePlayedTime('floatingPoint', playersRef.current, [
+          timestampStartRef.current,
+          Date.now()
+        ]);
 
-        if (stateRef.current === 'run') {
-          updatePlayedTime('floatingPoint', playersRef.current, [
-            timestampStartRef.current,
-            Date.now()
-          ]);
+        deleteDataPlayer('floatingPoint', player);
 
-          deleteDataPlayer('floatingPoint', player);
-
-          await updateDataGame('floatingPoint', {
-            state: 'reset'
-          });
-        } else {
-          await deleteDataPlayer('floatingPoint', player);
-        }
-
-        await updateDataGame('floatingPoint', {
-          handlingExit: false
+        updateDataGame('floatingPoint', {
+          state: 'reset'
         });
-      })();
+      } else {
+        deleteDataPlayer('floatingPoint', player);
+      }
+
+      updateDataGame('floatingPoint', {
+        handlingExit: false
+      });
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
