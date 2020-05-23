@@ -296,8 +296,8 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const resetGame = (): void => {
-      updateDataGame('floatingPoint', {
+    const resetGame = async (): Promise<void> => {
+      await updateDataGame('floatingPoint', {
         state: 'conf',
         winner: null,
         timestampStart: null,
