@@ -236,10 +236,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       } else {
         deleteDataPlayer('floatingPoint', player);
       }
-
-      updateDataGame('floatingPoint', {
-        handlingExit: false
-      });
     };
 
     if (uid !== undefined && player !== undefined && uid === player) {
@@ -290,11 +286,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   console.log(handlingExit);
   return (
     <Container>
-      {((state === 'conf' && playerData === undefined) || handlingExit) && (
+      {((state === 'conf' && playerData === undefined) ||
+        handlingExit === true ||
+        handlingExit === undefined) && (
         <LoadingIndicator color={theming.inverted} />
       )}
 
-      {playerData !== undefined && !handlingExit && (
+      {playerData !== undefined && handlingExit === false && (
         <>
           {state === 'conf' && gameStats.length !== 0 && (
             <ContainerStats id='stats'>
