@@ -256,8 +256,9 @@ const Controller: React.FC = (): JSX.Element => {
         scores.push([player, statesPlayers[player].score]);
       }
 
+      console.log(scores);
       scores = scores.sort((a, b) => a[1] + b[1]);
-
+      console.log(scores);
       const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
       const winner: Winner = { name: winnerName, score: winnerScore };
