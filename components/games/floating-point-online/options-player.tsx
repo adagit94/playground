@@ -234,7 +234,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
                 updateDataGame('floatingPoint', {
                   state: 'reset'
                 });
-              }, 1000);
+              }, 3000);
 
               break;
 
