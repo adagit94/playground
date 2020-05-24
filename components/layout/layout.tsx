@@ -111,11 +111,11 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
       initUserDB(user, handleData);
     }
 
-    /*
+    
     return (): void => {
-      removeListenerUser(uid);
+     // removeListenerUser(uid);
+     console.log('unmounted');
     };
-    */
   });
 
   //console.log(statesFirebase);
