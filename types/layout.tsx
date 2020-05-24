@@ -15,7 +15,6 @@ export type PropsLayout = {
 
 export type DispatchesLayout = {
   layout: React.Dispatch<ActionsLayout>;
-  user: React.Dispatch<ActionsUser>;
   firebase: React.Dispatch<ActionsFirebase>;
 };
 

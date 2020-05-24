@@ -239,11 +239,9 @@ const Controller: React.FC = (): JSX.Element => {
           score: statesPlayers[playerLocal].score + 1
         });
 
-        /*
         updateDataUserGame('floatingPoint', playerLocal, {
           gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
         });
-        */
       }
     };
 
