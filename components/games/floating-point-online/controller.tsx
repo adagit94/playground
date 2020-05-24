@@ -250,22 +250,18 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
-      const players = [];
       const scores = [];
 
       for (const player in statesPlayers) {
-        players.push(player);
-        scores.push(statesPlayers[player].score);
+        scores.push([player, statesPlayers[player].score]);
       }
 
       console.log(scores);
-      const sortedScores = [...scores].sort((a, b) => a + b);
-      const highestScore = sortedScores[0];
-      const highestScoreIndex = scores.indexOf(highestScore);
-      console.log(highestScore);
-      const winnerID = players[highestScoreIndex];
+      scores.sort((a, b) => a[1] - b[1]).reverse();
+      console.log(scores);
+      const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
-      const winner: Winner = { name: winnerName, score: highestScore };
+      const winner: Winner = { name: winnerName, score: winnerScore };
 
       updateDataGame('floatingPoint', {
         winner
