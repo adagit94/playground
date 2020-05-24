@@ -97,7 +97,11 @@ const Stats: React.FC = (): JSX.Element => {
       setGamesStats(gamesStatsArr);
     };
 
-    if (statesUser && userStats.length === 0 && gamesStats.length === 0) {
+    if (
+      statesUser !== undefined &&
+      userStats.length === 0 &&
+      gamesStats.length === 0
+    ) {
       initStats();
     }
   });

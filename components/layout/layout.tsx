@@ -28,7 +28,7 @@ const dispatchesLayout: DispatchesLayout = {
 };
 
 const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
-  //const router = useRouter();
+  const router = useRouter();
 
   const [statesLayout, dispatchLayout] = useReducer(reducerLayout, initLayout);
   const [statesUser, dispatchUser] = useReducer(reducerUser, initUser);
@@ -37,11 +37,11 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     initFirebase
   );
 
-  //const { pathname, query } = router;
+  const { pathname, query } = router;
   const { user } = statesFirebase;
   const { theme } = statesLayout;
 
-  //const { uid: queryUID } = query;
+  const { uid: queryUID } = query;
 
   const theming: Theming = {
     theme,
@@ -65,13 +65,13 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     }
   `;
 
-  /*if (queryUID !== undefined) {
+  if (queryUID !== undefined) {
     const sessionUID = sessionStorage.getItem('uid');
 
     if (queryUID !== sessionUID) {
       window.location.assign(window.location.origin);
     }
-  }*/
+  }
 
   useEffect(() => {
     const theme = sessionStorage.getItem('theme');
@@ -119,15 +119,14 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     */
   });
 
-  //console.log(statesFirebase);
-
   return (
     <Container>
       <ThemeProvider theme={theming}>
         <ContextDispatchesLayout.Provider value={dispatchesLayout}>
           <ContextUser.Provider value={statesUser}>
             <ContextFirebase.Provider value={statesFirebase}>
-              <Header />
+              {pathname !== '/create-account' &&
+                pathname !== '/reset-password' && <Header />}
               <Main content={content} />
             </ContextFirebase.Provider>
           </ContextUser.Provider>

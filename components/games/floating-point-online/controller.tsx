@@ -189,7 +189,7 @@ const Controller: React.FC = (): JSX.Element => {
             break;
         }
 
-        await updateDataPlayer('floatingPoint', player, {
+        updateDataPlayer('floatingPoint', player, {
           top: playerLocalTop,
           left: playerLocalLeft,
           score: 0
@@ -239,9 +239,11 @@ const Controller: React.FC = (): JSX.Element => {
           score: statesPlayers[playerLocal].score + 1
         });
 
+        /*
         updateDataUserGame('floatingPoint', playerLocal, {
           gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
         });
+        */
       }
     };
 
@@ -381,7 +383,6 @@ const Controller: React.FC = (): JSX.Element => {
       admin === undefined &&
       !(playerLocal in statesPlayers)
     ) {
-      //zkontrolovat pocet sputeni initgame
       initGame('floatingPoint', user, handleData);
     }
     /*
@@ -391,7 +392,7 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  //console.log(statesGame);
+  console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (

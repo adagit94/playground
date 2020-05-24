@@ -10,7 +10,7 @@ export type StatesLayout = {
 export type ActionsLayout = { type: 'changeTheme'; theme?: string };
 
 export type PropsLayout = {
-  content: JSX.Element;
+  content?: JSX.Element;
 };
 
 export type DispatchesLayout = {
