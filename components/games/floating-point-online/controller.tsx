@@ -235,12 +235,12 @@ const Controller: React.FC = (): JSX.Element => {
 
         updateDataFP({ top: fpTop, left: fpLeft });
 
-        updateDataUserGame('floatingPoint', playerLocal, {
-          gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
-        });
-
         updateDataPlayer('floatingPoint', playerLocal, {
           score: statesPlayers[playerLocal].score + 1
+        });
+
+        updateDataUserGame('floatingPoint', playerLocal, {
+          gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
         });
       }
     };
@@ -392,9 +392,6 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  useEffect(() => {
-    return (): void => console.log('unmounted');
-  }, []);
   //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
