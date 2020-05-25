@@ -204,6 +204,7 @@ const Controller: React.FC = (): JSX.Element => {
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
           await updateDataFP({ top: fpTop, left: fpLeft });
+
           updateDataGame('floatingPoint', {
             state: 'run',
             timestampStart: Date.now()

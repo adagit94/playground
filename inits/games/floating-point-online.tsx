@@ -7,6 +7,8 @@ import {
 export const initGame: StatesGame = {
   state: 'conf', // conf / init / running / eval / reset
   admin: undefined,
+  env: undefined,
+  envVotes: undefined,
   winner: undefined,
   timer: undefined,
   timestampStart: undefined,

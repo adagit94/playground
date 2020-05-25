@@ -77,9 +77,7 @@ const Stats: React.FC = (): JSX.Element => {
           if (gameStat === 'playedTime') {
             let playedTime = statesUser.games[game][gameStat];
 
-            if (playedTime > 0) {
-              playedTime = convertPlayedTime(playedTime);
-            }
+            if (playedTime > 0) playedTime = convertPlayedTime(playedTime);
 
             gameStatsArr[1].push([editedGameStatName, playedTime]);
           } else {

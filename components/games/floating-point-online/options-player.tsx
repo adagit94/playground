@@ -47,7 +47,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25%;
+  width: 20%;
   position: relative;
 
   &:hover {

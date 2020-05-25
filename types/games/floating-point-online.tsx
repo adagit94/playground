@@ -1,10 +1,20 @@
 type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
 
-type DataSetsList = 'game' | 'players' | 'fp';
+type DataSets = 'game' | 'players' | 'fp';
 
-type GameStatesList = 'conf' | 'init' | 'run' | 'eval' | 'reset';
+type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-export type Winner = { name: string; score: number };
+type EnvNames = 'test';
+
+type ShapeValues = {
+  dimensions: [number, number];
+  positions: [number, number];
+};
+
+type TestEnv = [
+  { shape: 'Square'; shapes: ShapeValues[] },
+  { shape: 'Circle'; shapes: ShapeValues[] }
+];
 
 export type Player = {
   username: string;
@@ -35,9 +45,15 @@ export type PropsOptionsPlayer = {
   setInitPossible?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+export type PropsEnv = {
+  env: EnvNames;
+};
+
 export type StatesGame = {
-  state: GameStatesList;
+  state: GameStates;
   admin: string;
+  env: EnvNames;
+  envVotes: EnvVotes;
   winner: Winner;
   timer: number;
   timestampStart: number;
@@ -49,6 +65,7 @@ export type StatesGame = {
 export type CreateGame = {
   state: 'conf';
   admin: string;
+  envVotes: EnvVotes;
   timer: number;
 };
 
@@ -65,8 +82,10 @@ export type DataSet = {
 };
 
 export type UpdateGame = {
-  state?: GameStatesList;
+  state?: GameStates;
   admin?: string;
+  env?: EnvNames;
+  envVotes?: EnvVotes;
   winner?: Winner;
   timer?: number;
   timestampStart?: number;
@@ -85,11 +104,23 @@ export type ActionsGame =
     }
   | { type: 'setData'; payload: any };
 
+export type Winner = { name: string; score: number };
+
+export type EnvList = ['test'];
+
+export type EnvVotes = { test: number };
+
+export type Envs = TestEnv;
+
+export type Enviroments = {
+  test: TestEnv;
+};
+
 export type ActionsPlayers = { type: 'setData'; payload: any };
 
 export type ActionsFP = { type: 'setData'; payload: StatesFP };
 
-export type HandleData = (dataSet: DataSetsList, data: any) => void;
+export type HandleData = (dataSet: DataSets, data: any) => void;
 
 export type Operations = 'add' | 'subtract';
 
@@ -101,8 +132,14 @@ export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
 export type HandleMove = (key: Keys) => void;
 
-export type Defaults = { dimensions: number; timer: number };
+export type Defaults = {
+  dimensions: number;
+  timer: number;
+  enviroments: Enviroments;
+};
 
 export type InitGameDefaults = (admin: string) => CreateGame;
 
 export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;
+
+export type InitEnvVotes = (envs: EnvList) => EnvVotes;
