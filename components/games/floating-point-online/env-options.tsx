@@ -1,11 +1,10 @@
 import { memo, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { updateDataGame, getDataGame } from 'firebase/db';
+import { updateDataGame } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { EnvNamesEdited } from 'types/games/floating-point-online';
-import { ContextFirebase } from 'contexts/firebase';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
@@ -21,13 +20,9 @@ const Container = styled.div`
 const EnvOptions: React.FC = (): JSX.Element => {
   const [votes, setVotes] = useState<[EnvNamesEdited, number][]>([]);
 
-  const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
 
-  const { user } = statesFirebase;
-  const { admin, envVotes } = statesGame;
-
-  const uid = user?.uid;
+  const { envVotes } = statesGame;
 
   useEffect(() => {
     const adjustVotes = (): void => {
