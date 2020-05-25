@@ -1,4 +1,4 @@
-import { GamesList } from './games/generic';
+import { GamesList, GamesListEdited } from './games/generic';
 
 type UpdateDataUserGamesFP = {
   wins?: number;
@@ -10,7 +10,7 @@ type UpdateGameList = UpdateDataUserGamesFP;
 
 type UpdateDataUserObj = {
   registred?: string;
-  lastPlayed?: GamesList | '-';
+  lastPlayed?: GamesListEdited | '-';
   mostPlayed?: string;
 };
 
@@ -28,7 +28,7 @@ export type GameDataList = FloatingPoint;
 
 export type StatesUser = {
   registred: string;
-  lastPlayed: GamesList | '-';
+  lastPlayed: GamesListEdited | '-';
   mostPlayed: string;
   games: Games;
 };

@@ -15,8 +15,9 @@ import {
   WindowStatsGame
 } from 'components/styled-components/windows';
 
-import { statEditReg, statDateExtractReg } from 'regs/stats';
-import { statReplacer, convertPlayedTime } from 'helpers/stats';
+import { keyEditReg, dateExtractReg } from 'regs/db';
+import { keyReplacer } from 'helpers/regs';
+import { convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { ContextUser } from 'contexts/user';
 
@@ -46,17 +47,17 @@ const Stats: React.FC = (): JSX.Element => {
       for (const stat in statesUser) {
         if (stat === 'games') continue;
 
-        const editedStatName = stat.replace(statEditReg, statReplacer);
+        const editedStatName = stat.replace(keyEditReg, keyReplacer);
 
         if (stat === 'lastPlayed' || stat === 'mostPlayed') {
           const editedGameName = statesUser[stat].replace(
-            statEditReg,
-            statReplacer
+            keyEditReg,
+            keyReplacer
           );
 
           userStatsArr.push([editedStatName, editedGameName]);
         } else if (stat === 'registred') {
-          const extractedDate = statDateExtractReg.exec(statesUser[stat])[0];
+          const extractedDate = dateExtractReg.exec(statesUser[stat])[0];
 
           userStatsArr.push([editedStatName, extractedDate]);
         } else {
@@ -65,14 +66,11 @@ const Stats: React.FC = (): JSX.Element => {
       }
 
       for (const game in statesUser.games) {
-        const editedGameName = game.replace(statEditReg, statReplacer);
+        const editedGameName = game.replace(keyEditReg, keyReplacer);
         const gameStatsArr: [string, any[]] = [editedGameName, []];
 
         for (const gameStat in statesUser.games[game]) {
-          const editedGameStatName = gameStat.replace(
-            statEditReg,
-            statReplacer
-          );
+          const editedGameStatName = gameStat.replace(keyEditReg, keyReplacer);
 
           if (gameStat === 'playedTime') {
             let playedTime = statesUser.games[game][gameStat];

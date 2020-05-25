@@ -1,48 +1,36 @@
+import { keyEditReg } from 'regs/db';
+import { keyReplacer } from 'helpers/regs';
+import { GamesList, GamesListEdited } from 'types/games/generic';
+import {
+  UpdatePlayedTime,
+  CalculateMostPlayed,
+  ConvertPlayedTime
+} from 'types/helpers';
+
 import {
   getDataUser,
   getDataUserGames,
   updateDataUser,
   updateDataUserGame
 } from 'firebase/db';
-import {
-  StatReplacer,
-  UpdatePlayedTime,
-  CalculateMostPlayed,
-  ConvertPlayedTime
-} from 'types/helpers';
-
-const gamesList = ['floatingPoint'];
-
-export const statReplacer: StatReplacer = (
-  match,
-  first,
-  afterFirst,
-  next,
-  afterNext
-) => {
-  let edited = first.toUpperCase() + afterFirst;
-
-  if (next) {
-    edited +=
-      ' ' + (gamesList.includes(match) ? next : next.toLowerCase()) + afterNext;
-  }
-
-  return edited;
-};
 
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const games = await getDataUserGames(user);
-  const times = [];
+  const times: [GamesList, number][] = [];
 
   for (const game in games) {
-    times.push([game, games[game].playedTime]);
+    times.push([game as GamesList, games[game].playedTime]);
   }
 
   times.sort((a, b) => a[1] - b[1]).reverse();
 
-  const mostPlayed = times[0][0];
+  const mostPlayed = times[0][0] as GamesList;
+  const editedMostPlayed = mostPlayed.replace(
+    keyEditReg,
+    keyReplacer
+  ) as GamesListEdited;
 
-  return mostPlayed;
+  return editedMostPlayed;
 };
 
 export const updatePlayedTime: UpdatePlayedTime = async (

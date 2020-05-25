@@ -106,6 +106,8 @@ export type ActionsGame =
 
 export type Winner = { name: string; score: number };
 
+export type EnvNamesEdited = 'Test';
+
 export type EnvList = ['test'];
 
 export type EnvVotes = { test: number };

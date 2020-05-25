@@ -196,7 +196,7 @@ const Controller: React.FC = (): JSX.Element => {
         });
 
         updateDataUser(playerLocal, {
-          lastPlayed: 'floatingPoint'
+          lastPlayed: 'Floating Point'
         });
 
         if (i === l - 1) {

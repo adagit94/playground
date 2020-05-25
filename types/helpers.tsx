@@ -1,6 +1,6 @@
-import { GamesList } from 'types/games/generic';
+import { GamesList, GamesListEdited } from 'types/games/generic';
 
-export type StatReplacer = (
+export type KeyReplacer = (
   match: string,
   first: string,
   afterFirst: string,
@@ -8,7 +8,7 @@ export type StatReplacer = (
   afterNext: string
 ) => string;
 
-export type CalculateMostPlayed = (user: string) => Promise<string>;
+export type CalculateMostPlayed = (user: string) => Promise<GamesListEdited>;
 
 export type UpdatePlayedTime = (
   game: GamesList,

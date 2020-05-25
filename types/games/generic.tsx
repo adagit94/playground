@@ -19,6 +19,8 @@ type UpdatePlayerList = UpdatePlayerFP;
 
 export type GamesList = 'floatingPoint';
 
+export type GamesListEdited = 'Floating Point';
+
 export type CreateDataGame = (
   game: GamesList,
   data: CreateGameList

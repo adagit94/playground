@@ -17,7 +17,9 @@ import {
   WindowStatsGame
 } from 'components/styled-components/windows';
 
-import { statEditReg } from 'regs/stats';
+import { keyEditReg } from 'regs/db';
+import { keyReplacer } from 'helpers/regs';
+import { convertPlayedTime, updatePlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
 import { PropsOptionsPlayer } from 'types/games/floating-point-online';
@@ -35,12 +37,6 @@ import {
   updateDataPlayer,
   deleteDataPlayer
 } from 'firebase/db';
-
-import {
-  statReplacer,
-  convertPlayedTime,
-  updatePlayedTime
-} from 'helpers/stats';
 
 const Container = styled.div`
   display: flex;
@@ -257,7 +253,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
 
       for (const stat in stats) {
-        const editedStat = stat.replace(statEditReg, statReplacer);
+        const editedStat = stat.replace(keyEditReg, keyReplacer);
 
         if (stat === 'playedTime') {
           let playedTime: string | number = stats.playedTime;

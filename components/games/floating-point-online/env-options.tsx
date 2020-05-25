@@ -1,7 +1,10 @@
-import { memo, useContext, useEffect } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { updateDataGame } from 'firebase/db';
+import { updateDataGame, getDataGame } from 'firebase/db';
+import { keyEditReg } from 'regs/db';
+import { keyReplacer } from 'helpers/regs';
+import { EnvNamesEdited } from 'types/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
@@ -16,17 +19,45 @@ const Container = styled.div`
 `;
 
 const EnvOptions: React.FC = (): JSX.Element => {
+  const [votes, setVotes] = useState<[EnvNamesEdited, number][]>([]);
+
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
 
   const { user } = statesFirebase;
-  const { admin, timer } = statesGame;
+  const { admin, envVotes } = statesGame;
 
   const uid = user?.uid;
 
-  useEffect(() => {});
+  useEffect(() => {
+    const adjustVotes = (): void => {
+      const votes: [EnvNamesEdited, number][] = [];
 
-  return <Container></Container>;
+      for (const vote in envVotes) {
+        const editedVote = vote.replace(
+          keyEditReg,
+          keyReplacer
+        ) as EnvNamesEdited;
+
+        votes.push([editedVote, envVotes[vote]]);
+      }
+
+      setVotes(votes);
+    };
+
+    if (envVotes !== undefined) adjustVotes();
+  }, [envVotes]);
+
+  return (
+    <Container>
+      <label>Enviroments:</label>
+      {votes.map(env => {
+        const [name, value] = env;
+
+        return <input value={name} name={name} type='radio' key={name} />;
+      })}
+    </Container>
+  );
 };
 
 export default memo(EnvOptions);
