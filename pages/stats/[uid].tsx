@@ -19,6 +19,7 @@ import { keyEditReg, dateExtractReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
+import { GamesList } from 'types/games/generic';
 import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
@@ -41,8 +42,8 @@ const Stats: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const initStats = (): void => {
-      const userStatsArr: any[] = [];
-      const gamesStatsArr: any[] = [];
+      const userStatsArr: [string, string][] = [];
+      const gamesStatsArr: [GamesList, [string, string | number][]][] = [];
 
       for (const stat in statesUser) {
         if (stat === 'games') continue;
@@ -66,8 +67,15 @@ const Stats: React.FC = (): JSX.Element => {
       }
 
       for (const game in statesUser.games) {
-        const editedGameName = game.replace(keyEditReg, keyReplacer);
-        const gameStatsArr: [string, any[]] = [editedGameName, []];
+        const editedGameName = game.replace(
+          keyEditReg,
+          keyReplacer
+        ) as GamesList;
+
+        const gameStatsArr: [GamesList, [string, string | number][]] = [
+          editedGameName,
+          []
+        ];
 
         for (const gameStat in statesUser.games[game]) {
           const editedGameStatName = gameStat.replace(keyEditReg, keyReplacer);
@@ -107,10 +115,10 @@ const Stats: React.FC = (): JSX.Element => {
   return (
     <Container>
       <WindowStats>
-        {userStats.length === 0 && <LoadingIndicator color={background} />}
+        <WindowStatsUser>
+          {userStats.length === 0 && <LoadingIndicator color={background} />}
 
-        {userStats.length !== 0 && (
-          <WindowStatsUser>
+          {userStats.length !== 0 && (
             <ul>
               {userStats.map((stat, i, arr) => {
                 const [name, value] = stat;
@@ -129,42 +137,46 @@ const Stats: React.FC = (): JSX.Element => {
                 );
               })}
             </ul>
-          </WindowStatsUser>
-        )}
+          )}
+        </WindowStatsUser>
 
         <DividerHorizontal color='background' />
 
-        {gamesStats.length === 0 && <LoadingIndicator color={background} />}
+        <WindowStatsGames>
+          {gamesStats.length === 0 && <LoadingIndicator color={background} />}
 
-        {gamesStats.length !== 0 && (
-          <WindowStatsGames>
-            {gamesStats.map((game, i, arr) => {
-              const [name, stats] = game;
+          {gamesStats.length !== 0 && (
+            <>
+              {gamesStats.map((game, i, arr) => {
+                const [name, stats] = game;
 
-              return (
-                <Fragment key={name}>
-                  <WindowStatsGame key={name}>
-                    <HeadingGame>{name}</HeadingGame>
-                    <ul key={name}>
-                      {stats.map(stat => {
-                        const [name, value] = stat;
+                return (
+                  <Fragment key={name}>
+                    <WindowStatsGame key={name}>
+                      <HeadingGame>{name}</HeadingGame>
+                      <ul key={name}>
+                        {stats.map(stat => {
+                          const [name, value] = stat;
 
-                        return (
-                          <li key={name}>
-                            <span>{name}: </span>
-                            <span>{value}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </WindowStatsGame>
+                          return (
+                            <li key={name}>
+                              <span>{name}: </span>
+                              <span>{value}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </WindowStatsGame>
 
-                  {i < arr.length - 1 && <DividerVertical color='background' />}
-                </Fragment>
-              );
-            })}
-          </WindowStatsGames>
-        )}
+                    {i < arr.length - 1 && (
+                      <DividerVertical color='background' />
+                    )}
+                  </Fragment>
+                );
+              })}
+            </>
+          )}
+        </WindowStatsGames>
       </WindowStats>
     </Container>
   );

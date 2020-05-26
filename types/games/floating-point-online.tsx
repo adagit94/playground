@@ -4,8 +4,6 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-type EnvNames = 'test';
-
 type ShapeValues = {
   dimensions: [number, number];
   positions: [number, number];
@@ -62,6 +60,19 @@ export type StatesGame = {
   height: number;
 };
 
+export type StatesGameDB = {
+  state: GameStates;
+  admin: string;
+  env: EnvNames;
+  envVotes: EnvVotes;
+  winner: Winner;
+  timer: number;
+  timestampStart: number;
+  timestampEnd: number;
+  width: number;
+  height: number;
+};
+
 export type CreateGame = {
   state: 'conf';
   admin: string;
@@ -102,9 +113,11 @@ export type ActionsGame =
       width: number;
       height: number;
     }
-  | { type: 'setData'; payload: any };
+  | { type: 'setData'; payload: StatesGameDB };
 
 export type Winner = { name: string; score: number };
+
+export type EnvNames = 'test';
 
 export type EnvNamesEdited = 'Test';
 
@@ -118,11 +131,14 @@ export type Enviroments = {
   test: TestEnv;
 };
 
-export type ActionsPlayers = { type: 'setData'; payload: any };
+export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
 
 export type ActionsFP = { type: 'setData'; payload: StatesFP };
 
-export type HandleData = (dataSet: DataSets, data: any) => void;
+export type HandleData = (
+  dataSet: DataSets,
+  data: StatesGameDB | StatesPlayers | StatesFP
+) => void;
 
 export type Operations = 'add' | 'subtract';
 

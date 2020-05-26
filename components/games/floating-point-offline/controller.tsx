@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef, memo } from 'react';
+import React, { useReducer, useEffect, useRef, memo, useMemo } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -159,13 +159,6 @@ const cancelKey = (e: KeyboardEvent): void => {
   }
 };
 
-const dispatchesFP: DispatchesFP = {
-  game: undefined,
-  players: undefined,
-  params: undefined,
-  fp: undefined
-};
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -197,6 +190,16 @@ const Controller: React.FC = (): JSX.Element => {
 
   const handleMoveRef = useRef(null);
   const recalculateRef = useRef(null);
+
+  const dispatchesFP: DispatchesFP = useMemo(
+    () => ({
+      game: dispatchGame,
+      players: dispatchPlayers,
+      params: dispatchParams,
+      fp: dispatchFP
+    }),
+    [dispatchGame, dispatchPlayers, dispatchParams, dispatchFP]
+  );
 
   const handleMove = (): void => {
     for (const key in controlKeys) {
@@ -369,13 +372,6 @@ const Controller: React.FC = (): JSX.Element => {
     handleMoveRef.current = handleMove;
     recalculateRef.current = recalculate;
   });
-
-  useEffect(() => {
-    dispatchesFP.game = dispatchGame;
-    dispatchesFP.players = dispatchPlayers;
-    dispatchesFP.params = dispatchParams;
-    dispatchesFP.fp = dispatchFP;
-  }, []);
 
   useEffect(() => {
     const changeDimensions = (): void => {

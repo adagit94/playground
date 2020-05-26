@@ -1,4 +1,4 @@
-import { useContext, memo, useState, useEffect } from 'react';
+import { memo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Players from './players';
@@ -8,7 +8,6 @@ import * as Shapes from 'components/styled-components/env-shapes';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { PropsEnv, Envs } from 'types/games/floating-point-online';
-import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   position: relative;
@@ -18,10 +17,6 @@ const Container = styled.div`
 
 const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const [objects, setObjects] = useState<Envs>(null);
-
-  const statesGame = useContext(ContextGame);
-
-  const { state } = statesGame;
 
   useEffect(() => {
     const initEnv = (): void => {
@@ -35,8 +30,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
     initEnv();
   }, [env]);
-
-  console.log(state);
 
   return (
     <Container>

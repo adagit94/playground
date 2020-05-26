@@ -48,3 +48,16 @@ export const InputOptionsValue = styled.div`
   align-items: center;
   height: 25px;
 `;
+
+export const InputCustomRadioButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border: 2px solid ${(props): string => props.theme.background};
+  border-radius: 100%;
+  background-color: ${(props): string =>
+    props.checked ? props.theme.background : props.theme.inverted};
+
+  &:focus {
+    outline: none;
+  }
+`;

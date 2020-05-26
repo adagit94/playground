@@ -1,5 +1,13 @@
 import { HandleLoading } from 'types/firebase';
-import { StatesUser } from './user';
+
+type ValidatorReturn = {
+  validPassword: boolean;
+  equalPasswords: boolean;
+  count: boolean;
+  upper: boolean;
+  num: boolean;
+  special: boolean;
+};
 
 export type InitUserFirebase = (user: firebase.User) => void;
 
@@ -32,15 +40,6 @@ export type LoginProvider = (
 ) => Promise<void>;
 
 export type ResetPassword = (email: string) => Promise<void>;
-
-type ValidatorReturn = {
-  validPassword: boolean;
-  equalPasswords: boolean;
-  count: boolean;
-  upper: boolean;
-  num: boolean;
-  special: boolean;
-};
 
 export type Validator = (
   password: string,

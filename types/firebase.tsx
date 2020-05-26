@@ -10,8 +10,4 @@ export type ActionsFirebase =
   | { type: 'setLoading'; value: boolean }
   | { type: 'reset' };
 
-export type PropsProfile = {
-  logout: Function;
-};
-
 export type HandleLoading = (value: boolean) => void;

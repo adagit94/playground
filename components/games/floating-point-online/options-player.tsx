@@ -120,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
-  const playerData = player !== undefined && statesPlayers[player];
+  const playerData = statesPlayers?.[player];
   const players = Object.keys(statesPlayers);
 
   const stateRef = useRef(state);
@@ -244,7 +244,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   useEffect(() => {
     const getStats = async (): Promise<void> => {
       let stats: FloatingPoint;
-      const statsArr: any[] = [];
+      const statsArr: [string, string | number][] = [];
 
       if (uid === player) {
         stats = userGameStats;
@@ -275,7 +275,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       getStats();
     }
   });
-
+  console.log(playerData);
   return (
     <Container>
       {state === 'conf' && playerData === undefined && (

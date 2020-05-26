@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useMemo } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 
 import Header from './header/header';
@@ -13,13 +13,8 @@ import { initLayout } from 'inits/layout';
 import { initFirebase } from 'inits/firebase';
 import { ContextDispatchesLayout } from 'contexts/layout';
 import { ContextFirebase } from 'contexts/firebase';
-import { DispatchesLayout, PropsLayout, Theming } from 'types/layout';
+import { DispatchesLayout, PropsLayout, Theming, Themes } from 'types/layout';
 import { InitUserFirebase, ClearUserFirebase } from 'types/auth';
-
-const dispatchesLayout: DispatchesLayout = {
-  layout: undefined,
-  firebase: undefined
-};
 
 const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const router = useRouter();
@@ -28,6 +23,14 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const [statesFirebase, dispatchFirebase] = useReducer(
     reducerFirebase,
     initFirebase
+  );
+
+  const dispatchesLayout: DispatchesLayout = useMemo(
+    () => ({
+      layout: dispatchLayout,
+      firebase: dispatchFirebase
+    }),
+    [dispatchLayout, dispatchFirebase]
   );
 
   const { pathname, query } = router;
@@ -66,7 +69,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   }
 
   useEffect(() => {
-    const theme = sessionStorage.getItem('theme');
+    const theme = sessionStorage.getItem('theme') as Themes;
 
     if (theme !== null && theme !== statesLayout.theme) {
       dispatchLayout({
@@ -75,11 +78,6 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
       });
     }
   });
-
-  useEffect(() => {
-    dispatchesLayout.layout = dispatchLayout;
-    dispatchesLayout.firebase = dispatchFirebase;
-  }, []);
 
   useEffect(() => {
     const initUserFirebase: InitUserFirebase = user => {

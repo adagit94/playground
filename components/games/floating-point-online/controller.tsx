@@ -18,7 +18,10 @@ import {
   Directions,
   Limits,
   HandleMove,
-  Winner
+  Winner,
+  StatesGameDB,
+  StatesPlayers,
+  StatesFP
 } from 'types/games/floating-point-online';
 
 import {
@@ -364,15 +367,15 @@ const Controller: React.FC = (): JSX.Element => {
     const handleData: HandleData = (dataSet, data) => {
       switch (dataSet) {
         case 'game':
-          dispatchGame({ type: 'setData', payload: data });
+          dispatchGame({ type: 'setData', payload: data as StatesGameDB });
           break;
 
         case 'players':
-          dispatchPlayers({ type: 'setData', payload: data });
+          dispatchPlayers({ type: 'setData', payload: data as StatesPlayers });
           break;
 
         case 'fp':
-          dispatchFP({ type: 'setData', payload: data });
+          dispatchFP({ type: 'setData', payload: data as StatesFP });
           break;
       }
     };
@@ -391,7 +394,7 @@ const Controller: React.FC = (): JSX.Element => {
     */
   });
 
-  console.log(statesGame);
+  //console.log(statesGame);
   //console.log(statesPlayers);
   //console.log(statesFP);
   return (
