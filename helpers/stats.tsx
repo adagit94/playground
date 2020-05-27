@@ -1,5 +1,6 @@
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
+import { transformAndSort } from 'helpers/arrays';
 import { GamesList, GamesListEdited } from 'types/games/generic';
 import {
   UpdatePlayedTime,
@@ -16,21 +17,12 @@ import {
 
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const games = await getDataUserGames(user);
-  const times: [GamesList, number][] = [];
 
-  for (const game in games) {
-    times.push([game as GamesList, games[game].playedTime]);
-  }
+  const times = transformAndSort(games, 'descending', 'playedTime');
 
-  times.sort((a, b) => a[1] - b[1]).reverse();
+  const mostPlayed = times[0][0];
 
-  const mostPlayed = times[0][0] as GamesList;
-  const editedMostPlayed = mostPlayed.replace(
-    keyEditReg,
-    keyReplacer
-  ) as GamesListEdited;
-
-  return editedMostPlayed;
+  return mostPlayed;
 };
 
 export const updatePlayedTime: UpdatePlayedTime = async (
@@ -51,9 +43,14 @@ export const updatePlayedTime: UpdatePlayedTime = async (
 
     const mostPlayedNew = await calculateMostPlayed(player);
 
+    const editedMostPlayedNew = mostPlayedNew.replace(
+      keyEditReg,
+      keyReplacer
+    ) as GamesListEdited;
+
     if (mostPlayedNew === game && mostPlayedPrev !== game) {
       updateDataUser(player, {
-        mostPlayed: mostPlayedNew
+        mostPlayed: editedMostPlayedNew
       });
     }
   }

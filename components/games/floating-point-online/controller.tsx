@@ -8,6 +8,7 @@ import * as Reducers from 'reducers/games/floating-point-online';
 import * as Inits from 'inits/games/floating-point-online';
 import * as Contexts from 'contexts/games/floating-point-online';
 import { updatePlayedTime } from 'helpers/stats';
+import { transformAndSort } from 'helpers/arrays';
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
@@ -60,7 +61,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
-  const { state, admin, width, height, winner } = statesGame;
+  const { state, admin, width, height, winner, envVotes } = statesGame;
   const { top: fPTop, left: fPLeft } = statesFP;
 
   const dimensionsPercHeight = (dimensions / height) * 100;
@@ -209,7 +210,7 @@ const Controller: React.FC = (): JSX.Element => {
 
           updateDataFP({ top: fpTop, left: fpLeft });
 
-          const envVotes: [EnvNames, number][] = [];
+          const votes = transformAndSort(envVotes, 'descending');
 
           updateDataGame('floatingPoint', {
             state: 'run',
@@ -257,13 +258,7 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
-      const scores = [];
-
-      for (const player in statesPlayers) {
-        scores.push([player, statesPlayers[player].score]);
-      }
-
-      scores.sort((a, b) => a[1] - b[1]).reverse();
+      const scores = transformAndSort(statesPlayers, 'descending', 'score');
 
       const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
