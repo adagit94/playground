@@ -21,7 +21,8 @@ import {
   Winner,
   StatesGameDB,
   StatesPlayers,
-  StatesFP
+  StatesFP,
+  EnvNames
 } from 'types/games/floating-point-online';
 
 import {
@@ -206,7 +207,9 @@ const Controller: React.FC = (): JSX.Element => {
           const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
           const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
-          await updateDataFP({ top: fpTop, left: fpLeft });
+          updateDataFP({ top: fpTop, left: fpLeft });
+
+          const envVotes: [EnvNames, number][] = [];
 
           updateDataGame('floatingPoint', {
             state: 'run',
