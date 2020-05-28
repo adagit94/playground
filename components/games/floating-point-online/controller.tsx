@@ -22,6 +22,7 @@ import {
   Winner,
   StatesGameDB,
   StatesPlayers,
+  Player,
   StatesFP,
   EnvNames
 } from 'types/games/floating-point-online';
@@ -273,10 +274,10 @@ const Controller: React.FC = (): JSX.Element => {
       if (winnerID === playerLocal) {
         winnerData = statesUser.games.floatingPoint;
       } else {
-        winnerData = await getDataUserGame(winnerID, 'floatingPoint');
+        winnerData = await getDataUserGame(winnerID as string, 'floatingPoint');
       }
 
-      updateDataUserGame('floatingPoint', winnerID, {
+      updateDataUserGame('floatingPoint', winnerID as string, {
         wins: winnerData.wins + 1
       });
 
