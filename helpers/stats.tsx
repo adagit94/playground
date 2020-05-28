@@ -1,7 +1,6 @@
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
-import { transformAndSort } from 'helpers/arrays';
-import { GamesList, GamesListEdited } from 'types/games/generic';
+import { GamesListEdited, GamesList } from 'types/games/generic';
 import {
   UpdatePlayedTime,
   CalculateMostPlayed,
@@ -18,7 +17,13 @@ import {
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const games = await getDataUserGames(user);
 
-  const times = transformAndSort(games, 'descending', 'playedTime');
+  const times: [GamesList, number][] = [];
+
+  for (const game in games) {
+    times.push([game as GamesList, games[game].playedTime]);
+  }
+
+  times.sort((a, b) => a[1] - b[1]).reverse();
 
   const mostPlayed = times[0][0];
 

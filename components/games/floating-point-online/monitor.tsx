@@ -14,6 +14,7 @@ import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   height: 60%;
+  position: relative;
 `;
 
 const Monitor: React.FC = (): JSX.Element => {

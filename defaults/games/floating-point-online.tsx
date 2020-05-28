@@ -9,14 +9,6 @@ import {
   CreatePlayer
 } from 'types/games/floating-point-online';
 
-const initEnvVotes: InitEnvVotes = envs => {
-  const envVotes = {} as EnvVotes;
-
-  for (const env of envs) envVotes[env] = 0;
-
-  return envVotes;
-};
-
 export const DEFAULTS: Defaults = {
   dimensions: 10,
   timer: 90,
@@ -26,20 +18,16 @@ export const DEFAULTS: Defaults = {
         shape: 'Square',
         shapes: [
           {
-            dimensions: [50, 50],
-            positions: [90, 10]
+            dimensions: [25, 25],
+            positions: [30, 60]
           },
           {
             dimensions: [50, 50],
-            positions: [90, 90]
+            positions: [70, 20]
           },
           {
-            dimensions: [50, 50],
-            positions: [10, 90]
-          },
-          {
-            dimensions: [50, 50],
-            positions: [10, 10]
+            dimensions: [75, 75],
+            positions: [50, 80]
           }
         ]
       },
@@ -47,20 +35,16 @@ export const DEFAULTS: Defaults = {
         shape: 'Circle',
         shapes: [
           {
-            dimensions: [50, 50],
+            dimensions: [10, 10],
             positions: [10, 50]
           },
           {
-            dimensions: [50, 50],
-            positions: [50, 90]
+            dimensions: [30, 30],
+            positions: [50, 20]
           },
           {
-            dimensions: [50, 50],
-            positions: [90, 50]
-          },
-          {
-            dimensions: [50, 50],
-            positions: [50, 10]
+            dimensions: [10, 10],
+            positions: [70, 70]
           }
         ]
       }
@@ -68,9 +52,17 @@ export const DEFAULTS: Defaults = {
   }
 };
 
-export const initGameDefaults: InitGameDefaults = admin => {
+export const initEnvVotes: InitEnvVotes = () => {
+  const envVotes = {} as EnvVotes;
   const envNames = Object.keys(DEFAULTS.enviroments) as EnvList;
-  const envVotes = initEnvVotes(envNames);
+
+  for (const env of envNames) envVotes[env] = 0;
+
+  return envVotes;
+};
+
+export const initGameDefaults: InitGameDefaults = admin => {
+  const envVotes = initEnvVotes();
 
   const gameDefaults: CreateGame = {
     state: 'conf',

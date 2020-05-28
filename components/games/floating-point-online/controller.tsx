@@ -8,8 +8,7 @@ import * as Reducers from 'reducers/games/floating-point-online';
 import * as Inits from 'inits/games/floating-point-online';
 import * as Contexts from 'contexts/games/floating-point-online';
 import { updatePlayedTime } from 'helpers/stats';
-import { transformAndSort } from 'helpers/arrays';
-import { DEFAULTS } from 'defaults/games/floating-point-online';
+import { DEFAULTS, initEnvVotes } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
 import { FloatingPoint } from 'types/user';
@@ -164,7 +163,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const initGame = async (): Promise<void> => {
+    const initGame = (): void => {
       for (let i = 0, l = players.length; i < l; i++) {
         const player = players[i];
 
@@ -211,10 +210,19 @@ const Controller: React.FC = (): JSX.Element => {
 
           updateDataFP({ top: fpTop, left: fpLeft });
 
-          const votes = transformAndSort(envVotes, 'descending');
+          const votes: [EnvNames, number][] = [];
+
+          for (const env in envVotes) {
+            votes.push([env as EnvNames, envVotes[env]]);
+          }
+
+          votes.sort((a, b) => a[1] - b[1]).reverse();
+
+          const envToInit = votes[0][0];
 
           updateDataGame('floatingPoint', {
             state: 'run',
+            env: envToInit,
             timestampStart: Date.now()
           });
         }
@@ -259,7 +267,13 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
-      const scores = transformAndSort(statesPlayers, 'descending', 'score');
+      const scores: [string, number][] = [];
+
+      for (const player in statesPlayers) {
+        scores.push([player, statesPlayers[player].score]);
+      }
+
+      scores.sort((a, b) => a[1] - b[1]).reverse();
 
       const [winnerID, winnerScore] = scores[0];
       const winnerName = statesPlayers[winnerID].username;
@@ -274,10 +288,10 @@ const Controller: React.FC = (): JSX.Element => {
       if (winnerID === playerLocal) {
         winnerData = statesUser.games.floatingPoint;
       } else {
-        winnerData = await getDataUserGame(winnerID as string, 'floatingPoint');
+        winnerData = await getDataUserGame(winnerID, 'floatingPoint');
       }
 
-      updateDataUserGame('floatingPoint', winnerID as string, {
+      updateDataUserGame('floatingPoint', winnerID, {
         wins: winnerData.wins + 1
       });
 
@@ -300,16 +314,11 @@ const Controller: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const resetGame = (): void => {
-      updateDataGame('floatingPoint', {
-        state: 'conf',
-        winner: null,
-        timestampStart: null,
-        timestampEnd: null,
-        timer
-      });
+      const resetedEnvVotes = initEnvVotes();
 
       for (const player in statesPlayers) {
         updateDataPlayer('floatingPoint', player, {
+          selectedEnv: null,
           top: null,
           left: null,
           score: null,
@@ -318,6 +327,16 @@ const Controller: React.FC = (): JSX.Element => {
       }
 
       updateDataFP({ top: null, left: null });
+
+      updateDataGame('floatingPoint', {
+        state: 'conf',
+        winner: null,
+        env: null,
+        envVotes: resetedEnvVotes,
+        timestampStart: null,
+        timestampEnd: null,
+        timer
+      });
     };
 
     if (state === 'reset' && playerLocal === admin) {
@@ -379,11 +398,7 @@ const Controller: React.FC = (): JSX.Element => {
       }
     };
 
-    if (
-      user !== undefined &&
-      admin === undefined &&
-      !(playerLocal in statesPlayers)
-    ) {
+    if (user !== undefined && admin === undefined) {
       initGame('floatingPoint', user, handleData);
     }
     /*

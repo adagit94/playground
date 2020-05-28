@@ -17,9 +17,3 @@ export type UpdatePlayedTime = (
 ) => Promise<void>;
 
 export type ConvertPlayedTime = (playedTime: number) => string;
-
-export type TransformAndSort = <T, K extends keyof T>(
-  dataObj: T,
-  ordering: 'ascending' | 'descending',
-  orderBy?: keyof T[K]
-) => [K, number][];

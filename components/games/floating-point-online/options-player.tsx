@@ -275,7 +275,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       getStats();
     }
   });
-  console.log(playerData);
+  //console.log(playerData);
   return (
     <Container>
       {state === 'conf' && playerData === undefined && (

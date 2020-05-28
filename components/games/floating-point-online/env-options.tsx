@@ -1,4 +1,4 @@
-import { memo, useContext, useState } from 'react';
+import { memo, useContext, Fragment } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { paddingContainer } from 'components/styled-components/_variables';
@@ -9,12 +9,16 @@ import {
   DividerHorizontal
 } from 'components/styled-components/dividers';
 
-import { updateDataGame } from 'firebase/db';
+import { updateDataGame, updateDataPlayer } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { Theming } from 'types/layout';
 import { EnvNames } from 'types/games/floating-point-online';
-import { ContextGame } from 'contexts/games/floating-point-online';
+import { ContextFirebase } from 'contexts/firebase';
+import {
+  ContextGame,
+  ContextPlayers
+} from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
   flex: auto;
@@ -43,12 +47,16 @@ const Container = styled.div`
 `;
 
 const EnvOptions: React.FC = (): JSX.Element => {
-  const [selectedEnv, setSelectedEnv] = useState<EnvNames>(undefined);
-
   const theming: Theming = useContext(ThemeContext);
+  const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
+  const statesPlayers = useContext(ContextPlayers);
 
+  const { user } = statesFirebase;
   const { envVotes } = statesGame;
+
+  const playerLocal = user?.uid;
+  const selectedEnv = statesPlayers[playerLocal]?.selectedEnv;
 
   const handleVoting = (env: EnvNames): void => {
     if (selectedEnv !== undefined) {
@@ -68,7 +76,9 @@ const EnvOptions: React.FC = (): JSX.Element => {
       });
     }
 
-    setSelectedEnv(env);
+    updateDataPlayer('floatingPoint', playerLocal, {
+      selectedEnv: env
+    });
   };
 
   return (
@@ -85,20 +95,25 @@ const EnvOptions: React.FC = (): JSX.Element => {
             const editedEnvName = env.replace(keyEditReg, keyReplacer);
 
             return (
-              <>
+              <Fragment key={env}>
                 <li key={env}>
                   <span>{votes}</span>
+
                   <DividerVertical color='background' />
+
                   <InputCustomRadioButton
                     onClick={(): void => {
+                      if (selectedEnv === env) return;
+
                       handleVoting(env as EnvNames);
                     }}
                     checked={selectedEnv === env ? true : false}
                   />
+
                   <span>{editedEnvName}</span>
                 </li>
                 {i < arr.length - 1 && <DividerHorizontal color='background' />}
-              </>
+              </Fragment>
             );
           })}
         </ul>

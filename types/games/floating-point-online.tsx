@@ -17,6 +17,7 @@ type TestEnv = [
 export type Player = {
   username: string;
   avatar: string;
+  selectedEnv: EnvNames;
   top: number;
   left: number;
   score: number;
@@ -26,6 +27,7 @@ export type Player = {
 export type UpdatePlayer = {
   username?: string;
   avatar?: string;
+  selectedEnv?: EnvNames;
   top?: number;
   left?: number;
   score?: number;
@@ -160,4 +162,4 @@ export type InitGameDefaults = (admin: string) => CreateGame;
 
 export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;
 
-export type InitEnvVotes = (envs: EnvList) => EnvVotes;
+export type InitEnvVotes = () => EnvVotes;
