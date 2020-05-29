@@ -52,7 +52,7 @@ const Players: React.FC = (): JSX.Element => {
     P2: { icon: iconP2, color: colorP2 }
   } = statesParams;
 
-  const points: Array<JSX.Element> = [];
+  let points: Array<JSX.Element> = [];
 
   const IconP1 = styled.div`
     position: absolute;

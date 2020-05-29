@@ -22,13 +22,17 @@ import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime, updatePlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint } from 'types/user';
-import { PropsOptionsPlayer } from 'types/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
 import {
   ContextGame,
   ContextPlayers
 } from 'contexts/games/floating-point-online';
+
+import {
+  PropsOptionsPlayer,
+  EnvNames
+} from 'types/games/floating-point-online';
 
 import {
   updateDataGame,
@@ -116,7 +120,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { state, admin, timestampStart } = statesGame;
+  const { state, admin, envVotes, timestampStart } = statesGame;
 
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
@@ -188,8 +192,20 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
     }
 
+    let envs: [EnvNames, number][] = [];
+
+    for (const env in envVotes) {
+      envs.push([env as EnvNames, envVotes[env]]);
+    }
+
+    envs.sort((a, b) => a[1] - b[1]).reverse();
+
+    const [name, votes] = envs[0];
+
+    if (votes === 0) return;
+
     setInitPossible(true);
-    updateDataGame('floatingPoint', { state: 'init' });
+    updateDataGame('floatingPoint', { state: 'init', env: name });
   };
 
   useEffect(() => {
@@ -244,7 +260,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   useEffect(() => {
     const getStats = async (): Promise<void> => {
       let stats: FloatingPoint;
-      const statsArr: [string, string | number][] = [];
+      let statsArr: [string, string | number][] = [];
 
       if (uid === player) {
         stats = userGameStats;

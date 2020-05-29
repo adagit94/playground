@@ -9,7 +9,7 @@ const Players: React.FC = (): JSX.Element => {
 
   const { dimensions } = DEFAULTS;
 
-  const points: Array<JSX.Element> = [];
+  let points: Array<JSX.Element> = [];
 
   for (const player in statesPlayers) {
     const Icon = styled.div`

@@ -17,7 +17,7 @@ import {
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
   const games = await getDataUserGames(user);
 
-  const times: [GamesList, number][] = [];
+  let times: [GamesList, number][] = [];
 
   for (const game in games) {
     times.push([game as GamesList, games[game].playedTime]);

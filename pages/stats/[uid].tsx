@@ -42,8 +42,8 @@ const Stats: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const initStats = (): void => {
-      const userStatsArr: [string, string][] = [];
-      const gamesStatsArr: [GamesList, [string, string | number][]][] = [];
+      let userStatsArr: [string, string][] = [];
+      let gamesStatsArr: [GamesList, [string, string | number][]][] = [];
 
       for (const stat in statesUser) {
         if (stat === 'games') continue;
@@ -72,7 +72,7 @@ const Stats: React.FC = (): JSX.Element => {
           keyReplacer
         ) as GamesList;
 
-        const gameStatsArr: [GamesList, [string, string | number][]] = [
+        let gameStatsArr: [GamesList, [string, string | number][]] = [
           editedGameName,
           []
         ];

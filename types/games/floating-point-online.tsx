@@ -1,5 +1,3 @@
-type Keys = 'ArrowUp' | 'ArrowRight' | 'ArrowDown' | 'ArrowLeft';
-
 type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
@@ -13,6 +11,15 @@ type TestEnv = [
   { shape: 'Square'; shapes: ShapeValues[] },
   { shape: 'Circle'; shapes: ShapeValues[] }
 ];
+
+export type Position = { top: number; left: number };
+
+export type Key = {
+  pressed: boolean;
+  operation: 'add' | 'subtract';
+  direction: 'top' | 'left';
+  limit: 'topLeft' | 'bottomRight';
+};
 
 export type Player = {
   username: string;
@@ -107,7 +114,7 @@ export type UpdateGame = {
 
 export type StatesPlayers = { [uid: string]: Player };
 
-export type StatesFP = { top: number; left: number };
+export type StatesFP = Position;
 
 export type ActionsGame =
   | {
@@ -142,15 +149,7 @@ export type HandleData = (
   data: StatesGameDB | StatesPlayers | StatesFP
 ) => void;
 
-export type Operations = 'add' | 'subtract';
-
-export type Directions = 'top' | 'left';
-
-export type Limits = 'topLeft' | 'bottomRight';
-
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
-
-export type HandleMove = (key: Keys) => void;
 
 export type Defaults = {
   dimensions: number;
@@ -158,8 +157,19 @@ export type Defaults = {
   enviroments: Enviroments;
 };
 
+export type ControlKeys = {
+  ArrowUp: Key;
+  ArrowRight: Key;
+  ArrowDown: Key;
+  ArrowLeft: Key;
+};
+
 export type InitGameDefaults = (admin: string) => CreateGame;
 
 export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;
 
 export type InitEnvVotes = () => EnvVotes;
+
+export type ObjectsOverlap = (
+  modifiedPlayerPos: ['top' | 'left', number]
+) => boolean;
