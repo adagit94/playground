@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef, useContext, memo } from 'react';
+import { useReducer, useEffect, useContext, memo } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -14,14 +14,9 @@ import { ContextUser } from 'contexts/user';
 import { FloatingPoint } from 'types/user';
 import {
   HandleData,
-  Operations,
-  Directions,
-  Limits,
-  HandleMove,
   Winner,
   StatesGameDB,
   StatesPlayers,
-  Player,
   StatesFP,
   EnvNames
 } from 'types/games/floating-point-online';
@@ -62,105 +57,9 @@ const Controller: React.FC = (): JSX.Element => {
   const { dimensions, timer } = DEFAULTS;
   const { user } = statesFirebase;
   const { state, admin, width, height, winner, envVotes } = statesGame;
-  const { top: fPTop, left: fPLeft } = statesFP;
 
-  const dimensionsPercHeight = (dimensions / height) * 100;
-  const dimensionsPercWidth = (dimensions / width) * 100;
   const playerLocal = user?.uid;
   const players = Object.keys(statesPlayers);
-
-  const { top: playerLocalTop, left: playerLocalLeft } =
-    playerLocal in statesPlayers && statesPlayers[playerLocal];
-
-  const handleMoveRef = useRef(null);
-
-  const handleMove: HandleMove = key => {
-    let operation: Operations;
-    let direction: Directions;
-    let limit: Limits;
-
-    switch (key) {
-      case 'ArrowUp':
-        operation = 'subtract';
-        direction = 'top';
-        limit = 'topLeft';
-        break;
-
-      case 'ArrowRight':
-        operation = 'add';
-        direction = 'left';
-        limit = 'bottomRight';
-        break;
-
-      case 'ArrowDown':
-        operation = 'add';
-        direction = 'top';
-        limit = 'bottomRight';
-        break;
-
-      case 'ArrowLeft':
-        operation = 'subtract';
-        direction = 'left';
-        limit = 'topLeft';
-        break;
-
-      default:
-        return;
-    }
-
-    switch (limit) {
-      case 'topLeft':
-        if (playerLocalTop <= 0 || playerLocalLeft <= 0) return;
-        break;
-
-      case 'bottomRight':
-        if (
-          playerLocalTop + dimensionsPercHeight >= 100 ||
-          playerLocalLeft + dimensionsPercWidth >= 100
-        ) {
-          return;
-        }
-
-        break;
-    }
-
-    let dimension: number;
-    let playerLocalPos: number;
-
-    switch (direction) {
-      case 'left':
-        dimension = width;
-        playerLocalPos = playerLocalLeft;
-        break;
-
-      case 'top':
-        dimension = height;
-        playerLocalPos = playerLocalTop;
-        break;
-    }
-
-    let px = (dimension / 100) * playerLocalPos;
-
-    switch (operation) {
-      case 'add':
-        px++;
-        break;
-
-      case 'subtract':
-        px--;
-        break;
-    }
-
-    const newPos = (px / dimension) * 100;
-
-    updateDataPlayer('floatingPoint', playerLocal, {
-      [direction]: newPos
-    });
-  };
-
-  useEffect(() => {
-    handleMoveRef.current = handleMove;
-  });
 
   useEffect(() => {
     const initGame = (): void => {
@@ -230,39 +129,6 @@ const Controller: React.FC = (): JSX.Element => {
     };
 
     if (state === 'init') initGame();
-  });
-
-  useEffect(() => {
-    const matchFloatingPoint = (): void => {
-      if (
-        playerLocalTop + dimensionsPercHeight >= fPTop &&
-        playerLocalTop <= fPTop + dimensionsPercHeight &&
-        playerLocalLeft + dimensionsPercWidth >= fPLeft &&
-        playerLocalLeft <= fPLeft + dimensionsPercWidth
-      ) {
-        const fpTop = Math.min(
-          ((Math.random() * height) / height) * 100,
-          ((height - dimensions) / height) * 100
-        );
-
-        const fpLeft = Math.min(
-          ((Math.random() * width) / width) * 100,
-          ((width - dimensions) / width) * 100
-        );
-
-        updateDataFP({ top: fpTop, left: fpLeft });
-
-        updateDataPlayer('floatingPoint', playerLocal, {
-          score: statesPlayers[playerLocal].score + 1
-        });
-
-        updateDataUserGame('floatingPoint', playerLocal, {
-          gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
-        });
-      }
-    };
-
-    if (playerLocal in statesPlayers && state === 'run') matchFloatingPoint();
   });
 
   useEffect(() => {
@@ -345,24 +211,6 @@ const Controller: React.FC = (): JSX.Element => {
       }, 1000);
     }
   });
-
-  useEffect(() => {
-    const registerKey = (e: KeyboardEvent): void => {
-      e.preventDefault();
-
-      handleMoveRef.current(e.key);
-    };
-
-    if (state === 'run') {
-      window.addEventListener('keydown', registerKey);
-    } else {
-      window.removeEventListener('keydown', registerKey);
-    }
-
-    return (): void => {
-      window.removeEventListener('keydown', registerKey);
-    };
-  }, [state]);
 
   useEffect(() => {
     const changeDimensions = (): void => {
