@@ -122,7 +122,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       let fpLeft: number;
       let overlap: boolean;
 
-      while (overlap) {
+      while (overlap || overlap === undefined) {
         fpTop = Math.min(
           ((Math.random() * height) / height) * 100,
           ((height - dimensions) / height) * 100

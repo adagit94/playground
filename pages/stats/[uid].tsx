@@ -40,6 +40,11 @@ const Stats: React.FC = (): JSX.Element => {
 
   const { background } = theming;
 
+  const Stats = styled(WindowStats)`
+    justify-content: ${userStats.length === 0 ? 'center' : 'start'};
+    align-items: ${userStats.length === 0 ? 'center' : 'flex-start'};
+  `;
+
   useEffect(() => {
     const initStats = (): void => {
       let userStatsArr: [string, string][] = [];
@@ -114,39 +119,35 @@ const Stats: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <WindowStats>
-        <WindowStatsUser>
-          {userStats.length === 0 && <LoadingIndicator color={background} />}
+      <Stats>
+        {userStats.length === 0 && <LoadingIndicator color={background} />}
 
-          {userStats.length !== 0 && (
-            <ul>
-              {userStats.map((stat, i, arr) => {
-                const [name, value] = stat;
+        {userStats.length !== 0 && (
+          <>
+            <WindowStatsUser>
+              <ul>
+                {userStats.map((stat, i, arr) => {
+                  const [name, value] = stat;
 
-                return (
-                  <Fragment key={name}>
-                    <li key={name}>
-                      <span>{name}: </span>
-                      <span>{value}</span>
-                    </li>
+                  return (
+                    <Fragment key={name}>
+                      <li key={name}>
+                        <span>{name}: </span>
+                        <span>{value}</span>
+                      </li>
 
-                    {i < arr.length - 1 && (
-                      <DividerVertical color='background' />
-                    )}
-                  </Fragment>
-                );
-              })}
-            </ul>
-          )}
-        </WindowStatsUser>
+                      {i < arr.length - 1 && (
+                        <DividerVertical color='background' />
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </ul>
+            </WindowStatsUser>
 
-        <DividerHorizontal color='background' />
+            <DividerHorizontal color='background' />
 
-        <WindowStatsGames>
-          {gamesStats.length === 0 && <LoadingIndicator color={background} />}
-
-          {gamesStats.length !== 0 && (
-            <>
+            <WindowStatsGames>
               {gamesStats.map((game, i, arr) => {
                 const [name, stats] = game;
 
@@ -174,10 +175,10 @@ const Stats: React.FC = (): JSX.Element => {
                   </Fragment>
                 );
               })}
-            </>
-          )}
-        </WindowStatsGames>
-      </WindowStats>
+            </WindowStatsGames>
+          </>
+        )}
+      </Stats>
     </Container>
   );
 };

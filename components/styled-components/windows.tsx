@@ -19,13 +19,13 @@ export const WindowStats = styled.div`
 
 export const WindowStatsUser = styled.div`
   ul {
-    height: 100%;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: row;
     justify-content: start;
     flex-wrap: wrap;
+    height: 100%;
 
     li {
       list-style: none;
@@ -42,7 +42,6 @@ export const WindowStatsUser = styled.div`
 export const WindowStatsGames = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: start;
   flex-wrap: wrap;
 `;
 
