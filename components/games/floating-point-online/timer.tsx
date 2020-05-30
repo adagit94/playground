@@ -30,7 +30,6 @@ const Timer: React.FC = (): JSX.Element => {
   const stateRef = useRef(state);
 
   const handleTimer = (): void => {
-    console.log(stateRef.current);
     if (stateRef.current === 'run') {
       if (timer === 0) {
         updateDataGame('floatingPoint', {
@@ -52,7 +51,7 @@ const Timer: React.FC = (): JSX.Element => {
       window.setTimeout(handleTimer, 1000);
     }
   });
-
+  console.log(state);
   return <Container>{timer}</Container>;
 };
 
