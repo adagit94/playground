@@ -30,13 +30,15 @@ const Timer: React.FC = (): JSX.Element => {
   const stateRef = useRef(state);
 
   const handleTimer = (): void => {
-    if (timer === 0 && stateRef.current === 'run') {
-      updateDataGame('floatingPoint', {
-        state: 'eval',
-        timestampEnd: Date.now()
-      });
-    } else {
-      updateDataGame('floatingPoint', { timer: timer - 1 });
+    if (stateRef.current === 'run') {
+      if (timer === 0) {
+        updateDataGame('floatingPoint', {
+          state: 'eval',
+          timestampEnd: Date.now()
+        });
+      } else {
+        updateDataGame('floatingPoint', { timer: timer - 1 });
+      }
     }
   };
 
