@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useContext, memo } from 'react';
+import { useReducer, useEffect, useContext, memo, useRef } from 'react';
 import styled from 'styled-components';
 
 import Monitor from './monitor';
@@ -60,59 +60,61 @@ const Controller: React.FC = (): JSX.Element => {
   const playerLocal = user?.uid;
   const players = Object.keys(statesPlayers);
 
+  const statesPlayersRef = useRef(statesPlayers);
+
+  useEffect(() => {
+    statesPlayersRef.current = statesPlayers;
+  });
+
   useEffect(() => {
     const initGame = (): void => {
-      for (let i = 0, l = players.length; i < l; i++) {
-        const player = players[i];
+      const playerLocalIndex = players.indexOf(playerLocal);
 
-        if (playerLocal !== player) continue;
+      let playerLocalTop: number;
+      let playerLocalLeft: number;
 
-        let playerLocalTop: number;
-        let playerLocalLeft: number;
+      switch (playerLocalIndex) {
+        case 0:
+          playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
+          playerLocalLeft = (10 / width) * 100;
+          break;
 
-        switch (i) {
-          case 0:
-            playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
-            playerLocalLeft = (10 / width) * 100;
-            break;
+        case 1:
+          playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
+          playerLocalLeft = ((width - dimensions - 10) / width) * 100;
+          break;
 
-          case 1:
-            playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
-            playerLocalLeft = ((width - dimensions - 10) / width) * 100;
-            break;
+        case 2:
+          playerLocalTop = (10 / height) * 100;
+          playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
+          break;
 
-          case 2:
-            playerLocalTop = (10 / height) * 100;
-            playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
-            break;
+        case 3:
+          playerLocalTop = ((height - dimensions - 10) / height) * 100;
+          playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
+          break;
+      }
 
-          case 3:
-            playerLocalTop = ((height - dimensions - 10) / height) * 100;
-            playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
-            break;
-        }
+      updateDataPlayer('floatingPoint', playerLocal, {
+        top: playerLocalTop,
+        left: playerLocalLeft,
+        score: 0
+      });
 
-        updateDataPlayer('floatingPoint', player, {
-          top: playerLocalTop,
-          left: playerLocalLeft,
-          score: 0
+      updateDataUser(playerLocal, {
+        lastPlayed: 'Floating Point'
+      });
+
+      if (playerLocalIndex === players.length - 1) {
+        const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
+        const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
+
+        updateDataFP({ top: fpTop, left: fpLeft });
+
+        updateDataGame('floatingPoint', {
+          state: 'run',
+          timestampStart: Date.now()
         });
-
-        updateDataUser(playerLocal, {
-          lastPlayed: 'Floating Point'
-        });
-
-        if (i === l - 1) {
-          const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
-          const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
-
-          updateDataFP({ top: fpTop, left: fpLeft });
-
-          updateDataGame('floatingPoint', {
-            state: 'run',
-            timestampStart: Date.now()
-          });
-        }
       }
     };
 
@@ -179,7 +181,7 @@ const Controller: React.FC = (): JSX.Element => {
         timer
       });
 
-      for (const player in statesPlayers) {
+      for (const player in statesPlayersRef.current) {
         updateDataPlayer('floatingPoint', player, {
           selectedEnv: null,
           top: null,
@@ -192,29 +194,8 @@ const Controller: React.FC = (): JSX.Element => {
       updateDataFP({ top: null, left: null });
     };
 
-    if (state === 'reset' && playerLocal === admin) {
-      setTimeout(() => {
-        resetGame();
-      }, 1000);
-    }
+    if (state === 'reset' && playerLocal === admin) resetGame();
   });
-
-  useEffect(() => {
-    const changeDimensions = (): void => {
-      dispatchGame({
-        type: 'changeDimensions',
-        height: document.querySelector('#monitor').clientHeight,
-        width: document.querySelector('#monitor').clientWidth
-      });
-    };
-
-    changeDimensions();
-    window.addEventListener('resize', changeDimensions);
-
-    return (): void => {
-      window.removeEventListener('resize', changeDimensions);
-    };
-  }, []);
 
   useEffect(() => {
     const handleData: HandleData = (dataSet, data) => {
@@ -242,6 +223,23 @@ const Controller: React.FC = (): JSX.Element => {
     };
     */
   });
+
+  useEffect(() => {
+    const changeDimensions = (): void => {
+      dispatchGame({
+        type: 'changeDimensions',
+        height: document.querySelector('#monitor').clientHeight,
+        width: document.querySelector('#monitor').clientWidth
+      });
+    };
+
+    changeDimensions();
+    window.addEventListener('resize', changeDimensions);
+
+    return (): void => {
+      window.removeEventListener('resize', changeDimensions);
+    };
+  }, []);
 
   //console.log(statesGame);
   //console.log(statesPlayers);

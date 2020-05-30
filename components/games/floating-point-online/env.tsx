@@ -20,7 +20,7 @@ import {
   Envs,
   ControlKeys,
   Key,
-  ObjectsOverlap,
+  CheckOverlap,
   Position
 } from 'types/games/floating-point-online';
 
@@ -77,35 +77,18 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const { dimensions } = DEFAULTS;
   const { user } = statesFirebase;
   const { width, height } = statesGame;
-  const { top: fPTop, left: fPLeft } = statesFP;
+  const { top: fpTop, left: fpLeft } = statesFP;
 
   const playerLocal = user?.uid;
   const playerLocalTop = statesPlayers[playerLocal]?.top;
   const playerLocalLeft = statesPlayers[playerLocal]?.left;
 
-  const playerWidthPerc = (dimensions / width) * 100;
-  const playerHeightPerc = (dimensions / height) * 100;
+  const pointWidthPerc = (dimensions / width) * 100;
+  const pointHeightPerc = (dimensions / height) * 100;
 
   const handleMoveRef = useRef(null);
 
-  const objectsOverlap: ObjectsOverlap = modifiedPlayerPos => {
-    let playerTop: number;
-    let playerLeft: number;
-
-    const [direction, value] = modifiedPlayerPos;
-
-    switch (direction) {
-      case 'top':
-        playerTop = value;
-        playerLeft = playerLocalLeft;
-        break;
-
-      case 'left':
-        playerTop = playerLocalTop;
-        playerLeft = value;
-        break;
-    }
-
+  const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
     for (const object of objects) {
       for (const shape of object.shapes) {
         const [shapeWidth, shapeHeight] = shape.dimensions;
@@ -115,10 +98,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         const shapeHeightPerc = (shapeHeight / height) * 100;
 
         if (
-          playerTop + playerHeightPerc >= shapeTop &&
-          playerTop <= shapeTop + shapeHeightPerc &&
-          playerLeft + playerWidthPerc >= shapeLeft &&
-          playerLeft <= shapeLeft + shapeWidthPerc
+          pointTop + pointHeightPerc >= shapeTop &&
+          pointTop <= shapeTop + shapeHeightPerc &&
+          pointLeft + pointWidthPerc >= shapeLeft &&
+          pointLeft <= shapeLeft + shapeWidthPerc
         ) {
           return true;
         }
@@ -130,20 +113,28 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const fpOverlap = (): void => {
     if (
-      playerLocalTop + playerHeightPerc >= fPTop &&
-      playerLocalTop <= fPTop + playerHeightPerc &&
-      playerLocalLeft + playerWidthPerc >= fPLeft &&
-      playerLocalLeft <= fPLeft + playerWidthPerc
+      playerLocalTop + pointHeightPerc >= fpTop &&
+      playerLocalTop <= fpTop + pointHeightPerc &&
+      playerLocalLeft + pointWidthPerc >= fpLeft &&
+      playerLocalLeft <= fpLeft + pointWidthPerc
     ) {
-      const fpTop = Math.min(
-        ((Math.random() * height) / height) * 100,
-        ((height - dimensions) / height) * 100
-      );
+      let fpTop: number;
+      let fpLeft: number;
+      let overlap: boolean;
 
-      const fpLeft = Math.min(
-        ((Math.random() * width) / width) * 100,
-        ((width - dimensions) / width) * 100
-      );
+      while (overlap) {
+        fpTop = Math.min(
+          ((Math.random() * height) / height) * 100,
+          ((height - dimensions) / height) * 100
+        );
+
+        fpLeft = Math.min(
+          ((Math.random() * width) / width) * 100,
+          ((width - dimensions) / width) * 100
+        );
+
+        overlap = checkOverlap(fpTop, fpLeft);
+      }
 
       updateDataFP({ top: fpTop, left: fpLeft });
 
@@ -180,8 +171,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
         case 'bottomRight':
           if (
-            playerLocalTop + playerHeightPerc >= 100 ||
-            playerLocalLeft + playerWidthPerc >= 100
+            playerLocalTop + pointHeightPerc >= 100 ||
+            playerLocalLeft + pointWidthPerc >= 100
           ) {
             continue;
           }
@@ -193,7 +184,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       let px: number;
       let prevPos: number;
       let newPos: number;
-      let objectOverlap: boolean;
+      let overlap: boolean;
 
       switch (direction) {
         case 'left':
@@ -220,9 +211,12 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       }
 
       newPos = (px / dimension) * 100;
-      objectOverlap = objectsOverlap([direction, newPos]);
+      overlap = checkOverlap(
+        direction === 'top' ? newPos : prevPos,
+        direction === 'left' ? newPos : prevPos
+      );
 
-      if (objectOverlap) continue;
+      if (overlap) continue;
 
       updatedPos[direction] = newPos;
     }
@@ -257,8 +251,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       const key = e.key;
 
-      console.log(key);
-
       if (key in controlKeys) {
         if (controlKeys[key].pressed !== true) controlKeys[key].pressed = true;
         handleMoveRef.current();
@@ -277,7 +269,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     window.addEventListener('keyup', cancelKey);
 
     return (): void => {
-      console.log('listeners removed');
       window.removeEventListener('keydown', registerKey);
       window.removeEventListener('keyup', cancelKey);
     };

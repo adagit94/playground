@@ -170,6 +170,4 @@ export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;
 
 export type InitEnvVotes = () => EnvVotes;
 
-export type ObjectsOverlap = (
-  modifiedPlayerPos: ['top' | 'left', number]
-) => boolean;
+export type CheckOverlap = (pointTop: number, pointLeft: number) => boolean;

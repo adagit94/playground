@@ -111,7 +111,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   initPossible,
   setInitPossible
 }): JSX.Element => {
-  const [gameStats, setGameStats] = useState([]);
+  const [gameStats, setGameStats] = useState<[string, string | number][]>([]);
 
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
@@ -231,16 +231,22 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
 
       if (stateRef.current === 'run') {
-        updatePlayedTime('floatingPoint', playersRef.current, [
-          timestampStartRef.current,
-          Date.now()
-        ]);
+        setTimeout(() => {
+          if (stateRef.current === 'run') {
+            updatePlayedTime('floatingPoint', playersRef.current, [
+              timestampStartRef.current,
+              Date.now()
+            ]);
 
-        deleteDataPlayer('floatingPoint', player);
+            deleteDataPlayer('floatingPoint', player);
 
-        updateDataGame('floatingPoint', {
-          state: 'reset'
-        });
+            updateDataGame('floatingPoint', {
+              state: 'reset'
+            });
+          } else {
+            deleteDataPlayer('floatingPoint', player);
+          }
+        }, 1000);
       } else {
         deleteDataPlayer('floatingPoint', player);
       }
@@ -300,50 +306,54 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
       {playerData !== undefined && (
         <>
-          {state === 'conf' && gameStats.length !== 0 && (
-            <ContainerStats id='stats'>
-              <WindowStats>
-                <WindowStatsGame>
-                  <ul>
-                    {gameStats.map(stat => {
-                      const [name, value] = stat;
-
-                      return (
-                        <li key={name}>
-                          <span>{name}</span>
-                          <span>{value}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </WindowStatsGame>
-              </WindowStats>
-            </ContainerStats>
-          )}
-
           {state === 'conf' && (
-            <ContainerButtons>
-              {uid === admin && admin === player && (
-                <ButtonStart onClick={handleInit} type='button'>
-                  Start
-                </ButtonStart>
+            <>
+              {gameStats.length !== 0 && (
+                <ContainerStats id='stats'>
+                  <WindowStats>
+                    <WindowStatsGame>
+                      <ul>
+                        {gameStats.map(stat => {
+                          const [name, value] = stat;
+
+                          return (
+                            <li key={name}>
+                              <span>{name}</span>
+                              <span>{value}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </WindowStatsGame>
+                  </WindowStats>
+                </ContainerStats>
               )}
 
-              {uid === player && (
-                <ButtonReadyClickable
-                  onClick={(): void => {
-                    updateDataPlayer('floatingPoint', player, {
-                      isReady: playerData.isReady ? false : true
-                    });
-                  }}
-                  type='button'
-                >
-                  Ready
-                </ButtonReadyClickable>
-              )}
+              <ContainerButtons>
+                {uid === admin && admin === player && (
+                  <ButtonStart onClick={handleInit} type='button'>
+                    Start
+                  </ButtonStart>
+                )}
 
-              {uid !== player && <ButtonReady type='button'>Ready</ButtonReady>}
-            </ContainerButtons>
+                {uid === player && (
+                  <ButtonReadyClickable
+                    onClick={(): void => {
+                      updateDataPlayer('floatingPoint', player, {
+                        isReady: playerData.isReady ? false : true
+                      });
+                    }}
+                    type='button'
+                  >
+                    Ready
+                  </ButtonReadyClickable>
+                )}
+
+                {uid !== player && (
+                  <ButtonReady type='button'>Ready</ButtonReady>
+                )}
+              </ContainerButtons>
+            </>
           )}
 
           <ContainerInfo>
