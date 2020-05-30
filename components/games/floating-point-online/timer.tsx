@@ -1,4 +1,4 @@
-import { memo, useContext, useEffect, useRef } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { updateDataGame } from 'firebase/db';
@@ -27,27 +27,24 @@ const Timer: React.FC = (): JSX.Element => {
 
   const uid = user?.uid;
 
-  const stateRef = useRef(state);
-
   const handleTimer = (): void => {
-    if (stateRef.current === 'run') {
-      if (timer === 0) {
-        updateDataGame('floatingPoint', {
-          state: 'eval',
-          timestampEnd: Date.now()
-        });
-      } else {
-        updateDataGame('floatingPoint', { timer: timer - 1 });
-      }
+    if (timer === 0) {
+      updateDataGame('floatingPoint', {
+        state: 'eval',
+        timestampEnd: Date.now()
+      });
+    } else {
+      updateDataGame('floatingPoint', { timer: timer - 1 });
     }
   };
 
   useEffect(() => {
-    stateRef.current = state;
-  });
-
-  useEffect(() => {
-    if (uid !== undefined && admin !== undefined && uid === admin) {
+    if (
+      state === 'run' &&
+      uid !== undefined &&
+      admin !== undefined &&
+      uid === admin
+    ) {
       window.setTimeout(handleTimer, 1000);
     }
   });
