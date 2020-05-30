@@ -212,8 +212,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       newPos = (px / dimension) * 100;
       overlap = checkOverlap(
-        direction === 'top' ? newPos : prevPos,
-        direction === 'left' ? newPos : prevPos
+        direction === 'top' ? newPos : playerLocalTop,
+        direction === 'left' ? newPos : playerLocalLeft
       );
 
       if (overlap) continue;

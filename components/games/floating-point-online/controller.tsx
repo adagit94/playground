@@ -67,7 +67,7 @@ const Controller: React.FC = (): JSX.Element => {
   });
 
   useEffect(() => {
-    const initGame = (): void => {
+    const initGame = async (): Promise<void> => {
       const playerLocalIndex = players.indexOf(playerLocal);
 
       let playerLocalTop: number;
@@ -109,7 +109,7 @@ const Controller: React.FC = (): JSX.Element => {
         const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
         const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
 
-        updateDataFP({ top: fpTop, left: fpLeft });
+        await updateDataFP({ top: fpTop, left: fpLeft });
 
         updateDataGame('floatingPoint', {
           state: 'run',
