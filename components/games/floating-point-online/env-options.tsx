@@ -59,7 +59,21 @@ const EnvOptions: React.FC = (): JSX.Element => {
   const selectedEnv = statesPlayers[playerLocal]?.selectedEnv;
 
   const handleVoting = (env: EnvNames): void => {
-    if (selectedEnv !== undefined) {
+    if (selectedEnv === undefined) {
+      updateDataGame('floatingPoint', {
+        envVotes: {
+          ...envVotes,
+          [env]: envVotes[env] + 1
+        }
+      });
+    } else if (selectedEnv === env) {
+      updateDataGame('floatingPoint', {
+        envVotes: {
+          ...envVotes,
+          [selectedEnv]: envVotes[selectedEnv] - 1
+        }
+      });
+    } else if (selectedEnv !== env) {
       updateDataGame('floatingPoint', {
         envVotes: {
           ...envVotes,
@@ -67,17 +81,10 @@ const EnvOptions: React.FC = (): JSX.Element => {
           [env]: envVotes[env] + 1
         }
       });
-    } else {
-      updateDataGame('floatingPoint', {
-        envVotes: {
-          ...envVotes,
-          [env]: envVotes[env] + 1
-        }
-      });
     }
 
     updateDataPlayer('floatingPoint', playerLocal, {
-      selectedEnv: env
+      selectedEnv: selectedEnv === env ? null : env
     });
   };
 
@@ -103,8 +110,6 @@ const EnvOptions: React.FC = (): JSX.Element => {
 
                   <InputCustomRadioButton
                     onClick={(): void => {
-                      if (selectedEnv === env) return;
-
                       handleVoting(env as EnvNames);
                     }}
                     checked={selectedEnv === env ? true : false}
