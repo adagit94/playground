@@ -26,7 +26,7 @@ const Play: React.FC = (): JSX.Element => {
 
   const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
     const playersCount = statesGame.players.length;
-    const { dimensions, speed } = statesParams;
+    const { size, speed } = statesParams;
 
     let playable;
 
@@ -47,10 +47,10 @@ const Play: React.FC = (): JSX.Element => {
       }
     }
 
-    if (dimensions === undefined) {
+    if (size === undefined) {
       dispatches.params({
         type: 'changeDimensions',
-        dimensions: null
+        size: null
       });
     }
 
@@ -63,8 +63,8 @@ const Play: React.FC = (): JSX.Element => {
 
     if (
       playable !== false &&
-      (dimensions === undefined ||
-        dimensions === null ||
+      (size === undefined ||
+        size === null ||
         speed === undefined ||
         speed === null)
     ) {
@@ -82,23 +82,23 @@ const Play: React.FC = (): JSX.Element => {
 
       switch (player) {
         case 'P1':
-          top = height / 2 - dimensions / 2;
+          top = height / 2 - size / 2;
           left = 10;
           break;
 
         case 'P2':
-          top = height / 2 - dimensions / 2;
-          left = width - dimensions - 10;
+          top = height / 2 - size / 2;
+          left = width - size - 10;
           break;
 
         case 'P3':
           top = 10;
-          left = width / 2 - dimensions / 2;
+          left = width / 2 - size / 2;
           break;
 
         case 'P4':
-          top = height - dimensions - 10;
-          left = width / 2 - dimensions / 2;
+          top = height - size - 10;
+          left = width / 2 - size / 2;
           break;
       }
 
@@ -112,8 +112,8 @@ const Play: React.FC = (): JSX.Element => {
 
     dispatches.fp({
       type: 'move',
-      top: height / 2 - dimensions / 2,
-      left: width / 2 - dimensions / 2
+      top: height / 2 - size / 2,
+      left: width / 2 - size / 2
     });
 
     dispatches.game({

@@ -19,7 +19,7 @@ import { keyEditReg, dateExtractReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
-import { GamesList } from 'types/games/generic';
+import { GameNames } from 'types/games/generic';
 import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
@@ -48,7 +48,7 @@ const Stats: React.FC = (): JSX.Element => {
   useEffect(() => {
     const initStats = (): void => {
       let userStatsArr: [string, string][] = [];
-      let gamesStatsArr: [GamesList, [string, string | number][]][] = [];
+      let gamesStatsArr: [GameNames, [string, string | number][]][] = [];
 
       for (const stat in statesUser) {
         if (stat === 'games') continue;
@@ -75,9 +75,9 @@ const Stats: React.FC = (): JSX.Element => {
         const editedGameName = game.replace(
           keyEditReg,
           keyReplacer
-        ) as GamesList;
+        ) as GameNames;
 
-        let gameStatsArr: [GamesList, [string, string | number][]] = [
+        let gameStatsArr: [GameNames, [string, string | number][]] = [
           editedGameName,
           []
         ];

@@ -1,7 +1,7 @@
 import { useContext, memo } from 'react';
 import styled from 'styled-components';
 
-import Dimensions from './dimensions';
+import Size from './size';
 import Speed from './speed';
 import Buttons from './buttons';
 import Switch from './switch';
@@ -60,7 +60,7 @@ const OptionsCommon: React.FC = (): JSX.Element => {
       </Buttons>
 
       <ContainerOptions>
-        <Dimensions />
+        <Size />
         <Divider color='inverted' />
         <Speed />
         {state !== 'conf' && <Overlap />}

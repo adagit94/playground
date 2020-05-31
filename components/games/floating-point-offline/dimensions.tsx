@@ -13,36 +13,36 @@ import {
   ContextDispatchesFP
 } from 'contexts/games/floating-point-offline';
 
-const Dimensions: React.FC = (): JSX.Element => {
+const Size: React.FC = (): JSX.Element => {
   const states = useContext(ContextParams);
   const dispatches = useContext(ContextDispatchesFP);
 
-  const { dimensions } = states;
+  const { size } = states;
 
   const Label = styled(InputOptionsLabel)`
-    color: ${dimensions === null && '#f00'};
+    color: ${size === null && '#f00'};
   `;
 
   return (
     <ContainerOption>
-      <Label htmlFor='dimensions'>Dimensions:</Label>
+      <Label htmlFor='size'>Size:</Label>
       <InputOptionsCommon
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
           dispatches.params({
             type: 'changeDimensions',
-            dimensions: Number(e.target.value)
+            size: Number(e.target.value)
           })
         }
-        value={dimensions ? String(dimensions) : ''}
+        value={size ? String(size) : ''}
         type='range'
         min='20'
         max='30'
         step='5'
-        id='dimensions'
+        id='size'
       />
-      <InputOptionsValue>{dimensions && `${dimensions}px`}</InputOptionsValue>
+      <InputOptionsValue>{size && `${size}px`}</InputOptionsValue>
     </ContainerOption>
   );
 };
 
-export default memo(Dimensions);
+export default memo(Size);

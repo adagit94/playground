@@ -10,23 +10,23 @@ import {
 } from 'types/games/floating-point-online';
 
 export const DEFAULTS: Defaults = {
-  dimensions: 10,
+  size: 10,
   timer: 90,
   enviroments: {
     test: [
       {
-        shape: 'Square',
+        shape: 'Rectangle',
         shapes: [
           {
-            dimensions: [25, 25],
+            size: [5, 5],
             positions: [30, 60]
           },
           {
-            dimensions: [50, 50],
+            size: [5, 5],
             positions: [70, 20]
           },
           {
-            dimensions: [75, 75],
+            size: [7, 7],
             positions: [50, 80]
           }
         ]
@@ -35,16 +35,35 @@ export const DEFAULTS: Defaults = {
         shape: 'Circle',
         shapes: [
           {
-            dimensions: [10, 10],
+            size: [3, 3],
             positions: [10, 50]
           },
           {
-            dimensions: [30, 30],
+            size: [5, 5],
             positions: [50, 20]
           },
           {
-            dimensions: [10, 10],
+            size: [7, 7],
             positions: [70, 70]
+          }
+        ]
+      }
+    ],
+    labyrinthI: [
+      {
+        shape: 'Rectangle',
+        shapes: [
+          {
+            size: [25, 25],
+            positions: [30, 60]
+          },
+          {
+            size: [50, 50],
+            positions: [70, 20]
+          },
+          {
+            size: [75, 75],
+            positions: [50, 80]
           }
         ]
       }

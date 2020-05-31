@@ -17,7 +17,7 @@ import {
 
 import {
   PropsEnv,
-  Envs,
+  EnvObjects,
   ControlKeys,
   Key,
   CheckOverlap,
@@ -66,7 +66,7 @@ const Container = styled.div`
 `;
 
 const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
-  const [objects, setObjects] = useState<Envs>(null);
+  const [objects, setObjects] = useState<EnvObjects>(null);
 
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
@@ -74,7 +74,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
   const statesFP = useContext(ContextFP);
 
-  const { dimensions } = DEFAULTS;
+  const { size } = DEFAULTS;
   const { user } = statesFirebase;
   const { width, height } = statesGame;
   const { top: fpTop, left: fpLeft } = statesFP;
@@ -83,25 +83,19 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const playerLocalTop = statesPlayers[playerLocal]?.top;
   const playerLocalLeft = statesPlayers[playerLocal]?.left;
 
-  const pointWidthPerc = (dimensions / width) * 100;
-  const pointHeightPerc = (dimensions / height) * 100;
-
   const handleMoveRef = useRef(null);
 
   const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
     for (const object of objects) {
       for (const shape of object.shapes) {
-        const [shapeWidth, shapeHeight] = shape.dimensions;
+        const [shapeWidth, shapeHeight] = shape.size;
         const [shapeTop, shapeLeft] = shape.positions;
 
-        const shapeWidthPerc = (shapeWidth / width) * 100;
-        const shapeHeightPerc = (shapeHeight / height) * 100;
-
         if (
-          pointTop + pointHeightPerc >= shapeTop &&
-          pointTop <= shapeTop + shapeHeightPerc &&
-          pointLeft + pointWidthPerc >= shapeLeft &&
-          pointLeft <= shapeLeft + shapeWidthPerc
+          pointTop + size >= shapeTop &&
+          pointTop <= shapeTop + shapeHeight &&
+          pointLeft + size >= shapeLeft &&
+          pointLeft <= shapeLeft + shapeWidth
         ) {
           return true;
         }
@@ -113,10 +107,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const fpOverlap = (): void => {
     if (
-      playerLocalTop + pointHeightPerc >= fpTop &&
-      playerLocalTop <= fpTop + pointHeightPerc &&
-      playerLocalLeft + pointWidthPerc >= fpLeft &&
-      playerLocalLeft <= fpLeft + pointWidthPerc
+      playerLocalTop + size >= fpTop &&
+      playerLocalTop <= fpTop + size &&
+      playerLocalLeft + size >= fpLeft &&
+      playerLocalLeft <= fpLeft + size
     ) {
       let fpTop: number;
       let fpLeft: number;
@@ -125,12 +119,12 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       while (overlap || overlap === undefined) {
         fpTop = Math.min(
           ((Math.random() * height) / height) * 100,
-          ((height - dimensions) / height) * 100
+          ((height - size) / height) * 100
         );
 
         fpLeft = Math.min(
           ((Math.random() * width) / width) * 100,
-          ((width - dimensions) / width) * 100
+          ((width - size) / width) * 100
         );
 
         overlap = checkOverlap(fpTop, fpLeft);
@@ -170,10 +164,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
           break;
 
         case 'bottomRight':
-          if (
-            playerLocalTop + pointHeightPerc >= 100 ||
-            playerLocalLeft + pointWidthPerc >= 100
-          ) {
+          if (playerLocalTop + size >= 100 || playerLocalLeft + size >= 100) {
             continue;
           }
 
@@ -181,9 +172,9 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       }
 
       let dimension: number;
-      let px: number;
       let prevPos: number;
       let newPos: number;
+      let px: number;
       let overlap: boolean;
 
       switch (direction) {
@@ -282,12 +273,12 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
           const Shape = Shapes[shape];
 
           return shapes.map((shape, i) => {
-            const { dimensions, positions } = shape;
+            const { size, positions } = shape;
 
             return (
               <Shape
-                width={dimensions[0]}
-                height={dimensions[1]}
+                width={size[0]}
+                height={size[1]}
                 top={positions[0]}
                 left={positions[1]}
                 key={i}

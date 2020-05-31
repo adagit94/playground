@@ -7,7 +7,7 @@ import { ContextPlayers } from 'contexts/games/floating-point-online';
 const Players: React.FC = (): JSX.Element => {
   const statesPlayers = useContext(ContextPlayers);
 
-  const { dimensions } = DEFAULTS;
+  const { size } = DEFAULTS;
 
   let points: Array<JSX.Element> = [];
 
@@ -16,8 +16,8 @@ const Players: React.FC = (): JSX.Element => {
       position: absolute;
       top: ${statesPlayers[player].top}%;
       left: ${statesPlayers[player].left}%;
-      width: ${dimensions}px;
-      height: ${dimensions}px;
+      width: ${size}%;
+      height: ${size}%;
       border-radius: 100%;
       background-image: url(${statesPlayers[player].avatar});
       background-size: contain;

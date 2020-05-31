@@ -1,4 +1,4 @@
-import { GamesList } from 'types/games/generic';
+import { GameNames } from 'types/games/generic';
 
 export type KeyReplacer = (
   match: string,
@@ -8,10 +8,10 @@ export type KeyReplacer = (
   afterNext: string
 ) => string;
 
-export type CalculateMostPlayed = (user: string) => Promise<GamesList>;
+export type CalculateMostPlayed = (user: string) => Promise<GameNames>;
 
 export type UpdatePlayedTime = (
-  game: GamesList,
+  game: GameNames,
   players: string[],
   timestamps: [number, number]
 ) => Promise<void>;

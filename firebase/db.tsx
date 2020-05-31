@@ -30,7 +30,7 @@ import {
   GetDataUserGame,
   UpdateDataUser,
   UpdateDataUserGame,
-  GameDataList,
+  GameData,
   Games,
   StatesUser
 } from 'types/user';
@@ -82,7 +82,7 @@ export const getDataUserGames: GetDataUserGames = async user => {
 export const getDataUserGame: GetDataUserGame = async (user, game) => {
   const gameRef = firebase.database().ref(`users/${user}/games/${game}`);
 
-  const gameData: GameDataList = await gameRef
+  const gameData: GameData = await gameRef
     .once('value')
     .then(snapshot => snapshot.val())
     .catch(err => console.error(err));

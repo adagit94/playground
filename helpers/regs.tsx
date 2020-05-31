@@ -1,6 +1,9 @@
 import { KeyReplacer } from 'types/helpers';
+import { GameList, GameNames } from 'types/games/generic';
+import { EnvList, EnvNames } from 'types/games/floating-point-online';
 
-const gamesList = ['floatingPoint'];
+const gamesArr: GameList = ['floatingPoint'];
+const envArr: EnvList = ['test', 'labyrinthI'];
 
 export const keyReplacer: KeyReplacer = (
   match,
@@ -13,7 +16,12 @@ export const keyReplacer: KeyReplacer = (
 
   if (next) {
     edited +=
-      ' ' + (gamesList.includes(match) ? next : next.toLowerCase()) + afterNext;
+      ' ' +
+      (gamesArr.includes(match as GameNames) ||
+      envArr.includes(match as EnvNames)
+        ? next
+        : next.toLowerCase()) +
+      afterNext;
   }
 
   return edited;

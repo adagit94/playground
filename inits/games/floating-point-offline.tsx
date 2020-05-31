@@ -31,7 +31,7 @@ export const initPlayers: StatesPlayers = {
 };
 
 export const initParams: StatesParams = {
-  dimensions: undefined,
+  size: undefined,
   speed: undefined,
   iconsOthers: [],
   colorsOthers: [Defaults.P1.color, Defaults.P2.color],

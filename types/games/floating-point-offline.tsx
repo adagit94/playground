@@ -93,7 +93,7 @@ export type StatesPlayers = {
 export type StatesParams = {
   iconsOthers: Array<string>;
   colorsOthers: Array<string>;
-  dimensions: number;
+  size: number;
   speed: number;
   P1: ParamsPlayer;
   P2: ParamsPlayer;
@@ -150,7 +150,7 @@ export type ActionsParams =
       player: string;
       color: string;
     }
-  | { type: 'changeDimensions'; dimensions: number }
+  | { type: 'changeDimensions'; size: number }
   | { type: 'changeSpeed'; speed: number }
   | ChangePlayer;
 

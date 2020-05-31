@@ -47,7 +47,7 @@ const Players: React.FC = (): JSX.Element => {
   } = statesPlayers;
 
   const {
-    dimensions,
+    size,
     P1: { icon: iconP1, color: colorP1 },
     P2: { icon: iconP2, color: colorP2 }
   } = statesParams;
@@ -58,8 +58,8 @@ const Players: React.FC = (): JSX.Element => {
     position: absolute;
     top: ${topP1}px;
     left: ${leftP1}px;
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+    width: ${size}px;
+    height: ${size}px;
     border-radius: ${profile === 'P1' && '100%'};
     background-image: url(${profile === 'P1' && user.photoURL});
     background-size: contain;
@@ -83,8 +83,8 @@ const Players: React.FC = (): JSX.Element => {
     position: absolute;
     top: ${topP2}px;
     left: ${leftP2}px;
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+    width: ${size}px;
+    height: ${size}px;
     border-radius: ${profile === 'P2' && '100%'};
     background-image: url(${profile === 'P2' && user.photoURL});
     background-size: contain;
@@ -112,8 +112,8 @@ const Players: React.FC = (): JSX.Element => {
       position: absolute;
       top: ${topP3}px;
       left: ${leftP3}px;
-      width: ${dimensions}px;
-      height: ${dimensions}px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: ${profile === 'P3' && '100%'};
       background-image: url(${profile === 'P3' && user.photoURL});
       background-size: contain;
@@ -145,8 +145,8 @@ const Players: React.FC = (): JSX.Element => {
       position: absolute;
       top: ${topP4}px;
       left: ${leftP4}px;
-      width: ${dimensions}px;
-      height: ${dimensions}px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: ${profile === 'P4' && '100%'};
       background-image: url(${profile === 'P4' && user.photoURL});
       background-size: contain;

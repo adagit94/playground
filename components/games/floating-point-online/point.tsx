@@ -11,7 +11,7 @@ const Point: React.FC = (): JSX.Element => {
 
   const { top, left } = statesFP;
 
-  const { dimensions } = DEFAULTS;
+  const { size } = DEFAULTS;
 
   const Point = styled.div`
     display: flex;
@@ -21,8 +21,8 @@ const Point: React.FC = (): JSX.Element => {
     position: absolute;
     top: ${top}%;
     left: ${left}%;
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+    width: ${size}%;
+    height: ${size}%;
     border-radius: 100%;
   `;
 
@@ -34,9 +34,9 @@ const Point: React.FC = (): JSX.Element => {
     } 
 
     to {
-    width: ${dimensions}px;
-    height: ${dimensions}px;
-    background-color: ${theming.inverted};
+      width: ${size}%;
+      height: ${size}%;
+      background-color: ${theming.inverted};
     }
 `;
 

@@ -12,5 +12,5 @@ export const Defaults = {
     color: '#ffff00'
   },
   speed: 5,
-  dimensions: 30
+  size: 30
 };

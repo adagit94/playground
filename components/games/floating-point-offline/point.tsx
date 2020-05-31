@@ -15,7 +15,7 @@ const Point: React.FC = (): JSX.Element => {
   const theming: Theming = useContext(ThemeContext);
 
   const { state } = statesGame;
-  const { dimensions, speed } = statesParams;
+  const { size, speed } = statesParams;
   const { top, left } = statesFP;
 
   const Point = styled.div`
@@ -26,8 +26,8 @@ const Point: React.FC = (): JSX.Element => {
     position: absolute;
     top: ${top}px;
     left: ${left}px;
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+    width: ${size}px;
+    height: ${size}px;
     border-radius: 100%;
   `;
 
@@ -39,8 +39,8 @@ const Point: React.FC = (): JSX.Element => {
     } 
 
     to {
-    width: ${dimensions}px;
-    height: ${dimensions}px;
+    width: ${size}px;
+    height: ${size}px;
     background-color: ${theming.inverted};
     }
 `;

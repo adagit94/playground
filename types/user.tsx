@@ -1,4 +1,4 @@
-import { GamesList, GamesListEdited } from './games/generic';
+import { GameNames, GameNamesEdited } from './games/generic';
 
 type UpdateDataUserGamesFP = {
   wins?: number;
@@ -6,11 +6,11 @@ type UpdateDataUserGamesFP = {
   playedTime?: number;
 };
 
-type UpdateGameList = UpdateDataUserGamesFP;
+type UpdateGame = UpdateDataUserGamesFP;
 
 type UpdateDataUserObj = {
   registred?: string;
-  lastPlayed?: GamesListEdited | '-';
+  lastPlayed?: GameNamesEdited | '-';
   mostPlayed?: string;
 };
 
@@ -24,11 +24,11 @@ export type FloatingPoint = {
   playedTime: number;
 };
 
-export type GameDataList = FloatingPoint;
+export type GameData = FloatingPoint;
 
 export type StatesUser = {
   registred: string;
-  lastPlayed: GamesListEdited | '-';
+  lastPlayed: GameNamesEdited | '-';
   mostPlayed: string;
   games: Games;
 };
@@ -55,8 +55,8 @@ export type GetDataUserGames = (user: string) => Promise<Games>;
 
 export type GetDataUserGame = (
   user: string,
-  game: GamesList
-) => Promise<GameDataList>;
+  game: GameNames
+) => Promise<GameData>;
 
 export type UpdateDataUser = (
   user: string,
@@ -64,9 +64,9 @@ export type UpdateDataUser = (
 ) => Promise<void>;
 
 export type UpdateDataUserGame = (
-  game: GamesList,
+  game: GameNames,
   user: string,
-  update: UpdateGameList
+  update: UpdateGame
 ) => Promise<void>;
 
 export type InitUserDefaults = (user: firebase.User) => StatesUser;

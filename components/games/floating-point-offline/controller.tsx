@@ -184,7 +184,7 @@ const Controller: React.FC = (): JSX.Element => {
   const [statesFP, dispatchFP] = useReducer(Reducers.reducerFP, Inits.initFP);
 
   const { players, state, width, height } = statesGame;
-  const { dimensions, speed } = statesParams;
+  const { size, speed } = statesParams;
   const { top: fPTop, left: fPLeft } = statesFP;
   const playersCount = players.length;
 
@@ -214,11 +214,11 @@ const Controller: React.FC = (): JSX.Element => {
           break;
 
         case 'right':
-          if (playerLeft + dimensions >= width) continue;
+          if (playerLeft + size >= width) continue;
           break;
 
         case 'bottom':
-          if (playerTop + dimensions >= height) continue;
+          if (playerTop + size >= height) continue;
           break;
 
         case 'left':
@@ -238,10 +238,10 @@ const Controller: React.FC = (): JSX.Element => {
         ];
 
         if (
-          (playerTop + dimensions === playerOtherTop ||
-            playerTop + dimensions - 1 === playerOtherTop) &&
-          playerLeft + dimensions >= playerOtherLeft &&
-          playerLeft <= playerOtherLeft + dimensions
+          (playerTop + size === playerOtherTop ||
+            playerTop + size - 1 === playerOtherTop) &&
+          playerLeft + size >= playerOtherLeft &&
+          playerLeft <= playerOtherLeft + size
         ) {
           dispatchPlayers({
             type: 'move',
@@ -250,7 +250,7 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
-          if (playerTop + dimensions - 1 === playerOtherTop) {
+          if (playerTop + size - 1 === playerOtherTop) {
             dispatchPlayers({
               type: 'move',
               operation: 'add',
@@ -261,10 +261,10 @@ const Controller: React.FC = (): JSX.Element => {
 
           overlap = true;
         } else if (
-          (playerTop === playerOtherTop + dimensions ||
-            playerTop + 1 === playerOtherTop + dimensions) &&
-          playerLeft + dimensions >= playerOtherLeft &&
-          playerLeft <= playerOtherLeft + dimensions
+          (playerTop === playerOtherTop + size ||
+            playerTop + 1 === playerOtherTop + size) &&
+          playerLeft + size >= playerOtherLeft &&
+          playerLeft <= playerOtherLeft + size
         ) {
           dispatchPlayers({
             type: 'move',
@@ -273,7 +273,7 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
-          if (playerTop + 1 === playerOtherTop + dimensions) {
+          if (playerTop + 1 === playerOtherTop + size) {
             dispatchPlayers({
               type: 'move',
               operation: 'subtract',
@@ -284,10 +284,10 @@ const Controller: React.FC = (): JSX.Element => {
 
           overlap = true;
         } else if (
-          (playerLeft + dimensions === playerOtherLeft ||
-            playerLeft + dimensions - 1 === playerOtherLeft) &&
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions
+          (playerLeft + size === playerOtherLeft ||
+            playerLeft + size - 1 === playerOtherLeft) &&
+          playerTop + size >= playerOtherTop &&
+          playerTop <= playerOtherTop + size
         ) {
           dispatchPlayers({
             type: 'move',
@@ -296,7 +296,7 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
-          if (playerLeft + dimensions - 1 === playerOtherLeft) {
+          if (playerLeft + size - 1 === playerOtherLeft) {
             dispatchPlayers({
               type: 'move',
               operation: 'add',
@@ -307,10 +307,10 @@ const Controller: React.FC = (): JSX.Element => {
 
           overlap = true;
         } else if (
-          (playerLeft === playerOtherLeft + dimensions ||
-            playerLeft + 1 === playerOtherLeft + dimensions) &&
-          playerTop + dimensions >= playerOtherTop &&
-          playerTop <= playerOtherTop + dimensions
+          (playerLeft === playerOtherLeft + size ||
+            playerLeft + 1 === playerOtherLeft + size) &&
+          playerTop + size >= playerOtherTop &&
+          playerTop <= playerOtherTop + size
         ) {
           dispatchPlayers({
             type: 'move',
@@ -319,7 +319,7 @@ const Controller: React.FC = (): JSX.Element => {
             player
           });
 
-          if (playerLeft + 1 === playerOtherLeft + dimensions) {
+          if (playerLeft + 1 === playerOtherLeft + size) {
             dispatchPlayers({
               type: 'move',
               operation: 'subtract',
@@ -399,10 +399,10 @@ const Controller: React.FC = (): JSX.Element => {
         const { top: playerTop, left: playerLeft } = statesPlayers[player];
 
         if (
-          playerTop + dimensions >= fPTop &&
-          playerTop <= fPTop + dimensions &&
-          playerLeft + dimensions >= fPLeft &&
-          playerLeft <= fPLeft + dimensions
+          playerTop + size >= fPTop &&
+          playerTop <= fPTop + size &&
+          playerLeft + size >= fPLeft &&
+          playerLeft <= fPLeft + size
         ) {
           dispatchPlayers({
             type: 'addScore',
@@ -411,8 +411,8 @@ const Controller: React.FC = (): JSX.Element => {
 
           dispatchFP({
             type: 'move',
-            top: Math.min(Math.random() * height, height - dimensions),
-            left: Math.min(Math.random() * width, width - dimensions)
+            top: Math.min(Math.random() * height, height - size),
+            left: Math.min(Math.random() * width, width - size)
           });
         }
       }

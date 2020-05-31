@@ -7,60 +7,62 @@ import {
   CreatePlayer as CreatePlayerFP
 } from './floating-point-online';
 
-type CreateGameList = CreateGameFP;
+type CreateGame = CreateGameFP;
 
-type UpdateGameList = UpdateGameFP;
+type UpdateGame = UpdateGameFP;
 
-type GetGameList = DataSetFP;
+type GetGame = DataSetFP;
 
-type CreatePlayerList = CreatePlayerFP;
+type CreatePlayer = CreatePlayerFP;
 
-type UpdatePlayerList = UpdatePlayerFP;
+type UpdatePlayer = UpdatePlayerFP;
 
-export type GamesList = 'floatingPoint';
+export type GameNames = 'floatingPoint';
 
-export type GamesListEdited = 'Floating Point';
+export type GameNamesEdited = 'Floating Point';
+
+export type GameList = ['floatingPoint'];
 
 export type CreateDataGame = (
-  game: GamesList,
-  data: CreateGameList
+  game: GameNames,
+  data: CreateGame
 ) => Promise<void>;
 
 export type UpdateDataGame = (
-  game: GamesList,
-  update: UpdateGameList
+  game: GameNames,
+  update: UpdateGame
 ) => Promise<void>;
 
-export type DeleteDataGame = (game: GamesList) => Promise<void>;
+export type DeleteDataGame = (game: GameNames) => Promise<void>;
 
-export type GetDataGame = (game: GamesList) => Promise<GetGameList>;
+export type GetDataGame = (game: GameNames) => Promise<GetGame>;
 
 export type CreateDataPlayer = (
-  game: GamesList,
+  game: GameNames,
   player: string,
-  data: CreatePlayerList
+  data: CreatePlayer
 ) => Promise<void>;
 
 export type UpdateDataPlayer = (
-  game: GamesList,
+  game: GameNames,
   player: string,
-  update: UpdatePlayerList
+  update: UpdatePlayer
 ) => Promise<void>;
 
 export type DeleteDataPlayer = (
-  game: GamesList,
+  game: GameNames,
   player: string
 ) => Promise<void>;
 
 export type GetDataPlayer = (
-  game: GamesList,
+  game: GameNames,
   player: string
-) => Promise<CreatePlayerList | null>;
+) => Promise<CreatePlayer | null>;
 
 export type InitGame = (
-  game: GamesList,
+  game: GameNames,
   user: firebase.User,
   handleData: HandleData
 ) => Promise<void>;
 
-export type RemoveListenersGame = (game: GamesList) => void;
+export type RemoveListenersGame = (game: GameNames) => void;

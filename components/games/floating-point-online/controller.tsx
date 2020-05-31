@@ -53,7 +53,7 @@ const Controller: React.FC = (): JSX.Element => {
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
 
-  const { dimensions, timer } = DEFAULTS;
+  const { size, timer } = DEFAULTS;
   const { user } = statesFirebase;
   const { state, admin, width, height, winner } = statesGame;
 
@@ -75,23 +75,23 @@ const Controller: React.FC = (): JSX.Element => {
 
       switch (playerLocalIndex) {
         case 0:
-          playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
-          playerLocalLeft = (10 / width) * 100;
+          playerLocalTop = 50 - size / 2;
+          playerLocalLeft = 0;
           break;
 
         case 1:
-          playerLocalTop = ((height / 2 - dimensions / 2) / height) * 100;
-          playerLocalLeft = ((width - dimensions - 10) / width) * 100;
+          playerLocalTop = 50 - size / 2;
+          playerLocalLeft = 100 - size;
           break;
 
         case 2:
-          playerLocalTop = (10 / height) * 100;
-          playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
+          playerLocalTop = 0;
+          playerLocalLeft = 50 - size / 2;
           break;
 
         case 3:
-          playerLocalTop = ((height - dimensions - 10) / height) * 100;
-          playerLocalLeft = ((width / 2 - dimensions / 2) / width) * 100;
+          playerLocalTop = 100 - size;
+          playerLocalLeft = 50 - size / 2;
           break;
       }
 
@@ -106,10 +106,7 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       if (playerLocalIndex === players.length - 1) {
-        const fpTop = ((height / 2 - dimensions / 2) / height) * 100;
-        const fpLeft = ((width / 2 - dimensions / 2) / width) * 100;
-
-        await updateDataFP({ top: fpTop, left: fpLeft });
+        await updateDataFP({ top: 50 - size / 2, left: 50 - size / 2 });
 
         updateDataGame('floatingPoint', {
           state: 'run',

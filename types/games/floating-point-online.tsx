@@ -2,15 +2,24 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
+type Shapes = 'Rectangle' | 'Circle';
+
 type ShapeValues = {
-  dimensions: [number, number];
+  size: [number, number];
   positions: [number, number];
 };
 
 type TestEnv = [
-  { shape: 'Square'; shapes: ShapeValues[] },
+  { shape: 'Rectangle'; shapes: ShapeValues[] },
   { shape: 'Circle'; shapes: ShapeValues[] }
 ];
+
+type LabyrinthI = [{ shape: 'Rectangle'; shapes: ShapeValues[] }];
+
+export type EnvObjects = {
+  shape: Shapes;
+  shapes: ShapeValues[];
+}[];
 
 export type Position = { top: number; left: number };
 
@@ -126,18 +135,17 @@ export type ActionsGame =
 
 export type Winner = { name: string; score: number };
 
-export type EnvNames = 'test';
+export type EnvNames = 'test' | 'labyrinthI';
 
-export type EnvNamesEdited = 'Test';
-
-export type EnvList = ['test'];
+export type EnvList = ['test', 'labyrinthI'];
 
 export type EnvVotes = { test: number };
 
-export type Envs = TestEnv;
+export type Envs = TestEnv | LabyrinthI;
 
 export type Enviroments = {
   test: TestEnv;
+  labyrinthI: LabyrinthI;
 };
 
 export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
@@ -152,7 +160,7 @@ export type HandleData = (
 export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 
 export type Defaults = {
-  dimensions: number;
+  size: number;
   timer: number;
   enviroments: Enviroments;
 };

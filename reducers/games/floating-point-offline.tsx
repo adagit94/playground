@@ -233,7 +233,7 @@ export const reducerParams: React.Reducer<StatesParams, ActionsParams> = (
     case 'changeDimensions':
       return {
         ...states,
-        dimensions: action.dimensions
+        size: action.size
       };
 
     case 'changeSpeed':
