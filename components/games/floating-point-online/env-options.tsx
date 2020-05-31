@@ -9,7 +9,7 @@ import {
   DividerHorizontal
 } from 'components/styled-components/dividers';
 
-import { updateDataGame, updateDataPlayer } from 'firebase/db';
+import { crudDataGamePlayer, crudDataGame } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { Theming } from 'types/layout';
@@ -25,6 +25,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   border-radius: 5px;
   padding: ${paddingContainer};
   color: ${(props): string => props.theme.background};
@@ -39,9 +40,17 @@ const Container = styled.div`
       list-style: none;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      height: 25px;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      div:last-child {
+        flex: auto;
+      }
     }
   }
 `;
@@ -60,21 +69,21 @@ const EnvOptions: React.FC = (): JSX.Element => {
 
   const handleVoting = (env: EnvNames): void => {
     if (selectedEnv === undefined) {
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         envVotes: {
           ...envVotes,
           [env]: envVotes[env] + 1
         }
       });
     } else if (selectedEnv === env) {
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         envVotes: {
           ...envVotes,
           [selectedEnv]: envVotes[selectedEnv] - 1
         }
       });
     } else if (selectedEnv !== env) {
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         envVotes: {
           ...envVotes,
           [selectedEnv]: envVotes[selectedEnv] - 1,
@@ -83,14 +92,14 @@ const EnvOptions: React.FC = (): JSX.Element => {
       });
     }
 
-    updateDataPlayer('floatingPoint', playerLocal, {
+    crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
       selectedEnv: selectedEnv === env ? null : env
     });
   };
 
   return (
     <Container>
-      <div>Enviroments:</div>
+      <h3>Enviroments:</h3>
       {envVotes === undefined && (
         <LoadingIndicator color={theming.background} />
       )}
@@ -104,18 +113,19 @@ const EnvOptions: React.FC = (): JSX.Element => {
             return (
               <Fragment key={env}>
                 <li key={env}>
-                  <span>{votes}</span>
-
-                  <DividerVertical color='background' />
-
-                  <InputCustomRadioButton
-                    onClick={(): void => {
-                      handleVoting(env as EnvNames);
-                    }}
-                    checked={selectedEnv === env ? true : false}
-                  />
-
-                  <span>{editedEnvName}</span>
+                  <div>
+                    <span>{votes}</span>
+                    <DividerVertical color='background' />
+                  </div>
+                  <div>
+                    <InputCustomRadioButton
+                      onClick={(): void => {
+                        handleVoting(env as EnvNames);
+                      }}
+                      checked={selectedEnv === env ? true : false}
+                    />
+                    <span>{editedEnvName}</span>
+                  </div>
                 </li>
                 {i < arr.length - 1 && <DividerHorizontal color='background' />}
               </Fragment>

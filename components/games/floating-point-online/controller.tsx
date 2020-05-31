@@ -11,7 +11,7 @@ import { updatePlayedTime } from 'helpers/stats';
 import { DEFAULTS, initEnvVotes } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
-import { FloatingPoint } from 'types/user';
+import { FloatingPoint, GameData } from 'types/user';
 import {
   HandleData,
   Winner,
@@ -21,14 +21,13 @@ import {
 } from 'types/games/floating-point-online';
 
 import {
-  updateDataGame,
-  updateDataPlayer,
+  crudDataGamePlayer,
   updateDataFP,
-  updateDataUser,
-  getDataUserGame,
+  crudDataUser,
+  crudDataUserGame,
+  crudDataGame,
   initGame,
-  removeListenersGame,
-  updateDataUserGame
+  removeListenersGame
 } from 'firebase/db';
 
 const Container = styled.div`
@@ -75,40 +74,43 @@ const Controller: React.FC = (): JSX.Element => {
 
       switch (playerLocalIndex) {
         case 0:
-          playerLocalTop = 50 - size / 2;
-          playerLocalLeft = 0;
+          playerLocalTop = ((height / 2 - size / 2) / height) * 100;
+          playerLocalLeft = (10 / width) * 100;
           break;
 
         case 1:
-          playerLocalTop = 50 - size / 2;
-          playerLocalLeft = 100 - size;
+          playerLocalTop = ((height / 2 - size / 2) / height) * 100;
+          playerLocalLeft = ((width - size - 10) / width) * 100;
           break;
 
         case 2:
-          playerLocalTop = 0;
-          playerLocalLeft = 50 - size / 2;
+          playerLocalTop = (10 / height) * 100;
+          playerLocalLeft = ((width / 2 - size / 2) / width) * 100;
           break;
 
         case 3:
-          playerLocalTop = 100 - size;
-          playerLocalLeft = 50 - size / 2;
+          playerLocalTop = ((height - size - 10) / height) * 100;
+          playerLocalLeft = ((width / 2 - size / 2) / width) * 100;
           break;
       }
 
-      updateDataPlayer('floatingPoint', playerLocal, {
+      crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         top: playerLocalTop,
         left: playerLocalLeft,
         score: 0
       });
 
-      updateDataUser(playerLocal, {
+      crudDataUser(playerLocal, 'update', {
         lastPlayed: 'Floating Point'
       });
 
       if (playerLocalIndex === players.length - 1) {
-        await updateDataFP({ top: 50 - size / 2, left: 50 - size / 2 });
+        const fpTop = ((height / 2 - size / 2) / height) * 100;
+        const fpLeft = ((width / 2 - size / 2) / width) * 100;
 
-        updateDataGame('floatingPoint', {
+        await updateDataFP({ top: fpTop, left: fpLeft });
+
+        crudDataGame('floatingPoint', 'update', {
           state: 'run',
           timestampStart: Date.now()
         });
@@ -136,14 +138,18 @@ const Controller: React.FC = (): JSX.Element => {
       if (winnerID === playerLocal) {
         winnerData = statesUser.games.floatingPoint;
       } else {
-        winnerData = await getDataUserGame(winnerID, 'floatingPoint');
+        winnerData = (await crudDataUserGame(
+          winnerID,
+          'floatingPoint',
+          'read'
+        )) as GameData;
       }
 
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         winner
       });
 
-      updateDataUserGame('floatingPoint', winnerID, {
+      crudDataUserGame(winnerID, 'floatingPoint', 'update', {
         wins: winnerData.wins + 1
       });
 
@@ -153,7 +159,7 @@ const Controller: React.FC = (): JSX.Element => {
       ]);
 
       setTimeout(() => {
-        updateDataGame('floatingPoint', {
+        crudDataGame('floatingPoint', 'update', {
           state: 'reset'
         });
       }, 10000);
@@ -168,7 +174,7 @@ const Controller: React.FC = (): JSX.Element => {
     const resetGame = (): void => {
       const resetedEnvVotes = initEnvVotes();
 
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         state: 'conf',
         winner: null,
         env: null,
@@ -179,7 +185,7 @@ const Controller: React.FC = (): JSX.Element => {
       });
 
       for (const player in statesPlayersRef.current) {
-        updateDataPlayer('floatingPoint', player, {
+        crudDataGamePlayer('floatingPoint', player, 'update', {
           selectedEnv: null,
           top: null,
           left: null,

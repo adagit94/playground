@@ -5,17 +5,17 @@ import {
   InitEnvVotes,
   EnvList,
   EnvVotes,
-  CreateGame,
-  CreatePlayer
+  GameCreate,
+  PlayerCreate
 } from 'types/games/floating-point-online';
 
 export const DEFAULTS: Defaults = {
-  size: 10,
+  size: 30,
   timer: 90,
   enviroments: {
-    test: [
+    mazeI: [
       {
-        shape: 'Rectangle',
+        shape: 'Rectangle', // size: %
         shapes: [
           {
             size: [5, 5],
@@ -32,24 +32,24 @@ export const DEFAULTS: Defaults = {
         ]
       },
       {
-        shape: 'Circle',
+        shape: 'Circle', // size: px
         shapes: [
           {
-            size: [3, 3],
+            size: 30,
             positions: [10, 50]
           },
           {
-            size: [5, 5],
+            size: 50,
             positions: [50, 20]
           },
           {
-            size: [7, 7],
+            size: 70,
             positions: [70, 70]
           }
         ]
       }
     ],
-    labyrinthI: [
+    mazeII: [
       {
         shape: 'Rectangle',
         shapes: [
@@ -83,7 +83,7 @@ export const initEnvVotes: InitEnvVotes = () => {
 export const initGameDefaults: InitGameDefaults = admin => {
   const envVotes = initEnvVotes();
 
-  const gameDefaults: CreateGame = {
+  const gameDefaults: GameCreate = {
     state: 'conf',
     timer: DEFAULTS.timer,
     admin,
@@ -94,7 +94,7 @@ export const initGameDefaults: InitGameDefaults = admin => {
 };
 
 export const initPlayerDefaults: InitPlayerDefaults = user => {
-  const playerDefaults: CreatePlayer = {
+  const playerDefaults: PlayerCreate = {
     username: user.displayName || user.email,
     avatar: user.photoURL,
     isReady: false

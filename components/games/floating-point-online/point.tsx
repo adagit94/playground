@@ -21,8 +21,8 @@ const Point: React.FC = (): JSX.Element => {
     position: absolute;
     top: ${top}%;
     left: ${left}%;
-    width: ${size}%;
-    height: ${size}%;
+    width: ${size}px;
+    height: ${size}px;
     border-radius: 100%;
   `;
 
@@ -34,8 +34,8 @@ const Point: React.FC = (): JSX.Element => {
     } 
 
     to {
-      width: ${size}%;
-      height: ${size}%;
+      width: ${size}px;
+      height: ${size}px;
       background-color: ${theming.inverted};
     }
 `;

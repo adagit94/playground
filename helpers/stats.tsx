@@ -1,21 +1,16 @@
+import { crudDataUser, crudDataUserGame } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { GameNamesEdited, GameNames } from 'types/games/generic';
+import { StatesUser, GamesData } from 'types/user';
 import {
   UpdatePlayedTime,
   CalculateMostPlayed,
   ConvertPlayedTime
 } from 'types/helpers';
 
-import {
-  getDataUser,
-  getDataUserGames,
-  updateDataUser,
-  updateDataUserGame
-} from 'firebase/db';
-
 export const calculateMostPlayed: CalculateMostPlayed = async user => {
-  const games = await getDataUserGames(user);
+  const games = (await crudDataUserGame(user, 'all', 'read')) as GamesData;
 
   let times: [GameNames, number][] = [];
 
@@ -39,10 +34,10 @@ export const updatePlayedTime: UpdatePlayedTime = async (
   const playedTime = end - start;
 
   for (const player of players) {
-    const userData = await getDataUser(player);
+    const userData = (await crudDataUser(player, 'read')) as StatesUser;
     const { mostPlayed: mostPlayedPrev, games } = userData;
 
-    await updateDataUserGame(game, player, {
+    await crudDataUserGame(player, game, 'update', {
       playedTime: games[game].playedTime + playedTime
     });
 
@@ -54,7 +49,7 @@ export const updatePlayedTime: UpdatePlayedTime = async (
     ) as GameNamesEdited;
 
     if (mostPlayedNew === game && mostPlayedPrev !== game) {
-      updateDataUser(player, {
+      crudDataUser(player, 'update', {
         mostPlayed: editedMostPlayedNew
       });
     }

@@ -21,7 +21,7 @@ import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime, updatePlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
-import { FloatingPoint } from 'types/user';
+import { FloatingPoint, GameData } from 'types/user';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
 import {
@@ -35,11 +35,9 @@ import {
 } from 'types/games/floating-point-online';
 
 import {
-  updateDataGame,
-  deleteDataGame,
-  getDataUserGame,
-  updateDataPlayer,
-  deleteDataPlayer
+  crudDataGamePlayer,
+  crudDataUserGame,
+  crudDataGame
 } from 'firebase/db';
 
 const Container = styled.div`
@@ -205,7 +203,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     if (votes === 0) return;
 
     setInitPossible(true);
-    updateDataGame('floatingPoint', { state: 'init', env: name });
+    crudDataGame('floatingPoint', 'update', { state: 'init', env: name });
   };
 
   useEffect(() => {
@@ -219,13 +217,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       if (url.includes('floating-point-online')) return;
 
       if (playersRef.current.length === 1) {
-        deleteDataGame('floatingPoint');
+        crudDataGame('floatingPoint', 'delete');
 
         return;
       }
 
       if (admin === player) {
-        updateDataGame('floatingPoint', {
+        crudDataGame('floatingPoint', 'update', {
           admin: playersRef.current.find(player => player !== admin)
         });
       }
@@ -236,13 +234,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           Date.now()
         ]);
 
-        deleteDataPlayer('floatingPoint', player);
+        crudDataGamePlayer('floatingPoint', player, 'delete');
 
-        updateDataGame('floatingPoint', {
+        crudDataGame('floatingPoint', 'update', {
           state: 'reset'
         });
       } else {
-        deleteDataPlayer('floatingPoint', player);
+        crudDataGamePlayer('floatingPoint', player, 'delete');
       }
     };
 
@@ -265,7 +263,11 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       if (uid === player) {
         stats = userGameStats;
       } else {
-        stats = await getDataUserGame(player, 'floatingPoint');
+        stats = (await crudDataUserGame(
+          player,
+          'floatingPoint',
+          'read'
+        )) as GameData;
       }
 
       for (const stat in stats) {
@@ -333,7 +335,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
                 {uid === player && (
                   <ButtonReadyClickable
                     onClick={(): void => {
-                      updateDataPlayer('floatingPoint', player, {
+                      crudDataGamePlayer('floatingPoint', player, 'update', {
                         isReady: playerData.isReady ? false : true
                       });
                     }}

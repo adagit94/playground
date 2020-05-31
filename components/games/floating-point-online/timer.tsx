@@ -1,7 +1,7 @@
 import { memo, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { updateDataGame } from 'firebase/db';
+import { crudDataGame } from 'firebase/db';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
@@ -29,12 +29,12 @@ const Timer: React.FC = (): JSX.Element => {
 
   const handleTimer = (): void => {
     if (timer === 0) {
-      updateDataGame('floatingPoint', {
+      crudDataGame('floatingPoint', 'update', {
         state: 'eval',
         timestampEnd: Date.now()
       });
     } else {
-      updateDataGame('floatingPoint', { timer: timer - 1 });
+      crudDataGame('floatingPoint', 'update', { timer: timer - 1 });
     }
   };
 

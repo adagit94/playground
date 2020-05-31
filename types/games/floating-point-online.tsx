@@ -2,19 +2,19 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-type Shapes = 'Rectangle' | 'Circle';
+export type Shapes = 'Rectangle' | 'Circle';
 
 type ShapeValues = {
-  size: [number, number];
+  size: [number, number] | number;
   positions: [number, number];
 };
 
-type TestEnv = [
+type MazeI = [
   { shape: 'Rectangle'; shapes: ShapeValues[] },
   { shape: 'Circle'; shapes: ShapeValues[] }
 ];
 
-type LabyrinthI = [{ shape: 'Rectangle'; shapes: ShapeValues[] }];
+type MazeII = [{ shape: 'Rectangle'; shapes: ShapeValues[] }];
 
 export type EnvObjects = {
   shape: Shapes;
@@ -40,7 +40,7 @@ export type Player = {
   isReady: boolean;
 };
 
-export type UpdatePlayer = {
+export type PlayerUpdate = {
   username?: string;
   avatar?: string;
   selectedEnv?: EnvNames;
@@ -91,26 +91,26 @@ export type StatesGameDB = {
   height: number;
 };
 
-export type CreateGame = {
+export type GameCreate = {
   state: 'conf';
   admin: string;
   envVotes: EnvVotes;
   timer: number;
 };
 
-export type CreatePlayer = {
+export type PlayerCreate = {
   username: string;
   avatar: string;
   isReady: boolean;
 };
 
 export type DataSet = {
-  game: CreateGame;
+  game: GameCreate;
   players: StatesPlayers;
   fp: StatesFP;
 };
 
-export type UpdateGame = {
+export type GameUpdate = {
   state?: GameStates;
   admin?: string;
   env?: EnvNames;
@@ -135,17 +135,17 @@ export type ActionsGame =
 
 export type Winner = { name: string; score: number };
 
-export type EnvNames = 'test' | 'labyrinthI';
+export type EnvNames = 'mazeI' | 'mazeII';
 
-export type EnvList = ['test', 'labyrinthI'];
+export type EnvList = ['mazeI', 'mazeII'];
 
 export type EnvVotes = { test: number };
 
-export type Envs = TestEnv | LabyrinthI;
+export type Envs = MazeI | MazeII;
 
 export type Enviroments = {
-  test: TestEnv;
-  labyrinthI: LabyrinthI;
+  mazeI: MazeI;
+  mazeII: MazeII;
 };
 
 export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
@@ -172,9 +172,9 @@ export type ControlKeys = {
   ArrowLeft: Key;
 };
 
-export type InitGameDefaults = (admin: string) => CreateGame;
+export type InitGameDefaults = (admin: string) => GameCreate;
 
-export type InitPlayerDefaults = (user: firebase.User) => CreatePlayer;
+export type InitPlayerDefaults = (user: firebase.User) => PlayerCreate;
 
 export type InitEnvVotes = () => EnvVotes;
 

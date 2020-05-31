@@ -1,20 +1,21 @@
+import { CrudOperations } from './generic';
 import { GameNames, GameNamesEdited } from './games/generic';
 
-type UpdateDataUserGamesFP = {
+type GameUpdateFP = {
   wins?: number;
   gatheredPoints?: number;
   playedTime?: number;
 };
 
-type UpdateGame = UpdateDataUserGamesFP;
+type GameUpdate = GameUpdateFP;
 
-type UpdateDataUserObj = {
+type StatesUserUpdate = {
   registred?: string;
   lastPlayed?: GameNamesEdited | '-';
   mostPlayed?: string;
 };
 
-export type Games = {
+export type GamesData = {
   floatingPoint: FloatingPoint;
 };
 
@@ -30,7 +31,7 @@ export type StatesUser = {
   registred: string;
   lastPlayed: GameNamesEdited | '-';
   mostPlayed: string;
-  games: Games;
+  games: GamesData;
 };
 
 export type ActionsUser = {
@@ -47,26 +48,17 @@ export type InitUserDB = (
 
 export type RemoveListenerUser = (user: string) => void;
 
-export type CreateDataUser = (user: string, data: StatesUser) => Promise<void>;
-
-export type GetDataUser = (user: string) => Promise<StatesUser>;
-
-export type GetDataUserGames = (user: string) => Promise<Games>;
-
-export type GetDataUserGame = (
+export type CrudDataUser = (
   user: string,
-  game: GameNames
-) => Promise<GameData>;
+  operation: CrudOperations,
+  data?: StatesUser | StatesUserUpdate
+) => Promise<StatesUser | void>;
 
-export type UpdateDataUser = (
+export type CrudDataUserGame = (
   user: string,
-  update: UpdateDataUserObj
-) => Promise<void>;
-
-export type UpdateDataUserGame = (
-  game: GameNames,
-  user: string,
-  update: UpdateGame
-) => Promise<void>;
+  game: GameNames | 'all',
+  operation: CrudOperations,
+  data?: GameUpdate
+) => Promise<GamesData | GameData | void>;
 
 export type InitUserDefaults = (user: firebase.User) => StatesUser;

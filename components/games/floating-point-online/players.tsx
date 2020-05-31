@@ -16,8 +16,8 @@ const Players: React.FC = (): JSX.Element => {
       position: absolute;
       top: ${statesPlayers[player].top}%;
       left: ${statesPlayers[player].left}%;
-      width: ${size}%;
-      height: ${size}%;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: 100%;
       background-image: url(${statesPlayers[player].avatar});
       background-size: contain;

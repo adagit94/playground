@@ -1,21 +1,25 @@
+import { CrudOperations } from 'types/generic';
 import {
   HandleData,
   DataSet as DataSetFP,
-  CreateGame as CreateGameFP,
-  UpdateGame as UpdateGameFP,
-  UpdatePlayer as UpdatePlayerFP,
-  CreatePlayer as CreatePlayerFP
+  GameCreate as GameCreateFP,
+  GameUpdate as GameUpdateFP,
+  PlayerUpdate as PlayerUpdateFP,
+  PlayerCreate as PlayerCreateFP,
+  Player as PlayerFP
 } from './floating-point-online';
 
-type CreateGame = CreateGameFP;
+type GameCreate = GameCreateFP;
 
-type UpdateGame = UpdateGameFP;
+type GameUpdate = GameUpdateFP;
 
-type GetGame = DataSetFP;
+type PlayerCreate = PlayerCreateFP;
 
-type CreatePlayer = CreatePlayerFP;
+type PlayerUpdate = PlayerUpdateFP;
 
-type UpdatePlayer = UpdatePlayerFP;
+export type GameDataSets = DataSetFP;
+
+export type PlayerData = PlayerFP;
 
 export type GameNames = 'floatingPoint';
 
@@ -23,41 +27,18 @@ export type GameNamesEdited = 'Floating Point';
 
 export type GameList = ['floatingPoint'];
 
-export type CreateDataGame = (
+export type CrudDataGame = (
   game: GameNames,
-  data: CreateGame
-) => Promise<void>;
+  operation: CrudOperations,
+  data?: GameCreate | GameUpdate
+) => Promise<GameDataSets | void>;
 
-export type UpdateDataGame = (
-  game: GameNames,
-  update: UpdateGame
-) => Promise<void>;
-
-export type DeleteDataGame = (game: GameNames) => Promise<void>;
-
-export type GetDataGame = (game: GameNames) => Promise<GetGame>;
-
-export type CreateDataPlayer = (
+export type CrudDataGamePlayer = (
   game: GameNames,
   player: string,
-  data: CreatePlayer
-) => Promise<void>;
-
-export type UpdateDataPlayer = (
-  game: GameNames,
-  player: string,
-  update: UpdatePlayer
-) => Promise<void>;
-
-export type DeleteDataPlayer = (
-  game: GameNames,
-  player: string
-) => Promise<void>;
-
-export type GetDataPlayer = (
-  game: GameNames,
-  player: string
-) => Promise<CreatePlayer | null>;
+  operation: CrudOperations,
+  data?: PlayerCreate | PlayerUpdate
+) => Promise<PlayerData | void>;
 
 export type InitGame = (
   game: GameNames,

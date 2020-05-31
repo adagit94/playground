@@ -25,9 +25,9 @@ import {
 } from 'types/games/floating-point-online';
 
 import {
-  updateDataPlayer,
+  crudDataGamePlayer,
   updateDataFP,
-  updateDataUserGame
+  crudDataUserGame
 } from 'firebase/db';
 
 const controlKeys: ControlKeys = {
@@ -83,21 +83,43 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const playerLocalTop = statesPlayers[playerLocal]?.top;
   const playerLocalLeft = statesPlayers[playerLocal]?.left;
 
+  const pointWidthPerc = (size / width) * 100;
+  const pointHeightPerc = (size / height) * 100;
+
   const handleMoveRef = useRef(null);
 
   const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
     for (const object of objects) {
-      for (const shape of object.shapes) {
-        const [shapeWidth, shapeHeight] = shape.size;
-        const [shapeTop, shapeLeft] = shape.positions;
+      if (object.shape === 'Circle') {
+        for (const shape of object.shapes) {
+          const shapeSize = shape.size as number;
+          const [shapeTop, shapeLeft] = shape.positions;
 
-        if (
-          pointTop + size >= shapeTop &&
-          pointTop <= shapeTop + shapeHeight &&
-          pointLeft + size >= shapeLeft &&
-          pointLeft <= shapeLeft + shapeWidth
-        ) {
-          return true;
+          const shapeWidthPerc = (shapeSize / width) * 100;
+          const shapeHeightPerc = (shapeSize / height) * 100;
+
+          if (
+            pointTop + pointHeightPerc >= shapeTop &&
+            pointTop <= shapeTop + shapeHeightPerc &&
+            pointLeft + pointWidthPerc >= shapeLeft &&
+            pointLeft <= shapeLeft + shapeWidthPerc
+          ) {
+            return true;
+          }
+        }
+      } else {
+        for (const shape of object.shapes) {
+          const [shapeWidth, shapeHeight] = shape.size as [number, number];
+          const [shapeTop, shapeLeft] = shape.positions;
+
+          if (
+            pointTop + pointHeightPerc >= shapeTop &&
+            pointTop <= shapeTop + shapeHeight &&
+            pointLeft + pointWidthPerc >= shapeLeft &&
+            pointLeft <= shapeLeft + shapeWidth
+          ) {
+            return true;
+          }
         }
       }
     }
@@ -107,10 +129,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const fpOverlap = (): void => {
     if (
-      playerLocalTop + size >= fpTop &&
-      playerLocalTop <= fpTop + size &&
-      playerLocalLeft + size >= fpLeft &&
-      playerLocalLeft <= fpLeft + size
+      playerLocalTop + pointHeightPerc >= fpTop &&
+      playerLocalTop <= fpTop + pointHeightPerc &&
+      playerLocalLeft + pointWidthPerc >= fpLeft &&
+      playerLocalLeft <= fpLeft + pointWidthPerc
     ) {
       let fpTop: number;
       let fpLeft: number;
@@ -132,11 +154,11 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       updateDataFP({ top: fpTop, left: fpLeft });
 
-      updateDataPlayer('floatingPoint', playerLocal, {
+      crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         score: statesPlayers[playerLocal].score + 1
       });
 
-      updateDataUserGame('floatingPoint', playerLocal, {
+      crudDataUserGame(playerLocal, 'floatingPoint', 'update', {
         gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
       });
     }
@@ -164,7 +186,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
           break;
 
         case 'bottomRight':
-          if (playerLocalTop + size >= 100 || playerLocalLeft + size >= 100) {
+          if (
+            (playerLocalTop / height) * 100 + size >= height ||
+            (playerLocalLeft / width) * 100 + size >= width
+          ) {
             continue;
           }
 
@@ -212,7 +237,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       updatedPos[direction] = newPos;
     }
 
-    await updateDataPlayer('floatingPoint', playerLocal, {
+    await crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
       ...updatedPos
     });
 
@@ -226,9 +251,12 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   useEffect(() => {
     const initEnv = (): void => {
       switch (env) {
-        case 'test':
-          setObjects(DEFAULTS.enviroments.test);
+        case 'mazeI':
+          setObjects(DEFAULTS.enviroments.mazeI);
+          break;
 
+        case 'mazeII':
+          setObjects(DEFAULTS.enviroments.mazeII);
           break;
       }
     };
@@ -270,21 +298,37 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       {objects !== null &&
         objects.map(object => {
           const { shape, shapes } = object;
-          const Shape = Shapes[shape];
 
-          return shapes.map((shape, i) => {
-            const { size, positions } = shape;
+          if (shape === 'Circle') {
+            return shapes.map((shape, i) => {
+              const { size, positions } = shape;
 
-            return (
-              <Shape
-                width={size[0]}
-                height={size[1]}
-                top={positions[0]}
-                left={positions[1]}
-                key={i}
-              />
-            );
-          });
+              return (
+                <Shapes.Circle
+                  size={size}
+                  top={positions[0]}
+                  left={positions[1]}
+                  key={i}
+                />
+              );
+            });
+          } else {
+            const Shape = Shapes[shape];
+
+            return shapes.map((shape, i) => {
+              const { size, positions } = shape;
+
+              return (
+                <Shape
+                  width={size[0]}
+                  height={size[1]}
+                  top={positions[0]}
+                  left={positions[1]}
+                  key={i}
+                />
+              );
+            });
+          }
         })}
 
       <Players />
