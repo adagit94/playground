@@ -159,12 +159,6 @@ export const crudDataGamePlayer: CrudDataGamePlayer = async (
   }
 };
 
-export const updateDataFP: UpdateDataFP = async update => {
-  const pointRef = firebase.database().ref('games/floatingPoint/fp');
-
-  await pointRef.update(update).catch(err => console.error(err));
-};
-
 export const initUserDB: InitUserDB = async (user, handleData) => {
   const { uid } = user;
 
@@ -249,4 +243,10 @@ export const removeListenersGame: RemoveListenersGame = game => {
 
       break;
   }
+};
+
+export const updateDataFP: UpdateDataFP = async update => {
+  const pointRef = firebase.database().ref('games/floatingPoint/fp');
+
+  await pointRef.update(update).catch(err => console.error(err));
 };

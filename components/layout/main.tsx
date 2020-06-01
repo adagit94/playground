@@ -19,6 +19,8 @@ const Main: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 
   const { user } = statesFirebase;
 
+  const uid = user?.uid;
+
   useEffect(() => {
     const handleData: HandleData = data => {
       dispatchUser({ type: 'setData', payload: data });
@@ -30,10 +32,12 @@ const Main: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 
     /*
     return (): void => {
-      removeListenerUser(uid);
+      console.log('user listener removed');
+      if (uid !== undefined) removeListenerUser(uid);
     };
     */
   });
+
   return (
     <Container>
       <ContextUser.Provider value={statesUser}>{content}</ContextUser.Provider>

@@ -112,7 +112,8 @@ const Controller: React.FC = (): JSX.Element => {
 
         crudDataGame('floatingPoint', 'update', {
           state: 'run',
-          timestampStart: Date.now()
+          timestampStart: Date.now(),
+          timer
         });
       }
     };
@@ -180,8 +181,7 @@ const Controller: React.FC = (): JSX.Element => {
         env: null,
         envVotes: resetedEnvVotes,
         timestampStart: null,
-        timestampEnd: null,
-        timer
+        timestampEnd: null
       });
 
       for (const player in statesPlayersRef.current) {
@@ -195,13 +195,15 @@ const Controller: React.FC = (): JSX.Element => {
       }
 
       updateDataFP({ top: null, left: null });
+
+      setTimeout(() => {
+        crudDataGame('floatingPoint', 'update', {
+          timer: null
+        });
+      }, 1000);
     };
 
-    if (state === 'reset' && playerLocal === admin) {
-      setTimeout(() => {
-        resetGame();
-      }, 1000);
-    }
+    if (state === 'reset' && playerLocal === admin) resetGame();
   });
 
   useEffect(() => {
@@ -224,8 +226,10 @@ const Controller: React.FC = (): JSX.Element => {
     if (user !== undefined && admin === undefined) {
       initGame('floatingPoint', user, handleData);
     }
+
     /*
     return (): void => {
+      console.log('game listeners removed');
       removeListenersGame('floatingPoint');
     };
     */

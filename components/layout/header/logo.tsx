@@ -8,7 +8,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 150px;
-  border-right: 1px solid;
 `;
 
 const Square = styled.div`

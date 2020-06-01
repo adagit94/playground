@@ -10,8 +10,8 @@ import {
 } from 'types/games/floating-point-online';
 
 export const DEFAULTS: Defaults = {
-  size: 30,
-  timer: 90,
+  size: 15,
+  timer: 1000,
   enviroments: {
     mazeI: [
       {
@@ -54,16 +54,67 @@ export const DEFAULTS: Defaults = {
         shape: 'Rectangle',
         shapes: [
           {
-            size: [25, 25],
-            positions: [30, 60]
+            size: [25, 5],
+            positions: [0, 75]
           },
           {
-            size: [50, 50],
-            positions: [70, 20]
+            size: [25, 5],
+            positions: [95, 75]
           },
           {
-            size: [75, 75],
-            positions: [50, 80]
+            size: [25, 5],
+            positions: [95, 0]
+          },
+          {
+            size: [25, 5],
+            positions: [0, 0]
+          },
+
+          {
+            size: [1, 25],
+            positions: [5, 75]
+          },
+          {
+            size: [1, 25],
+            positions: [70, 75]
+          },
+          {
+            size: [1, 25],
+            positions: [70, 24]
+          },
+          {
+            size: [1, 25],
+            positions: [5, 24]
+          },
+
+          {
+            size: [1, 22.5],
+            positions: [10, 95]
+          },
+          {
+            size: [1.5, 7],
+            positions: [17.75, 93.5]
+          },
+          {
+            size: [5, 7],
+            positions: [46.5, 91]
+          },
+          {
+            size: [1, 22.5],
+            positions: [67.5, 95]
+          },
+
+          {
+            size: [1, 70],
+            positions: [20, 90]
+          },
+          {
+            size: [1, 80],
+            positions: [10, 85]
+          },
+          {
+            size: [1, 80],
+            positions: [10, 80]
           }
         ]
       }

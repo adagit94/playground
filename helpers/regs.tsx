@@ -3,7 +3,7 @@ import { GameList, GameNames } from 'types/games/generic';
 import { EnvList, EnvNames } from 'types/games/floating-point-online';
 
 const gamesArr: GameList = ['floatingPoint'];
-const envArr: EnvList = ['test', 'labyrinthI'];
+const envArr: EnvList = ['mazeI', 'mazeII'];
 
 export const keyReplacer: KeyReplacer = (
   match,
