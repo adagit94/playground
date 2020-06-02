@@ -60,7 +60,7 @@ const Mode = styled.div`
     align-items: center;
     width: 40%;
     height: 20%;
-    border: 1px solid ${(props): string => props.theme.background};
+    border: 2px solid ${(props): string => props.theme.background};
     border-radius: ${borderRadiusLink};
     color: ${(props): string => props.theme.background};
     background-color: ${(props): string => props.theme.inverted};

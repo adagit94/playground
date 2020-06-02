@@ -13,9 +13,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  height: 40%;
+  height: 25%;
   padding: ${paddingContainer};
-  border-top: 1px solid;
+  border-top: 2px solid;
+  border-radius: 50px;
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {

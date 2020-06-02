@@ -11,7 +11,7 @@ const Container = styled.div`
   position: relative;
   width: 20px;
   margin: 10px;
-  border: 1px solid;
+  border: 2px solid;
 `;
 
 const ThemeButton: React.FC = (): JSX.Element => {

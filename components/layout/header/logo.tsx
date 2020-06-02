@@ -13,7 +13,7 @@ const Container = styled.div`
 const Square = styled.div`
   width: 50px;
   height: 50px;
-  border: 1px solid ${(props): string => props.theme.inverted};
+  border: 2px solid ${(props): string => props.theme.inverted};
   transform: rotateZ(45deg);
   transition-property: border-color, background-color, width, height;
   transition-duration: 0.1s;
@@ -70,7 +70,7 @@ const Circle = styled.div`
 
 const LineVertical = styled.div`
   position: absolute;
-  width: 1px;
+  width: 2px;
   height: 68px;
   background-color: ${(props): string => props.theme.inverted};
   transition-property: height, background-color, transform;
@@ -81,8 +81,7 @@ const LineVertical = styled.div`
 const LineHorizontal = styled.div`
   position: absolute;
   width: 68px;
-  height: 1px;
-  border: 0.5px solid ${(props): string => props.theme.inverted};
+  height: 2px;
   background-color: ${(props): string => props.theme.inverted};
   transition-property: width, background-color, transform;
   transition-duration: 0.1s;

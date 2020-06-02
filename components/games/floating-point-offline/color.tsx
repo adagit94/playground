@@ -25,7 +25,7 @@ const ContainerInputField = styled.div`
   position: relative;
   height: 25px;
   width: 50px;
-  border: 1px solid ${(props): string => props.theme.inverted};
+  border: 2px solid ${(props): string => props.theme.inverted};
 `;
 
 const Input = styled.input`

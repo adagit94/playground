@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
   width: 35px;
   height: 35px;
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 5px;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};

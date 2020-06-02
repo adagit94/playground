@@ -6,7 +6,16 @@ export const Rectangle = styled.div`
   left: ${(props): number => props.left}%;
   width: ${(props): number => props.width}%;
   height: ${(props): number => props.height}%;
-  background-color: ${(props): string => props.theme.inverted};
+  border-top: ${(props): number => props.styles?.borderTop};
+  border-right: ${(props): number => props.styles?.borderRight};
+  border-bottom: ${(props): number => props.styles?.borderBottom};
+  border-left: ${(props): number => props.styles?.borderLeft};
+  background-color: ${(props): string =>
+    props.styles?.backgroundColor || props.theme.inverted};
+  border-radius: ${(props): number => props.styles?.borderRadius};
+  background-color: ${(props): string =>
+    props.styles?.backgroundColor || props.theme.inverted};
+  transform: ${(props): number => props.styles?.transform};
 `;
 
 export const Circle = styled.div`
@@ -15,6 +24,12 @@ export const Circle = styled.div`
   left: ${(props): number => props.left}%;
   width: ${(props): number => props.size}px;
   height: ${(props): number => props.size}px;
-  background-color: ${(props): string => props.theme.inverted};
+  border-top: ${(props): number => props.styles?.borderTop};
+  border-right: ${(props): number => props.styles?.borderRight};
+  border-bottom: ${(props): number => props.styles?.borderBottom};
+  border-left: ${(props): number => props.styles?.borderLeft};
   border-radius: 100%;
+  background-color: ${(props): string =>
+    props.styles?.backgroundColor || props.theme.inverted};
+  transform: ${(props): number => props.styles?.transform};
 `;

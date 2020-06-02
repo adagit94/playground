@@ -13,7 +13,7 @@ import { Theming } from 'types/layout';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
-  height: 60%;
+  height: 75%;
   position: relative;
 `;
 

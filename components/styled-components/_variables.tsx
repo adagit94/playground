@@ -4,7 +4,7 @@ export const paddingButton = '5px';
 
 export const paddingFormInput = '2.5px';
 
-export const borderWidthButton = '1px';
+export const borderWidthButton = '2px';
 
 export const borderWidthFormInput = '2px';
 

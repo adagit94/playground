@@ -21,7 +21,8 @@ import {
   ControlKeys,
   Key,
   CheckOverlap,
-  Position
+  Position,
+  ShapeNames
 } from 'types/games/floating-point-online';
 
 import {
@@ -93,7 +94,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       if (object.shape === 'Circle') {
         for (const shape of object.shapes) {
           const shapeSize = shape.size as number;
-          const [shapeTop, shapeLeft] = shape.positions;
+          const [shapeTop, shapeLeft] = shape.position;
 
           const shapeWidthPerc = (shapeSize / width) * 100;
           const shapeHeightPerc = (shapeSize / height) * 100;
@@ -110,7 +111,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       } else {
         for (const shape of object.shapes) {
           const [shapeWidth, shapeHeight] = shape.size as [number, number];
-          const [shapeTop, shapeLeft] = shape.positions;
+          const [shapeTop, shapeLeft] = shape.position;
 
           if (
             pointTop + pointHeightPerc >= shapeTop &&
@@ -299,31 +300,38 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         objects.map(object => {
           const { shape, shapes } = object;
 
-          if (shape === 'Circle') {
+          const includeStyles = Array.isArray(shape);
+
+          const shapeName = includeStyles ? shape[0] : shape;
+          const shapeStyles = includeStyles ? shape[1] : null;
+
+          if (shapeName === 'Circle') {
             return shapes.map((shape, i) => {
-              const { size, positions } = shape;
+              const { size, position } = shape;
 
               return (
                 <Shapes.Circle
                   size={size}
-                  top={positions[0]}
-                  left={positions[1]}
+                  top={position[0]}
+                  left={position[1]}
+                  styles={shapeStyles}
                   key={i}
                 />
               );
             });
           } else {
-            const Shape = Shapes[shape];
+            const Shape = Shapes[shapeName as ShapeNames];
 
             return shapes.map((shape, i) => {
-              const { size, positions } = shape;
+              const { size, position } = shape;
 
               return (
                 <Shape
                   width={size[0]}
                   height={size[1]}
-                  top={positions[0]}
-                  left={positions[1]}
+                  top={position[0]}
+                  left={position[1]}
+                  styles={shapeStyles}
                   key={i}
                 />
               );

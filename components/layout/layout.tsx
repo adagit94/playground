@@ -108,4 +108,4 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
 };
 
 export default Layout;
-// border: 1px solid red;
+// border: 2px solid red;

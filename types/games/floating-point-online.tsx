@@ -2,24 +2,27 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-export type Shapes = 'Rectangle' | 'Circle';
+type ShapeStyles = {
+  transform?: string;
+  borderRadius?: string;
+  backgroundColor?: string;
+  borderTop?: string;
+  borderRight?: string;
+  borderBottom?: string;
+  borderLeft?: string;
+};
 
 type ShapeValues = {
   size: [number, number] | number;
-  positions: [number, number];
+  position: [number, number];
 };
 
-type MazeI = [
-  { shape: 'Rectangle'; shapes: ShapeValues[] },
-  { shape: 'Circle'; shapes: ShapeValues[] }
-];
-
-type MazeII = [{ shape: 'Rectangle'; shapes: ShapeValues[] }];
-
 export type EnvObjects = {
-  shape: Shapes;
+  shape: ShapeNames | [ShapeNames, ShapeStyles];
   shapes: ShapeValues[];
 }[];
+
+export type ShapeNames = 'Rectangle' | 'Circle';
 
 export type Position = { top: number; left: number };
 
@@ -141,13 +144,6 @@ export type EnvList = ['mazeI', 'mazeII'];
 
 export type EnvVotes = { test: number };
 
-export type Envs = MazeI | MazeII;
-
-export type Enviroments = {
-  mazeI: MazeI;
-  mazeII: MazeII;
-};
-
 export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
 
 export type ActionsFP = { type: 'setData'; payload: StatesFP };
@@ -162,7 +158,7 @@ export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 export type Defaults = {
   size: number;
   timer: number;
-  enviroments: Enviroments;
+  enviroments: { mazeI: EnvObjects; mazeII: EnvObjects };
 };
 
 export type ControlKeys = {
