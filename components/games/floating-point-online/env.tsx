@@ -252,12 +252,12 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   useEffect(() => {
     const initEnv = (): void => {
       switch (env) {
-        case 'mazeI':
-          setObjects(DEFAULTS.enviroments.mazeI);
+        case 'testI':
+          setObjects(DEFAULTS.enviroments.testI);
           break;
 
-        case 'mazeII':
-          setObjects(DEFAULTS.enviroments.mazeII);
+        case 'testII':
+          setObjects(DEFAULTS.enviroments.testII);
           break;
       }
     };

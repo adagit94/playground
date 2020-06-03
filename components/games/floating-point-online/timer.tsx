@@ -33,6 +33,12 @@ const Timer: React.FC = (): JSX.Element => {
         state: 'eval',
         timestampEnd: Date.now()
       });
+
+      setTimeout(() => {
+        crudDataGame('floatingPoint', 'update', {
+          state: 'reset'
+        });
+      }, 10000);
     } else {
       crudDataGame('floatingPoint', 'update', { timer: timer - 1 });
     }

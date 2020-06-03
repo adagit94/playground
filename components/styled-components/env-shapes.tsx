@@ -1,4 +1,38 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
+
+import { GetKeyframe } from 'types/styled-components';
+
+const getKeyframe: GetKeyframe = props => {
+  const name = props.styles.animationName;
+  const from = props.top;
+  const to = props.top < 50 ? 50 - props.height : 50;
+  const direction = 'top';
+
+  let keyframe;
+
+  switch (name) {
+    case 'sliding':
+      keyframe = keyframes`
+      0% {
+        ${direction}: ${from}%;
+      } 
+  
+      50% {
+        ${direction}: ${to}%;
+      }
+  
+      100% {
+        ${direction}: ${from}%;    
+      }
+    `;
+
+      break;
+  }
+
+  return css`
+    ${keyframe}
+  `;
+};
 
 export const Rectangle = styled.div`
   position: absolute;
@@ -15,7 +49,13 @@ export const Rectangle = styled.div`
   border-radius: ${(props): number => props.styles?.borderRadius};
   background-color: ${(props): string =>
     props.styles?.backgroundColor || props.theme.inverted};
-  transform: ${(props): number => props.styles?.transform};
+  animation-name: ${(props): Function =>
+    props.styles?.animationName && getKeyframe};
+  animation-duration: ${(props): string => props.styles?.animationName && '2s'};
+  animation-timing-function: ${(props): string =>
+    props.styles?.animationName && 'linear'};
+  animation-iteration-count: ${(props): string =>
+    props.styles?.animationName && 'infinite'};
 `;
 
 export const Circle = styled.div`
@@ -31,5 +71,4 @@ export const Circle = styled.div`
   border-radius: 100%;
   background-color: ${(props): string =>
     props.styles?.backgroundColor || props.theme.inverted};
-  transform: ${(props): number => props.styles?.transform};
 `;

@@ -75,9 +75,12 @@ export const WindowEval = styled.div`
   left: 0;
   color: ${(props): string => props.theme.background};
   background-color: ${(props): string => props.theme.inverted};
-  opacity: 0.5;
 `;
 
 export const WindowEvalResults = styled.div`
   font-size: 1.5rem;
+`;
+
+export const WindowEvalResultsTie = styled.div`
+  color: #ff0000;
 `;

@@ -1,4 +1,4 @@
-import { mazeI, mazeII } from './floating-point-envs';
+import { testI, testII } from './floating-point-envs';
 
 import {
   Defaults,
@@ -13,10 +13,10 @@ import {
 
 export const DEFAULTS: Defaults = {
   size: 15,
-  timer: 1000,
+  timer: 100,
   enviroments: {
-    mazeI,
-    mazeII
+    testI,
+    testII
   }
 };
 

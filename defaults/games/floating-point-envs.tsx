@@ -1,6 +1,6 @@
 import { EnvObjects } from 'types/games/floating-point-online';
 
-export const mazeI: EnvObjects = [
+export const testI: EnvObjects = [
   {
     shape: 'Rectangle', // size: %
     shapes: [
@@ -37,7 +37,7 @@ export const mazeI: EnvObjects = [
   }
 ];
 
-export const mazeII: EnvObjects = [
+export const testII: EnvObjects = [
   /*{
     shape: ['Rectangle', { borderRadius: '0', transform: 'rotate(90deg)' }],
     shapes: [
@@ -58,75 +58,108 @@ export const mazeII: EnvObjects = [
       {
         size: [1, 20],
         position: [55, 49.5]
-      }
-    ]
-  },
-
-  {
-    shape: ['Rectangle', { transform: 'rotate(90deg)' }],
-    shapes: [
+      },
       {
         size: [1, 20],
         position: [40, 55]
       },
       {
         size: [1, 20],
-        position: [49.5, 25]
+        position: [40, 44]
       }
     ]
   },
 
   {
-    shape: 'Rectangle',
+    shape: ['Rectangle', { animationName: 'sliding' }],
     shapes: [
       {
-        size: [1, 95],
-        position: [2.5, 5]
+        size: [1, 15.83],
+        position: [0, 5]
       },
       {
-        size: [1, 95],
-        position: [2.5, 11]
+        size: [1, 15.83],
+        position: [84.17, 5]
+      },
+
+      {
+        size: [1, 15.83],
+        position: [0, 17]
       },
       {
-        size: [1, 95],
-        position: [2.5, 17]
+        size: [1, 15.83],
+        position: [84.17, 17]
+      },
+
+      {
+        size: [1, 15.83],
+        position: [0, 29]
       },
       {
-        size: [1, 95],
-        position: [2.5, 23]
+        size: [1, 15.83],
+        position: [84.17, 29]
+      },
+
+      {
+        size: [1, 15.83],
+        position: [0, 70]
       },
       {
-        size: [1, 95],
-        position: [2.5, 29]
+        size: [1, 15.83],
+        position: [84.17, 70]
+      },
+
+      {
+        size: [1, 15.83],
+        position: [0, 82]
       },
       {
-        size: [1, 95],
-        position: [2.5, 35]
+        size: [1, 15.83],
+        position: [84.17, 82]
+      },
+
+      {
+        size: [1, 15.83],
+        position: [0, 94]
       },
       {
-        size: [1, 95],
-        position: [2.5, 64]
-      },
-      {
-        size: [1, 95],
-        position: [2.5, 70]
-      },
-      {
-        size: [1, 95],
-        position: [2.5, 76]
-      },
-      {
-        size: [1, 95],
-        position: [2.5, 82]
-      },
-      {
-        size: [1, 95],
-        position: [2.5, 88]
-      },
-      {
-        size: [1, 95],
-        position: [2.5, 94]
+        size: [1, 15.83],
+        position: [84.17, 94]
       }
     ]
-  }
+  } /*,
+  {
+    shape: ['Rectangle', { animationName: 'sliding' }],
+    shapes: [
+      {
+        size: [1, 31.66],
+        position: [31.67, 11]
+      },
+
+      {
+        size: [1, 31.66],
+        position: [31.67, 23]
+      },
+
+      {
+        size: [1, 31.66],
+        position: [31.67, 35]
+      },
+
+      {
+        size: [1, 31.66],
+        position: [31.67, 76]
+      },
+
+      {
+        size: [1, 31.66],
+        position: [31.67, 64]
+      },
+
+      {
+        size: [1, 31.66],
+        position: [31.67, 88]
+      }
+    ]
+  }*/
 ];

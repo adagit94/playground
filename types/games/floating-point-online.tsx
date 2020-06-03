@@ -10,6 +10,7 @@ type ShapeStyles = {
   borderRight?: string;
   borderBottom?: string;
   borderLeft?: string;
+  animationName?: string;
 };
 
 type ShapeValues = {
@@ -73,7 +74,7 @@ export type StatesGame = {
   admin: string;
   env: EnvNames;
   envVotes: EnvVotes;
-  winner: Winner;
+  winner: Results;
   timer: number;
   timestampStart: number;
   timestampEnd: number;
@@ -86,7 +87,7 @@ export type StatesGameDB = {
   admin: string;
   env: EnvNames;
   envVotes: EnvVotes;
-  winner: Winner;
+  winner: Results;
   timer: number;
   timestampStart: number;
   timestampEnd: number;
@@ -118,7 +119,7 @@ export type GameUpdate = {
   admin?: string;
   env?: EnvNames;
   envVotes?: EnvVotes;
-  winner?: Winner;
+  winner?: Results;
   timer?: number;
   timestampStart?: number;
   timestampEnd?: number;
@@ -136,11 +137,15 @@ export type ActionsGame =
     }
   | { type: 'setData'; payload: StatesGameDB };
 
-export type Winner = { name: string; score: number };
+export type PlayerResultData = { name: string; score: number };
 
-export type EnvNames = 'mazeI' | 'mazeII';
+export type PlayerResultsData = PlayerResultData[];
 
-export type EnvList = ['mazeI', 'mazeII'];
+export type Results = PlayerResultData | PlayerResultsData;
+
+export type EnvNames = 'testI' | 'testII';
+
+export type EnvList = ['testI', 'testII'];
 
 export type EnvVotes = { test: number };
 
@@ -158,7 +163,7 @@ export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 export type Defaults = {
   size: number;
   timer: number;
-  enviroments: { mazeI: EnvObjects; mazeII: EnvObjects };
+  enviroments: { testI: EnvObjects; testII: EnvObjects };
 };
 
 export type ControlKeys = {

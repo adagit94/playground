@@ -14,10 +14,12 @@ import { ContextUser } from 'contexts/user';
 import { FloatingPoint, GameData } from 'types/user';
 import {
   HandleData,
-  Winner,
+  Results,
   StatesGameDB,
   StatesPlayers,
-  StatesFP
+  StatesFP,
+  PlayerResultData,
+  PlayerResultsData
 } from 'types/games/floating-point-online';
 
 import {
@@ -124,6 +126,7 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
       let scores: [string, number][] = [];
+      let results: PlayerResultsData;
 
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
@@ -131,39 +134,50 @@ const Controller: React.FC = (): JSX.Element => {
 
       scores.sort((a, b) => a[1] - b[1]).reverse();
 
-      let winnerData: FloatingPoint;
-      const [winnerID, winnerScore] = scores[0];
-      const winnerName = statesPlayers[winnerID].username;
-      const winner: Winner = { name: winnerName, score: winnerScore };
+      const [firstPlayerID, firstPlayerScore] = scores[0];
 
-      if (winnerID === playerLocal) {
-        winnerData = statesUser.games.floatingPoint;
+      results = scores.map(player => {
+        const [playerID, playerScore] = player;
+
+        if (playerScore === firstPlayerScore) {
+          const playerName = statesPlayers[playerID].username;
+
+          return { name: playerName, score: playerScore };
+        }
+      });
+
+      if (results.length === 1) {
+        const { name: winnerName, score: winnerScore } = results[0];
+
+        let winnerUserData: FloatingPoint;
+
+        if (firstPlayerID === playerLocal) {
+          winnerUserData = statesUser.games.floatingPoint;
+        } else {
+          winnerUserData = (await crudDataUserGame(
+            firstPlayerID,
+            'floatingPoint',
+            'read'
+          )) as GameData;
+        }
+
+        crudDataGame('floatingPoint', 'update', {
+          winner: { name: winnerName, score: winnerScore }
+        });
+
+        crudDataUserGame(firstPlayerID, 'floatingPoint', 'update', {
+          wins: winnerUserData.wins + 1
+        });
       } else {
-        winnerData = (await crudDataUserGame(
-          winnerID,
-          'floatingPoint',
-          'read'
-        )) as GameData;
+        crudDataGame('floatingPoint', 'update', {
+          winner: results
+        });
       }
-
-      crudDataGame('floatingPoint', 'update', {
-        winner
-      });
-
-      crudDataUserGame(winnerID, 'floatingPoint', 'update', {
-        wins: winnerData.wins + 1
-      });
 
       updatePlayedTime('floatingPoint', players, [
         statesGame.timestampStart,
         statesGame.timestampEnd
       ]);
-
-      setTimeout(() => {
-        crudDataGame('floatingPoint', 'update', {
-          state: 'reset'
-        });
-      }, 10000);
     };
 
     if (state === 'eval' && playerLocal === admin && winner === undefined) {
