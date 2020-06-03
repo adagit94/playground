@@ -148,7 +148,9 @@ const Controller: React.FC = (): JSX.Element => {
 
       if (results.length === 1) {
         const { name: winnerName, score: winnerScore } = results[0];
-
+        console.log(results);
+        console.log(winnerName);
+        console.log(winnerScore);
         let winnerUserData: FloatingPoint;
 
         if (firstPlayerID === playerLocal) {
