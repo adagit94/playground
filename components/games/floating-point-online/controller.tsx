@@ -146,6 +146,7 @@ const Controller: React.FC = (): JSX.Element => {
         }
       });
 
+      console.log(results);
       if (results.length === 1) {
         const { name: winnerName, score: winnerScore } = results[0];
         console.log(results);
