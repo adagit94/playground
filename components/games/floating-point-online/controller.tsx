@@ -126,7 +126,7 @@ const Controller: React.FC = (): JSX.Element => {
   useEffect(() => {
     const evalGame = async (): Promise<void> => {
       let scores: [string, number][] = [];
-      let results: PlayerResultsData;
+      let results: PlayerResultsData = [];
 
       for (const player in statesPlayers) {
         scores.push([player, statesPlayers[player].score]);
@@ -136,15 +136,15 @@ const Controller: React.FC = (): JSX.Element => {
 
       const [firstPlayerID, firstPlayerScore] = scores[0];
 
-      results = scores.map(player => {
+      for (const player of scores) {
         const [playerID, playerScore] = player;
 
         if (playerScore === firstPlayerScore) {
           const playerName = statesPlayers[playerID].username;
 
-          return { name: playerName, score: playerScore };
+          results.push({ name: playerName, score: playerScore });
         }
-      });
+      }
 
       console.log(results);
       if (results.length === 1) {
