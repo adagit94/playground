@@ -1,4 +1,4 @@
-import { memo, useContext, Fragment } from 'react';
+import { memo, useContext, Fragment, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { paddingContainer } from 'components/styled-components/_variables';
@@ -13,7 +13,7 @@ import { crudDataGamePlayer, crudDataGame } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { Theming } from 'types/layout';
-import { EnvNames } from 'types/games/floating-point-online';
+import { EnvNames, PropsEnvOptions } from 'types/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import {
   ContextGame,
@@ -26,6 +26,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  border: ${(props): string => props.highlight && '2px solid #f00'};
   border-radius: 5px;
   padding: ${paddingContainer};
   color: ${(props): string => props.theme.background};
@@ -55,17 +56,23 @@ const Container = styled.div`
   }
 `;
 
-const EnvOptions: React.FC = (): JSX.Element => {
+const EnvOptions: React.FC<PropsEnvOptions> = ({
+  highlightEnvOptions
+}): JSX.Element => {
+  const [voted, setVoted] = useState(false);
+
   const theming: Theming = useContext(ThemeContext);
   const statesFirebase = useContext(ContextFirebase);
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
   const { user } = statesFirebase;
-  const { envVotes } = statesGame;
+  const { state, envVotes } = statesGame;
 
   const playerLocal = user?.uid;
   const selectedEnv = statesPlayers[playerLocal]?.selectedEnv;
+
+  const envList = envVotes && Object.keys(envVotes);
 
   const handleVoting = (env: EnvNames): void => {
     if (selectedEnv === undefined) {
@@ -97,8 +104,22 @@ const EnvOptions: React.FC = (): JSX.Element => {
     });
   };
 
+  useEffect(() => {
+    if (state === 'conf') {
+      setVoted(false);
+
+      for (const env in envVotes) {
+        if (envVotes[env] > 0) {
+          setVoted(true);
+
+          break;
+        }
+      }
+    }
+  }, [state, envVotes]);
+
   return (
-    <Container>
+    <Container highlight={highlightEnvOptions && !voted}>
       <h3>Enviroments:</h3>
       {envVotes === undefined && (
         <LoadingIndicator color={theming.background} />
@@ -106,7 +127,7 @@ const EnvOptions: React.FC = (): JSX.Element => {
 
       {envVotes !== undefined && (
         <ul>
-          {Object.keys(envVotes).map((env, i, arr) => {
+          {envList.map((env, i, arr) => {
             const votes = envVotes[env];
             const editedEnvName = env.replace(keyEditReg, keyReplacer);
 

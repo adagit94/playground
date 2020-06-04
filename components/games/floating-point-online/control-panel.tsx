@@ -19,7 +19,8 @@ const Container = styled.div`
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {
-  const [initPossible, setInitPossible] = useState(true);
+  const [highlightUnready, setHighlightUnready] = useState(false);
+  const [highlightEnvOptions, setHighlightEnvOptions] = useState(false);
 
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
@@ -32,13 +33,14 @@ const ControlPanel: React.FC = (): JSX.Element => {
     <Container>
       <OptionsPlayer
         player={admin}
-        initPossible={initPossible}
-        setInitPossible={setInitPossible}
+        highlightUnready={highlightUnready}
+        setHighlightUnready={setHighlightUnready}
+        setHighlightEnvOptions={setHighlightEnvOptions}
       />
-      <OptionsPlayer player={players[1]} initPossible={initPossible} />
-      <OptionsCommon />
-      <OptionsPlayer player={players[2]} initPossible={initPossible} />
-      <OptionsPlayer player={players[0]} initPossible={initPossible} />
+      <OptionsPlayer player={players[1]} highlightUnready={highlightUnready} />
+      <OptionsCommon highlightEnvOptions={highlightEnvOptions} />
+      <OptionsPlayer player={players[2]} highlightUnready={highlightUnready} />
+      <OptionsPlayer player={players[0]} highlightUnready={highlightUnready} />
     </Container>
   );
 };

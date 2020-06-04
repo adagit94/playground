@@ -106,8 +106,9 @@ const ContainerAvatar = styled.div`
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   player,
-  initPossible,
-  setInitPossible
+  highlightUnready,
+  setHighlightUnready,
+  setHighlightEnvOptions
 }): JSX.Element => {
   const [gameStats, setGameStats] = useState<[string, string | number][]>([]);
 
@@ -141,7 +142,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     font-weight: bold;
     border: ${borderWidthButton} solid
       ${(props): string =>
-        playerData && !playerData.isReady && !initPossible
+        playerData && !playerData.isReady && highlightUnready
           ? '#f00'
           : props.theme.inverted};
     border-radius: ${borderRadiusButton};
@@ -181,16 +182,18 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   const handleInit = (): void => {
     //if (players.length < 2) return;
+    let initable: boolean;
+    let envs: [EnvNames, number][] = [];
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
-        setInitPossible(false);
+        setHighlightUnready(true);
 
-        return;
+        initable = false;
+
+        break;
       }
     }
-
-    let envs: [EnvNames, number][] = [];
 
     for (const env in envVotes) {
       envs.push([env as EnvNames, envVotes[env]]);
@@ -200,9 +203,15 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
     const [name, votes] = envs[0];
 
-    if (votes === 0) return;
+    if (votes === 0) {
+      setHighlightEnvOptions(true);
 
-    setInitPossible(true);
+      initable = false;
+    }
+
+    if (initable === false) return;
+
+    setHighlightUnready(false);
     crudDataGame('floatingPoint', 'update', { state: 'init', env: name });
   };
 

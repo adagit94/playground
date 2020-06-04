@@ -56,15 +56,19 @@ export type PlayerUpdate = {
   isReady?: boolean;
 };
 
-export type PropsOptions = {
-  state: string;
-  player: string;
+export type PropsOptionsCommon = {
+  highlightEnvOptions: boolean;
 };
 
 export type PropsOptionsPlayer = {
   player: string;
-  initPossible: boolean;
-  setInitPossible?: React.Dispatch<React.SetStateAction<boolean>>;
+  highlightUnready: boolean;
+  setHighlightUnready?: React.Dispatch<React.SetStateAction<boolean>>;
+  setHighlightEnvOptions?: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type PropsEnvOptions = {
+  highlightEnvOptions: boolean;
 };
 
 export type PropsEnv = {

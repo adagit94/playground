@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Timer from './timer';
 import EnvOptions from './env-options';
 
+import { PropsOptionsCommon } from 'types/games/floating-point-online';
 import { ContextGame } from 'contexts/games/floating-point-online';
 
 const Container = styled.div`
@@ -14,7 +15,9 @@ const Container = styled.div`
   width: 20%;
 `;
 
-const OptionsCommon: React.FC = (): JSX.Element => {
+const OptionsCommon: React.FC<PropsOptionsCommon> = ({
+  highlightEnvOptions
+}): JSX.Element => {
   const statesGame = useContext(ContextGame);
 
   const { state } = statesGame;
@@ -23,7 +26,9 @@ const OptionsCommon: React.FC = (): JSX.Element => {
     <Container>
       {state === 'run' && <Timer />}
 
-      {state === 'conf' && <EnvOptions />}
+      {state === 'conf' && (
+        <EnvOptions highlightEnvOptions={highlightEnvOptions} />
+      )}
     </Container>
   );
 };
