@@ -1,32 +1,40 @@
 import styled, { keyframes, css } from 'styled-components';
 
 import { GetKeyframe } from 'types/styled-components';
+import { AnimationNames } from 'types/games/floating-point-online';
 
 const getKeyframe: GetKeyframe = props => {
-  const name = props.styles.animationName;
-  const from = props.top;
-  const to = props.top < 50 ? 50 - props.height : 50;
-  const direction = 'top';
+  const animationName: AnimationNames = props.styles.animationName;
 
   let keyframe;
 
-  switch (name) {
-    case 'sliding':
-      keyframe = keyframes`
+  if (animationName === 'translateVertical') {
+    const from = props.top;
+    const to = props.top < 50 ? 50 - props.height : 50;
+
+    keyframe = keyframes`
       0% {
-        ${direction}: ${from}%;
+        top: ${from}%;
       } 
   
       50% {
-        ${direction}: ${to}%;
+        top: ${to}%;
       }
   
       100% {
-        ${direction}: ${from}%;    
+        top:${from}%;
       }
     `;
-
-      break;
+  } else if (animationName === 'rotate360') {
+    keyframe = keyframes`
+      0% {
+        transform: rotate(0deg);
+      } 
+  
+      100% {
+        transform: rotate(360deg);   
+      }
+    `;
   }
 
   return css`

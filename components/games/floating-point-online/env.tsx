@@ -67,7 +67,13 @@ const Container = styled.div`
 `;
 
 const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
-  const [objects, setObjects] = useState<EnvObjects>(null);
+  const [objectsDefinitions, setObjectsDefinitions] = useState<EnvObjects>(
+    null
+  );
+
+  const [objectsComponents, setObjectsComponents] = useState<JSX.Element[][]>(
+    null
+  );
 
   const statesFirebase = useContext(ContextFirebase);
   const statesUser = useContext(ContextUser);
@@ -90,7 +96,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const handleMoveRef = useRef(null);
 
   const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
-    for (const object of objects) {
+    for (const object of objectsDefinitions) {
       if (object.shape === 'Circle') {
         for (const shape of object.shapes) {
           const shapeSize = shape.size as number;
@@ -250,20 +256,64 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   });
 
   useEffect(() => {
-    const initEnv = (): void => {
-      switch (env) {
-        case 'testI':
-          setObjects(DEFAULTS.enviroments.testI);
-          break;
+    switch (env) {
+      case 'testI':
+        setObjectsDefinitions(DEFAULTS.enviroments.testI);
+        break;
 
-        case 'testII':
-          setObjects(DEFAULTS.enviroments.testII);
-          break;
-      }
-    };
-
-    initEnv();
+      case 'testII':
+        setObjectsDefinitions(DEFAULTS.enviroments.testII);
+        break;
+    }
   }, [env]);
+
+  useEffect(() => {
+    if (objectsDefinitions !== null && objectsComponents === null) {
+      const components = objectsDefinitions.map(object => {
+        const { shape, shapes } = object;
+
+        const includeStyles = Array.isArray(shape);
+
+        const shapeName = includeStyles ? shape[0] : shape;
+        const shapeStyles = includeStyles ? shape[1] : null;
+
+        if (shapeName === 'Circle') {
+          return shapes.map((shape, i) => {
+            const { size, position } = shape;
+
+            return (
+              <Shapes.Circle
+                size={size}
+                top={position[0]}
+                left={position[1]}
+                styles={shapeStyles}
+                key={i}
+              />
+            );
+          });
+        } else {
+          const Shape = Shapes[shapeName as ShapeNames];
+
+          return shapes.map((shape, i) => {
+            const { size, position } = shape;
+
+            return (
+              <Shape
+                width={size[0]}
+                height={size[1]}
+                top={position[0]}
+                left={position[1]}
+                styles={shapeStyles}
+                key={i}
+              />
+            );
+          });
+        }
+      });
+
+      setObjectsComponents(components);
+    }
+  }, [objectsDefinitions, objectsComponents]);
 
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {
@@ -296,48 +346,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   return (
     <Container>
-      {objects !== null &&
-        objects.map(object => {
-          const { shape, shapes } = object;
-
-          const includeStyles = Array.isArray(shape);
-
-          const shapeName = includeStyles ? shape[0] : shape;
-          const shapeStyles = includeStyles ? shape[1] : null;
-
-          if (shapeName === 'Circle') {
-            return shapes.map((shape, i) => {
-              const { size, position } = shape;
-
-              return (
-                <Shapes.Circle
-                  size={size}
-                  top={position[0]}
-                  left={position[1]}
-                  styles={shapeStyles}
-                  key={i}
-                />
-              );
-            });
-          } else {
-            const Shape = Shapes[shapeName as ShapeNames];
-
-            return shapes.map((shape, i) => {
-              const { size, position } = shape;
-
-              return (
-                <Shape
-                  width={size[0]}
-                  height={size[1]}
-                  top={position[0]}
-                  left={position[1]}
-                  styles={shapeStyles}
-                  key={i}
-                />
-              );
-            });
-          }
-        })}
+      {objectsComponents !== null && objectsComponents}
 
       <Players />
       <Point />

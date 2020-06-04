@@ -47,10 +47,9 @@ const Monitor: React.FC = (): JSX.Element => {
                   <div>
                     Players:{' '}
                     {(winner as PlayerResultsData).map((player, i, arr) => {
-                      const name =
-                        i === arr.length - 1 ? player.name : `${player.name}, `;
-
-                      return name;
+                      return i === arr.length - 1
+                        ? player.name
+                        : `${player.name}, `;
                     })}
                     ;
                   </div>

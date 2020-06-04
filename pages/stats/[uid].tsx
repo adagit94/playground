@@ -46,71 +46,74 @@ const Stats: React.FC = (): JSX.Element => {
   `;
 
   useEffect(() => {
-    const initStats = (): void => {
-      let userStatsArr: [string, string][] = [];
-      let gamesStatsArr: [GameNames, [string, string | number][]][] = [];
-
-      for (const stat in statesUser) {
-        if (stat === 'games') continue;
-
-        const editedStatName = stat.replace(keyEditReg, keyReplacer);
-
-        if (stat === 'lastPlayed' || stat === 'mostPlayed') {
-          const editedGameName = statesUser[stat].replace(
-            keyEditReg,
-            keyReplacer
-          );
-
-          userStatsArr.push([editedStatName, editedGameName]);
-        } else if (stat === 'registred') {
-          const extractedDate = dateExtractReg.exec(statesUser[stat])[0];
-
-          userStatsArr.push([editedStatName, extractedDate]);
-        } else {
-          userStatsArr.push([editedStatName, statesUser[stat]]);
-        }
-      }
-
-      for (const game in statesUser.games) {
-        const editedGameName = game.replace(
-          keyEditReg,
-          keyReplacer
-        ) as GameNames;
-
-        let gameStatsArr: [GameNames, [string, string | number][]] = [
-          editedGameName,
-          []
-        ];
-
-        for (const gameStat in statesUser.games[game]) {
-          const editedGameStatName = gameStat.replace(keyEditReg, keyReplacer);
-
-          if (gameStat === 'playedTime') {
-            let playedTime = statesUser.games[game][gameStat];
-
-            if (playedTime > 0) playedTime = convertPlayedTime(playedTime);
-
-            gameStatsArr[1].push([editedGameStatName, playedTime]);
-          } else {
-            gameStatsArr[1].push([
-              editedGameStatName,
-              statesUser.games[game][gameStat]
-            ]);
-          }
-        }
-
-        gamesStatsArr.push(gameStatsArr);
-      }
-
-      setUserStats(userStatsArr);
-      setGamesStats(gamesStatsArr);
-    };
-
     if (
       statesUser !== undefined &&
       userStats.length === 0 &&
       gamesStats.length === 0
     ) {
+      const initStats = (): void => {
+        let userStatsArr: [string, string][] = [];
+        let gamesStatsArr: [GameNames, [string, string | number][]][] = [];
+
+        for (const stat in statesUser) {
+          if (stat === 'games') continue;
+
+          const editedStatName = stat.replace(keyEditReg, keyReplacer);
+
+          if (stat === 'lastPlayed' || stat === 'mostPlayed') {
+            const editedGameName = statesUser[stat].replace(
+              keyEditReg,
+              keyReplacer
+            );
+
+            userStatsArr.push([editedStatName, editedGameName]);
+          } else if (stat === 'registred') {
+            const extractedDate = dateExtractReg.exec(statesUser[stat])[0];
+
+            userStatsArr.push([editedStatName, extractedDate]);
+          } else {
+            userStatsArr.push([editedStatName, statesUser[stat]]);
+          }
+        }
+
+        for (const game in statesUser.games) {
+          const editedGameName = game.replace(
+            keyEditReg,
+            keyReplacer
+          ) as GameNames;
+
+          let gameStatsArr: [GameNames, [string, string | number][]] = [
+            editedGameName,
+            []
+          ];
+
+          for (const gameStat in statesUser.games[game]) {
+            const editedGameStatName = gameStat.replace(
+              keyEditReg,
+              keyReplacer
+            );
+
+            if (gameStat === 'playedTime') {
+              let playedTime = statesUser.games[game][gameStat];
+
+              if (playedTime > 0) playedTime = convertPlayedTime(playedTime);
+
+              gameStatsArr[1].push([editedGameStatName, playedTime]);
+            } else {
+              gameStatsArr[1].push([
+                editedGameStatName,
+                statesUser.games[game][gameStat]
+              ]);
+            }
+          }
+
+          gamesStatsArr.push(gameStatsArr);
+        }
+
+        setUserStats(userStatsArr);
+        setGamesStats(gamesStatsArr);
+      };
+
       initStats();
     }
   });

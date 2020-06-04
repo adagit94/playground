@@ -27,25 +27,25 @@ const Timer: React.FC = (): JSX.Element => {
 
   const uid = user?.uid;
 
-  const handleTimer = (): void => {
-    if (timer === 0) {
-      crudDataGame('floatingPoint', 'update', {
-        state: 'eval',
-        timestampEnd: Date.now()
-      });
-
-      setTimeout(() => {
-        crudDataGame('floatingPoint', 'update', {
-          state: 'reset'
-        });
-      }, 10000);
-    } else {
-      crudDataGame('floatingPoint', 'update', { timer: timer - 1 });
-    }
-  };
-
   useEffect(() => {
     if (uid !== undefined && admin !== undefined && uid === admin) {
+      const handleTimer = (): void => {
+        if (timer === 0) {
+          crudDataGame('floatingPoint', 'update', {
+            state: 'eval',
+            timestampEnd: Date.now()
+          });
+
+          setTimeout(() => {
+            crudDataGame('floatingPoint', 'update', {
+              state: 'reset'
+            });
+          }, 10000);
+        } else {
+          crudDataGame('floatingPoint', 'update', { timer: timer - 1 });
+        }
+      };
+
       window.setTimeout(handleTimer, 1000);
     }
   });

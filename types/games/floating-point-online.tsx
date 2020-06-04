@@ -10,13 +10,15 @@ type ShapeStyles = {
   borderRight?: string;
   borderBottom?: string;
   borderLeft?: string;
-  animationName?: string;
+  animationName?: AnimationNames;
 };
 
 type ShapeValues = {
   size: [number, number] | number;
   position: [number, number];
 };
+
+export type AnimationNames = 'translateVertical' | 'rotate360';
 
 export type EnvObjects = {
   shape: ShapeNames | [ShapeNames, ShapeStyles];

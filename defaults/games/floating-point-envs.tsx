@@ -38,16 +38,6 @@ export const testI: EnvObjects = [
 ];
 
 export const testII: EnvObjects = [
-  /*{
-    shape: ['Rectangle', { borderRadius: '0', transform: 'rotate(90deg)' }],
-    shapes: [
-      {
-        size: 50,
-        position: [48, 50]
-      }
-    ]
-  },*/
-
   {
     shape: 'Rectangle',
     shapes: [
@@ -68,10 +58,10 @@ export const testII: EnvObjects = [
         position: [40, 44]
       }
     ]
-  },
+  }
 
-  {
-    shape: ['Rectangle', { animationName: 'sliding' }],
+  /*{
+    shape: ['Rectangle', { animationName: 'translateVertical' }],
     shapes: [
       {
         size: [1, 15.83],
@@ -127,9 +117,9 @@ export const testII: EnvObjects = [
         position: [84.17, 94]
       }
     ]
-  } /*,
+  },
   {
-    shape: ['Rectangle', { animationName: 'sliding' }],
+    shape: ['Rectangle', { animationName: 'rotate360' }],
     shapes: [
       {
         size: [1, 31.66],

@@ -22,11 +22,11 @@ const Main: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const uid = user?.uid;
 
   useEffect(() => {
-    const handleData: HandleData = data => {
-      dispatchUser({ type: 'setData', payload: data });
-    };
-
     if (user !== undefined && statesUser === undefined) {
+      const handleData: HandleData = data => {
+        dispatchUser({ type: 'setData', payload: data });
+      };
+
       initUserDB(user, handleData);
     }
 

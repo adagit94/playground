@@ -213,38 +213,40 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   });
 
   useEffect(() => {
-    const handleExit = (url: string): void => {
-      if (url.includes('floating-point-online')) return;
-
-      if (playersRef.current.length === 1) {
-        crudDataGame('floatingPoint', 'delete');
-
-        return;
-      }
-
-      if (admin === player) {
-        crudDataGame('floatingPoint', 'update', {
-          admin: playersRef.current.find(player => player !== admin)
-        });
-      }
-
-      if (stateRef.current === 'run') {
-        updatePlayedTime('floatingPoint', playersRef.current, [
-          timestampStartRef.current,
-          Date.now()
-        ]);
-
-        crudDataGamePlayer('floatingPoint', player, 'delete');
-
-        crudDataGame('floatingPoint', 'update', {
-          state: 'reset'
-        });
-      } else {
-        crudDataGamePlayer('floatingPoint', player, 'delete');
-      }
-    };
+    let handleExit;
 
     if (uid !== undefined && player !== undefined && uid === player) {
+      handleExit = (url: string): void => {
+        if (url.includes('floating-point-online')) return;
+
+        if (playersRef.current.length === 1) {
+          crudDataGame('floatingPoint', 'delete');
+
+          return;
+        }
+
+        if (admin === player) {
+          crudDataGame('floatingPoint', 'update', {
+            admin: playersRef.current.find(player => player !== admin)
+          });
+        }
+
+        if (stateRef.current === 'run') {
+          updatePlayedTime('floatingPoint', playersRef.current, [
+            timestampStartRef.current,
+            Date.now()
+          ]);
+
+          crudDataGamePlayer('floatingPoint', player, 'delete');
+
+          crudDataGame('floatingPoint', 'update', {
+            state: 'reset'
+          });
+        } else {
+          crudDataGamePlayer('floatingPoint', player, 'delete');
+        }
+      };
+
       Router.events.on('beforeHistoryChange', handleExit);
     }
 
@@ -256,40 +258,40 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   }, [uid, admin, player]);
 
   useEffect(() => {
-    const getStats = async (): Promise<void> => {
-      let stats: FloatingPoint;
-      let statsArr: [string, string | number][] = [];
-
-      if (uid === player) {
-        stats = userGameStats;
-      } else {
-        stats = (await crudDataUserGame(
-          player,
-          'floatingPoint',
-          'read'
-        )) as GameData;
-      }
-
-      for (const stat in stats) {
-        const editedStat = stat.replace(keyEditReg, keyReplacer);
-
-        if (stat === 'playedTime') {
-          let playedTime: string | number = stats.playedTime;
-
-          if (playedTime > 0) {
-            playedTime = convertPlayedTime(playedTime);
-          }
-
-          statsArr.push([editedStat, playedTime]);
-        } else {
-          statsArr.push([editedStat, stats[stat]]);
-        }
-      }
-
-      setGameStats(statsArr);
-    };
-
     if (state === 'conf' && player !== undefined && gameStats.length === 0) {
+      const getStats = async (): Promise<void> => {
+        let stats: FloatingPoint;
+        let statsArr: [string, string | number][] = [];
+
+        if (uid === player) {
+          stats = userGameStats;
+        } else {
+          stats = (await crudDataUserGame(
+            player,
+            'floatingPoint',
+            'read'
+          )) as GameData;
+        }
+
+        for (const stat in stats) {
+          const editedStat = stat.replace(keyEditReg, keyReplacer);
+
+          if (stat === 'playedTime') {
+            let playedTime: string | number = stats.playedTime;
+
+            if (playedTime > 0) {
+              playedTime = convertPlayedTime(playedTime);
+            }
+
+            statsArr.push([editedStat, playedTime]);
+          } else {
+            statsArr.push([editedStat, stats[stat]]);
+          }
+        }
+
+        setGameStats(statsArr);
+      };
+
       getStats();
     }
   });
