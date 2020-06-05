@@ -33,7 +33,7 @@ const Container = styled.nav`
         border-bottom-color: transparent;
         border-left: 2px solid;
         border-radius: ${borderRadiusLink};
-        color: ${(props): string => props.theme.inverted};
+        color: ${({ theme }): string => theme.inverted};
         text-decoration: none;
         transition-property: color, background-color, border-right-color,
           border-left-color;
@@ -42,10 +42,10 @@ const Container = styled.nav`
 
         &:hover {
           cursor: pointer;
-          color: ${(props): string => props.theme.background};
-          background-color: ${(props): string => props.theme.inverted};
-          border-right-color: ${(props): string => props.theme.background};
-          border-left-color: ${(props): string => props.theme.background};
+          color: ${({ theme }): string => theme.background};
+          background-color: ${({ theme }): string => theme.inverted};
+          border-right-color: ${({ theme }): string => theme.background};
+          border-left-color: ${({ theme }): string => theme.background};
         }
       }
     }

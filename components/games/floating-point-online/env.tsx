@@ -2,7 +2,7 @@ import { memo, useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 
 import Players from './players';
-import Point from './point';
+import FPIcon from './point';
 
 import * as Shapes from 'components/styled-components/env-shapes';
 
@@ -22,7 +22,8 @@ import {
   Key,
   CheckOverlap,
   Position,
-  ShapeNames
+  ShapeNames,
+  ShapeStyles
 } from 'types/games/floating-point-online';
 
 import {
@@ -277,37 +278,37 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         const shapeName = includeStyles ? shape[0] : shape;
         const shapeStyles = includeStyles ? shape[1] : null;
 
-        if (shapeName === 'Circle') {
-          return shapes.map((shape, i) => {
-            const { size, position } = shape;
+        switch (shapeName) {
+          case 'Circle':
+            return shapes.map((shape, i) => {
+              const { size, position } = shape;
 
-            return (
-              <Shapes.Circle
-                size={size}
-                top={position[0]}
-                left={position[1]}
-                styles={shapeStyles}
-                key={i}
-              />
-            );
-          });
-        } else {
-          const Shape = Shapes[shapeName as ShapeNames];
+              return (
+                <Shapes.Circle
+                  size={size as number}
+                  top={position[0]}
+                  left={position[1]}
+                  styles={shapeStyles as ShapeStyles}
+                  key={i}
+                />
+              );
+            });
 
-          return shapes.map((shape, i) => {
-            const { size, position } = shape;
+          case 'Rectangle':
+            return shapes.map((shape, i) => {
+              const { size, position } = shape;
 
-            return (
-              <Shape
-                width={size[0]}
-                height={size[1]}
-                top={position[0]}
-                left={position[1]}
-                styles={shapeStyles}
-                key={i}
-              />
-            );
-          });
+              return (
+                <Shapes.Rectangle
+                  width={size[0]}
+                  height={size[1]}
+                  top={position[0]}
+                  left={position[1]}
+                  styles={shapeStyles as ShapeStyles}
+                  key={i}
+                />
+              );
+            });
         }
       });
 
@@ -349,7 +350,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       {objectsComponents !== null && objectsComponents}
 
       <Players />
-      <Point />
+      <FPIcon />
     </Container>
   );
 };

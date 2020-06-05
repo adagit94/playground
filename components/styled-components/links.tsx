@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const LinkStandard = styled.a`
   text-decoration: none;
-  color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.background};
 
   &:hover {
     cursor: pointer;

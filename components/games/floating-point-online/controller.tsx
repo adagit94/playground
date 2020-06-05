@@ -14,11 +14,9 @@ import { ContextUser } from 'contexts/user';
 import { FloatingPoint, GameData } from 'types/user';
 import {
   HandleData,
-  Results,
   StatesGameDB,
   StatesPlayers,
   StatesFP,
-  PlayerResultData,
   PlayerResultsData
 } from 'types/games/floating-point-online';
 
@@ -234,6 +232,7 @@ const Controller: React.FC = (): JSX.Element => {
               type: 'setData',
               payload: data as StatesPlayers
             });
+
             break;
 
           case 'fp':

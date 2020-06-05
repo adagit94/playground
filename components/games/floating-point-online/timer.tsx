@@ -14,8 +14,8 @@ const Container = styled.div`
   height: 35px;
   border: 2px solid;
   border-radius: 5px;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 const Timer: React.FC = (): JSX.Element => {

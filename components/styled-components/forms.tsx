@@ -16,8 +16,8 @@ export const FormInput = styled.input`
   border: ${borderWidthFormInput} solid;
   padding: ${paddingFormInput};
   border-radius: 5px;
-  background: ${(props): string => props.theme.inverted};
-  color: ${(props): string => props.theme.background};
+  background: ${({ theme }): string => theme.inverted};
+  color: ${({ theme }): string => theme.background};
   transition-property: box-shadow;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -36,8 +36,8 @@ export const FormButton = styled.button`
   border-bottom: transparent;
   border-left: 2px solid;
   border-radius: ${borderRadiusButton};
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
   transition-property: color, background-color, border-right-color,
     border-left-color;
   transition-duration: 0.1s;
@@ -45,10 +45,10 @@ export const FormButton = styled.button`
 
   &:hover {
     cursor: pointer;
-    border-right-color: ${(props): string => props.theme.inverted};
-    border-left-color: ${(props): string => props.theme.inverted};
-    color: ${(props): string => props.theme.inverted};
-    background-color: ${(props): string => props.theme.background};
+    border-right-color: ${({ theme }): string => theme.inverted};
+    border-left-color: ${({ theme }): string => theme.inverted};
+    color: ${({ theme }): string => theme.inverted};
+    background-color: ${({ theme }): string => theme.background};
   }
 
   &:focus {
@@ -60,18 +60,18 @@ export const FormButtonInput = styled.button`
   padding: ${paddingButton};
   font-weight: bold;
   border: ${borderWidthFormInput} solid
-    ${(props): string => props.theme.background};
+    ${({ theme }): string => theme.background};
   border-radius: ${borderRadiusButton};
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
   transition-property: color, background-color;
   transition-duration: 0.1s;
   transition-timing-function: linear;
 
   &:hover {
     cursor: pointer;
-    color: ${(props): string => props.theme.inverted};
-    background-color: ${(props): string => props.theme.background};
+    color: ${({ theme }): string => theme.inverted};
+    background-color: ${({ theme }): string => theme.background};
   }
 
   &:focus {
@@ -111,8 +111,8 @@ export const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 export const Form = styled.form`
@@ -128,14 +128,14 @@ export const FormRowVertical = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 5px 0;
-  color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.background};
 `;
 
 export const FormRowHorizontal = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.background};
 `;
 
 export const FormContainerWindow = styled.div`

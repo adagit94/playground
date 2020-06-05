@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { InputCustomRadioButtonProps } from 'types/styled-components';
+
 export const InputOptionsCommon = styled.input`
   -webkit-appearance: none;
   cursor: move;
@@ -11,7 +13,7 @@ export const InputOptionsCommon = styled.input`
 
   &::-webkit-slider-runnable-track {
     height: 1px;
-    background-color: ${(props): string => props.theme.inverted};
+    background-color: ${({ theme }): string => theme.inverted};
   }
 
   &::-webkit-slider-thumb {
@@ -20,7 +22,7 @@ export const InputOptionsCommon = styled.input`
     height: 15px;
     margin-top: -7.5px;
     border-radius: 100%;
-    background-color: ${(props): string => props.theme.inverted};
+    background-color: ${({ theme }): string => theme.inverted};
     transition-property: width, height;
     transition-duration: 0.1s;
     transition-timing-function: linear;
@@ -49,13 +51,15 @@ export const InputOptionsValue = styled.div`
   height: 25px;
 `;
 
-export const InputCustomRadioButton = styled.button`
+export const InputCustomRadioButton = styled.button<
+  InputCustomRadioButtonProps
+>`
   width: 15px;
   height: 15px;
-  border: 2px solid ${(props): string => props.theme.background};
+  border: 2px solid ${({ theme }): string => theme.background};
   border-radius: 100%;
-  background-color: ${(props): string =>
-    props.checked ? props.theme.background : props.theme.inverted};
+  background-color: ${({ checked, theme }): string =>
+    checked ? theme.background : theme.inverted};
 
   &:focus {
     outline: none;

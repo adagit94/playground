@@ -2,7 +2,12 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-type ShapeStyles = {
+type ShapeValues = {
+  size: [number, number] | number;
+  position: [number, number];
+};
+
+export type ShapeStyles = {
   transform?: string;
   borderRadius?: string;
   backgroundColor?: string;
@@ -11,11 +16,6 @@ type ShapeStyles = {
   borderBottom?: string;
   borderLeft?: string;
   animationName?: AnimationNames;
-};
-
-type ShapeValues = {
-  size: [number, number] | number;
-  position: [number, number];
 };
 
 export type AnimationNames = 'translateVertical' | 'rotate360';

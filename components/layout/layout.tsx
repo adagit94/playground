@@ -15,6 +15,23 @@ import { ContextDispatchesLayout } from 'contexts/layout';
 import { ContextFirebase } from 'contexts/firebase';
 import { DispatchesLayout, PropsLayout, Theming, Themes } from 'types/layout';
 import { InitUserFirebase, ClearUserFirebase } from 'types/auth';
+import { LayoutContainerProps } from 'types/styled-components';
+
+const Container = styled.div<LayoutContainerProps>`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: ${({ color }): string => color};
+  background-color: ${({ backgroundColor }): string => backgroundColor};
+
+  * {
+    box-sizing: border-box;
+  }
+`;
 
 const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   const router = useRouter();
@@ -43,22 +60,6 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
     background: theme === 'dark' ? '#000000' : '#ffffff',
     inverted: theme === 'dark' ? '#ffffff' : '#000000'
   };
-
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    color: ${theming.inverted};
-    background-color: ${theming.background};
-
-    * {
-      box-sizing: border-box;
-    }
-  `;
 
   if (queryUID !== undefined) {
     const sessionUID = sessionStorage.getItem('uid');
@@ -93,7 +94,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   }, []);
 
   return (
-    <Container>
+    <Container color={theming.inverted} backgroundColor={theming.background}>
       <ThemeProvider theme={theming}>
         <ContextDispatchesLayout.Provider value={dispatchesLayout}>
           <ContextFirebase.Provider value={statesFirebase}>

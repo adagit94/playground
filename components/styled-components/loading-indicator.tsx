@@ -1,4 +1,9 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, Keyframes } from 'styled-components';
+
+import {
+  LoadingIndicatorProps,
+  LoadingIndicatorFragmentsProps
+} from 'types/styled-components';
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -7,7 +12,42 @@ const LoadingContainer = styled.div`
   height: 12.5px;
 `;
 
-const LoadingIndicator = ({ color }: { color: string }): JSX.Element => {
+const LoadingFragment1 = styled.div<LoadingIndicatorFragmentsProps>`
+  flex: auto;
+  animation-name: ${({ animation }): Keyframes => animation};
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;
+
+const LoadingFragment2 = styled(LoadingFragment1)`
+  animation-delay: 0.2s;
+`;
+
+const LoadingFragment3 = styled(LoadingFragment1)`
+  animation-delay: 0.4s;
+`;
+
+const LoadingFragment4 = styled(LoadingFragment1)`
+  animation-delay: 0.6s;
+`;
+
+const LoadingIndicatorFragments: React.FC<LoadingIndicatorFragmentsProps> = ({
+  animation
+}): JSX.Element => {
+  return (
+    <>
+      <LoadingFragment1 animation={animation} />
+      <LoadingFragment2 animation={animation} />
+      <LoadingFragment3 animation={animation} />
+      <LoadingFragment4 animation={animation} />
+    </>
+  );
+};
+
+const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
+  color
+}): JSX.Element => {
   const pulsing = keyframes`
     0% {
       background-color: unset;
@@ -22,32 +62,9 @@ const LoadingIndicator = ({ color }: { color: string }): JSX.Element => {
     }
     `;
 
-  const LoadingFragment1 = styled.div`
-    flex: auto;
-    animation-name: ${pulsing};
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-  `;
-
-  const LoadingFragment2 = styled(LoadingFragment1)`
-    animation-delay: 0.2s;
-  `;
-
-  const LoadingFragment3 = styled(LoadingFragment1)`
-    animation-delay: 0.4s;
-  `;
-
-  const LoadingFragment4 = styled(LoadingFragment1)`
-    animation-delay: 0.6s;
-  `;
-
   return (
     <LoadingContainer>
-      <LoadingFragment1 />
-      <LoadingFragment2 />
-      <LoadingFragment3 />
-      <LoadingFragment4 />
+      <LoadingIndicatorFragments animation={pulsing} />
     </LoadingContainer>
   );
 };

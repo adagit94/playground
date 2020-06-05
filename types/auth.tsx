@@ -3,10 +3,10 @@ import { HandleLoading } from 'types/firebase';
 type ValidatorReturn = {
   validPassword: boolean;
   equalPasswords: boolean;
-  count: boolean;
-  upper: boolean;
-  num: boolean;
-  special: boolean;
+  validCount: boolean;
+  includesUpper: boolean;
+  includesNum: boolean;
+  includesSpecial: boolean;
 };
 
 export type InitUserFirebase = (user: firebase.User) => void;

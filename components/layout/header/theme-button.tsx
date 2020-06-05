@@ -14,6 +14,23 @@ const Container = styled.div`
   border: 2px solid;
 `;
 
+const Button = styled.input`
+  position: absolute;
+  top: ${({ theme }): number => (theme.theme === 'dark' ? 50 : 0)}%;
+  width: 100%;
+  height: 50%;
+  border: none;
+  background-color: ${({ theme }): string => theme.inverted};
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 const ThemeButton: React.FC = (): JSX.Element => {
   const theming: Theming = useContext(ThemeContext);
   const dispatches = useContext(ContextDispatchesLayout);
@@ -32,23 +49,6 @@ const ThemeButton: React.FC = (): JSX.Element => {
       }
     );
   };
-
-  const Button = styled.input`
-    position: absolute;
-    top: ${theming.theme === 'dark' ? '50%' : 0};
-    width: 100%;
-    height: 50%;
-    border: none;
-    background-color: ${(props): string => props.theme.inverted};
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  `;
 
   return (
     <Container>

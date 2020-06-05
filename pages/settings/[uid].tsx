@@ -27,8 +27,8 @@ const Form = styled.form`
   flex-direction: column;
   padding: 10px;
   border-radius: 5px;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 const InputFile = styled.input`

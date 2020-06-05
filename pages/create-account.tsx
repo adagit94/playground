@@ -11,59 +11,74 @@ import {
 } from 'components/styled-components/forms';
 
 import { createUser, validator } from '../firebase/auth';
+import {
+  CountProps,
+  UpperProps,
+  NumProps,
+  SpecialProps,
+  LabelPasswordProps,
+  LabelPasswordConfirmProps
+} from 'types/styled-components';
+
+const ValidationWindow = styled(FormWindowValidation)`
+  visibility: ${(props): string =>
+    props.typedPassword ? 'visible' : 'hidden'};
+`;
+
+const Count = styled.li<CountProps>`
+  color: ${({ validCount }): string => (validCount ? '#00ff00' : '#ff0000')};
+`;
+
+const Upper = styled.li<UpperProps>`
+  color: ${({ includesUpper }): string =>
+    includesUpper ? '#00ff00' : '#ff0000'};
+`;
+
+const Num = styled.li<NumProps>`
+  color: ${({ includesNum }): string => (includesNum ? '#00ff00' : '#ff0000')};
+`;
+
+const Special = styled.li<SpecialProps>`
+  color: ${({ includesSpecial }): string =>
+    includesSpecial ? '#00ff00' : '#ff0000'};
+`;
+
+const LabelPassword = styled.label<LabelPasswordProps>`
+  color: ${({ highlightInvalid, validPassword }): string =>
+    highlightInvalid && !validPassword && '#ff0000'};
+`;
+
+const LabelPasswordConfirm = styled.label<LabelPasswordConfirmProps>`
+  color: ${({ highlightInvalid, equalPasswords }): string =>
+    highlightInvalid && !equalPasswords && '#ff0000'};
+`;
 
 const CreateAccount: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [markedInvalid, setMarkedInvalid] = useState(false);
+  const [highlightInvalid, setHighlightInvalid] = useState(false);
 
   const {
     validPassword,
     equalPasswords,
-    count,
-    upper,
-    num,
-    special
+    validCount,
+    includesUpper,
+    includesNum,
+    includesSpecial
   } = validator(password, passwordConfirm);
-
-  const ValidationWindow = styled(FormWindowValidation)`
-    visibility: ${password ? 'visible' : 'hidden'};
-  `;
-
-  const Count = styled.li`
-    color: ${count === true ? '#00ff00' : '#ff0000'};
-  `;
-
-  const Upper = styled.li`
-    color: ${upper === true ? '#00ff00' : '#ff0000'};
-  `;
-
-  const Num = styled.li`
-    color: ${num === true ? '#00ff00' : '#ff0000'};
-  `;
-
-  const Special = styled.li`
-    color: ${special === true ? '#00ff00' : '#ff0000'};
-  `;
-
-  const LabelPassword = styled.label`
-    color: ${markedInvalid && !validPassword && '#ff0000'};
-  `;
-
-  const LabelPasswordConfirm = styled.label`
-    color: ${markedInvalid && !equalPasswords && '#ff0000'};
-  `;
 
   return (
     <FormContainer>
-      <ValidationWindow>
+      <ValidationWindow typedPassword={password.length > 0}>
         Password must contain at least:
         <ul>
-          <Count>8 characters</Count>
-          <Upper>One uppercase letter</Upper>
-          <Num>One number</Num>
-          <Special>One special character</Special>
+          <Count validCount={validCount}>8 characters</Count>
+          <Upper includesUpper={includesUpper}>One uppercase letter</Upper>
+          <Num includesNum={includesNum}>One number</Num>
+          <Special includesSpecial={includesSpecial}>
+            One special character
+          </Special>
         </ul>
       </ValidationWindow>
       <Form
@@ -73,7 +88,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
           if (validPassword && equalPasswords) {
             createUser(email, password);
           } else {
-            setMarkedInvalid(true);
+            setHighlightInvalid(true);
           }
         }}
       >
@@ -91,7 +106,13 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </FormRowVertical>
         <FormRowVertical>
-          <LabelPassword htmlFor='password'>Password: </LabelPassword>
+          <LabelPassword
+            highlightInvalid={highlightInvalid}
+            validPassword={validPassword}
+            htmlFor='password'
+          >
+            Password:{' '}
+          </LabelPassword>
           <FormInput
             onChange={(e): void => {
               setPassword(e.target.value);
@@ -105,7 +126,11 @@ const CreateAccount: React.FC = (): JSX.Element => {
           />
         </FormRowVertical>
         <FormRowVertical>
-          <LabelPasswordConfirm htmlFor='password-confirm'>
+          <LabelPasswordConfirm
+            highlightInvalid={highlightInvalid}
+            equalPasswords={equalPasswords}
+            htmlFor='password-confirm'
+          >
             Confirm password:
           </LabelPasswordConfirm>
           <FormInput

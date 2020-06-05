@@ -13,8 +13,8 @@ export const WindowStats = styled.div`
   height: 100%;
   padding: ${paddingContainer};
   border-radius: ${borderRadiusWindow};
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 export const WindowStatsUser = styled.div`
@@ -73,8 +73,8 @@ export const WindowEval = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 export const WindowEvalResults = styled.div`

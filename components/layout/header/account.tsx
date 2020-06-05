@@ -6,9 +6,11 @@ import $ from 'jquery';
 import LogIn from './log-in';
 import Profile from './profile';
 
+import Avatar from 'components/styled-components/avatar';
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 
-import { Theming, PropsAvatar } from 'types/layout';
+import { Theming } from 'types/layout';
+import { SliderProps } from 'types/styled-components';
 import { ContextFirebase } from 'contexts/firebase';
 
 const toggleSlider = (): void => {
@@ -22,7 +24,7 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   width: 150px;
-  background-color: ${(props): string => props.theme.inverted};
+  background-color: ${({ theme }): string => theme.inverted};
 `;
 
 const Button = styled.button`
@@ -35,7 +37,7 @@ const Button = styled.button`
   font-size: 1.1rem;
   font-weight: bold;
   border: none;
-  color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.background};
   background-color: transparent;
   transition-property: font-size;
   transition-duration: 0.1s;
@@ -51,20 +53,15 @@ const Button = styled.button`
   }
 `;
 
-const Avatar: React.FC<PropsAvatar> = ({ user, theme }): JSX.Element => {
-  const avatar = user.photoURL;
-  const avatarPlaceholder = `${window.location.origin}/icons/account-${theme}.svg`;
-
-  const Avatar = styled.div`
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    background-image: url(${avatar ? avatar : avatarPlaceholder});
-    background-size: contain;
-  `;
-
-  return <Avatar />;
-};
+const Slider = styled.div<SliderProps>`
+  position: absolute;
+  top: 75px;
+  right: 0;
+  width: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
+  height: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
+  z-index: 1;
+  background-color: ${(props): string => props.theme.inverted};
+`;
 
 const Account: React.FC = (): JSX.Element => {
   const theming: Theming = useContext(ThemeContext);
@@ -72,14 +69,8 @@ const Account: React.FC = (): JSX.Element => {
 
   const { user, isAuthenticated, loading } = statesFirebase;
 
-  const Slider = styled.div`
-    position: absolute;
-    top: 75px;
-    right: 0;
-    width: ${isAuthenticated ? 150 : 300}px;
-    height: ${isAuthenticated ? 150 : 300}px;
-    z-index: 1;
-    background-color: ${(props): string => props.theme.inverted};
+  const HiddenSlider = styled(Slider)`
+    display: none;
   `;
 
   return (
@@ -88,17 +79,19 @@ const Account: React.FC = (): JSX.Element => {
 
       {!loading && (
         <Button onClick={toggleSlider} type='button'>
-          {isAuthenticated && <Avatar user={user} theme={theming.theme} />}
+          {isAuthenticated && (
+            <Avatar width={50} height={50} avatar={user.photoURL} />
+          )}
 
           {!isAuthenticated && 'Log in'}
         </Button>
       )}
 
-      <Slider style={{ display: 'none' }} id='slider'>
+      <HiddenSlider isAuthenticated={isAuthenticated} id='slider'>
         {isAuthenticated && <Profile />}
 
         {!isAuthenticated && <LogIn />}
-      </Slider>
+      </HiddenSlider>
     </Container>
   );
 };

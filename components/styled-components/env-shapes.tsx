@@ -1,20 +1,24 @@
 import styled, { keyframes, css } from 'styled-components';
 
-import { GetKeyframe } from 'types/styled-components';
-import { AnimationNames } from 'types/games/floating-point-online';
+import {
+  GetKeyframe,
+  RectangleShapeProps,
+  CircleShapeProps
+} from 'types/styled-components';
 
 const getKeyframe: GetKeyframe = props => {
-  const animationName: AnimationNames = props.styles.animationName;
+  const { animationName } = props.styles;
 
   let keyframe;
 
   if (animationName === 'translateVertical') {
-    const from = props.top;
-    const to = props.top < 50 ? 50 - props.height : 50;
+    const { top, height } = props;
+
+    const to = top < 50 ? 50 - height : 50;
 
     keyframe = keyframes`
       0% {
-        top: ${from}%;
+        top: ${top}%;
       } 
   
       50% {
@@ -22,7 +26,7 @@ const getKeyframe: GetKeyframe = props => {
       }
   
       100% {
-        top:${from}%;
+        top:${top}%;
       }
     `;
   } else if (animationName === 'rotate360') {
@@ -42,41 +46,41 @@ const getKeyframe: GetKeyframe = props => {
   `;
 };
 
-export const Rectangle = styled.div`
+export const Rectangle = styled.div<RectangleShapeProps>`
   position: absolute;
-  top: ${(props): number => props.top}%;
-  left: ${(props): number => props.left}%;
-  width: ${(props): number => props.width}%;
-  height: ${(props): number => props.height}%;
-  border-top: ${(props): number => props.styles?.borderTop};
-  border-right: ${(props): number => props.styles?.borderRight};
-  border-bottom: ${(props): number => props.styles?.borderBottom};
-  border-left: ${(props): number => props.styles?.borderLeft};
-  background-color: ${(props): string =>
-    props.styles?.backgroundColor || props.theme.inverted};
-  border-radius: ${(props): number => props.styles?.borderRadius};
-  background-color: ${(props): string =>
-    props.styles?.backgroundColor || props.theme.inverted};
-  animation-name: ${(props): Function =>
-    props.styles?.animationName && getKeyframe};
-  animation-duration: ${(props): string => props.styles?.animationName && '2s'};
-  animation-timing-function: ${(props): string =>
-    props.styles?.animationName && 'linear'};
-  animation-iteration-count: ${(props): string =>
-    props.styles?.animationName && 'infinite'};
+  top: ${({ top }): number => top}%;
+  left: ${({ left }): number => left}%;
+  width: ${({ width }): number => width}%;
+  height: ${({ height }): number => height}%;
+  border-top: ${({ styles }): string => styles?.borderTop};
+  border-right: ${({ styles }): string => styles?.borderRight};
+  border-bottom: ${({ styles }): string => styles?.borderBottom};
+  border-left: ${({ styles }): string => styles?.borderLeft};
+  background-color: ${({ styles, theme }): string =>
+    styles?.backgroundColor || theme.inverted};
+  border-radius: ${({ styles }): string => styles?.borderRadius};
+  background-color: ${({ styles, theme }): string =>
+    styles?.backgroundColor || theme.inverted};
+  animation-name: ${({ styles }): GetKeyframe =>
+    styles?.animationName && getKeyframe};
+  animation-duration: ${({ styles }): string => styles?.animationName && '2s'};
+  animation-timing-function: ${({ styles }): string =>
+    styles?.animationName && 'linear'};
+  animation-iteration-count: ${({ styles }): string =>
+    styles?.animationName && 'infinite'};
 `;
 
-export const Circle = styled.div`
+export const Circle = styled.div<CircleShapeProps>`
   position: absolute;
-  top: ${(props): number => props.top}%;
-  left: ${(props): number => props.left}%;
-  width: ${(props): number => props.size}px;
-  height: ${(props): number => props.size}px;
-  border-top: ${(props): number => props.styles?.borderTop};
-  border-right: ${(props): number => props.styles?.borderRight};
-  border-bottom: ${(props): number => props.styles?.borderBottom};
-  border-left: ${(props): number => props.styles?.borderLeft};
+  top: ${({ top }): number => top}%;
+  left: ${({ left }): number => left}%;
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
+  border-top: ${({ styles }): string => styles?.borderTop};
+  border-right: ${({ styles }): string => styles?.borderRight};
+  border-bottom: ${({ styles }): string => styles?.borderBottom};
+  border-left: ${({ styles }): string => styles?.borderLeft};
   border-radius: 100%;
-  background-color: ${(props): string =>
-    props.styles?.backgroundColor || props.theme.inverted};
+  background-color: ${({ styles, theme }): string =>
+    styles?.backgroundColor || theme.inverted};
 `;

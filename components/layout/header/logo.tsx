@@ -13,7 +13,7 @@ const Container = styled.div`
 const Square = styled.div`
   width: 50px;
   height: 50px;
-  border: 2px solid ${(props): string => props.theme.inverted};
+  border: 2px solid ${({ theme }): string => theme.inverted};
   transform: rotateZ(45deg);
   transition-property: border-color, background-color, width, height;
   transition-duration: 0.1s;
@@ -21,25 +21,25 @@ const Square = styled.div`
 
   &:hover {
     transition-delay: 0.1s;
-    border-color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
+    border-color: ${({ theme }): string => theme.background};
+    background-color: ${({ theme }): string => theme.inverted};
     background-clip: content-box;
 
     #circle {
       transition-delay: 0.1s;
       width: 25px;
       height: 25px;
-      background-color: ${(props): string => props.theme.background};
+      background-color: ${({ theme }): string => theme.background};
     }
 
     #lineVertical {
       height: 0;
-      background-color: ${(props): string => props.theme.background};
+      background-color: ${({ theme }): string => theme.background};
     }
 
     #lineHorizontal {
       width: 0;
-      background-color: ${(props): string => props.theme.background};
+      background-color: ${({ theme }): string => theme.background};
     }
   }
 `;
@@ -62,7 +62,7 @@ const Circle = styled.div`
   height: 10px;
   border-radius: 100%;
   z-index: 1;
-  background-color: ${(props): string => props.theme.inverted};
+  background-color: ${({ theme }): string => theme.inverted};
   transition-property: background-color, width, height;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -72,7 +72,7 @@ const LineVertical = styled.div`
   position: absolute;
   width: 2px;
   height: 68px;
-  background-color: ${(props): string => props.theme.inverted};
+  background-color: ${({ theme }): string => theme.inverted};
   transition-property: height, background-color, transform;
   transition-duration: 0.1s;
   transition-timing-function: linear;
@@ -82,7 +82,7 @@ const LineHorizontal = styled.div`
   position: absolute;
   width: 68px;
   height: 2px;
-  background-color: ${(props): string => props.theme.inverted};
+  background-color: ${({ theme }): string => theme.inverted};
   transition-property: width, background-color, transform;
   transition-duration: 0.1s;
   transition-timing-function: linear;

@@ -14,7 +14,9 @@ export const borderRadiusLink = '5px';
 
 export const borderRadiusWindow = '5px';
 
-export const widthStatsItem = '200px';
+export const borderColorHighlight = '#f00';
+
+export const widthStatsItem = '220px';
 
 export const heightStatsItem = '20px';
 

@@ -25,14 +25,14 @@ const PillarDivider: React.FC = (): JSX.Element => {
 
   const PillarDividerLeft = styled.div`
     width: 5px;
-    border: 2px solid ${(props): string => props.theme.inverted};
+    border: 2px solid ${({ theme }): string => theme.inverted};
     border-left: none;
     border-radius: 0 15px 15px 0;
   `;
 
   const PillarDividerRight = styled.div`
     width: 5px;
-    border: 2px solid ${(props): string => props.theme.inverted};
+    border: 2px solid ${({ theme }): string => theme.inverted};
     border-right: none;
     border-radius: 15px 0 0 15px;
   `;

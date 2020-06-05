@@ -2,6 +2,7 @@ import Router from 'next/router';
 import { useContext, useEffect, useState, memo, useRef } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
+import Avatar from 'components/styled-components/avatar';
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 import {
   paddingButton,
@@ -9,7 +10,8 @@ import {
   borderRadiusButton,
   heightContainerOptionsItem,
   widthStatsItem,
-  heightStatsItem
+  heightStatsItem,
+  borderColorHighlight
 } from 'components/styled-components/_variables';
 
 import {
@@ -33,6 +35,8 @@ import {
   PropsOptionsPlayer,
   EnvNames
 } from 'types/games/floating-point-online';
+
+import { ContainerStatsProps, ButtonReadyProps } from 'types/styled-components';
 
 import {
   crudDataGamePlayer,
@@ -74,15 +78,15 @@ const ContainerInfo = styled.div`
 const ButtonStart = styled.button`
   padding: ${paddingButton};
   font-weight: bold;
-  border: ${borderWidthButton} solid ${(props): string => props.theme.inverted};
+  border: ${borderWidthButton} solid ${({ theme }): string => theme.inverted};
   border-radius: ${borderRadiusButton};
-  color: ${(props): string => props.theme.inverted};
-  background-color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.inverted};
+  background-color: ${({ theme }): string => theme.background};
 
   &:hover {
     cursor: pointer;
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
+    color: ${({ theme }): string => theme.background};
+    background-color: ${({ theme }): string => theme.inverted};
   }
 
   &:focus {
@@ -102,6 +106,44 @@ const ContainerAvatar = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const ContainerStats = styled.div<ContainerStatsProps>`
+  position: absolute;
+  top: calc(
+    -30px - ${({ statsLength }): number => statsLength} * ${heightStatsItem}
+  );
+  left: calc(50% - ${widthStatsItem} / 2);
+  visibility: hidden;
+`;
+
+const ButtonReady = styled.button<ButtonReadyProps>`
+  padding: ${paddingButton};
+  font-weight: bold;
+  border: ${borderWidthButton} solid
+    ${({ theme, isReady, highlightUnready }): string =>
+      !isReady && highlightUnready ? borderColorHighlight : theme.inverted};
+  border-radius: ${borderRadiusButton};
+  color: ${({ theme, isReady }): string =>
+    isReady ? theme.background : theme.inverted};
+  background-color: ${({ theme, isReady }): string =>
+    isReady ? theme.inverted : theme.background};
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const ButtonReadyClickable = styled(ButtonReady)`
+  transition-property: color, background-color;
+  transition-duration: 0.1s;
+  transition-timing-function: linear;
+
+  &:hover {
+    cursor: pointer;
+    color: ${({ theme }): string => theme.background};
+    background-color: ${({ theme }): string => theme.inverted};
+  }
 `;
 
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
@@ -129,56 +171,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const stateRef = useRef(state);
   const timestampStartRef = useRef(timestampStart);
   const playersRef = useRef(players);
-
-  const ContainerStats = styled.div`
-    position: absolute;
-    top: calc(-30px - ${gameStats.length} * ${heightStatsItem});
-    left: calc(50% - ${widthStatsItem} / 2);
-    visibility: hidden;
-  `;
-
-  const ButtonReady = styled.button`
-    padding: ${paddingButton};
-    font-weight: bold;
-    border: ${borderWidthButton} solid
-      ${(props): string =>
-        playerData && !playerData.isReady && highlightUnready
-          ? '#f00'
-          : props.theme.inverted};
-    border-radius: ${borderRadiusButton};
-    color: ${(props): string =>
-      playerData && playerData.isReady
-        ? props.theme.background
-        : props.theme.inverted};
-    background-color: ${(props): string =>
-      playerData && playerData.isReady
-        ? props.theme.inverted
-        : props.theme.background};
-
-    &:focus {
-      outline: none;
-    }
-  `;
-
-  const ButtonReadyClickable = styled(ButtonReady)`
-    transition-property: color, background-color;
-    transition-duration: 0.1s;
-    transition-timing-function: linear;
-
-    &:hover {
-      cursor: pointer;
-      color: ${(props): string => props.theme.background};
-      background-color: ${(props): string => props.theme.inverted};
-    }
-  `;
-
-  const Avatar = styled.div`
-    width: 75px;
-    height: 75px;
-    border-radius: 100%;
-    background-image: url(${playerData && playerData.avatar});
-    background-size: contain;
-  `;
 
   const handleInit = (): void => {
     //if (players.length < 2) return;
@@ -316,7 +308,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           {state === 'conf' && (
             <>
               {gameStats.length !== 0 && (
-                <ContainerStats id='stats'>
+                <ContainerStats statsLength={gameStats.length} id='stats'>
                   <WindowStats>
                     <WindowStatsGame>
                       <ul>
@@ -350,6 +342,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
                         isReady: playerData.isReady ? false : true
                       });
                     }}
+                    isReady={playerData.isReady}
+                    highlightUnready={highlightUnready}
                     type='button'
                   >
                     Ready
@@ -357,7 +351,13 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
                 )}
 
                 {uid !== player && (
-                  <ButtonReady type='button'>Ready</ButtonReady>
+                  <ButtonReady
+                    isReady={playerData.isReady}
+                    highlightUnready={highlightUnready}
+                    type='button'
+                  >
+                    Ready
+                  </ButtonReady>
                 )}
               </ContainerButtons>
             </>
@@ -370,7 +370,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           </ContainerInfo>
 
           <ContainerAvatar>
-            <Avatar />
+            <Avatar width={75} height={75} avatar={playerData?.avatar} />
           </ContainerAvatar>
         </>
       )}

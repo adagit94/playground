@@ -1,7 +1,6 @@
 import { memo, useContext, Fragment, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { paddingContainer } from 'components/styled-components/_variables';
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 import { InputCustomRadioButton } from 'components/styled-components/inputs';
 import {
@@ -9,10 +8,16 @@ import {
   DividerHorizontal
 } from 'components/styled-components/dividers';
 
+import {
+  paddingContainer,
+  borderColorHighlight
+} from 'components/styled-components/_variables';
+
 import { crudDataGamePlayer, crudDataGame } from 'firebase/db';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { Theming } from 'types/layout';
+import { EnvOptionsContainerProps } from 'types/styled-components';
 import { EnvNames, PropsEnvOptions } from 'types/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import {
@@ -20,17 +25,19 @@ import {
   ContextPlayers
 } from 'contexts/games/floating-point-online';
 
-const Container = styled.div`
+const Container = styled.div<EnvOptionsContainerProps>`
   flex: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  border: ${(props): string => props.highlight && '2px solid #f00'};
+  border: 2px solid
+    ${({ highlightEnvOptions, voted }): string =>
+      highlightEnvOptions && !voted ? borderColorHighlight : 'transparent'};
   border-radius: 5px;
   padding: ${paddingContainer};
-  color: ${(props): string => props.theme.background};
-  background-color: ${(props): string => props.theme.inverted};
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
 
   ul {
     width: 100%;
@@ -119,7 +126,7 @@ const EnvOptions: React.FC<PropsEnvOptions> = ({
   }, [state, envVotes]);
 
   return (
-    <Container highlight={highlightEnvOptions && !voted}>
+    <Container highlightEnvOptions={highlightEnvOptions} voted={voted}>
       <h3>Enviroments:</h3>
       {envVotes === undefined && (
         <LoadingIndicator color={theming.background} />

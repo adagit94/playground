@@ -24,8 +24,3 @@ export type Theming = {
   background: Colors;
   inverted: Colors;
 };
-
-export type PropsAvatar = {
-  user: firebase.User;
-  theme: Themes;
-};

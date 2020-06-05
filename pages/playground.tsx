@@ -28,8 +28,8 @@ const Container = styled.div`
       width: 150px;
       height: 150px;
       border-radius: 5px;
-      color: ${(props): string => props.theme.background};
-      background-color: ${(props): string => props.theme.inverted};
+      color: ${({ theme }): string => theme.background};
+      background-color: ${({ theme }): string => theme.inverted};
 
       &:hover {
         h3 {
@@ -60,18 +60,18 @@ const Mode = styled.div`
     align-items: center;
     width: 40%;
     height: 20%;
-    border: 2px solid ${(props): string => props.theme.background};
+    border: 2px solid ${({ theme }): string => theme.background};
     border-radius: ${borderRadiusLink};
-    color: ${(props): string => props.theme.background};
-    background-color: ${(props): string => props.theme.inverted};
+    color: ${({ theme }): string => theme.background};
+    background-color: ${({ theme }): string => theme.inverted};
     text-decoration: none;
     transition-property: color, background-color;
     transition-duration: 0.1s;
     transition-timing-function: linear;
 
     &:hover {
-      color: ${(props): string => props.theme.inverted};
-      background-color: ${(props): string => props.theme.background};
+      color: ${({ theme }): string => theme.inverted};
+      background-color: ${({ theme }): string => theme.background};
     }
 
     &:focus {

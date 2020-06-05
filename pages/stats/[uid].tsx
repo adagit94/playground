@@ -31,6 +31,12 @@ const HeadingGame = styled.h3`
   margin: 0;
 `;
 
+const WindowStatsExtended = styled(WindowStats)`
+  justify-content: ${(props): string => (props.haveStats ? 'start' : 'center')};
+  align-items: ${(props): string =>
+    props.haveStats ? 'flex-start' : 'center'};
+`;
+
 const Stats: React.FC = (): JSX.Element => {
   const [userStats, setUserStats] = useState([]);
   const [gamesStats, setGamesStats] = useState([]);
@@ -40,10 +46,7 @@ const Stats: React.FC = (): JSX.Element => {
 
   const { background } = theming;
 
-  const Stats = styled(WindowStats)`
-    justify-content: ${userStats.length === 0 ? 'center' : 'start'};
-    align-items: ${userStats.length === 0 ? 'center' : 'flex-start'};
-  `;
+  const haveStats = userStats.length !== 0 && gamesStats.length !== 0;
 
   useEffect(() => {
     if (
@@ -122,10 +125,10 @@ const Stats: React.FC = (): JSX.Element => {
 
   return (
     <Container>
-      <Stats>
-        {userStats.length === 0 && <LoadingIndicator color={background} />}
+      <WindowStatsExtended haveStats={haveStats}>
+        {!haveStats && <LoadingIndicator color={background} />}
 
-        {userStats.length !== 0 && (
+        {haveStats && (
           <>
             <WindowStatsUser>
               <ul>
@@ -181,7 +184,7 @@ const Stats: React.FC = (): JSX.Element => {
             </WindowStatsGames>
           </>
         )}
-      </Stats>
+      </WindowStatsExtended>
     </Container>
   );
 };

@@ -1,9 +1,31 @@
 import { useContext, memo } from 'react';
-import styled, { keyframes, ThemeContext } from 'styled-components';
+import styled, { keyframes, ThemeContext, Keyframes } from 'styled-components';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { Theming } from 'types/layout';
+import { FPIconProps, AnimProps } from 'types/styled-components';
 import { ContextFP } from 'contexts/games/floating-point-online';
+
+const FPIcon = styled.div<FPIconProps>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: ${({ top }): number => top}%;
+  left: ${({ left }): number => left}%;
+  width: ${({ size }): number => size}px;
+  height: ${({ size }): number => size}px;
+  border-radius: 100%;
+`;
+
+const Anim = styled.div<AnimProps>`
+  border-radius: 100%;
+  animation-name: ${({ animation }): Keyframes => animation};
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+`;
 
 const Point: React.FC = (): JSX.Element => {
   const statesFP = useContext(ContextFP);
@@ -12,19 +34,6 @@ const Point: React.FC = (): JSX.Element => {
   const { top, left } = statesFP;
 
   const { size } = DEFAULTS;
-
-  const Point = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: ${top}%;
-    left: ${left}%;
-    width: ${size}px;
-    height: ${size}px;
-    border-radius: 100%;
-  `;
 
   const waving = keyframes`
     from {
@@ -40,18 +49,10 @@ const Point: React.FC = (): JSX.Element => {
     }
 `;
 
-  const InnerCircle = styled.div`
-    border-radius: 100%;
-    animation-name: ${waving};
-    animation-duration: 1s;
-    animation-timing-function: ease-in;
-    animation-iteration-count: infinite;
-  `;
-
   return (
-    <Point>
-      <InnerCircle />
-    </Point>
+    <FPIcon top={top} left={left} size={size}>
+      <Anim animation={waving} />
+    </FPIcon>
   );
 };
 

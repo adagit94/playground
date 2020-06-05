@@ -154,19 +154,28 @@ export const resetPassword: ResetPassword = async email => {
 export const validator: Validator = (password, passwordConfirm) => {
   let validPassword = false;
   let equalPasswords = false;
-  let count = false;
-  let upper = false;
-  let num = false;
-  let special = false;
+  let validCount = false;
+  let includesUpper = false;
+  let includesNum = false;
+  let includesSpecial = false;
 
-  if (password.length > 7) count = true;
-  if (/[A-Z]/.test(password)) upper = true;
-  if (/\d/.test(password)) num = true;
-  if (/\W/.test(password)) special = true;
+  if (password.length > 7) validCount = true;
+  if (/[A-Z]/.test(password)) includesUpper = true;
+  if (/\d/.test(password)) includesNum = true;
+  if (/\W/.test(password)) includesSpecial = true;
 
   if (password === passwordConfirm) equalPasswords = true;
 
-  if (count && upper && num && special) validPassword = true;
+  if (validCount && includesUpper && includesNum && includesSpecial) {
+    validPassword = true;
+  }
 
-  return { validPassword, equalPasswords, count, upper, num, special };
+  return {
+    validPassword,
+    equalPasswords,
+    validCount,
+    includesUpper,
+    includesNum,
+    includesSpecial
+  };
 };

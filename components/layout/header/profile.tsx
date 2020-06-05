@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: space-around;
   width: 100%;
   height: 100%;
-  color: ${(props): string => props.theme.background};
+  color: ${({ theme }): string => theme.background};
 `;
 
 const Row = styled.div`
@@ -25,7 +25,7 @@ const Row = styled.div`
 
   a {
     text-decoration: none;
-    color: ${(props): string => props.theme.background};
+    color: ${({ theme }): string => theme.background};
 
     &:hover {
       cursor: pointer;
