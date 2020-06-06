@@ -176,10 +176,10 @@ const Controller: React.FC = (): JSX.Element => {
           });
         }
 
-        /*updatePlayedTime('floatingPoint', players, [
+        updatePlayedTime('floatingPoint', players, [
           statesGame.timestampStart,
           statesGame.timestampEnd
-        ]);*/
+        ]);
       };
 
       evalGame();
