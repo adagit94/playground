@@ -48,7 +48,8 @@ export const Shape = styled.div<ShapeProps>`
   left: ${({ left }): number => left}%;
   width: ${({ styles }): string =>
     styles.width + (styles?.borderRadius === '100%' ? 'px' : '%')};
-  height: ${({ styles }): number => styles.height}%;
+  height: ${({ styles }): string =>
+    styles.height + (styles?.borderRadius === '100%' ? 'px' : '%')};
   border-top: ${({ styles }): string => styles?.borderTop};
   border-right: ${({ styles }): string => styles?.borderRight};
   border-bottom: ${({ styles }): string => styles?.borderBottom};
