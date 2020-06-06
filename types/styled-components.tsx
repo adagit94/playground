@@ -1,6 +1,6 @@
 import { Keyframes } from 'styled-components';
 
-import { ShapeStyles } from 'types/games/floating-point-online';
+import { EnvObjectStyles, ShapeNames } from 'types/games/floating-point-online';
 
 type Icon = {
   readonly top: number;
@@ -53,19 +53,10 @@ export type DividerProps = {
   readonly color: string;
 };
 
-export type RectangleShapeProps = {
+export type ShapeProps = {
   readonly top: number;
   readonly left: number;
-  readonly width: number;
-  readonly height: number;
-  readonly styles: ShapeStyles;
-};
-
-export type CircleShapeProps = {
-  readonly top: number;
-  readonly left: number;
-  readonly size: number;
-  readonly styles: ShapeStyles;
+  readonly styles: EnvObjectStyles;
 };
 
 export type InputCustomRadioButtonProps = {

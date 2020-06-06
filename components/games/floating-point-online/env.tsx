@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Players from './players';
 import FPIcon from './point';
 
-import * as Shapes from 'components/styled-components/env-shapes';
+import { Shape } from 'components/styled-components/env-shape';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
@@ -21,9 +21,7 @@ import {
   ControlKeys,
   Key,
   CheckOverlap,
-  Position,
-  ShapeNames,
-  ShapeStyles
+  Position
 } from 'types/games/floating-point-online';
 
 import {
@@ -91,43 +89,31 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const playerLocalTop = statesPlayers[playerLocal]?.top;
   const playerLocalLeft = statesPlayers[playerLocal]?.left;
 
-  const pointWidthPerc = (size / width) * 100;
-  const pointHeightPerc = (size / height) * 100;
+  const pointWidth = (size / width) * 100;
+  const pointHeight = (size / height) * 100;
 
   const handleMoveRef = useRef(null);
 
   const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
     for (const object of objectsDefinitions) {
-      if (object.shape === 'Circle') {
-        for (const shape of object.shapes) {
-          const shapeSize = shape.size as number;
-          const [shapeTop, shapeLeft] = shape.position;
+      const { styles, positions } = object;
+      let { width: objectWidth, height: objectHeight } = styles;
 
-          const shapeWidthPerc = (shapeSize / width) * 100;
-          const shapeHeightPerc = (shapeSize / height) * 100;
+      for (const position of positions) {
+        const [objectTop, objectLeft] = position;
 
-          if (
-            pointTop + pointHeightPerc >= shapeTop &&
-            pointTop <= shapeTop + shapeHeightPerc &&
-            pointLeft + pointWidthPerc >= shapeLeft &&
-            pointLeft <= shapeLeft + shapeWidthPerc
-          ) {
-            return true;
-          }
+        if (object.styles?.borderRadius === '100%') {
+          objectWidth = (objectWidth / width) * 100;
+          objectHeight = (objectHeight / height) * 100;
         }
-      } else {
-        for (const shape of object.shapes) {
-          const [shapeWidth, shapeHeight] = shape.size as [number, number];
-          const [shapeTop, shapeLeft] = shape.position;
 
-          if (
-            pointTop + pointHeightPerc >= shapeTop &&
-            pointTop <= shapeTop + shapeHeight &&
-            pointLeft + pointWidthPerc >= shapeLeft &&
-            pointLeft <= shapeLeft + shapeWidth
-          ) {
-            return true;
-          }
+        if (
+          pointTop + pointHeight >= objectTop &&
+          pointTop <= objectTop + objectHeight &&
+          pointLeft + pointWidth >= objectLeft &&
+          pointLeft <= objectLeft + objectWidth
+        ) {
+          return true;
         }
       }
     }
@@ -137,10 +123,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const fpOverlap = (): void => {
     if (
-      playerLocalTop + pointHeightPerc >= fpTop &&
-      playerLocalTop <= fpTop + pointHeightPerc &&
-      playerLocalLeft + pointWidthPerc >= fpLeft &&
-      playerLocalLeft <= fpLeft + pointWidthPerc
+      playerLocalTop + pointHeight >= fpTop &&
+      playerLocalTop <= fpTop + pointHeight &&
+      playerLocalLeft + pointWidth >= fpLeft &&
+      playerLocalLeft <= fpLeft + pointWidth
     ) {
       let fpTop: number;
       let fpLeft: number;
@@ -271,46 +257,13 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   useEffect(() => {
     if (objectsDefinitions !== null && objectsComponents === null) {
       const components = objectsDefinitions.map(object => {
-        const { shape, shapes } = object;
+        const { styles, positions } = object;
 
-        const includeStyles = Array.isArray(shape);
+        return positions.map((pos, i) => {
+          const [top, left] = pos;
 
-        const shapeName = includeStyles ? shape[0] : shape;
-        const shapeStyles = includeStyles ? shape[1] : null;
-
-        switch (shapeName) {
-          case 'Circle':
-            return shapes.map((shape, i) => {
-              const { size, position } = shape;
-
-              return (
-                <Shapes.Circle
-                  size={size as number}
-                  top={position[0]}
-                  left={position[1]}
-                  styles={shapeStyles as ShapeStyles}
-                  
-                  key={i}
-                />
-              );
-            });
-
-          case 'Rectangle':
-            return shapes.map((shape, i) => {
-              const { size, position } = shape;
-
-              return (
-                <Shapes.Rectangle
-                  width={size[0]}
-                  height={size[1]}
-                  top={position[0]}
-                  left={position[1]}
-                  styles={shapeStyles as ShapeStyles}
-                  key={i}
-                />
-              );
-            });
-        }
+          return <Shape top={top} left={left} styles={styles} key={i} />;
+        });
       });
 
       setObjectsComponents(components);

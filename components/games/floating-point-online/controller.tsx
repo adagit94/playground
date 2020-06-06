@@ -171,7 +171,7 @@ const Controller: React.FC = (): JSX.Element => {
             wins: winnerUserData.wins + 1
           });
         } else {
-          crudDataGame('floatingPoint', 'update', {
+          await crudDataGame('floatingPoint', 'update', {
             winner: results
           });
         }

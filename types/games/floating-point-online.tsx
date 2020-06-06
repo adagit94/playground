@@ -2,12 +2,9 @@ type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-type ShapeValues = {
-  size: [number, number] | number;
-  position: [number, number];
-};
-
-export type ShapeStyles = {
+export type EnvObjectStyles = {
+  width?: number;
+  height?: number;
   transform?: string;
   borderRadius?: string;
   backgroundColor?: string;
@@ -21,8 +18,8 @@ export type ShapeStyles = {
 export type AnimationNames = 'translateVertical' | 'rotate360';
 
 export type EnvObjects = {
-  shape: ShapeNames | [ShapeNames, ShapeStyles];
-  shapes: ShapeValues[];
+  styles: EnvObjectStyles;
+  positions: [number, number][];
 }[];
 
 export type ShapeNames = 'Rectangle' | 'Circle';

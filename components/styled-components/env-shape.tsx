@@ -1,10 +1,6 @@
 import styled, { keyframes, css } from 'styled-components';
 
-import {
-  GetKeyframe,
-  RectangleShapeProps,
-  CircleShapeProps
-} from 'types/styled-components';
+import { GetKeyframe, ShapeProps } from 'types/styled-components';
 
 const getKeyframe: GetKeyframe = props => {
   const { animationName } = props.styles;
@@ -46,12 +42,13 @@ const getKeyframe: GetKeyframe = props => {
   `;
 };
 
-export const Rectangle = styled.div<RectangleShapeProps>`
+export const Shape = styled.div<ShapeProps>`
   position: absolute;
   top: ${({ top }): number => top}%;
   left: ${({ left }): number => left}%;
-  width: ${({ width }): number => width}%;
-  height: ${({ height }): number => height}%;
+  width: ${({ styles }): string =>
+    styles.width + (styles?.borderRadius === '100%' ? 'px' : '%')};
+  height: ${({ styles }): number => styles.height}%;
   border-top: ${({ styles }): string => styles?.borderTop};
   border-right: ${({ styles }): string => styles?.borderRight};
   border-bottom: ${({ styles }): string => styles?.borderBottom};
@@ -68,19 +65,4 @@ export const Rectangle = styled.div<RectangleShapeProps>`
     styles?.animationName && 'linear'};
   animation-iteration-count: ${({ styles }): string =>
     styles?.animationName && 'infinite'};
-`;
-
-export const Circle = styled.div<CircleShapeProps>`
-  position: absolute;
-  top: ${({ top }): number => top}%;
-  left: ${({ left }): number => left}%;
-  width: ${({ size }): number => size}px;
-  height: ${({ size }): number => size}px;
-  border-top: ${({ styles }): string => styles?.borderTop};
-  border-right: ${({ styles }): string => styles?.borderRight};
-  border-bottom: ${({ styles }): string => styles?.borderBottom};
-  border-left: ${({ styles }): string => styles?.borderLeft};
-  border-radius: 100%;
-  background-color: ${({ styles, theme }): string =>
-    styles?.backgroundColor || theme.inverted};
 `;
