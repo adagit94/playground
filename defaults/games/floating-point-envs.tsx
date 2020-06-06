@@ -31,7 +31,7 @@ export const testII: EnvObjects = [
   },
 
   {
-    styles: { width: 15.83, height: 15.83, animationName: 'translateVertical' },
+    styles: { width: 1, height: 15.83, animationName: 'translateVertical' },
     positions: [
       [0, 5],
       [84.17, 5],
@@ -48,7 +48,7 @@ export const testII: EnvObjects = [
     ]
   },
   {
-    styles: { width: 31.66, height: 31.66, animationName: 'rotate360' },
+    styles: { width: 1, height: 31.66, animationName: 'rotate360' },
     positions: [
       [31.67, 11],
       [31.67, 23],
