@@ -122,7 +122,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
             name='password'
             id='password'
             type='password'
-            minLength='8'
+            minLength={8}
             required
           />
         </FormRowVertical>
@@ -142,7 +142,7 @@ const CreateAccount: React.FC = (): JSX.Element => {
             name='password-confirm'
             id='password-confirm'
             type='password'
-            minLength='8'
+            minLength={8}
             required
           />
         </FormRowVertical>
