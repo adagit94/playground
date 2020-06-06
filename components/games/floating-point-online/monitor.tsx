@@ -29,7 +29,7 @@ const Monitor: React.FC = (): JSX.Element => {
   const { state, env, winner } = statesGame;
 
   const tie = Array.isArray(winner);
-
+console.log(winner);
   return (
     <Container id='monitor'>
       {state === 'eval' && (

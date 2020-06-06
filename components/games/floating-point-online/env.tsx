@@ -289,6 +289,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
                   top={position[0]}
                   left={position[1]}
                   styles={shapeStyles as ShapeStyles}
+                  
                   key={i}
                 />
               );
