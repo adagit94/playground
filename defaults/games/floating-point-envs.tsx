@@ -60,7 +60,7 @@ export const testII: EnvObjects = [
     ]
   },
 
-  /*{
+  {
     shape: ['Rectangle', { animationName: 'translateVertical' }],
     shapes: [
       {
@@ -117,7 +117,7 @@ export const testII: EnvObjects = [
         position: [84.17, 94]
       }
     ]
-  },*/
+  },
   {
     shape: ['Rectangle', { animationName: 'rotate360' }],
     shapes: [

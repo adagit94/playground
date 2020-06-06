@@ -51,7 +51,6 @@ const Monitor: React.FC = (): JSX.Element => {
                         ? player.name
                         : `${player.name}, `;
                     })}
-                    ;
                   </div>
                   <div>Scores: {winner[0].score}</div>
                 </>
