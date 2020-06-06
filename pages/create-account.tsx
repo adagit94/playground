@@ -17,12 +17,13 @@ import {
   NumProps,
   SpecialProps,
   LabelPasswordProps,
-  LabelPasswordConfirmProps
+  LabelPasswordConfirmProps,
+  ValidationWindowProps
 } from 'types/styled-components';
 
-const ValidationWindow = styled(FormWindowValidation)`
-  visibility: ${(props): string =>
-    props.typedPassword ? 'visible' : 'hidden'};
+const ValidationWindow = styled(FormWindowValidation)<ValidationWindowProps>`
+  visibility: ${({ typedPassword }): string =>
+    typedPassword ? 'visible' : 'hidden'};
 `;
 
 const Count = styled.li<CountProps>`

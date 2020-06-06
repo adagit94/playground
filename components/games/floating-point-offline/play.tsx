@@ -24,7 +24,7 @@ const Play: React.FC = (): JSX.Element => {
 
   const { state } = statesGame;
 
-  const handlePlay: React.FormEventHandler<HTMLInputElement> = (): void => {
+  const handlePlay: React.FormEventHandler<HTMLButtonElement> = (): void => {
     const playersCount = statesGame.players.length;
     const { size, speed } = statesParams;
 

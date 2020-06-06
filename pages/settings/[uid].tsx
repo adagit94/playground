@@ -56,8 +56,8 @@ const Settings: React.FC = (): JSX.Element => {
           updateUser(user, username, avatar);
         }}
       >
-        <FormRowVertical htmlFor='username'>
-          <FormLabel>Username: </FormLabel>
+        <FormRowVertical>
+          <FormLabel htmlFor='username'>Username: </FormLabel>
           <FormInput
             onChange={(e): void => {
               setUsername(e.target.value);

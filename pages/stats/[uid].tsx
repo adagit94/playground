@@ -20,6 +20,7 @@ import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { GameNames } from 'types/games/generic';
+import { WindowStatsExtendedProps } from 'types/styled-components';
 import { ContextUser } from 'contexts/user';
 
 const Container = styled.div`
@@ -31,10 +32,11 @@ const HeadingGame = styled.h3`
   margin: 0;
 `;
 
-const WindowStatsExtended = styled(WindowStats)`
-  justify-content: ${(props): string => (props.haveStats ? 'start' : 'center')};
-  align-items: ${(props): string =>
-    props.haveStats ? 'flex-start' : 'center'};
+const WindowStatsExtended = styled(WindowStats)<WindowStatsExtendedProps>`
+  justify-content: ${({ haveStats }): string =>
+    haveStats ? 'start' : 'center'};
+  align-items: ${({ haveStats }): string =>
+    haveStats ? 'flex-start' : 'center'};
 `;
 
 const Stats: React.FC = (): JSX.Element => {

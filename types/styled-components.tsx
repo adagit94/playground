@@ -1,6 +1,6 @@
 import { Keyframes } from 'styled-components';
 
-import { ShapeStyles, Player } from 'types/games/floating-point-online';
+import { ShapeStyles } from 'types/games/floating-point-online';
 
 type Icon = {
   readonly top: number;
@@ -94,6 +94,14 @@ export type ButtonReadyProps = {
 export type EnvOptionsContainerProps = {
   readonly highlightEnvOptions: boolean;
   readonly voted: boolean;
+};
+
+export type ValidationWindowProps = {
+  readonly typedPassword: boolean;
+};
+
+export type WindowStatsExtendedProps = {
+  readonly haveStats: boolean;
 };
 
 export type LoadingIndicatorFragmentsProps = { readonly animation: Keyframes };
