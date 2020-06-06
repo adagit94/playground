@@ -61,7 +61,7 @@ export const Shape = styled.div<ShapeProps>`
     styles?.backgroundColor || theme.inverted};
   animation-name: ${({ styles }): GetKeyframe =>
     styles?.animationName && getKeyframe};
-  animation-duration: ${({ styles }): string => styles?.animationName && '2s'};
+  animation-duration: ${({ styles }): string => styles?.animationName && '10s'};
   animation-timing-function: ${({ styles }): string =>
     styles?.animationName && 'linear'};
   animation-iteration-count: ${({ styles }): string =>

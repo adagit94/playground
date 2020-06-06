@@ -16,6 +16,7 @@
     "styled-components": "^4.4.1"
   },
   "devDependencies": {
+    "@types/jquery": "^3.3.38",
     "@types/node": "^12.12.39",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",

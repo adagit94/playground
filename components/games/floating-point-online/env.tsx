@@ -1,5 +1,6 @@
 import { memo, useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
+import $ from 'jquery';
 
 import Players from './players';
 import FPIcon from './point';
@@ -7,6 +8,7 @@ import FPIcon from './point';
 import { Shape } from 'components/styled-components/env-shape';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
+import { positionExtractReg } from 'regs/dom';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
 import {
@@ -95,30 +97,38 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const handleMoveRef = useRef(null);
 
   const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
-    for (const object of objectsDefinitions) {
-      const { styles, positions } = object;
-      let { width: objectWidth, height: objectHeight } = styles;
+    let overlap = false;
 
-      for (const position of positions) {
-        const [objectTop, objectLeft] = position;
+    $('.envObject').each(function() {
+      const object = $(this);
 
-        if (object.styles?.borderRadius === '100%') {
-          objectWidth = (objectWidth / width) * 100;
-          objectHeight = (objectHeight / height) * 100;
-        }
+      let { top: objectTop, left: objectLeft } = object.position();
+      let { height: objectHeight, width: objectWidth }: any = object.css([
+        'width',
+        'height'
+      ]);
 
-        if (
-          pointTop + pointHeight >= objectTop &&
-          pointTop <= objectTop + objectHeight &&
-          pointLeft + pointWidth >= objectLeft &&
-          pointLeft <= objectLeft + objectWidth
-        ) {
-          return true;
-        }
+      objectHeight = positionExtractReg.exec(objectHeight)[0];
+      objectWidth = positionExtractReg.exec(objectWidth)[0];
+
+      objectTop = (objectTop / height) * 100;
+      objectLeft = (objectLeft / width) * 100;
+      objectHeight = (objectHeight / height) * 100;
+      objectWidth = (objectWidth / width) * 100;
+
+      if (
+        pointTop + pointHeight >= objectTop &&
+        pointTop <= objectTop + objectHeight &&
+        pointLeft + pointWidth >= objectLeft &&
+        pointLeft <= objectLeft + objectWidth
+      ) {
+        overlap = true;
+
+        return;
       }
-    }
+    });
 
-    return false;
+    return overlap;
   };
 
   const fpOverlap = (): void => {
@@ -262,7 +272,15 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         return positions.map((pos, i) => {
           const [top, left] = pos;
 
-          return <Shape top={top} left={left} styles={styles} key={i} />;
+          return (
+            <Shape
+              top={top}
+              left={left}
+              styles={styles}
+              className='envObject'
+              key={i}
+            />
+          );
         });
       });
 
