@@ -2,13 +2,13 @@ import styled, { keyframes, css } from 'styled-components';
 
 import { GetKeyframe, ShapeProps } from 'types/styled-components';
 
-const getKeyframe: GetKeyframe = props => {
-  const { animationName } = props.styles;
+const getKeyframe: GetKeyframe = ({ styles }) => {
+  const { animationName } = styles;
 
   let keyframe;
 
   if (animationName === 'translateVertical') {
-    const { top, height } = props;
+    const { top, height } = styles;
 
     const to = top < 50 ? 50 - height : 50;
 
@@ -46,8 +46,10 @@ export const Shape = styled.div<ShapeProps>`
   position: absolute;
   top: ${({ top }): number => top}%;
   left: ${({ left }): number => left}%;
-  width: ${({ styles }): number => styles.width}%;
-  height: ${({ styles }): number => styles.height}%;
+  width: ${({ styles }): string =>
+    styles.width + (styles?.borderRadius === '100%' ? 'px' : '%')};
+  height: ${({ styles }): string =>
+    styles.height + (styles?.borderRadius === '100%' ? 'px' : '%')};
   border-top: ${({ styles }): string => styles?.borderTop};
   border-right: ${({ styles }): string => styles?.borderRight};
   border-bottom: ${({ styles }): string => styles?.borderBottom};
