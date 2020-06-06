@@ -61,6 +61,10 @@ export const InputCustomRadioButton = styled.button<
   background-color: ${({ checked, theme }): string =>
     checked ? theme.background : theme.inverted};
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &:focus {
     outline: none;
   }

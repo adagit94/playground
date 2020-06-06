@@ -29,7 +29,7 @@ const Container = styled.div<EnvOptionsContainerProps>`
   flex: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   width: 100%;
   border: 2px solid
     ${({ highlightEnvOptions, voted }): string =>

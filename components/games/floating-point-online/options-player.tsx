@@ -204,6 +204,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     if (initable === false) return;
 
     setHighlightUnready(false);
+    setHighlightEnvOptions(false);
+
     crudDataGame('floatingPoint', 'update', { state: 'init', env: name });
   };
 
