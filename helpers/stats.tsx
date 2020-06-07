@@ -70,15 +70,16 @@ export const convertPlayedTime: ConvertPlayedTime = playedTime => {
 
   if (hours >= 1) {
     hours = (days - Math.floor(days)) * 24;
-    timeString += `${hours} H `;
+    timeString += `${Math.floor(hours)} H `;
   }
 
   if (minutes >= 1) {
     minutes = (hours - Math.floor(hours)) * 60;
-    timeString += `${minutes} M `;
+    timeString += `${Math.floor(minutes)} M `;
   }
 
-  timeString += `${(minutes - Math.floor(minutes)) * 60} S`;
+  seconds = (minutes - Math.floor(minutes)) * 60;
+  timeString += `${Math.floor(seconds)} S`;
 
   return timeString;
 };
