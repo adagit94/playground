@@ -74,7 +74,8 @@ export const convertPlayedTime: ConvertPlayedTime = playedTime => {
   }
 
   if (minutes >= 1) {
-    timeString += `${hours - Math.floor(hours) * 60} M `;
+    minutes = hours - Math.floor(hours) * 60;
+    timeString += `${minutes} M `;
   }
 
   timeString += `${minutes - Math.floor(minutes) * 60} S`;
