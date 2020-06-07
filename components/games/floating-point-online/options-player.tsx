@@ -174,7 +174,8 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const playersRef = useRef(players);
 
   const handleInit = (): void => {
-    //if (players.length < 2) return;
+    if (players.length < 2) return;
+
     let initable: boolean;
     let votes: [EnvNames, number][] = [];
 
