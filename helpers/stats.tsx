@@ -78,7 +78,7 @@ export const convertPlayedTime: ConvertPlayedTime = playedTime => {
     timeString += `${minutes} M `;
   }
 
-  timeString += `${minutes - Math.floor(minutes) * 60} S`;
+  timeString += `${(minutes - Math.floor(minutes)) * 60} S`;
 
   return timeString;
 };
