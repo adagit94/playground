@@ -69,12 +69,12 @@ export const convertPlayedTime: ConvertPlayedTime = playedTime => {
   }
 
   if (hours >= 1) {
-    hours = days - Math.floor(days) * 24;
+    hours = (days - Math.floor(days)) * 24;
     timeString += `${hours} H `;
   }
 
   if (minutes >= 1) {
-    minutes = hours - Math.floor(hours) * 60;
+    minutes = (hours - Math.floor(hours)) * 60;
     timeString += `${minutes} M `;
   }
 
