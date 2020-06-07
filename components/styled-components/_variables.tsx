@@ -16,7 +16,7 @@ export const borderRadiusWindow = '5px';
 
 export const borderColorHighlight = '#f00';
 
-export const widthStatsItem = '220px';
+export const widthStatsItem = '180px';
 
 export const heightStatsItem = '20px';
 

@@ -15,6 +15,7 @@ export const WindowStats = styled.div`
   border-radius: ${borderRadiusWindow};
   color: ${({ theme }): string => theme.background};
   background-color: ${({ theme }): string => theme.inverted};
+  font-size: 0.8rem;
 `;
 
 export const WindowStatsUser = styled.div`

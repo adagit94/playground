@@ -320,7 +320,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
                           return (
                             <li key={name}>
-                              <span>{name}</span>
+                              <span>{name}:</span>
                               <span>{value}</span>
                             </li>
                           );
