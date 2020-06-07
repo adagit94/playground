@@ -138,9 +138,13 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       playerLocalLeft + pointWidth >= fpLeft &&
       playerLocalLeft <= fpLeft + pointWidth
     ) {
+      const fp = document.querySelector('#fp');
+
       let fpTop: number;
       let fpLeft: number;
       let overlap: boolean;
+
+      fp.style.visibility = 'hidden';
 
       while (overlap || overlap === undefined) {
         fpTop = Math.min(
@@ -157,6 +161,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       }
 
       updateDataFP({ top: fpTop, left: fpLeft });
+
+      fp.style.visibility = 'visible';
 
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         score: statesPlayers[playerLocal].score + 1

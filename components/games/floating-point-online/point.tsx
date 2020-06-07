@@ -20,6 +20,7 @@ const FPIcon = styled.div.attrs<FPIconProps>(({ top, left }) => ({
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   border-radius: 100%;
+  visibility: visible;
 `;
 
 const Anim = styled.div<AnimProps>`
@@ -53,7 +54,7 @@ const Point: React.FC = (): JSX.Element => {
 `;
 
   return (
-    <FPIcon top={top} left={left} size={size}>
+    <FPIcon top={top} left={left} size={size} id='fp'>
       <Anim animation={waving} />
     </FPIcon>
   );
