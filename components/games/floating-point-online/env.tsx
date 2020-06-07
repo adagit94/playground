@@ -131,7 +131,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     return overlap;
   };
 
-  const fpOverlap = (): void => {
+  const fpOverlap = async (): Promise<void> => {
     if (
       playerLocalTop + pointHeight >= fpTop &&
       playerLocalTop <= fpTop + pointHeight &&
@@ -161,7 +161,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         overlap = checkOverlap(fpTop, fpLeft);
       }
 
-      updateDataFP({ top: fpTop, left: fpLeft });
+      await updateDataFP({ top: fpTop, left: fpLeft });
 
       fp.style.visibility = 'visible';
 
