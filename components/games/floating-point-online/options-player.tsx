@@ -228,7 +228,6 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       });
     }
 
-    setGameStats([]);
     setHighlightUnready(false);
     setHighlightEnvOptions(false);
   };
@@ -283,6 +282,10 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       }
     };
   }, [uid, admin, player]);
+
+  useEffect(() => {
+    if (state === 'reset') setGameStats([]);
+  }, [state]);
 
   useEffect(() => {
     if (state === 'conf' && player !== undefined && gameStats.length === 0) {
