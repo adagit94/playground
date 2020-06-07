@@ -138,7 +138,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       playerLocalLeft + pointWidth >= fpLeft &&
       playerLocalLeft <= fpLeft + pointWidth
     ) {
-      const fp = document.querySelector('#fp');
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+      const fp = document.querySelector('#fp') as HTMLElement;
 
       let fpTop: number;
       let fpLeft: number;
