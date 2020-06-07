@@ -131,21 +131,16 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     return overlap;
   };
 
-  const fpOverlap = async (): Promise<void> => {
+  const fpOverlap = (): void => {
     if (
       playerLocalTop + pointHeight >= fpTop &&
       playerLocalTop <= fpTop + pointHeight &&
       playerLocalLeft + pointWidth >= fpLeft &&
       playerLocalLeft <= fpLeft + pointWidth
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      const fp = document.querySelector('#fp') as HTMLElement;
-
       let fpTop: number;
       let fpLeft: number;
       let overlap: boolean;
-
-      fp.style.visibility = 'hidden';
 
       while (overlap || overlap === undefined) {
         fpTop = Math.min(
@@ -161,9 +156,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         overlap = checkOverlap(fpTop, fpLeft);
       }
 
-      await updateDataFP({ top: fpTop, left: fpLeft });
-
-      fp.style.visibility = 'visible';
+      updateDataFP({ top: fpTop, left: fpLeft });
 
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         score: statesPlayers[playerLocal].score + 1

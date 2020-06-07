@@ -20,7 +20,6 @@ const FPIcon = styled.div.attrs<FPIconProps>(({ top, left }) => ({
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   border-radius: 100%;
-  visibility: visible;
 `;
 
 const Anim = styled.div<AnimProps>`
