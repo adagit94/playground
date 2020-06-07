@@ -8,16 +8,21 @@ import {
   EnvList,
   EnvVotes,
   GameCreate,
-  PlayerCreate
+  PlayerCreate,
+  GetAvatarPlaceholder
 } from 'types/games/floating-point-online';
 
 export const DEFAULTS: Defaults = {
   size: 15,
-  timer: 1000,
+  timer: 30,
   enviroments: {
     testI,
     testII
   }
+};
+
+export const getAvatarPlaceholder: GetAvatarPlaceholder = theme => {
+  return `${window.location.origin}/icons/account-${theme}.svg`;
 };
 
 export const initEnvVotes: InitEnvVotes = () => {

@@ -1,3 +1,5 @@
+import { Themes } from 'types/layout';
+
 type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
@@ -30,7 +32,7 @@ export type Key = {
   pressed: boolean;
   operation: 'add' | 'subtract';
   direction: 'top' | 'left';
-  limit: 'topLeft' | 'bottomRight';
+  limit: 'top' | 'right' | 'bottom' | 'left';
 };
 
 export type Player = {
@@ -183,3 +185,5 @@ export type InitPlayerDefaults = (user: firebase.User) => PlayerCreate;
 export type InitEnvVotes = () => EnvVotes;
 
 export type CheckOverlap = (pointTop: number, pointLeft: number) => boolean;
+
+export type GetAvatarPlaceholder = (theme: Themes) => string;

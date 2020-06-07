@@ -1,14 +1,21 @@
 import { useContext, memo } from 'react';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
-import { DEFAULTS } from 'defaults/games/floating-point-online';
+import {
+  DEFAULTS,
+  getAvatarPlaceholder
+} from 'defaults/games/floating-point-online';
 import { PlayerIconProps } from 'types/styled-components';
+import { Theming } from 'types/layout';
 import { ContextPlayers } from 'contexts/games/floating-point-online';
 
-const PlayerIcon = styled.div<PlayerIconProps>`
+const PlayerIcon = styled.div.attrs<PlayerIconProps>(({ top, left }) => ({
+  style: {
+    top: `${top}%`,
+    left: `${left}%`
+  }
+}))<PlayerIconProps>`
   position: absolute;
-  top: ${({ top }): number => top}%;
-  left: ${({ left }): number => left}%;
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   border-radius: 100%;
@@ -17,6 +24,7 @@ const PlayerIcon = styled.div<PlayerIconProps>`
 `;
 
 const Players: React.FC = (): JSX.Element => {
+  const theming: Theming = useContext(ThemeContext);
   const statesPlayers = useContext(ContextPlayers);
 
   const { size } = DEFAULTS;
@@ -28,7 +36,10 @@ const Players: React.FC = (): JSX.Element => {
 
     points.push(
       <PlayerIcon
-        avatar={avatar}
+        avatar={
+          avatar ||
+          getAvatarPlaceholder(theming.theme === 'light' ? 'dark' : 'light')
+        }
         top={top}
         left={left}
         size={size}

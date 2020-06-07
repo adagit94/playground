@@ -37,25 +37,25 @@ const controlKeys: ControlKeys = {
     pressed: false,
     operation: 'subtract',
     direction: 'top',
-    limit: 'topLeft'
+    limit: 'top'
   },
   ArrowRight: {
     pressed: false,
     operation: 'add',
     direction: 'left',
-    limit: 'bottomRight'
+    limit: 'right'
   },
   ArrowDown: {
     pressed: false,
     operation: 'add',
     direction: 'top',
-    limit: 'bottomRight'
+    limit: 'bottom'
   },
   ArrowLeft: {
     pressed: false,
     operation: 'subtract',
     direction: 'left',
-    limit: 'topLeft'
+    limit: 'left'
   }
 };
 
@@ -185,18 +185,20 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       }
 
       switch (limit) {
-        case 'topLeft':
-          if (playerLocalTop <= 0 || playerLocalLeft <= 0) continue;
+        case 'top':
+          if (playerLocalTop <= 0) continue;
           break;
 
-        case 'bottomRight':
-          if (
-            (playerLocalTop / height) * 100 + size >= height ||
-            (playerLocalLeft / width) * 100 + size >= width
-          ) {
-            continue;
-          }
+        case 'right':
+          if (playerLocalLeft + (size / width) * 100 >= 100) continue;
+          break;
 
+        case 'bottom':
+          if (playerLocalTop + (size / height) * 100 >= 100) continue;
+          break;
+
+        case 'left':
+          if (playerLocalLeft <= 0) continue;
           break;
       }
 

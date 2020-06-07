@@ -1,40 +1,46 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes, css, Keyframes } from 'styled-components';
 
 import { GetKeyframe, ShapeProps } from 'types/styled-components';
 
-const getKeyframe: GetKeyframe = ({ styles }) => {
-  const { animationName } = styles;
+const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
+  const { animationName, height, width } = styles;
 
-  let keyframe;
+  let keyframe: Keyframes;
+  let from: string | number;
+  let to: string | number;
 
-  if (animationName === 'translateVertical') {
-    const { top, height } = styles;
+  switch (animationName) {
+    case 'translateVertical':
+      to = top < 50 ? 50 - height : 50;
 
-    const to = top < 50 ? 50 - height : 50;
+      keyframe = keyframes`
+        0% {
+          top: ${top}%;
+        } 
+    
+        50% {
+          top: ${to}%;
+        }
+    
+        100% {
+          top:${top}%;
+        }
+      `;
 
-    keyframe = keyframes`
-      0% {
-        top: ${top}%;
-      } 
-  
-      50% {
-        top: ${to}%;
-      }
-  
-      100% {
-        top:${top}%;
-      }
-    `;
-  } else if (animationName === 'rotate360') {
-    keyframe = keyframes`
-      0% {
-        transform: rotate(0deg);
-      } 
-  
-      100% {
-        transform: rotate(360deg);   
-      }
-    `;
+      break;
+
+    case 'rotate360':
+      keyframe = keyframes`
+        0% {
+          transform: rotate(0deg);
+        } 
+    
+        100% {
+          transform: rotate(360deg);   
+        }
+      `;
+
+      break;
   }
 
   return css`
@@ -54,14 +60,12 @@ export const Shape = styled.div<ShapeProps>`
   border-right: ${({ styles }): string => styles?.borderRight};
   border-bottom: ${({ styles }): string => styles?.borderBottom};
   border-left: ${({ styles }): string => styles?.borderLeft};
-  background-color: ${({ styles, theme }): string =>
-    styles?.backgroundColor || theme.inverted};
   border-radius: ${({ styles }): string => styles?.borderRadius};
   background-color: ${({ styles, theme }): string =>
     styles?.backgroundColor || theme.inverted};
   animation-name: ${({ styles }): GetKeyframe =>
     styles?.animationName && getKeyframe};
-  animation-duration: ${({ styles }): string => styles?.animationName && '10s'};
+  animation-duration: ${({ styles }): string => styles?.animationName && '5s'};
   animation-timing-function: ${({ styles }): string =>
     styles?.animationName && 'linear'};
   animation-iteration-count: ${({ styles }): string =>

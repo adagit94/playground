@@ -9,6 +9,7 @@ import Profile from './profile';
 import Avatar from 'components/styled-components/avatar';
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 
+import { getAvatarPlaceholder } from 'defaults/games/floating-point-online';
 import { Theming } from 'types/layout';
 import { SliderProps } from 'types/styled-components';
 import { ContextFirebase } from 'contexts/firebase';
@@ -80,7 +81,11 @@ const Account: React.FC = (): JSX.Element => {
       {!loading && (
         <Button onClick={toggleSlider} type='button'>
           {isAuthenticated && (
-            <Avatar width={50} height={50} avatar={user.photoURL} />
+            <Avatar
+              width={50}
+              height={50}
+              avatar={user.photoURL || getAvatarPlaceholder(theming.theme)}
+            />
           )}
 
           {!isAuthenticated && 'Log in'}

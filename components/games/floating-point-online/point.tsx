@@ -6,14 +6,17 @@ import { Theming } from 'types/layout';
 import { FPIconProps, AnimProps } from 'types/styled-components';
 import { ContextFP } from 'contexts/games/floating-point-online';
 
-const FPIcon = styled.div<FPIconProps>`
+const FPIcon = styled.div.attrs<FPIconProps>(({ top, left }) => ({
+  style: {
+    top: `${top}%`,
+    left: `${left}%`
+  }
+}))<FPIconProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: ${({ top }): number => top}%;
-  left: ${({ left }): number => left}%;
   width: ${({ size }): number => size}px;
   height: ${({ size }): number => size}px;
   border-radius: 100%;

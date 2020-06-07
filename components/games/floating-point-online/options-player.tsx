@@ -19,6 +19,7 @@ import {
   WindowStatsGame
 } from 'components/styled-components/windows';
 
+import { getAvatarPlaceholder } from 'defaults/games/floating-point-online';
 import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime, updatePlayedTime } from 'helpers/stats';
@@ -372,7 +373,16 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
           </ContainerInfo>
 
           <ContainerAvatar>
-            <Avatar width={75} height={75} avatar={playerData?.avatar} />
+            <Avatar
+              width={75}
+              height={75}
+              avatar={
+                playerData.avatar ||
+                getAvatarPlaceholder(
+                  theming.theme === 'light' ? 'dark' : 'light'
+                )
+              }
+            />
           </ContainerAvatar>
         </>
       )}

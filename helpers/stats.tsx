@@ -57,10 +57,10 @@ export const updatePlayedTime: UpdatePlayedTime = async (
 };
 
 export const convertPlayedTime: ConvertPlayedTime = playedTime => {
-  const seconds = playedTime / 1000;
-  const minutes = seconds / 60;
-  const hours = minutes / 60;
-  const days = hours / 24;
+  let seconds = playedTime / 1000;
+  let minutes = seconds / 60;
+  let hours = minutes / 60;
+  let days = hours / 24;
 
   let timeString = '';
 
@@ -69,14 +69,15 @@ export const convertPlayedTime: ConvertPlayedTime = playedTime => {
   }
 
   if (hours >= 1) {
-    timeString += `${Math.floor(hours - Math.floor(days) * 24)} H `;
+    hours = days - Math.floor(days) * 24;
+    timeString += `${hours} H `;
   }
 
   if (minutes >= 1) {
-    timeString += `${Math.floor(minutes - Math.floor(hours) * 60)} M `;
+    timeString += `${hours - Math.floor(hours) * 60} M `;
   }
 
-  timeString += `${Math.round(seconds - Math.floor(minutes) * 60)} S`;
+  timeString += `${minutes - Math.floor(minutes) * 60} S`;
 
   return timeString;
 };

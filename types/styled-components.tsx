@@ -1,6 +1,6 @@
 import { Keyframes } from 'styled-components';
 
-import { EnvObjectStyles, ShapeNames } from 'types/games/floating-point-online';
+import { EnvObjectStyles } from 'types/games/floating-point-online';
 
 type Icon = {
   readonly top: number;
@@ -9,8 +9,8 @@ type Icon = {
 };
 
 export type LayoutContainerProps = {
-  readonly color: string;
-  readonly backgroundColor: string;
+  readonly foreground: string;
+  readonly background: string;
 };
 
 export type AvatarProps = {

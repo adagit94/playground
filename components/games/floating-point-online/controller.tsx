@@ -75,23 +75,23 @@ const Controller: React.FC = (): JSX.Element => {
 
         switch (playerLocalIndex) {
           case 0:
-            playerLocalTop = ((height / 2 - size / 2) / height) * 100;
+            playerLocalTop = 50 - (size / 2 / height) * 100;
             playerLocalLeft = (10 / width) * 100;
             break;
 
           case 1:
-            playerLocalTop = ((height / 2 - size / 2) / height) * 100;
-            playerLocalLeft = ((width - size - 10) / width) * 100;
+            playerLocalTop = 50 - (size / 2 / height) * 100;
+            playerLocalLeft = 100 - (size / width) * 100;
             break;
 
           case 2:
             playerLocalTop = (10 / height) * 100;
-            playerLocalLeft = ((width / 2 - size / 2) / width) * 100;
+            playerLocalLeft = 50 - (size / 2 / width) * 100;
             break;
 
           case 3:
-            playerLocalTop = ((height - size - 10) / height) * 100;
-            playerLocalLeft = ((width / 2 - size / 2) / width) * 100;
+            playerLocalTop = 100 - (size / height) * 100;
+            playerLocalLeft = 50 - (size / 2 / width) * 100;
             break;
         }
 
@@ -106,8 +106,8 @@ const Controller: React.FC = (): JSX.Element => {
         });
 
         if (playerLocalIndex === players.length - 1) {
-          const fpTop = ((height / 2 - size / 2) / height) * 100;
-          const fpLeft = ((width / 2 - size / 2) / width) * 100;
+          const fpTop = 50 - (size / 2 / height) * 100;
+          const fpLeft = 50 - (size / 2 / width) * 100;
 
           await updateDataFP({ top: fpTop, left: fpLeft });
 

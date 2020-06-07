@@ -25,8 +25,8 @@ const Container = styled.div<LayoutContainerProps>`
   right: 0;
   bottom: 0;
   left: 0;
-  color: ${({ color }): string => color};
-  background-color: ${({ backgroundColor }): string => backgroundColor};
+  color: ${({ foreground }): string => foreground};
+  background-color: ${({ background }): string => background};
 
   * {
     box-sizing: border-box;
@@ -94,7 +94,7 @@ const Layout: React.FC<PropsLayout> = ({ content }): JSX.Element => {
   }, []);
 
   return (
-    <Container color={theming.inverted} backgroundColor={theming.background}>
+    <Container foreground={theming.inverted} background={theming.background}>
       <ThemeProvider theme={theming}>
         <ContextDispatchesLayout.Provider value={dispatchesLayout}>
           <ContextFirebase.Provider value={statesFirebase}>
