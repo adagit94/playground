@@ -176,7 +176,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const handleInit = (): void => {
     //if (players.length < 2) return;
     let initable: boolean;
-    let envs: [EnvNames, number][] = [];
+    let votes: [EnvNames, number][] = [];
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
@@ -189,14 +189,14 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     }
 
     for (const env in envVotes) {
-      envs.push([env as EnvNames, envVotes[env]]);
+      votes.push([env as EnvNames, envVotes[env]]);
     }
 
-    envs.sort((a, b) => a[1] - b[1]).reverse();
+    votes.sort((a, b) => a[1] - b[1]).reverse();
 
-    const [name, votes] = envs[0];
+    const firstEnvVotes = votes[0][1];
 
-    if (votes === 0) {
+    if (firstEnvVotes === 0) {
       setHighlightEnvOptions(true);
 
       initable = false;
@@ -204,10 +204,33 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
     if (initable === false) return;
 
+    let results: EnvNames[] = [];
+
+    for (const env of votes) {
+      const [envName, envVotes] = env;
+
+      if (envVotes === firstEnvVotes) results.push(envName);
+    }
+
+    if (results.length === 1) {
+      crudDataGame('floatingPoint', 'update', {
+        state: 'init',
+        env: results[0]
+      });
+    } else {
+      let choosedEnvIndex = Math.round(results.length / (Math.random() * 10));
+
+      if (choosedEnvIndex === results.length) choosedEnvIndex -= 1;
+
+      crudDataGame('floatingPoint', 'update', {
+        state: 'init',
+        env: results[choosedEnvIndex]
+      });
+    }
+
+    setGameStats([]);
     setHighlightUnready(false);
     setHighlightEnvOptions(false);
-
-    crudDataGame('floatingPoint', 'update', { state: 'init', env: name });
   };
 
   useEffect(() => {
