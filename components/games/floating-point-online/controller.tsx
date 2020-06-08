@@ -149,6 +149,10 @@ const Controller: React.FC = (): JSX.Element => {
           const { name: winnerName, score: winnerScore } = results[0];
           let winnerUserData: FloatingPoint;
 
+          crudDataGame('floatingPoint', 'update', {
+            winner: { name: winnerName, score: winnerScore }
+          });
+
           if (firstPlayerID === playerLocal) {
             winnerUserData = statesUser.games.floatingPoint;
           } else {
@@ -159,10 +163,6 @@ const Controller: React.FC = (): JSX.Element => {
             )) as GameData;
           }
 
-          crudDataGame('floatingPoint', 'update', {
-            winner: { name: winnerName, score: winnerScore }
-          });
-
           crudDataUserGame(firstPlayerID, 'floatingPoint', 'update', {
             wins: winnerUserData.wins + 1
           });
@@ -172,10 +172,10 @@ const Controller: React.FC = (): JSX.Element => {
           });
         }
 
-        /*updatePlayedTime('floatingPoint', players, [
+        updatePlayedTime('floatingPoint', players, [
           statesGame.timestampStart,
           statesGame.timestampEnd
-        ]);*/
+        ]);
       };
 
       evalGame();
