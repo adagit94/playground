@@ -155,7 +155,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
         overlap = checkOverlap(fpTop, fpLeft);
       }
-
+      console.log(overlap);
       updateDataFP({ top: fpTop, left: fpLeft });
 
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
