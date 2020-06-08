@@ -2,6 +2,7 @@ import { EnvObjects } from 'types/games/floating-point-online';
 
 export const testI: EnvObjects = [
   {
+    shape: 'Rectangle',
     styles: { width: 5, height: 5 },
     positions: [
       [30, 60],
@@ -10,7 +11,8 @@ export const testI: EnvObjects = [
     ]
   },
   {
-    styles: { width: 30, height: 30, borderRadius: '100%' },
+    shape: 'Circle',
+    styles: { width: 30, height: 30 },
     positions: [
       [10, 50],
       [50, 20],
@@ -21,6 +23,7 @@ export const testI: EnvObjects = [
 
 export const testII: EnvObjects = [
   {
+    shape: 'Rectangle',
     styles: { width: 1, height: 20 },
     positions: [
       [25, 49.5],
@@ -31,6 +34,7 @@ export const testII: EnvObjects = [
   },
 
   {
+    shape: 'Rectangle',
     styles: { width: 1, height: 15.83, animationName: 'translateVertical' },
     positions: [
       [0, 5],
@@ -48,6 +52,7 @@ export const testII: EnvObjects = [
     ]
   },
   {
+    shape: 'Rectangle',
     styles: { width: 1, height: 31.66, animationName: 'rotate360' },
     positions: [
       [31.67, 11],

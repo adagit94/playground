@@ -5,7 +5,7 @@ import $ from 'jquery';
 import Players from './players';
 import FPIcon from './point';
 
-import { Shape } from 'components/styled-components/env-shape';
+import * as Shapes from 'components/styled-components/env-shapes';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { positionExtractReg } from 'regs/dom';
@@ -269,7 +269,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   useEffect(() => {
     if (objectsDefinitions !== null && objectsComponents === null) {
       const components = objectsDefinitions.map(object => {
-        const { styles, positions } = object;
+        const { shape, styles, positions } = object;
+        const Shape = Shapes[shape];
 
         return positions.map((pos, i) => {
           const [top, left] = pos;

@@ -19,12 +19,13 @@ export type EnvObjectStyles = {
 
 export type AnimationNames = 'translateVertical' | 'rotate360';
 
+export type ShapeNames = 'Rectangle' | 'Circle';
+
 export type EnvObjects = {
+  shape: ShapeNames;
   styles: EnvObjectStyles;
   positions: [number, number][];
 }[];
-
-export type ShapeNames = 'Rectangle' | 'Circle';
 
 export type Position = { top: number; left: number };
 
