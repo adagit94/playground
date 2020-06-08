@@ -145,11 +145,6 @@ const Controller: React.FC = (): JSX.Element => {
           }
         }
 
-        updatePlayedTime('floatingPoint', players, [
-          statesGame.timestampStart,
-          statesGame.timestampEnd
-        ]);
-
         if (results.length === 1) {
           const { name: winnerName, score: winnerScore } = results[0];
           let winnerUserData: FloatingPoint;
@@ -176,6 +171,11 @@ const Controller: React.FC = (): JSX.Element => {
             winner: results
           });
         }
+
+        /*updatePlayedTime('floatingPoint', players, [
+          statesGame.timestampStart,
+          statesGame.timestampEnd
+        ]);*/
       };
 
       evalGame();
