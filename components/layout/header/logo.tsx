@@ -1,91 +1,100 @@
-import { memo } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
+import { memo } from 'react';
+import styled, { keyframes } from 'styled-components';
+
+const rotateX = keyframes`
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(180deg);
+  }
+`;
+
+const rotateY = keyframes`
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(180deg);
+  }
+`;
+
+const rotateZ = keyframes`
+  from {
+    transform: rotateZ(0deg);
+  }
+
+  to {
+    transform: rotateZ(180deg);
+  }
+`;
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 150px;
 `;
 
-const Square = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 2px solid ${({ theme }): string => theme.inverted};
-  transform: rotateZ(45deg);
-  transition-property: border-color, background-color, width, height;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
-
-  &:hover {
-    transition-delay: 0.1s;
-    border-color: ${({ theme }): string => theme.background};
-    background-color: ${({ theme }): string => theme.inverted};
-    background-clip: content-box;
-
-    #circle {
-      transition-delay: 0.1s;
-      width: 25px;
-      height: 25px;
-      background-color: ${({ theme }): string => theme.background};
-    }
-
-    #lineVertical {
-      height: 0;
-      background-color: ${({ theme }): string => theme.background};
-    }
-
-    #lineHorizontal {
-      width: 0;
-      background-color: ${({ theme }): string => theme.background};
-    }
-  }
-`;
-
-const Rotator = styled.div`
+const ContainerCircles = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  color: ${({ theme }): string => theme.inverted};
+  animation-name: ${rotateZ};
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;
+
+const ContainerCirclesCenter = styled.div`
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  color: ${({ theme }): string => theme.background};
+  background-color: ${({ theme }): string => theme.inverted};
+  animation-name: ${rotateZ};
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;
+
+const CircleX = styled.div`
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  transform: rotateZ(-45deg);
-`;
-
-const Circle = styled.div`
-  width: 10px;
-  height: 10px;
+  border: 2px solid;
   border-radius: 100%;
-  z-index: 1;
-  background-color: ${({ theme }): string => theme.inverted};
-  transition-property: background-color, width, height;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
+  animation-name: ${rotateX};
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 `;
 
-const LineVertical = styled.div`
+const CircleY = styled.div`
   position: absolute;
-  width: 2px;
-  height: 68px;
-  background-color: ${({ theme }): string => theme.inverted};
-  transition-property: height, background-color, transform;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
-`;
-
-const LineHorizontal = styled.div`
-  position: absolute;
-  width: 68px;
-  height: 2px;
-  background-color: ${({ theme }): string => theme.inverted};
-  transition-property: width, background-color, transform;
-  transition-duration: 0.1s;
-  transition-timing-function: linear;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid;
+  border-radius: 100%;
+  animation-name: ${rotateY};
+  animation-duration: 2.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 `;
 
 const Logo: React.FC = (): JSX.Element => {
@@ -93,13 +102,14 @@ const Logo: React.FC = (): JSX.Element => {
     <Container>
       <Link href='/'>
         <a>
-          <Square>
-            <Rotator>
-              <Circle id='circle' />
-              <LineVertical id='lineVertical' />
-              <LineHorizontal id='lineHorizontal' />
-            </Rotator>
-          </Square>
+          <ContainerCircles>
+            <CircleX />
+            <CircleY />
+            <ContainerCirclesCenter>
+              <CircleX />
+              <CircleY />
+            </ContainerCirclesCenter>
+          </ContainerCircles>
         </a>
       </Link>
     </Container>
