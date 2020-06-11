@@ -2,10 +2,9 @@ import { memo, useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 
+import * as Shapes from './_env-shapes';
 import Players from './players';
 import FPIcon from './point';
-
-import * as Shapes from 'components/styled-components/env-shapes';
 
 import { DEFAULTS } from 'defaults/games/floating-point-online';
 import { positionExtractReg } from 'regs/dom';

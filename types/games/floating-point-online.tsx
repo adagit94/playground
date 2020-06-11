@@ -1,29 +1,27 @@
 import { Themes } from 'types/layout';
+import { ShapeStyles } from 'types/styled-components';
 
 type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-export type EnvObjectStyles = {
-  width?: number;
-  height?: number;
-  transform?: string;
-  borderRadius?: string;
-  backgroundColor?: string;
-  borderTop?: string;
-  borderRight?: string;
-  borderBottom?: string;
-  borderLeft?: string;
-  animationName?: AnimationNames;
-};
+export type AnimationNames =
+  | 'translateToCenterVertical'
+  | 'rotate360'
+  | 'translateCenterUp'
+  | 'translateCenterRight'
+  | 'translateCenterBottom'
+  | 'translateCenterLeft';
 
-export type AnimationNames = 'translateVertical' | 'rotate360';
-
-export type ShapeNames = 'Rectangle' | 'Circle';
+export type ShapeNames =
+  | 'Rectangle'
+  | 'Circle'
+  | 'Triangle'
+  | 'TriangularSquare';
 
 export type EnvObjects = {
   shape: ShapeNames;
-  styles: EnvObjectStyles;
+  styles: ShapeStyles;
   positions: [number, number][];
 }[];
 

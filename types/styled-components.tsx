@@ -1,6 +1,6 @@
-import { Keyframes } from 'styled-components';
+import { Keyframes, FlattenSimpleInterpolation } from 'styled-components';
 
-import { EnvObjectStyles } from 'types/games/floating-point-online';
+import { AnimationNames } from 'types/games/floating-point-online';
 
 type Icon = {
   readonly top: number;
@@ -53,10 +53,19 @@ export type DividerProps = {
   readonly color: string;
 };
 
+export type ShapeStyles = {
+  readonly width?: number;
+  readonly height?: number;
+  readonly backgroundColor?: string;
+  readonly transform?: string;
+  readonly borderRadius?: string;
+  readonly animationName?: AnimationNames;
+};
+
 export type ShapeProps = {
   readonly top: number;
   readonly left: number;
-  readonly styles: EnvObjectStyles;
+  readonly styles: ShapeStyles;
 };
 
 export type InputCustomRadioButtonProps = {
@@ -99,4 +108,4 @@ export type LoadingIndicatorFragmentsProps = { readonly animation: Keyframes };
 
 export type LoadingIndicatorProps = { readonly color: string };
 
-export type GetKeyframe = (props: any) => any;
+export type GetKeyframe = (props: ShapeProps) => FlattenSimpleInterpolation;
