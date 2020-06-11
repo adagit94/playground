@@ -43,6 +43,7 @@ const Players: React.FC = (): JSX.Element => {
         top={top}
         left={left}
         size={size}
+        className={'player'}
         key={player}
       />
     );

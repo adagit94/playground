@@ -10,16 +10,19 @@ const Shape = styled.div<ShapeProps>`
   left: ${({ left }): number => left}%;
   width: ${({ styles }): number => styles.width}%;
   height: ${({ styles }): number => styles.height}%;
+  border: ${({ styles }): string => styles?.border};
   background-color: ${({ styles, theme }): string =>
     styles?.backgroundColor || theme.inverted};
+  background-clip: ${({ styles }): string => styles?.backgroundClip};
   transform: ${({ styles }): string => styles?.transform};
   animation-name: ${({ styles }): GetKeyframe =>
     styles?.animationName && getKeyframe};
-  animation-duration: ${({ styles }): string => styles?.animationName && '5s'};
+  animation-duration: ${({ styles }): string => styles?.animationDuration};
   animation-timing-function: ${({ styles }): string =>
-    styles?.animationName && 'linear'};
+    styles?.animationTimingFunction};
   animation-iteration-count: ${({ styles }): string =>
-    styles?.animationName && 'infinite'};
+    styles?.animationIterationCount};
+  animation-delay: ${({ styles }): string => styles?.animationDelay};
 `;
 
 export const Rectangle = styled(Shape)`
@@ -27,9 +30,9 @@ export const Rectangle = styled(Shape)`
 `;
 
 export const Circle = styled(Shape)`
-  width: ${({ styles }): number => styles.width}px;
-  height: ${({ styles }): number => styles.height}px;
-  border-radius: 100%;
+  width: ${({ styles }): number => styles.radius * 2}px;
+  height: ${({ styles }): number => styles.radius * 2}px;
+  border-radius: ${({ styles }): string => styles?.borderRadius || '100%'};
 `;
 
 export const Triangle: React.FC<ShapeProps> = (props): JSX.Element => {
@@ -70,70 +73,38 @@ export const Triangle: React.FC<ShapeProps> = (props): JSX.Element => {
   `;
 
   return (
-    <Shape {...props}>
+    <Rectangle {...props}>
       <TopBlock />
       <BottomBlock />
       <LeftBlock />
       <RightBlock />
-    </Shape>
+    </Rectangle>
   );
 };
 
-export const TriangularSquare: React.FC<ShapeProps> = (props): JSX.Element => {
-  const { width, height } = props.styles;
+export const CircleTunnel: React.FC<ShapeProps> = (props): JSX.Element => {
+  const TopHalf = styled.div`
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 40%;
+    background-color: ${({ theme }): string => theme.inverted};
+    border-radius: 100% 100% 0 0;
+  `;
 
-  const sharedTriangleStyles = {
-    width: 60,
-    height: 30
-  };
-
-  const { width: triangleWidth, height: triangleHeight } = sharedTriangleStyles;
-
-  const topTriangleStyles = {
-    ...sharedTriangleStyles
-  };
-
-  const rightTriangleStyles = {
-    ...sharedTriangleStyles,
-    transform: 'rotate(90deg)'
-  };
-
-  const bottomTriangleStyles = {
-    ...sharedTriangleStyles,
-    transform: 'rotate(180deg)'
-  };
-
-  const leftTriangleStyles = {
-    ...sharedTriangleStyles,
-    transform: 'rotate(-90deg)'
-  };
+  const BottomHalf = styled.div`
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40%;
+    background-color: ${({ theme }): string => theme.inverted};
+    border-radius: 0 0 100% 100%;
+  `;
 
   return (
-    <Shape {...props}>
-      <Triangle
-        top={0}
-        left={((width / 2 - triangleWidth / 2) / width) * 100}
-        styles={topTriangleStyles}
-      />
-      <Triangle
-        top={((height / 2 - triangleHeight / 2) / height) * 100}
-        left={
-          100 +
-          (triangleHeight / 2 / height) * 100 -
-          (triangleWidth / width) * 100
-        }
-        styles={rightTriangleStyles}
-      />
-      <Triangle
-        top={100 - (triangleHeight / height) * 100}
-        left={((width / 2 - triangleWidth / 2) / width) * 100}
-        styles={bottomTriangleStyles}
-      />
-      <Triangle
-        top={((height / 2 - triangleHeight / 2) / height) * 100}
-        left={0 - (triangleHeight / 2 / height) * 100}
-        styles={leftTriangleStyles}
-      />
-    </Shape>
+    <Circle {...props}>
+      <TopHalf className='envObject nested' />
+      <BottomHalf className='envObject nested' />
+    </Circle>
   );
 };

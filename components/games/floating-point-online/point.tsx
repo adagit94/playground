@@ -53,7 +53,7 @@ const Point: React.FC = (): JSX.Element => {
 `;
 
   return (
-    <FPIcon top={top} left={left} size={size} id='fp'>
+    <FPIcon top={top} left={left} size={size} className='fp'>
       <Anim animation={waving} />
     </FPIcon>
   );

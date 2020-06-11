@@ -1,27 +1,28 @@
 import { Themes } from 'types/layout';
-import { ShapeStyles } from 'types/styled-components';
+import { EnvObjectStyles } from 'types/styled-components';
 
 type DataSets = 'game' | 'players' | 'fp';
 
 type GameStates = 'conf' | 'init' | 'run' | 'eval' | 'reset';
 
-export type AnimationNames =
+export type AnimationName =
   | 'translateToCenterVertical'
   | 'rotate360'
   | 'translateCenterUp'
   | 'translateCenterRight'
   | 'translateCenterBottom'
-  | 'translateCenterLeft';
+  | 'translateCenterLeft'
+  | 'fadeBackground';
 
-export type ShapeNames =
+export type EnvObjectName =
   | 'Rectangle'
   | 'Circle'
   | 'Triangle'
-  | 'TriangularSquare';
+  | 'CircleTunnel';
 
-export type EnvObjects = {
-  shape: ShapeNames;
-  styles: ShapeStyles;
+export type EnvObjectsList = {
+  object: EnvObjectName;
+  styles: EnvObjectStyles;
   positions: [number, number][];
 }[];
 
@@ -37,7 +38,7 @@ export type Key = {
 export type Player = {
   username: string;
   avatar: string;
-  selectedEnv: EnvNames;
+  selectedEnv: EnvName;
   top: number;
   left: number;
   score: number;
@@ -47,7 +48,7 @@ export type Player = {
 export type PlayerUpdate = {
   username?: string;
   avatar?: string;
-  selectedEnv?: EnvNames;
+  selectedEnv?: EnvName;
   top?: number;
   left?: number;
   score?: number;
@@ -70,13 +71,13 @@ export type PropsEnvOptions = {
 };
 
 export type PropsEnv = {
-  env: EnvNames;
+  env: EnvName;
 };
 
 export type StatesGame = {
   state: GameStates;
   admin: string;
-  env: EnvNames;
+  env: EnvName;
   envVotes: EnvVotes;
   winner: Results;
   timer: number;
@@ -89,7 +90,7 @@ export type StatesGame = {
 export type StatesGameDB = {
   state: GameStates;
   admin: string;
-  env: EnvNames;
+  env: EnvName;
   envVotes: EnvVotes;
   winner: Results;
   timer: number;
@@ -121,7 +122,7 @@ export type DataSet = {
 export type GameUpdate = {
   state?: GameStates;
   admin?: string;
-  env?: EnvNames;
+  env?: EnvName;
   envVotes?: EnvVotes;
   winner?: Results;
   timer?: number;
@@ -147,7 +148,7 @@ export type PlayerResultsData = PlayerResultData[];
 
 export type Results = PlayerResultData | PlayerResultsData;
 
-export type EnvNames = 'testI' | 'testII';
+export type EnvName = 'testI' | 'testII';
 
 export type EnvList = ['testI', 'testII'];
 
@@ -167,7 +168,7 @@ export type UpdateDataFP = (update: StatesFP) => Promise<void>;
 export type Defaults = {
   size: number;
   timer: number;
-  enviroments: { testI: EnvObjects; testII: EnvObjects };
+  enviroments: { testI: EnvObjectsList; testII: EnvObjectsList };
 };
 
 export type ControlKeys = {

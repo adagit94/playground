@@ -25,19 +25,14 @@ import { keyReplacer } from 'helpers/regs';
 import { convertPlayedTime, updatePlayedTime } from 'helpers/stats';
 import { Theming } from 'types/layout';
 import { FloatingPoint, GameData } from 'types/user';
+import { PropsOptionsPlayer, EnvName } from 'types/games/floating-point-online';
+import { ContainerStatsProps, ButtonReadyProps } from 'types/styled-components';
 import { ContextFirebase } from 'contexts/firebase';
 import { ContextUser } from 'contexts/user';
 import {
   ContextGame,
   ContextPlayers
 } from 'contexts/games/floating-point-online';
-
-import {
-  PropsOptionsPlayer,
-  EnvNames
-} from 'types/games/floating-point-online';
-
-import { ContainerStatsProps, ButtonReadyProps } from 'types/styled-components';
 
 import {
   crudDataGamePlayer,
@@ -177,7 +172,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     if (players.length < 2) return;
 
     let initable: boolean;
-    let votes: [EnvNames, number][] = [];
+    let votes: [EnvName, number][] = [];
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
@@ -190,7 +185,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     }
 
     for (const env in envVotes) {
-      votes.push([env as EnvNames, envVotes[env]]);
+      votes.push([env as EnvName, envVotes[env]]);
     }
 
     votes.sort((a, b) => a[1] - b[1]).reverse();
@@ -205,7 +200,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
     if (initable === false) return;
 
-    let results: EnvNames[] = [];
+    let results: EnvName[] = [];
 
     for (const env of votes) {
       const [envName, envVotes] = env;

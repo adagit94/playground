@@ -1,48 +1,74 @@
-import { EnvObjects } from 'types/games/floating-point-online';
+import { EnvObjectsList } from 'types/games/floating-point-online';
 
-export const testI: EnvObjects = [
+export const testI: EnvObjectsList = [
   {
-    shape: 'Triangle',
+    object: 'CircleTunnel',
+    styles: {
+      radius: 120,
+      animationName: 'rotate360',
+      animationDuration: '3s',
+      animationTimingFunction: 'ease-in-out',
+      animationIterationCount: 'infinite',
+      animationDelay: '3s',
+      backgroundColor: 'transparent'
+    },
+    positions: [[50, 20]]
+  },
+  {
+    object: 'Triangle',
     styles: {
       width: 5,
       height: 30,
       transform: 'rotate(180deg)',
-      animationName: 'translateCenterUp'
+      animationName: 'translateCenterUp',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
     },
     positions: [[50 - 15, 50 - 2.5]]
   },
   {
-    shape: 'Triangle',
-    styles: {
-      width: 5,
-      height: 30,
-      transform: 'rotate(-90deg)',
-      animationName: 'translateCenterRight'
-    },
-    positions: [[50 - 15, 50 - 2.5]]
-  },
-  {
-    shape: 'Triangle',
-    styles: {
-      width: 5,
-      height: 30,
-      animationName: 'translateCenterBottom'
-    },
-    positions: [[50 - 15, 50 - 2.5]]
-  },
-  {
-    shape: 'Triangle',
+    object: 'Triangle',
     styles: {
       width: 5,
       height: 30,
       transform: 'rotate(90deg)',
-      animationName: 'translateCenterLeft'
+      animationName: 'translateCenterRight',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
+    },
+    positions: [[50 - 15, 50 - 2.5]]
+  },
+
+  {
+    object: 'Triangle',
+    styles: {
+      width: 5,
+      height: 30,
+      animationName: 'translateCenterBottom',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
+    },
+    positions: [[50 - 15, 50 - 2.5]]
+  },
+  {
+    object: 'Triangle',
+    styles: {
+      width: 5,
+      height: 30,
+      transform: 'rotate(-90deg)',
+      animationName: 'translateCenterLeft',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
     },
     positions: [[50 - 15, 50 - 2.5]]
   }
   /*
   {
-    shape: 'Circle',
+    object: 'Circle',
     styles: { width: 30, height: 30 },
     positions: [
       [10, 50],
@@ -52,9 +78,9 @@ export const testI: EnvObjects = [
   }*/
 ];
 
-export const testII: EnvObjects = [
+export const testII: EnvObjectsList = [
   {
-    shape: 'Rectangle',
+    object: 'Rectangle',
     styles: { width: 1, height: 20 },
     positions: [
       [20, 49.5],
@@ -65,11 +91,14 @@ export const testII: EnvObjects = [
   },
 
   {
-    shape: 'Rectangle',
+    object: 'Rectangle',
     styles: {
       width: 1,
       height: 20,
-      animationName: 'translateToCenterVertical'
+      animationName: 'translateToCenterVertical',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
     },
     positions: [
       [0, 5],
@@ -87,8 +116,15 @@ export const testII: EnvObjects = [
     ]
   },
   {
-    shape: 'Rectangle',
-    styles: { width: 1, height: 20, animationName: 'rotate360' },
+    object: 'Rectangle',
+    styles: {
+      width: 1,
+      height: 20,
+      animationName: 'rotate360',
+      animationDuration: '5s',
+      animationTimingFunction: 'linear',
+      animationIterationCount: 'infinite'
+    },
     positions: [
       [40, 11],
       [40, 23],

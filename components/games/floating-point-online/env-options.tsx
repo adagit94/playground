@@ -18,7 +18,7 @@ import { keyEditReg } from 'regs/db';
 import { keyReplacer } from 'helpers/regs';
 import { Theming } from 'types/layout';
 import { EnvOptionsContainerProps } from 'types/styled-components';
-import { EnvNames, PropsEnvOptions } from 'types/games/floating-point-online';
+import { EnvName, PropsEnvOptions } from 'types/games/floating-point-online';
 import { ContextFirebase } from 'contexts/firebase';
 import {
   ContextGame,
@@ -82,7 +82,7 @@ const EnvOptions: React.FC<PropsEnvOptions> = ({
 
   const envList = envVotes && Object.keys(envVotes);
 
-  const handleVoting = (env: EnvNames): void => {
+  const handleVoting = (env: EnvName): void => {
     if (selectedEnv === undefined) {
       crudDataGame('floatingPoint', 'update', {
         envVotes: {
@@ -149,7 +149,7 @@ const EnvOptions: React.FC<PropsEnvOptions> = ({
                   <div>
                     <InputCustomRadioButton
                       onClick={(): void => {
-                        handleVoting(env as EnvNames);
+                        handleVoting(env as EnvName);
                       }}
                       checked={selectedEnv === env ? true : false}
                     />

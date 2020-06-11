@@ -2,7 +2,7 @@ import { memo, useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 
-import * as Shapes from './_env-shapes';
+import * as EnvObjects from './_env-objects';
 import Players from './players';
 import FPIcon from './point';
 
@@ -18,7 +18,7 @@ import {
 
 import {
   PropsEnv,
-  EnvObjects,
+  EnvObjectsList,
   ControlKeys,
   Key,
   CheckOverlap,
@@ -67,7 +67,7 @@ const Container = styled.div`
 `;
 
 const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
-  const [objectsDefinitions, setObjectsDefinitions] = useState<EnvObjects>(
+  const [objectsDefinitions, setObjectsDefinitions] = useState<EnvObjectsList>(
     null
   );
 
@@ -100,6 +100,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
     $('.envObject').each(function() {
       const object = $(this);
+      const isNested = object.hasClass('nested');
 
       let { top: objectTop, left: objectLeft } = object.position();
       let { height: objectHeight, width: objectWidth }: any = object.css([
@@ -114,6 +115,13 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       objectLeft = (objectLeft / width) * 100;
       objectHeight = (objectHeight / height) * 100;
       objectWidth = (objectWidth / width) * 100;
+
+      if (isNested) {
+        const { top: parentTop, left: parentLeft } = object.parent().position();
+
+        objectTop += (parentTop / height) * 100;
+        objectLeft += (parentLeft / width) * 100;
+      }
 
       if (
         pointTop + pointHeight >= objectTop &&
@@ -267,19 +275,25 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   useEffect(() => {
     if (objectsDefinitions !== null && objectsComponents === null) {
-      const components = objectsDefinitions.map(object => {
-        const { shape, styles, positions } = object;
-        const Shape = Shapes[shape];
+      const components = objectsDefinitions.map(envObject => {
+        const { object, styles, positions } = envObject;
+        const EnvObject = EnvObjects[object];
+
+        const cName = object !== 'CircleTunnel' ? 'envObject' : null;
 
         return positions.map((pos, i) => {
-          const [top, left] = pos;
+          let [top, left] = pos;
+
+          if (object === 'CircleTunnel') {
+            top -= (styles.radius / height) * 100;
+          }
 
           return (
-            <Shape
+            <EnvObject
               top={top}
               left={left}
               styles={styles}
-              className='envObject'
+              className={cName}
               key={i}
             />
           );
@@ -288,7 +302,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       setObjectsComponents(components);
     }
-  }, [objectsDefinitions, objectsComponents]);
+  }, [height, objectsDefinitions, objectsComponents]);
 
   useEffect(() => {
     const registerKey = (e: KeyboardEvent): void => {

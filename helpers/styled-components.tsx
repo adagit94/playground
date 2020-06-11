@@ -3,7 +3,7 @@ import styled, { keyframes, css, Keyframes } from 'styled-components';
 import { GetKeyframe } from 'types/styled-components';
 
 export const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
-  const { width, height, transform, animationName } = styles;
+  const { width, height, backgroundColor, transform, animationName } = styles;
 
   let keyframe: Keyframes;
   let from: string | number;
@@ -45,15 +45,15 @@ export const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
     case 'translateCenterUp':
       keyframe = keyframes`
       0% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
       } 
 
       50% {
-        transform: ${transform} translateY(-100px);
+        transform: ${transform} translateY(75px);
       } 
   
       100% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
       }
     `;
 
@@ -62,15 +62,15 @@ export const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
     case 'translateCenterRight':
       keyframe = keyframes`
       0% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
       } 
 
       50% {
-        transform: ${transform} translateY(-100px);
+        transform: ${transform} translateY(75px);
       } 
   
       100% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
       }
     `;
 
@@ -79,15 +79,15 @@ export const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
     case 'translateCenterBottom':
       keyframe = keyframes`
       0% {
-        transform: translateY(-70px);
+        transform: translateY(50px);
       } 
 
       50% {
-        transform: translateY(-100px);
+        transform: translateY(75px);
       } 
   
       100% {
-        transform: translateY(-70px);
+        transform: translateY(50px);
       }
     `;
 
@@ -96,15 +96,32 @@ export const getKeyframe: GetKeyframe = ({ top, left, styles }) => {
     case 'translateCenterLeft':
       keyframe = keyframes`
       0% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
       } 
 
       50% {
-        transform: ${transform} translateY(-100px);
+        transform: ${transform} translateY(75px);
       } 
   
       100% {
-        transform: ${transform} translateY(-70px);
+        transform: ${transform} translateY(50px);
+      }
+    `;
+
+      break;
+
+    case 'fadeBackground':
+      keyframe = keyframes`
+      0% {
+        background-color: inherit;
+      } 
+
+      50% {
+        background-color: green;
+      } 
+  
+      100% {
+        background-color: inherit;
       }
     `;
 
