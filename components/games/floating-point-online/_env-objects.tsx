@@ -6,6 +6,7 @@ import { GetKeyframe, ShapeProps } from 'types/styled-components';
 const Shape = styled.div<ShapeProps>`
   position: absolute;
   overflow: hidden;
+  z-index: 1;
   top: ${({ top }): number => top}%;
   left: ${({ left }): number => left}%;
   width: ${({ styles }): number => styles.width}%;

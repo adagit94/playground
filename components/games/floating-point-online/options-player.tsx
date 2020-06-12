@@ -164,9 +164,9 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const playerData = statesPlayers?.[player];
   const players = Object.keys(statesPlayers);
 
-  const stateRef = useRef(state);
-  const timestampStartRef = useRef(timestampStart);
-  const playersRef = useRef(players);
+  let stateRef = useRef(state);
+  let timestampStartRef = useRef(timestampStart);
+  let playersRef = useRef(players);
 
   const handleInit = (): void => {
     if (players.length < 2) return;

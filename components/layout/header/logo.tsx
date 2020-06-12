@@ -8,7 +8,7 @@ const rotateX = keyframes`
   }
 
   to {
-    transform: rotateX(180deg);
+    transform: rotateX(360deg);
   }
 `;
 
@@ -18,7 +18,7 @@ const rotateY = keyframes`
   }
 
   to {
-    transform: rotateY(180deg);
+    transform: rotateY(360deg);
   }
 `;
 
@@ -28,7 +28,7 @@ const rotateZ = keyframes`
   }
 
   to {
-    transform: rotateZ(180deg);
+    transform: rotateZ(-360deg);
   }
 `;
 
@@ -51,7 +51,7 @@ const ContainerCircles = styled.div`
   border-radius: 100%;
   color: ${({ theme }): string => theme.inverted};
   animation-name: ${rotateZ};
-  animation-duration: 2.5s;
+  animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;
@@ -64,35 +64,35 @@ const ContainerCirclesCenter = styled.div`
   color: ${({ theme }): string => theme.background};
   background-color: ${({ theme }): string => theme.inverted};
   animation-name: ${rotateZ};
-  animation-duration: 2.5s;
+  animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;
 
 const CircleX = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
   border: 2px solid;
   border-radius: 100%;
   animation-name: ${rotateX};
-  animation-duration: 2.5s;
+  animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;
 
 const CircleY = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
   border: 2px solid;
   border-radius: 100%;
   animation-name: ${rotateY};
-  animation-duration: 2.5s;
+  animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 `;

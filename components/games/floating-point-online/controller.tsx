@@ -59,7 +59,7 @@ const Controller: React.FC = (): JSX.Element => {
   const playerLocal = user?.uid;
   const players = Object.keys(statesPlayers);
 
-  const statesPlayersRef = useRef(statesPlayers);
+  let statesPlayersRef = useRef(statesPlayers);
 
   useEffect(() => {
     statesPlayersRef.current = statesPlayers;

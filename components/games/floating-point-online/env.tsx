@@ -1,4 +1,11 @@
-import { memo, useState, useEffect, useRef, useContext } from 'react';
+import {
+  memo,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback
+} from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 
@@ -31,6 +38,8 @@ import {
   crudDataUserGame
 } from 'firebase/db';
 
+let handleMoveInterval: number;
+
 const controlKeys: ControlKeys = {
   ArrowUp: {
     pressed: false,
@@ -55,6 +64,24 @@ const controlKeys: ControlKeys = {
     operation: 'subtract',
     direction: 'left',
     limit: 'left'
+  }
+};
+
+const registerKey = (e: KeyboardEvent): void => {
+  e.preventDefault();
+
+  const key = e.key;
+
+  if (key in controlKeys && controlKeys[key].pressed !== true) {
+    controlKeys[key].pressed = true;
+  }
+};
+
+const cancelKey = (e: KeyboardEvent): void => {
+  const key = e.key;
+
+  if (key in controlKeys) {
+    controlKeys[key].pressed = false;
   }
 };
 
@@ -93,89 +120,63 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const pointWidth = (size / width) * 100;
   const pointHeight = (size / height) * 100;
 
-  const handleMoveRef = useRef(null);
+  let widthRef = useRef(width);
+  let heightRef = useRef(height);
+  let playerLocalTopRef = useRef(playerLocalTop);
+  let playerLocalLeftRef = useRef(playerLocalLeft);
+  let fpTopRef = useRef(fpTop);
+  let fpLeftRef = useRef(fpLeft);
 
-  const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
-    let overlap = false;
+  const checkOverlap: CheckOverlap = useCallback(
+    (pointTop, pointLeft) => {
+      let overlap = false;
 
-    $('.envObject').each(function() {
-      const object = $(this);
-      const isNested = object.hasClass('nested');
+      $('.envObject').each(function() {
+        const object = $(this);
+        const isNested = object.hasClass('nested');
 
-      let { top: objectTop, left: objectLeft } = object.position();
-      let { height: objectHeight, width: objectWidth }: any = object.css([
-        'width',
-        'height'
-      ]);
+        let { top: objectTop, left: objectLeft } = object.position();
+        let { height: objectHeight, width: objectWidth }: any = object.css([
+          'width',
+          'height'
+        ]);
 
-      objectHeight = positionExtractReg.exec(objectHeight)[0];
-      objectWidth = positionExtractReg.exec(objectWidth)[0];
+        objectHeight = positionExtractReg.exec(objectHeight)[0];
+        objectWidth = positionExtractReg.exec(objectWidth)[0];
 
-      objectTop = (objectTop / height) * 100;
-      objectLeft = (objectLeft / width) * 100;
-      objectHeight = (objectHeight / height) * 100;
-      objectWidth = (objectWidth / width) * 100;
+        objectTop = (objectTop / height) * 100;
+        objectLeft = (objectLeft / width) * 100;
+        objectHeight = (objectHeight / height) * 100;
+        objectWidth = (objectWidth / width) * 100;
 
-      if (isNested) {
-        const { top: parentTop, left: parentLeft } = object.parent().position();
+        if (isNested) {
+          const {
+            top: parentTop,
+            left: parentLeft
+          } = object.parent().position();
 
-        objectTop += (parentTop / height) * 100;
-        objectLeft += (parentLeft / width) * 100;
-      }
+          objectTop += (parentTop / height) * 100;
+          objectLeft += (parentLeft / width) * 100;
+        }
 
-      if (
-        pointTop + pointHeight >= objectTop &&
-        pointTop <= objectTop + objectHeight &&
-        pointLeft + pointWidth >= objectLeft &&
-        pointLeft <= objectLeft + objectWidth
-      ) {
-        overlap = true;
+        if (
+          pointTop + pointHeight >= objectTop &&
+          pointTop <= objectTop + objectHeight &&
+          pointLeft + pointWidth >= objectLeft &&
+          pointLeft <= objectLeft + objectWidth
+        ) {
+          overlap = true;
 
-        return;
-      }
-    });
-
-    return overlap;
-  };
-
-  const fpOverlap = (): void => {
-    if (
-      playerLocalTop + pointHeight >= fpTop &&
-      playerLocalTop <= fpTop + pointHeight &&
-      playerLocalLeft + pointWidth >= fpLeft &&
-      playerLocalLeft <= fpLeft + pointWidth
-    ) {
-      let fpTop: number;
-      let fpLeft: number;
-      let overlap: boolean;
-
-      while (overlap || overlap === undefined) {
-        fpTop = Math.min(
-          ((Math.random() * height) / height) * 100,
-          ((height - size) / height) * 100
-        );
-
-        fpLeft = Math.min(
-          ((Math.random() * width) / width) * 100,
-          ((width - size) / width) * 100
-        );
-
-        overlap = checkOverlap(fpTop, fpLeft);
-      }
-      console.log(overlap);
-      updateDataFP({ top: fpTop, left: fpLeft });
-
-      crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
-        score: statesPlayers[playerLocal].score + 1
+          return;
+        }
       });
 
-      crudDataUserGame(playerLocal, 'floatingPoint', 'update', {
-        gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
-      });
-    }
-  };
+      return overlap;
+    },
+    [width, height, pointWidth, pointHeight]
+  );
 
-  const handleMove = async (): Promise<void> => {
+  const handleMove = (): void => {
     let updatedPos = {} as Position;
 
     for (const controlKey in controlKeys) {
@@ -190,6 +191,11 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
         continue;
       }
+
+      const width = widthRef.current;
+      const height = heightRef.current;
+      const playerLocalTop = playerLocalTopRef.current;
+      const playerLocalLeft = playerLocalLeftRef.current;
 
       switch (limit) {
         case 'top':
@@ -250,15 +256,56 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       updatedPos[direction] = newPos;
     }
 
-    await crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
+    crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
       ...updatedPos
     });
 
-    fpOverlap();
+    const fpTopPrev = fpTopRef.current;
+    const fpLeftPrev = fpLeftRef.current;
+
+    if (
+      playerLocalTop + pointHeight >= fpTopPrev &&
+      playerLocalTop <= fpTopPrev + pointHeight &&
+      playerLocalLeft + pointWidth >= fpLeftPrev &&
+      playerLocalLeft <= fpLeftPrev + pointWidth
+    ) {
+      let fpTopNew: number;
+      let fpLeftNew: number;
+      let overlap: boolean;
+
+      while (overlap || overlap === undefined) {
+        fpTopNew = Math.min(
+          ((Math.random() * height) / height) * 100,
+          ((height - size) / height) * 100
+        );
+
+        fpLeftNew = Math.min(
+          ((Math.random() * width) / width) * 100,
+          ((width - size) / width) * 100
+        );
+
+        overlap = checkOverlap(fpTopNew, fpLeftNew);
+      }
+      console.log(overlap);
+      updateDataFP({ top: fpTopNew, left: fpLeftNew });
+
+      crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
+        score: statesPlayers[playerLocal].score + 1
+      });
+
+      crudDataUserGame(playerLocal, 'floatingPoint', 'update', {
+        gatheredPoints: statesUser.games.floatingPoint.gatheredPoints + 1
+      });
+    }
   };
 
   useEffect(() => {
-    handleMoveRef.current = handleMove;
+    widthRef.current = width;
+    heightRef.current = height;
+    playerLocalTopRef.current = playerLocalTop;
+    playerLocalLeftRef.current = playerLocalLeft;
+    fpTopRef.current = fpTop;
+    fpLeftRef.current = fpLeft;
   });
 
   useEffect(() => {
@@ -305,31 +352,19 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   }, [height, objectsDefinitions, objectsComponents]);
 
   useEffect(() => {
-    const registerKey = (e: KeyboardEvent): void => {
-      e.preventDefault();
+    if (handleMoveInterval === undefined) {
+      window.addEventListener('keydown', registerKey);
+      window.addEventListener('keyup', cancelKey);
 
-      const key = e.key;
-
-      if (key in controlKeys) {
-        if (controlKeys[key].pressed !== true) controlKeys[key].pressed = true;
-        handleMoveRef.current();
-      }
-    };
-
-    const cancelKey = (e: KeyboardEvent): void => {
-      const key = e.key;
-
-      if (key in controlKeys) {
-        controlKeys[key].pressed = false;
-      }
-    };
-
-    window.addEventListener('keydown', registerKey);
-    window.addEventListener('keyup', cancelKey);
+      handleMoveInterval = window.setInterval(handleMove, 50);
+    }
 
     return (): void => {
+      console.log('removed key listeners');
       window.removeEventListener('keydown', registerKey);
       window.removeEventListener('keyup', cancelKey);
+
+      window.clearInterval(handleMoveInterval);
     };
   }, []);
 
