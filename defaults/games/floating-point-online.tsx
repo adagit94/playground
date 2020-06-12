@@ -14,7 +14,7 @@ import {
 
 export const DEFAULTS: Defaults = {
   size: 15,
-  timer: 120,
+  timer: 180,
   enviroments: {
     testI,
     testII
