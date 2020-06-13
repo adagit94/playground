@@ -176,7 +176,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const handleInit = useCallback(() => {
     const statesPlayers = statesPlayersRef.current;
 
-    //if (Object.keys(statesPlayers).length < 2) return;
+    if (Object.keys(statesPlayers).length < 2) return;
 
     let initable: boolean;
     let votes: [EnvName, number][] = [];
