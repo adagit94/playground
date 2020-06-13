@@ -1,4 +1,4 @@
-import { useContext, useState, memo } from 'react';
+import { useContext, memo, useReducer } from 'react';
 import styled from 'styled-components';
 
 import OptionsPlayer from './options-player';
@@ -6,6 +6,8 @@ import OptionsCommon from './options-common';
 
 import { paddingContainer } from 'components/styled-components/_variables';
 
+import { reducerControlPanel } from 'reducers/games/floating-point-online';
+import { initControlPanel } from 'inits/games/floating-point-online';
 import { ContextGame } from 'contexts/games/floating-point-online';
 import { ContextPlayers } from 'contexts/games/floating-point-online';
 
@@ -19,12 +21,15 @@ const Container = styled.div`
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {
-  const [highlightUnready, setHighlightUnready] = useState(false);
-  const [highlightEnvOptions, setHighlightEnvOptions] = useState(false);
+  const [statesControlPanel, dispatchControlPanel] = useReducer(
+    reducerControlPanel,
+    initControlPanel
+  );
 
   const statesGame = useContext(ContextGame);
   const statesPlayers = useContext(ContextPlayers);
 
+  const { highlightUnready, highlightEnvOptions } = statesControlPanel;
   const { admin } = statesGame;
 
   const players = Object.keys(statesPlayers).filter(player => player !== admin);
@@ -34,8 +39,7 @@ const ControlPanel: React.FC = (): JSX.Element => {
       <OptionsPlayer
         player={admin}
         highlightUnready={highlightUnready}
-        setHighlightUnready={setHighlightUnready}
-        setHighlightEnvOptions={setHighlightEnvOptions}
+        dispatchControlPanel={dispatchControlPanel}
       />
       <OptionsPlayer player={players[1]} highlightUnready={highlightUnready} />
       <OptionsCommon highlightEnvOptions={highlightEnvOptions} />

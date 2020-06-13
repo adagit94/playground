@@ -55,12 +55,7 @@ const Profile: React.FC = (): JSX.Element => {
         </Link>
       </Row>
       <Row>
-        <FormButton
-          onClick={(): void => {
-            logout();
-          }}
-          type='button'
-        >
+        <FormButton onClick={logout} type='button'>
           Log out
         </FormButton>
       </Row>

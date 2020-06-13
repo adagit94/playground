@@ -40,7 +40,7 @@ export type CrudDataGamePlayer = (
   data?: PlayerCreate | PlayerUpdate
 ) => Promise<PlayerData | void>;
 
-export type InitGame = (
+export type InitGameDB = (
   game: GameNames,
   user: firebase.User,
   handleData: HandleData

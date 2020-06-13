@@ -1,5 +1,12 @@
 import Router from 'next/router';
-import { useContext, useEffect, useState, memo, useRef } from 'react';
+import {
+  useContext,
+  useEffect,
+  useState,
+  memo,
+  useRef,
+  useCallback
+} from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import Avatar from 'components/styled-components/avatar';
@@ -145,8 +152,7 @@ const ButtonReadyClickable = styled(ButtonReady)`
 const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   player,
   highlightUnready,
-  setHighlightUnready,
-  setHighlightEnvOptions
+  dispatchControlPanel
 }): JSX.Element => {
   const [gameStats, setGameStats] = useState<[string, string | number][]>([]);
 
@@ -162,21 +168,22 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
   const uid = user?.uid;
   const userGameStats = statesUser?.games.floatingPoint;
   const playerData = statesPlayers?.[player];
-  const players = Object.keys(statesPlayers);
 
   let stateRef = useRef(state);
   let timestampStartRef = useRef(timestampStart);
-  let playersRef = useRef(players);
+  let statesPlayersRef = useRef(statesPlayers);
 
-  const handleInit = (): void => {
-    if (players.length < 2) return;
+  const handleInit = useCallback(() => {
+    const statesPlayers = statesPlayersRef.current;
+
+    //if (Object.keys(statesPlayers).length < 2) return;
 
     let initable: boolean;
     let votes: [EnvName, number][] = [];
 
     for (const player in statesPlayers) {
       if (!statesPlayers[player].isReady) {
-        setHighlightUnready(true);
+        dispatchControlPanel({ type: 'setHighlightUnready', value: true });
 
         initable = false;
 
@@ -193,7 +200,7 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     const firstEnvVotes = votes[0][1];
 
     if (firstEnvVotes === 0) {
-      setHighlightEnvOptions(true);
+      dispatchControlPanel({ type: 'setHighlightEnvOptions', value: true });
 
       initable = false;
     }
@@ -224,60 +231,63 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
       });
     }
 
-    setHighlightUnready(false);
-    setHighlightEnvOptions(false);
-  };
+    dispatchControlPanel({ type: 'reset' });
+  }, [envVotes, dispatchControlPanel]);
+
+  const handleExit = useCallback(
+    (url: string) => {
+      if (url.includes('floating-point-online')) return;
+
+      const players = Object.keys(statesPlayersRef.current);
+
+      if (players.length === 1) {
+        crudDataGame('floatingPoint', 'delete');
+
+        return;
+      }
+
+      if (admin === player) {
+        crudDataGame('floatingPoint', 'update', {
+          admin: players.find(player => player !== admin)
+        });
+      }
+
+      if (stateRef.current === 'run') {
+        updatePlayedTime('floatingPoint', players, [
+          timestampStartRef.current,
+          Date.now()
+        ]);
+
+        crudDataGamePlayer('floatingPoint', player, 'delete');
+
+        crudDataGame('floatingPoint', 'update', {
+          state: 'reset'
+        });
+      } else {
+        crudDataGamePlayer('floatingPoint', player, 'delete');
+      }
+    },
+    [admin, player]
+  );
 
   useEffect(() => {
     stateRef.current = state;
     timestampStartRef.current = timestampStart;
-    playersRef.current = players;
+    statesPlayersRef.current = statesPlayers;
   });
 
   useEffect(() => {
-    let handleExit;
-
     if (uid !== undefined && player !== undefined && uid === player) {
-      handleExit = (url: string): void => {
-        if (url.includes('floating-point-online')) return;
-
-        if (playersRef.current.length === 1) {
-          crudDataGame('floatingPoint', 'delete');
-
-          return;
-        }
-
-        if (admin === player) {
-          crudDataGame('floatingPoint', 'update', {
-            admin: playersRef.current.find(player => player !== admin)
-          });
-        }
-
-        if (stateRef.current === 'run') {
-          updatePlayedTime('floatingPoint', playersRef.current, [
-            timestampStartRef.current,
-            Date.now()
-          ]);
-
-          crudDataGamePlayer('floatingPoint', player, 'delete');
-
-          crudDataGame('floatingPoint', 'update', {
-            state: 'reset'
-          });
-        } else {
-          crudDataGamePlayer('floatingPoint', player, 'delete');
-        }
-      };
-
       Router.events.on('beforeHistoryChange', handleExit);
     }
 
     return (): void => {
+      console.log('router event removed');
       if (uid !== undefined && player !== undefined && uid === player) {
         Router.events.off('beforeHistoryChange', handleExit);
       }
     };
-  }, [uid, admin, player]);
+  }, [handleExit, uid, admin, player]);
 
   useEffect(() => {
     if (state === 'reset') setGameStats([]);

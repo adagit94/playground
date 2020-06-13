@@ -62,8 +62,7 @@ export type PropsOptionsCommon = {
 export type PropsOptionsPlayer = {
   player: string;
   highlightUnready: boolean;
-  setHighlightUnready?: React.Dispatch<React.SetStateAction<boolean>>;
-  setHighlightEnvOptions?: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatchControlPanel?: React.Dispatch<ActionsControlPanel>;
 };
 
 export type PropsEnvOptions = {
@@ -72,19 +71,6 @@ export type PropsEnvOptions = {
 
 export type PropsEnv = {
   env: EnvName;
-};
-
-export type StatesGame = {
-  state: GameStates;
-  admin: string;
-  env: EnvName;
-  envVotes: EnvVotes;
-  winner: Results;
-  timer: number;
-  timestampStart: number;
-  timestampEnd: number;
-  width: number;
-  height: number;
 };
 
 export type StatesGameDB = {
@@ -130,9 +116,27 @@ export type GameUpdate = {
   timestampEnd?: number;
 };
 
+export type StatesGame = {
+  state: GameStates;
+  admin: string;
+  env: EnvName;
+  envVotes: EnvVotes;
+  winner: Results;
+  timer: number;
+  timestampStart: number;
+  timestampEnd: number;
+  width: number;
+  height: number;
+};
+
 export type StatesPlayers = { [uid: string]: Player };
 
 export type StatesFP = Position;
+
+export type StatesControlPanel = {
+  highlightUnready: boolean;
+  highlightEnvOptions: boolean;
+};
 
 export type ActionsGame =
   | {
@@ -141,6 +145,15 @@ export type ActionsGame =
       height: number;
     }
   | { type: 'setData'; payload: StatesGameDB };
+
+export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
+
+export type ActionsFP = { type: 'setData'; payload: StatesFP };
+
+export type ActionsControlPanel =
+  | { type: 'setHighlightUnready'; value: boolean }
+  | { type: 'setHighlightEnvOptions'; value: boolean }
+  | { type: 'reset' };
 
 export type PlayerResultData = { name: string; score: number };
 
@@ -153,10 +166,6 @@ export type EnvName = 'testI' | 'testII';
 export type EnvList = ['testI', 'testII'];
 
 export type EnvVotes = { test: number };
-
-export type ActionsPlayers = { type: 'setData'; payload: StatesPlayers };
-
-export type ActionsFP = { type: 'setData'; payload: StatesFP };
 
 export type HandleData = (
   dataSet: DataSets,

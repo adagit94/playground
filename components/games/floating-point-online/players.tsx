@@ -1,13 +1,13 @@
 import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
+import { PlayerIconProps } from 'types/styled-components';
+import { Theming } from 'types/layout';
+import { ContextPlayers } from 'contexts/games/floating-point-online';
 import {
   DEFAULTS,
   getAvatarPlaceholder
 } from 'defaults/games/floating-point-online';
-import { PlayerIconProps } from 'types/styled-components';
-import { Theming } from 'types/layout';
-import { ContextPlayers } from 'contexts/games/floating-point-online';
 
 const PlayerIcon = styled.div.attrs<PlayerIconProps>(({ top, left }) => ({
   style: {

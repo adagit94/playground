@@ -9,7 +9,7 @@ import {
 } from 'defaults/games/floating-point-online';
 
 import {
-  InitGame,
+  InitGameDB,
   RemoveListenersGame,
   CrudDataGame,
   CrudDataGamePlayer,
@@ -180,7 +180,7 @@ export const initUserDB: InitUserDB = async (user, handleData) => {
   });
 };
 
-export const initGame: InitGame = async (game, user, handleData) => {
+export const initGameDB: InitGameDB = async (game, user, handleData) => {
   const player = user.uid;
 
   const gameRef = firebase.database().ref(`games/${game}`);

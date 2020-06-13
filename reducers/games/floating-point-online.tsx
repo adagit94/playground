@@ -1,10 +1,13 @@
+import { initControlPanel } from 'inits/games/floating-point-online';
 import {
   StatesGame,
   StatesPlayers,
   StatesFP,
+  StatesControlPanel,
   ActionsGame,
   ActionsPlayers,
-  ActionsFP
+  ActionsFP,
+  ActionsControlPanel
 } from 'types/games/floating-point-online';
 
 export const reducerGame: React.Reducer<StatesGame, ActionsGame> = (
@@ -49,6 +52,25 @@ export const reducerFP: React.Reducer<StatesFP, ActionsFP> = (
   switch (action.type) {
     case 'setData':
       return { ...action.payload };
+
+    default:
+      return states;
+  }
+};
+
+export const reducerControlPanel: React.Reducer<
+  StatesControlPanel,
+  ActionsControlPanel
+> = (states, action): StatesControlPanel => {
+  switch (action.type) {
+    case 'setHighlightUnready':
+      return { ...states, highlightUnready: action.value };
+
+    case 'setHighlightEnvOptions':
+      return { ...states, highlightEnvOptions: action.value };
+
+    case 'reset':
+      return { ...initControlPanel };
 
     default:
       return states;

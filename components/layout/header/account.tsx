@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { useContext, memo } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import $ from 'jquery';

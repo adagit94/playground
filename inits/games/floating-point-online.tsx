@@ -1,7 +1,8 @@
 import {
   StatesGame,
   StatesPlayers,
-  StatesFP
+  StatesFP,
+  StatesControlPanel
 } from 'types/games/floating-point-online';
 
 export const initGame: StatesGame = {
@@ -22,4 +23,9 @@ export const initPlayers: StatesPlayers = {};
 export const initFP: StatesFP = {
   top: undefined,
   left: undefined
+};
+
+export const initControlPanel: StatesControlPanel = {
+  highlightUnready: false,
+  highlightEnvOptions: false
 };

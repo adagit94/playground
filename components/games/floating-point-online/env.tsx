@@ -1,6 +1,13 @@
-import { memo, useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
+import {
+  memo,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+  useCallback
+} from 'react';
 
 import * as EnvObjects from './_env-objects';
 import Players from './players';
@@ -125,50 +132,56 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   let fpTopRef = useRef(fpTop);
   let fpLeftRef = useRef(fpLeft);
 
-  const checkOverlap: CheckOverlap = (pointTop, pointLeft) => {
-    let overlap = false;
+  const checkOverlap: CheckOverlap = useCallback(
+    (pointTop, pointLeft) => {
+      let overlap = false;
 
-    $('.envObject').each(function() {
-      const object = $(this);
-      const isNested = object.hasClass('nested');
+      $('.envObject').each(function() {
+        const object = $(this);
+        const isNested = object.hasClass('nested');
 
-      let { top: objectTop, left: objectLeft } = object.position();
-      let { height: objectHeight, width: objectWidth }: any = object.css([
-        'width',
-        'height'
-      ]);
+        let { top: objectTop, left: objectLeft } = object.position();
+        let { height: objectHeight, width: objectWidth }: any = object.css([
+          'width',
+          'height'
+        ]);
 
-      objectHeight = positionExtractReg.exec(objectHeight)[0];
-      objectWidth = positionExtractReg.exec(objectWidth)[0];
+        objectHeight = positionExtractReg.exec(objectHeight)[0];
+        objectWidth = positionExtractReg.exec(objectWidth)[0];
 
-      objectTop = (objectTop / height) * 100;
-      objectLeft = (objectLeft / width) * 100;
-      objectHeight = (objectHeight / height) * 100;
-      objectWidth = (objectWidth / width) * 100;
+        objectTop = (objectTop / height) * 100;
+        objectLeft = (objectLeft / width) * 100;
+        objectHeight = (objectHeight / height) * 100;
+        objectWidth = (objectWidth / width) * 100;
 
-      if (isNested) {
-        const { top: parentTop, left: parentLeft } = object.parent().position();
+        if (isNested) {
+          const {
+            top: parentTop,
+            left: parentLeft
+          } = object.parent().position();
 
-        objectTop += (parentTop / height) * 100;
-        objectLeft += (parentLeft / width) * 100;
-      }
+          objectTop += (parentTop / height) * 100;
+          objectLeft += (parentLeft / width) * 100;
+        }
 
-      if (
-        pointTop + pointHeight >= objectTop &&
-        pointTop <= objectTop + objectHeight &&
-        pointLeft + pointWidth >= objectLeft &&
-        pointLeft <= objectLeft + objectWidth
-      ) {
-        overlap = true;
+        if (
+          pointTop + pointHeight >= objectTop &&
+          pointTop <= objectTop + objectHeight &&
+          pointLeft + pointWidth >= objectLeft &&
+          pointLeft <= objectLeft + objectWidth
+        ) {
+          overlap = true;
 
-        return;
-      }
-    });
+          return;
+        }
+      });
 
-    return overlap;
-  };
+      return overlap;
+    },
+    [width, height, pointWidth, pointHeight]
+  );
 
-  const handleMove = (): void => {
+  const handleMove = useCallback(() => {
     const width = widthRef.current;
     const height = heightRef.current;
     const playerLocalTop = playerLocalTopRef.current;
@@ -292,7 +305,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         gatheredPoints: gatheredPoints + 1
       });
     }
-  };
+  }, [checkOverlap, size, playerLocal, pointWidth, pointHeight]);
 
   useEffect(() => {
     widthRef.current = width;
@@ -349,12 +362,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   }, [height, objectsDefinitions, objectsComponents]);
 
   useEffect(() => {
-    if (handleMoveInterval === undefined) {
-      window.addEventListener('keydown', registerKey);
-      window.addEventListener('keyup', cancelKey);
+    window.addEventListener('keydown', registerKey);
+    window.addEventListener('keyup', cancelKey);
 
-      handleMoveInterval = window.setInterval(handleMove, 50);
-    }
+    handleMoveInterval = window.setInterval(handleMove, 50);
 
     return (): void => {
       console.log('removed key listeners');
@@ -363,7 +374,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       window.clearInterval(handleMoveInterval);
     };
-  }, []);
+  }, [handleMove]);
 
   return (
     <Container>
