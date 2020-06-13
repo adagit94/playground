@@ -37,7 +37,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 50px;
+  width: 150px;
 `;
 
 const ContainerCircles = styled.div`
