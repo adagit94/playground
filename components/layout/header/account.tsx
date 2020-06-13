@@ -57,9 +57,11 @@ const Slider = styled.div<SliderProps>`
   position: absolute;
   top: 75px;
   right: 0;
+  z-index: 1;
   width: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
   height: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
-  z-index: 1;
+  border-radius: 0 0 0 5px;
+  box-shadow: 4px -5px 25px 3px ${(props): string => props.theme.inverted};
   background-color: ${(props): string => props.theme.inverted};
 `;
 

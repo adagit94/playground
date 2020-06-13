@@ -10,7 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   position: relative;
   width: 20px;
-  margin: 10px;
+  margin: 5px 10px;
   border: 2px solid;
 `;
 

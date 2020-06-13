@@ -64,9 +64,10 @@ const Container = styled.div`
 
 const ContainerButtons = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  width: 50%;
   height: ${heightContainerOptionsItem};
 `;
 
@@ -79,7 +80,12 @@ const ContainerInfo = styled.div`
 `;
 
 const ButtonStart = styled.button`
-  padding: ${paddingButton};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 25px;
   font-weight: bold;
   border: ${borderWidthButton} solid ${({ theme }): string => theme.inverted};
   border-radius: ${borderRadiusButton};
@@ -121,7 +127,12 @@ const ContainerStats = styled.div<ContainerStatsProps>`
 `;
 
 const ButtonReady = styled.button<ButtonReadyProps>`
-  padding: ${paddingButton};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 25px;
   font-weight: bold;
   border: ${borderWidthButton} solid
     ${({ theme, isReady, highlightUnready }): string =>
@@ -270,6 +281,39 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
     [admin, player]
   );
 
+  const getStats = useCallback(async () => {
+    let stats: FloatingPoint;
+    let statsArr: [string, string | number][] = [];
+
+    if (uid === player) {
+      stats = userGameStats;
+    } else {
+      stats = (await crudDataUserGame(
+        player,
+        'floatingPoint',
+        'read'
+      )) as GameData;
+    }
+
+    for (const stat in stats) {
+      const editedStat = stat.replace(keyEditReg, keyReplacer);
+
+      if (stat === 'playedTime') {
+        let playedTime: string | number = stats.playedTime;
+
+        if (playedTime > 0) {
+          playedTime = convertPlayedTime(playedTime);
+        }
+
+        statsArr.push([editedStat, playedTime]);
+      } else {
+        statsArr.push([editedStat, stats[stat]]);
+      }
+    }
+
+    setGameStats(statsArr);
+  }, [uid, player, userGameStats]);
+
   useEffect(() => {
     stateRef.current = state;
     timestampStartRef.current = timestampStart;
@@ -295,42 +339,9 @@ const OptionsPlayer: React.FC<PropsOptionsPlayer> = ({
 
   useEffect(() => {
     if (state === 'conf' && player !== undefined && gameStats.length === 0) {
-      const getStats = async (): Promise<void> => {
-        let stats: FloatingPoint;
-        let statsArr: [string, string | number][] = [];
-
-        if (uid === player) {
-          stats = userGameStats;
-        } else {
-          stats = (await crudDataUserGame(
-            player,
-            'floatingPoint',
-            'read'
-          )) as GameData;
-        }
-
-        for (const stat in stats) {
-          const editedStat = stat.replace(keyEditReg, keyReplacer);
-
-          if (stat === 'playedTime') {
-            let playedTime: string | number = stats.playedTime;
-
-            if (playedTime > 0) {
-              playedTime = convertPlayedTime(playedTime);
-            }
-
-            statsArr.push([editedStat, playedTime]);
-          } else {
-            statsArr.push([editedStat, stats[stat]]);
-          }
-        }
-
-        setGameStats(statsArr);
-      };
-
       getStats();
     }
-  });
+  }, [getStats, gameStats.length, player, state]);
   //console.log(playerData);
   return (
     <Container>

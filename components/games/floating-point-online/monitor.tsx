@@ -20,6 +20,9 @@ import {
 const Container = styled.div`
   height: 70%;
   position: relative;
+  border: 2px solid;
+  border-radius: 50px;
+  margin: 10px;
 `;
 
 const Monitor: React.FC = (): JSX.Element => {

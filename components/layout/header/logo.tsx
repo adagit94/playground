@@ -37,7 +37,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 150px;
+  width: 50px;
 `;
 
 const ContainerCircles = styled.div`
@@ -54,12 +54,19 @@ const ContainerCircles = styled.div`
   animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+
+  &:hover {
+    #circlesCenter {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 
 const ContainerCirclesCenter = styled.div`
   position: relative;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 100%;
   color: ${({ theme }): string => theme.background};
   background-color: ${({ theme }): string => theme.inverted};
@@ -67,6 +74,9 @@ const ContainerCirclesCenter = styled.div`
   animation-duration: 3s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+  transition-property: width, height;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in;
 `;
 
 const CircleX = styled.div`
@@ -105,7 +115,7 @@ const Logo: React.FC = (): JSX.Element => {
           <ContainerCircles>
             <CircleX />
             <CircleY />
-            <ContainerCirclesCenter>
+            <ContainerCirclesCenter id='circlesCenter'>
               <CircleX />
               <CircleY />
             </ContainerCirclesCenter>

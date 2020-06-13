@@ -18,6 +18,8 @@ const Container = styled.div`
   height: 30%;
   padding: ${paddingContainer};
   border-top: 2px solid;
+  border-radius: 125px 125px 0 0;
+  box-shadow: 0 7px 0 5px ${({ theme }): string => theme.inverted};
 `;
 
 const ControlPanel: React.FC = (): JSX.Element => {

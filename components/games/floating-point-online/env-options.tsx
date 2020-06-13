@@ -1,5 +1,12 @@
-import { memo, useContext, Fragment, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import {
+  memo,
+  useContext,
+  Fragment,
+  useState,
+  useEffect,
+  useCallback
+} from 'react';
 
 import LoadingIndicator from 'components/styled-components/loading-indicator';
 import { InputCustomRadioButton } from 'components/styled-components/inputs';
@@ -82,35 +89,38 @@ const EnvOptions: React.FC<PropsEnvOptions> = ({
 
   const envList = envVotes && Object.keys(envVotes);
 
-  const handleVoting = (env: EnvName): void => {
-    if (selectedEnv === undefined) {
-      crudDataGame('floatingPoint', 'update', {
-        envVotes: {
-          ...envVotes,
-          [env]: envVotes[env] + 1
-        }
-      });
-    } else if (selectedEnv === env) {
-      crudDataGame('floatingPoint', 'update', {
-        envVotes: {
-          ...envVotes,
-          [selectedEnv]: envVotes[selectedEnv] - 1
-        }
-      });
-    } else if (selectedEnv !== env) {
-      crudDataGame('floatingPoint', 'update', {
-        envVotes: {
-          ...envVotes,
-          [selectedEnv]: envVotes[selectedEnv] - 1,
-          [env]: envVotes[env] + 1
-        }
-      });
-    }
+  const handleVoting = useCallback(
+    (env: EnvName): void => {
+      if (selectedEnv === undefined) {
+        crudDataGame('floatingPoint', 'update', {
+          envVotes: {
+            ...envVotes,
+            [env]: envVotes[env] + 1
+          }
+        });
+      } else if (selectedEnv === env) {
+        crudDataGame('floatingPoint', 'update', {
+          envVotes: {
+            ...envVotes,
+            [selectedEnv]: envVotes[selectedEnv] - 1
+          }
+        });
+      } else if (selectedEnv !== env) {
+        crudDataGame('floatingPoint', 'update', {
+          envVotes: {
+            ...envVotes,
+            [selectedEnv]: envVotes[selectedEnv] - 1,
+            [env]: envVotes[env] + 1
+          }
+        });
+      }
 
-    crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
-      selectedEnv: selectedEnv === env ? null : env
-    });
-  };
+      crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
+        selectedEnv: selectedEnv === env ? null : env
+      });
+    },
+    [envVotes, playerLocal, selectedEnv]
+  );
 
   useEffect(() => {
     if (state === 'conf') {
