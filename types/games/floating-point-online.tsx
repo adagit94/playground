@@ -26,7 +26,7 @@ export type EnvObjectsList = {
   positions: [number, number][];
 }[];
 
-export type Position = { top: number; left: number };
+export type PositionPlayer = { top: number; left: number };
 
 export type Key = {
   pressed: boolean;
@@ -53,6 +53,12 @@ export type PlayerUpdate = {
   left?: number;
   score?: number;
   isReady?: boolean;
+};
+
+export type FPUpdate = {
+  top: [number, number]; // [current, prev]
+  left: [number, number];
+  autoMove?: boolean;
 };
 
 export type PropsOptionsCommon = {
@@ -131,7 +137,11 @@ export type StatesGame = {
 
 export type StatesPlayers = { [uid: string]: Player };
 
-export type StatesFP = Position;
+export type StatesFP = {
+  top: [number, number]; // [current, prev]
+  left: [number, number];
+  autoMove: boolean;
+};
 
 export type StatesControlPanel = {
   highlightUnready: boolean;
@@ -172,7 +182,7 @@ export type HandleData = (
   data: StatesGameDB | StatesPlayers | StatesFP
 ) => void;
 
-export type UpdateDataFP = (update: StatesFP) => Promise<void>;
+export type UpdateDataFP = (update: FPUpdate) => Promise<void>;
 
 export type Defaults = {
   size: number;

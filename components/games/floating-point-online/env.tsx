@@ -29,7 +29,8 @@ import {
   ControlKeys,
   Key,
   CheckOverlap,
-  Position
+  PositionPlayer,
+  FPUpdate
 } from 'types/games/floating-point-online';
 
 import {
@@ -39,6 +40,7 @@ import {
 } from 'firebase/db';
 
 let handleMoveInterval: number;
+let autoMoveInterval: number;
 
 const controlKeys: ControlKeys = {
   ArrowUp: {
@@ -111,7 +113,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const { size } = DEFAULTS;
   const { user } = statesFirebase;
   const { width, height } = statesGame;
-  const { top: fpTop, left: fpLeft } = statesFP;
+  const { top: fpTop, left: fpLeft, autoMove: fpAutoMove } = statesFP;
 
   const playerLocal = user?.uid;
   const userGatheredPoints = statesUser?.games.floatingPoint.gatheredPoints;
@@ -181,13 +183,110 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     [width, height, pointWidth, pointHeight]
   );
 
+  const autoMoveFP = useCallback(() => {
+    let updatedPos = {} as FPUpdate;
+
+    const fpTop = fpTopRef.current;
+    const fpLeft = fpLeftRef.current;
+
+    const [fpTopCurrent, fpTopPrev] = fpTop;
+    const [fpLeftCurrent, fpLeftPrev] = fpLeft;
+
+    const directionalNum = Math.floor(Math.random() * 10);
+
+    switch (directionalNum) {
+      case 0:
+        updatedPos = {
+          top: fpTop,
+          left: fpLeft
+        };
+
+        break;
+
+      case 1:
+        updatedPos = {
+          top: [fpTopCurrent + 1, fpTopCurrent],
+          left: fpLeft
+        };
+
+        break;
+
+      case 2:
+        updatedPos = {
+          top: [fpTopCurrent - 1, fpTopCurrent],
+          left: [fpLeftCurrent + 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 3:
+        updatedPos = {
+          top: fpTop,
+          left: [fpLeftCurrent + 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 4:
+        updatedPos = {
+          top: [fpTopCurrent + 1, fpTopCurrent],
+          left: [fpLeftCurrent + 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 5:
+        updatedPos = {
+          top: [fpTopCurrent + 1, fpTopCurrent],
+          left: fpLeft
+        };
+
+        break;
+
+      case 6:
+        updatedPos = {
+          top: [fpTopCurrent + 1, fpTopCurrent],
+          left: [fpLeftCurrent - 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 7:
+        updatedPos = {
+          top: fpTop,
+          left: [fpLeftCurrent + 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 8:
+        updatedPos = {
+          top: [fpTopCurrent - 1, fpTopCurrent],
+          left: [fpLeftCurrent - 1, fpLeftCurrent]
+        };
+
+        break;
+
+      case 9:
+        updatedPos = {
+          top: [fpTopPrev, fpTopCurrent],
+          left: [fpLeftPrev, fpLeftCurrent]
+        };
+
+        break;
+    }
+
+    console.log(updatedPos);
+    updateDataFP(updatedPos);
+  }, []);
+
   const handleMove = useCallback(() => {
     const width = widthRef.current;
     const height = heightRef.current;
     const playerLocalTop = playerLocalTopRef.current;
     const playerLocalLeft = playerLocalLeftRef.current;
 
-    let updatedPos = {} as Position;
+    let updatedPos = {} as PositionPlayer;
 
     for (const controlKey in controlKeys) {
       const key = controlKeys[controlKey] as Key;
@@ -265,8 +364,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       ...updatedPos
     });
 
-    const fpTop = fpTopRef.current;
-    const fpLeft = fpLeftRef.current;
+    const fpTop = fpTopRef.current[0];
+    const fpLeft = fpLeftRef.current[0];
 
     if (
       playerLocalTop + pointHeight >= fpTop &&
@@ -274,8 +373,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       playerLocalLeft + pointWidth >= fpLeft &&
       playerLocalLeft <= fpLeft + pointWidth
     ) {
-      const gatheredPoints = userGatheredPointsRef.current;
-      const score = playerLocalScoreRef.current;
+      let updatedPos = {} as FPUpdate;
 
       let fpTopNew: number;
       let fpLeftNew: number;
@@ -294,8 +392,20 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
         overlap = checkOverlap(fpTopNew, fpLeftNew);
       }
-      console.log(overlap);
-      updateDataFP({ top: fpTopNew, left: fpLeftNew });
+
+      updatedPos.top = [fpTopNew, fpTop];
+      updatedPos.left = [fpLeftNew, fpLeft];
+
+      if (!fpAutoMove) {
+        updatedPos.autoMove = true;
+
+        autoMoveInterval = window.setInterval(autoMoveFP, 1000);
+      }
+
+      updateDataFP(updatedPos);
+
+      const score = playerLocalScoreRef.current;
+      const gatheredPoints = userGatheredPointsRef.current;
 
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         score: score + 1
@@ -305,7 +415,15 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         gatheredPoints: gatheredPoints + 1
       });
     }
-  }, [checkOverlap, size, playerLocal, pointWidth, pointHeight]);
+  }, [
+    fpAutoMove,
+    autoMoveFP,
+    checkOverlap,
+    size,
+    playerLocal,
+    pointWidth,
+    pointHeight
+  ]);
 
   useEffect(() => {
     widthRef.current = width;
@@ -373,6 +491,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       window.removeEventListener('keyup', cancelKey);
 
       window.clearInterval(handleMoveInterval);
+      window.clearInterval(autoMoveInterval);
     };
   }, [handleMove]);
 

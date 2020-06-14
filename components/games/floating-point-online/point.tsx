@@ -35,7 +35,8 @@ const Point: React.FC = (): JSX.Element => {
   const theming: Theming = useContext(ThemeContext);
 
   const { size } = DEFAULTS;
-  const { top, left } = statesFP;
+  const top = statesFP.top[0];
+  const left = statesFP.left[0];
 
   const waving = keyframes`
     from {

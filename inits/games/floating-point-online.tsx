@@ -22,7 +22,8 @@ export const initPlayers: StatesPlayers = {};
 
 export const initFP: StatesFP = {
   top: undefined,
-  left: undefined
+  left: undefined,
+  autoMove: false
 };
 
 export const initControlPanel: StatesControlPanel = {
