@@ -186,6 +186,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const autoMoveFP = useCallback(() => {
     let updatedPos = {} as FPUpdate;
 
+    const width = widthRef.current;
+    const height = heightRef.current;
     const fpTop = fpTopRef.current;
     const fpLeft = fpLeftRef.current;
 
@@ -205,7 +207,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       case 1:
         updatedPos = {
-          top: [fpTopCurrent + 1, fpTopCurrent],
+          top: [
+            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
+            fpTopCurrent
+          ],
           left: fpLeft
         };
 
@@ -213,8 +218,14 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       case 2:
         updatedPos = {
-          top: [fpTopCurrent - 1, fpTopCurrent],
-          left: [fpLeftCurrent + 1, fpLeftCurrent]
+          top: [
+            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
+            fpTopCurrent
+          ],
+          left: [
+            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
 
         break;
@@ -276,7 +287,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         break;
     }
 
-    console.log(updatedPos);
     updateDataFP(updatedPos);
   }, []);
 
@@ -404,7 +414,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       updateDataFP(updatedPos);
 
-      const score = playerLocalScoreRef.current;
+      /*const score = playerLocalScoreRef.current;
       const gatheredPoints = userGatheredPointsRef.current;
 
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
@@ -413,7 +423,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       crudDataUserGame(playerLocal, 'floatingPoint', 'update', {
         gatheredPoints: gatheredPoints + 1
-      });
+      });*/
     }
   }, [
     fpAutoMove,
@@ -491,7 +501,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       window.removeEventListener('keyup', cancelKey);
 
       window.clearInterval(handleMoveInterval);
-      window.clearInterval(autoMoveInterval);
+      //window.clearInterval(autoMoveInterval);
     };
   }, [handleMove]);
 

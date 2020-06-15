@@ -61,7 +61,8 @@ const Slider = styled.div<SliderProps>`
   width: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
   height: ${({ isAuthenticated }): number => (isAuthenticated ? 150 : 300)}px;
   border-radius: 0 0 0 5px;
-  box-shadow: 4px -5px 25px 3px ${(props): string => props.theme.inverted};
+  box-shadow: ${(props): string =>
+    props.theme.theme === 'light' && '-6px -6px 9px -6px'};
   background-color: ${(props): string => props.theme.inverted};
 `;
 
