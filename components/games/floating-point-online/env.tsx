@@ -379,8 +379,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       ...updatedPos
     });
 
-    const fpTop = fpTopRef.current[0];
-    const fpLeft = fpLeftRef.current[0];
+    const fpTop = fpTopRef.current;
+    const fpLeft = fpLeftRef.current;
 
     if (
       playerLocalTop + pointHeight >= fpTop &&
@@ -403,8 +403,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         overlap = checkOverlap(fpTopNew, fpLeftNew);
       }
 
-      updatedPos.top = [fpTopNew, fpTop];
-      updatedPos.left = [fpLeftNew, fpLeft];
+      updatedPos.top = fpTopNew;
+      updatedPos.left = fpLeftNew;
 
       if (!fpAutoMove) {
         updatedPos.autoMove = true;

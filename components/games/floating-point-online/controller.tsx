@@ -123,8 +123,8 @@ const Controller: React.FC = (): JSX.Element => {
       const fpLeft = 50 - pointWidth / 2;
 
       await updateDataFP({
-        top: [fpTop, fpTop],
-        left: [fpLeft, fpLeft]
+        top: fpTop,
+        left: fpLeft
       });
 
       crudDataGame('floatingPoint', 'update', {
