@@ -245,8 +245,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       updateDataFP(posUpdate);
 
       console.log(stepsNum);
-      console.log(state);
-      console.log(posUpdate);
+      console.log(fpTop);
+      console.log(fpLeft);
     };
 
     if (directionalNum >= 0 && directionalNum <= 1.24) {
