@@ -56,8 +56,8 @@ export type PlayerUpdate = {
 };
 
 export type FPUpdate = {
-  top: [number, number]; // [current, prev]
-  left: [number, number];
+  top: number;
+  left: number;
   autoMove?: boolean;
 };
 
@@ -138,8 +138,8 @@ export type StatesGame = {
 export type StatesPlayers = { [uid: string]: Player };
 
 export type StatesFP = {
-  top: [number, number]; // [current, prev]
-  left: [number, number];
+  top: number;
+  left: number;
   autoMove: boolean;
 };
 

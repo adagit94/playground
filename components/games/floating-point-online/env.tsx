@@ -112,7 +112,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const { size } = DEFAULTS;
   const { user } = statesFirebase;
-  const { width, height } = statesGame;
+  const { state, width, height } = statesGame;
   const { top: fpTop, left: fpLeft, autoMove: fpAutoMove } = statesFP;
 
   const playerLocal = user?.uid;
@@ -125,6 +125,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   const pointWidth = (size / width) * 100;
   const pointHeight = (size / height) * 100;
 
+  let stateRef = useRef(state);
   let widthRef = useRef(width);
   let heightRef = useRef(height);
   let userGatheredPointsRef = useRef(userGatheredPoints);
@@ -187,130 +188,73 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
   );
 
   const autoMoveFP = useCallback(() => {
-    let updatedPos = {} as FPUpdate;
+    let posUpdate = {} as FPUpdate;
 
+    const state = stateRef.current;
     const width = widthRef.current;
     const height = heightRef.current;
     const fpTop = fpTopRef.current;
     const fpLeft = fpLeftRef.current;
 
-    const [fpTopCurrent, fpTopPrev] = fpTop;
-    const [fpLeftCurrent, fpLeftPrev] = fpLeft;
+    const directionalNum = Math.random() * 10;
+    let stepsNum = 10 + 2 * Math.round(Math.random() * 10);
 
-    const directionalNum = Math.floor(Math.random() * 10);
+    let updatePosInterval: number;
+    let updatePosFunc = (): void => {
+      updateDataFP(posUpdate);
 
-    switch (directionalNum) {
-      case 0:
-        return;
+      stepsNum--;
 
-      case 1:
-        updatedPos = {
-          top: [
-            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: fpLeft
-        };
-        console.log(updatedPos, '1');
-        break;
+      if (stepsNum === 0 || state !== 'run') {
+        window.clearInterval(updatePosInterval);
+      }
 
-      case 2:
-        updatedPos = {
-          top: [
-            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: [
-            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '2');
-        break;
+      if (state === 'run') autoMoveFP();
+    };
 
-      case 3:
-        updatedPos = {
-          top: fpTop,
-          left: [
-            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '3');
-        break;
-
-      case 4:
-        updatedPos = {
-          top: [
-            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: [
-            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '4');
-        break;
-
-      case 5:
-        updatedPos = {
-          top: [
-            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: fpLeft
-        };
-        console.log(updatedPos, '5');
-        break;
-
-      case 6:
-        updatedPos = {
-          top: [
-            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: [
-            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '6');
-        break;
-
-      case 7:
-        updatedPos = {
-          top: fpTop,
-          left: [
-            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '7');
-        break;
-
-      case 8:
-        updatedPos = {
-          top: [
-            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
-            fpTopCurrent
-          ],
-          left: [
-            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
-            fpLeftCurrent
-          ]
-        };
-        console.log(updatedPos, '8');
-        break;
-
-      case 9:
-        updatedPos = {
-          top: [fpTopPrev, fpTopCurrent],
-          left: [fpLeftPrev, fpLeftCurrent]
-        };
-        console.log(updatedPos, '9');
-        break;
+    if (directionalNum >= 0 && directionalNum <= 1.24) {
+      posUpdate = {
+        top: (((height / 100) * fpTop - 1) / height) * 100,
+        left: fpLeft
+      };
+    } else if (directionalNum >= 1.25 && directionalNum <= 2.49) {
+      posUpdate = {
+        top: (((height / 100) * fpTop - 1) / height) * 100,
+        left: (((width / 100) * fpLeft + 1) / width) * 100
+      };
+    } else if (directionalNum >= 2.5 && directionalNum <= 3.74) {
+      posUpdate = {
+        top: fpTop,
+        left: (((width / 100) * fpLeft + 1) / width) * 100
+      };
+    } else if (directionalNum >= 3.75 && directionalNum <= 4.99) {
+      posUpdate = {
+        top: (((height / 100) * fpTop + 1) / height) * 100,
+        left: (((width / 100) * fpLeft + 1) / width) * 100
+      };
+    } else if (directionalNum >= 5 && directionalNum <= 6.24) {
+      posUpdate = {
+        top: (((height / 100) * fpTop + 1) / height) * 100,
+        left: fpLeft
+      };
+    } else if (directionalNum >= 6.25 && directionalNum <= 7.49) {
+      posUpdate = {
+        top: (((height / 100) * fpTop + 1) / height) * 100,
+        left: (((width / 100) * fpLeft - 1) / width) * 100
+      };
+    } else if (directionalNum >= 7.5 && directionalNum <= 8.74) {
+      posUpdate = {
+        top: fpTop,
+        left: (((width / 100) * fpLeft - 1) / width) * 100
+      };
+    } else if (directionalNum >= 8.75 && directionalNum <= 9.99) {
+      posUpdate = {
+        top: (((height / 100) * fpTop - 1) / height) * 100,
+        left: (((width / 100) * fpLeft - 1) / width) * 100
+      };
     }
+
+    updatePosInterval = window.setInterval(updatePosFunc, 50);
 
     const nextTop = updatedPos.top[0];
     const nextLeft = updatedPos.left[0];
@@ -318,8 +262,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     if (
       nextTop <= 0 ||
       nextLeft <= 0 ||
-      nextTop + (pointHeight / height) * 100 >= 100 ||
-      nextLeft + (pointWidth / width) * 100 >= 100
+      nextTop + pointHeight >= 100 ||
+      nextLeft + pointWidth >= 100
     ) {
       return;
     }
@@ -327,8 +271,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     const overlap = checkOverlap(nextTop, nextLeft);
 
     if (overlap) return;
-
-    updateDataFP(updatedPos);
   }, [checkOverlap, pointWidth, pointHeight]);
 
   const handleMove = useCallback(() => {
@@ -358,11 +300,11 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
           break;
 
         case 'right':
-          if (playerLocalLeft + (size / width) * 100 >= 100) continue;
+          if (playerLocalLeft + pointWidth >= 100) continue;
           break;
 
         case 'bottom':
-          if (playerLocalTop + (size / height) * 100 >= 100) continue;
+          if (playerLocalTop + pointHeight >= 100) continue;
           break;
 
         case 'left':
@@ -401,6 +343,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       }
 
       newPos = (px / dimension) * 100;
+
       overlap = checkOverlap(
         direction === 'top' ? newPos : playerLocalTop,
         direction === 'left' ? newPos : playerLocalLeft
@@ -433,15 +376,8 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       let overlap: boolean;
 
       while (overlap || overlap === undefined) {
-        fpTopNew = Math.min(
-          ((Math.random() * height) / height) * 100,
-          ((height - size) / height) * 100
-        );
-
-        fpLeftNew = Math.min(
-          ((Math.random() * width) / width) * 100,
-          ((width - size) / width) * 100
-        );
+        fpTopNew = Math.min(height * Math.random(), 100 - pointHeight);
+        fpLeftNew = Math.min(width * Math.random(), 100 - pointWidth);
 
         overlap = checkOverlap(fpTopNew, fpLeftNew);
       }
@@ -452,7 +388,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       if (!fpAutoMove) {
         updatedPos.autoMove = true;
 
-        autoMoveInterval = window.setInterval(autoMoveFP, 1000);
+        autoMoveInterval = window.setInterval(autoMoveFP, 50);
       }
 
       updateDataFP(updatedPos);
@@ -469,13 +405,13 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     fpAutoMove,
     autoMoveFP,
     checkOverlap,
-    size,
     playerLocal,
     pointWidth,
     pointHeight
   ]);
 
   useEffect(() => {
+    stateRef.current = state;
     widthRef.current = width;
     heightRef.current = height;
     userGatheredPointsRef.current = userGatheredPoints;

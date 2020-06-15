@@ -74,6 +74,7 @@ export const WindowEval = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  border-radius: 50px;
   color: ${({ theme }): string => theme.background};
   background-color: ${({ theme }): string => theme.inverted};
 `;

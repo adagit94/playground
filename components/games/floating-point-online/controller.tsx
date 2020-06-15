@@ -74,6 +74,9 @@ const Controller: React.FC = (): JSX.Element => {
 
   const playerLocal = user?.uid;
 
+  const pointWidth = (size / width) * 100;
+  const pointHeight = (size / height) * 100;
+
   let statesPlayersRef = useRef(statesPlayers);
 
   const initGame = useCallback(async (): Promise<void> => {
@@ -85,23 +88,23 @@ const Controller: React.FC = (): JSX.Element => {
 
     switch (playerLocalIndex) {
       case 0:
-        playerLocalTop = 50 - (size / 2 / height) * 100;
-        playerLocalLeft = (10 / width) * 100;
+        playerLocalTop = 50 - pointHeight;
+        playerLocalLeft = pointWidth;
         break;
 
       case 1:
-        playerLocalTop = 50 - (size / 2 / height) * 100;
-        playerLocalLeft = 100 - (size / width) * 100;
+        playerLocalTop = 50 - pointHeight / 2;
+        playerLocalLeft = 100 - pointWidth;
         break;
 
       case 2:
-        playerLocalTop = (10 / height) * 100;
-        playerLocalLeft = 50 - (size / 2 / width) * 100;
+        playerLocalTop = pointHeight;
+        playerLocalLeft = 50 - pointWidth / 2;
         break;
 
       case 3:
-        playerLocalTop = 100 - (size / height) * 100;
-        playerLocalLeft = 50 - (size / 2 / width) * 100;
+        playerLocalTop = 100 - pointHeight;
+        playerLocalLeft = 50 - pointWidth / 2;
         break;
     }
 
@@ -116,8 +119,8 @@ const Controller: React.FC = (): JSX.Element => {
     });
 
     if (playerLocalIndex === players.length - 1) {
-      const fpTop = 50 - (size / 2 / height) * 100;
-      const fpLeft = 50 - (size / 2 / width) * 100;
+      const fpTop = 50 - pointHeight / 2;
+      const fpLeft = 50 - pointWidth / 2;
 
       await updateDataFP({
         top: [fpTop, fpTop],
@@ -130,7 +133,7 @@ const Controller: React.FC = (): JSX.Element => {
         timer
       });
     }
-  }, [size, timer, width, height, playerLocal]);
+  }, [pointWidth, pointHeight, timer, playerLocal]);
 
   const evalGame = useCallback(async (): Promise<void> => {
     const statesPlayers = statesPlayersRef.current;
@@ -209,7 +212,11 @@ const Controller: React.FC = (): JSX.Element => {
       });
     }
 
-    updateDataFP({ top: null, left: null, autoMove: null });
+    updateDataFP({
+      top: null,
+      left: null,
+      autoMove: null
+    });
 
     setTimeout(() => {
       crudDataGame('floatingPoint', 'update', {
