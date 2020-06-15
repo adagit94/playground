@@ -21,8 +21,8 @@ export const initGame: StatesGame = {
 export const initPlayers: StatesPlayers = {};
 
 export const initFP: StatesFP = {
-  top: undefined,
-  left: undefined,
+  top: [undefined, undefined],
+  left: [undefined, undefined],
   autoMove: false
 };
 
