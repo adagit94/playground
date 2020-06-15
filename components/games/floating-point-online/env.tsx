@@ -201,15 +201,52 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
     let updatePosInterval: number;
     let updatePosFunc = (): void => {
-      updateDataFP(posUpdate);
+      if (state !== 'run') {
+        window.clearInterval(updatePosInterval);
+
+        return;
+      }
+
+      const { top: nextTop, left: nextLeft } = posUpdate;
+
+      if (
+        nextTop <= 0 ||
+        nextLeft <= 0 ||
+        nextTop + pointHeight >= 100 ||
+        nextLeft + pointWidth >= 100
+      ) {
+        window.clearInterval(updatePosInterval);
+
+        autoMoveFP();
+
+        return;
+      }
+
+      const overlap = checkOverlap(nextTop, nextLeft);
+
+      if (overlap) {
+        window.clearInterval(updatePosInterval);
+
+        autoMoveFP();
+
+        return;
+      }
 
       stepsNum--;
 
-      if (stepsNum === 0 || state !== 'run') {
+      if (stepsNum === 0) {
         window.clearInterval(updatePosInterval);
+
+        autoMoveFP();
+
+        return;
       }
 
-      if (state === 'run') autoMoveFP();
+      updateDataFP(posUpdate);
+
+      console.log(stepsNum);
+      console.log(state);
+      console.log(posUpdate);
     };
 
     if (directionalNum >= 0 && directionalNum <= 1.24) {
@@ -255,22 +292,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     }
 
     updatePosInterval = window.setInterval(updatePosFunc, 50);
-
-    const nextTop = updatedPos.top[0];
-    const nextLeft = updatedPos.left[0];
-
-    if (
-      nextTop <= 0 ||
-      nextLeft <= 0 ||
-      nextTop + pointHeight >= 100 ||
-      nextLeft + pointWidth >= 100
-    ) {
-      return;
-    }
-
-    const overlap = checkOverlap(nextTop, nextLeft);
-
-    if (overlap) return;
   }, [checkOverlap, pointWidth, pointHeight]);
 
   const handleMove = useCallback(() => {
