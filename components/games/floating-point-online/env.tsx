@@ -136,6 +136,9 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
   const checkOverlap: CheckOverlap = useCallback(
     (pointTop, pointLeft) => {
+      const width = widthRef.current;
+      const height = heightRef.current;
+
       let overlap = false;
 
       $('.envObject').each(function() {
@@ -180,7 +183,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       return overlap;
     },
-    [width, height, pointWidth, pointHeight]
+    [pointWidth, pointHeight]
   );
 
   const autoMoveFP = useCallback(() => {
@@ -198,22 +201,17 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
     switch (directionalNum) {
       case 0:
-        updatedPos = {
-          top: fpTop,
-          left: fpLeft
-        };
-
-        break;
+        return;
 
       case 1:
         updatedPos = {
           top: [
-            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
+            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
             fpTopCurrent
           ],
           left: fpLeft
         };
-
+        console.log(updatedPos, '1');
         break;
 
       case 2:
@@ -227,55 +225,82 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
             fpLeftCurrent
           ]
         };
-
+        console.log(updatedPos, '2');
         break;
 
       case 3:
         updatedPos = {
           top: fpTop,
-          left: [fpLeftCurrent + 1, fpLeftCurrent]
+          left: [
+            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
-
+        console.log(updatedPos, '3');
         break;
 
       case 4:
         updatedPos = {
-          top: [fpTopCurrent + 1, fpTopCurrent],
-          left: [fpLeftCurrent + 1, fpLeftCurrent]
+          top: [
+            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
+            fpTopCurrent
+          ],
+          left: [
+            fpLeftCurrent + (((width / 100) * fpLeftCurrent + 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
-
+        console.log(updatedPos, '4');
         break;
 
       case 5:
         updatedPos = {
-          top: [fpTopCurrent + 1, fpTopCurrent],
+          top: [
+            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
+            fpTopCurrent
+          ],
           left: fpLeft
         };
-
+        console.log(updatedPos, '5');
         break;
 
       case 6:
         updatedPos = {
-          top: [fpTopCurrent + 1, fpTopCurrent],
-          left: [fpLeftCurrent - 1, fpLeftCurrent]
+          top: [
+            fpTopCurrent + (((height / 100) * fpTopCurrent + 1) / height) * 100,
+            fpTopCurrent
+          ],
+          left: [
+            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
-
+        console.log(updatedPos, '6');
         break;
 
       case 7:
         updatedPos = {
           top: fpTop,
-          left: [fpLeftCurrent + 1, fpLeftCurrent]
+          left: [
+            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
-
+        console.log(updatedPos, '7');
         break;
 
       case 8:
         updatedPos = {
-          top: [fpTopCurrent - 1, fpTopCurrent],
-          left: [fpLeftCurrent - 1, fpLeftCurrent]
+          top: [
+            fpTopCurrent - (((height / 100) * fpTopCurrent - 1) / height) * 100,
+            fpTopCurrent
+          ],
+          left: [
+            fpLeftCurrent - (((width / 100) * fpLeftCurrent - 1) / width) * 100,
+            fpLeftCurrent
+          ]
         };
-
+        console.log(updatedPos, '8');
         break;
 
       case 9:
@@ -283,12 +308,28 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
           top: [fpTopPrev, fpTopCurrent],
           left: [fpLeftPrev, fpLeftCurrent]
         };
-
+        console.log(updatedPos, '9');
         break;
     }
 
+    const nextTop = updatedPos.top[0];
+    const nextLeft = updatedPos.left[0];
+
+    if (
+      nextTop <= 0 ||
+      nextLeft <= 0 ||
+      nextTop + (pointHeight / height) * 100 >= 100 ||
+      nextLeft + (pointWidth / width) * 100 >= 100
+    ) {
+      return;
+    }
+
+    const overlap = checkOverlap(nextTop, nextLeft);
+
+    if (overlap) return;
+
     updateDataFP(updatedPos);
-  }, []);
+  }, [checkOverlap, pointWidth, pointHeight]);
 
   const handleMove = useCallback(() => {
     const width = widthRef.current;
@@ -383,8 +424,10 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       playerLocalLeft + pointWidth >= fpLeft &&
       playerLocalLeft <= fpLeft + pointWidth
     ) {
-      let updatedPos = {} as FPUpdate;
+      const score = playerLocalScoreRef.current;
+      const gatheredPoints = userGatheredPointsRef.current;
 
+      let updatedPos = {} as FPUpdate;
       let fpTopNew: number;
       let fpLeftNew: number;
       let overlap: boolean;
@@ -414,16 +457,13 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
       updateDataFP(updatedPos);
 
-      /*const score = playerLocalScoreRef.current;
-      const gatheredPoints = userGatheredPointsRef.current;
-
       crudDataGamePlayer('floatingPoint', playerLocal, 'update', {
         score: score + 1
       });
 
       crudDataUserGame(playerLocal, 'floatingPoint', 'update', {
         gatheredPoints: gatheredPoints + 1
-      });*/
+      });
     }
   }, [
     fpAutoMove,
@@ -501,9 +541,9 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
       window.removeEventListener('keyup', cancelKey);
 
       window.clearInterval(handleMoveInterval);
-      //window.clearInterval(autoMoveInterval);
+      window.clearInterval(autoMoveInterval);
     };
-  }, [handleMove]);
+  }, []);
 
   return (
     <Container>

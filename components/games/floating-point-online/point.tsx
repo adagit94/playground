@@ -35,8 +35,8 @@ const Point: React.FC = (): JSX.Element => {
   const theming: Theming = useContext(ThemeContext);
 
   const { size } = DEFAULTS;
-  const top = statesFP.top[0];
-  const left = statesFP.left[0];
+  const top = statesFP?.top[0];
+  const left = statesFP?.left[0];
 
   const waving = keyframes`
     from {
@@ -51,7 +51,7 @@ const Point: React.FC = (): JSX.Element => {
       background-color: ${theming.inverted};
     }
 `;
-
+//console.log(top);
   return (
     <FPIcon top={top} left={left} size={size} className='fp'>
       <Anim animation={waving} />
