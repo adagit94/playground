@@ -35,8 +35,7 @@ const Point: React.FC = (): JSX.Element => {
   const statesFP = useContext(ContextFP);
 
   const { size } = DEFAULTS;
-  const top = statesFP.top && statesFP.top[0];
-  const left = statesFP.left && statesFP.left[0];
+  const { top, left } = statesFP;
 
   const waving = keyframes`
     from {
