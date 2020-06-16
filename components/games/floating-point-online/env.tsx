@@ -442,14 +442,7 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         gatheredPoints: gatheredPoints + 1
       });
     }
-  }, [
-    fpAutoMove,
-    autoMoveFP,
-    checkOverlap,
-    playerLocal,
-    pointWidth,
-    pointHeight
-  ]);
+  }, [fpAutoMove, checkOverlap, playerLocal, pointWidth, pointHeight]);
 
   useEffect(() => {
     stateRef.current = state;
