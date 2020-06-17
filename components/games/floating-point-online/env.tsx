@@ -198,65 +198,63 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
     const fpLeft = fpLeftRef.current;
 
     const directionalNum = Math.random() * 10;
-    const stepsNum = 10 + 2 * Math.round(Math.random() * 10);
+    let stepsNum = 10 + 2 * Math.round(Math.random() * 10);
 
-    if (directionalNum >= 0 && directionalNum <= 1.24) {
-      for (let i = 1; i <= stepsNum; i++) {
+    const updatePos = (): void => {
+      stepsNum--;
+
+      if (stepsNum === 0) {
+        autoMoveFP();
+
+        return;
+      }
+
+      if (directionalNum >= 0 && directionalNum <= 1.24) {
         updateDataFP({
           top: (((height / 100) * fpTop - 1) / height) * 100,
           left: fpLeft
         });
-      }
-    } else if (directionalNum >= 1.25 && directionalNum <= 2.49) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 1.25 && directionalNum <= 2.49) {
         updateDataFP({
           top: (((height / 100) * fpTop - 1) / height) * 100,
           left: (((width / 100) * fpLeft + 1) / width) * 100
         });
-      }
-    } else if (directionalNum >= 2.5 && directionalNum <= 3.74) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 2.5 && directionalNum <= 3.74) {
         updateDataFP({
           top: fpTop,
           left: (((width / 100) * fpLeft + 1) / width) * 100
         });
-      }
-    } else if (directionalNum >= 3.75 && directionalNum <= 4.99) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 3.75 && directionalNum <= 4.99) {
         updateDataFP({
           top: (((height / 100) * fpTop + 1) / height) * 100,
           left: (((width / 100) * fpLeft + 1) / width) * 100
         });
-      }
-    } else if (directionalNum >= 5 && directionalNum <= 6.24) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 5 && directionalNum <= 6.24) {
         updateDataFP({
           top: (((height / 100) * fpTop + 1) / height) * 100,
           left: fpLeft
         });
-      }
-    } else if (directionalNum >= 6.25 && directionalNum <= 7.49) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 6.25 && directionalNum <= 7.49) {
         updateDataFP({
           top: (((height / 100) * fpTop + 1) / height) * 100,
           left: (((width / 100) * fpLeft - 1) / width) * 100
         });
-      }
-    } else if (directionalNum >= 7.5 && directionalNum <= 8.74) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 7.5 && directionalNum <= 8.74) {
         updateDataFP({
           top: fpTop,
           left: (((width / 100) * fpLeft - 1) / width) * 100
         });
-      }
-    } else if (directionalNum >= 8.75 && directionalNum <= 9.99) {
-      for (let i = 1; i <= stepsNum; i++) {
+      } else if (directionalNum >= 8.75 && directionalNum <= 9.99) {
         updateDataFP({
           top: (((height / 100) * fpTop - 1) / height) * 100,
           left: (((width / 100) * fpLeft - 1) / width) * 100
         });
       }
-    }
+
+      setTimeout(updatePos, 500);
+    };
+
+    updatePos();
 
     //if (state === 'run')
     //setTimeout(autoMoveFP, 1000);
@@ -442,7 +440,14 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
         gatheredPoints: gatheredPoints + 1
       });
     }
-  }, [fpAutoMove, checkOverlap, playerLocal, pointWidth, pointHeight]);
+  }, [
+    autoMoveFP,
+    fpAutoMove,
+    checkOverlap,
+    playerLocal,
+    pointWidth,
+    pointHeight
+  ]);
 
   useEffect(() => {
     stateRef.current = state;
