@@ -12,6 +12,7 @@ const Container = styled.div`
   width: 20px;
   margin: 5px 10px;
   border: 2px solid;
+  border-radius: 5px;
 `;
 
 const Button = styled.input`

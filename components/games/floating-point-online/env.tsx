@@ -262,9 +262,6 @@ const Env: React.FC<PropsEnv> = ({ env }): JSX.Element => {
 
     updatePos();
 
-    //if (state === 'run')
-    //setTimeout(autoMoveFP, 1000);
-
     /*
     const updatePos = (): void => {
       if (state !== 'run') {
