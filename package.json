@@ -15,7 +15,7 @@
     "react-dom": "^16.13.1",
     "react-three-fiber": "^4.2.10",
     "styled-components": "^4.4.1",
-    "three": "^0.117.1"
+    "three": "^0.125.0"
   },
   "devDependencies": {
     "@types/jquery": "^3.3.38",
